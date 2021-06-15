@@ -1,0 +1,10 @@
+## Ignore data files (to avoid sharing PII or large files)
+
+*.csv
+*.rds
+*.xlsx
+*.xls
+
+## Ignore R history
+.Rhistory
+
