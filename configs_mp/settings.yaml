@@ -17,7 +17,7 @@ trace_od:
 #trace_hh_id: 1482966
 #trace_od: [5, 11]
 # to resume after last successful checkpoint, specify resume_after: _
-resume_after: auto_ownership_simulate
+resume_after: telecommute_frequency
 models:
   ### mp_initialize step
   - initialize_landuse
@@ -29,8 +29,8 @@ models:
   - work_from_home
   - auto_ownership_simulate
   - free_parking
-#  - telecommute_frequency
-#  - cdap_simulate
+  - telecommute_frequency
+  - cdap_simulate
 #  - mandatory_tour_frequency
 #  - mandatory_tour_scheduling
 #  - joint_tour_frequency

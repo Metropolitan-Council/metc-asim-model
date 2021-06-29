@@ -4,23 +4,23 @@ INDIV_AND_HHSIZE1_SPEC: cdap_indiv_and_hhsize1.csv
 FIXED_RELATIVE_PROPORTIONS_SPEC: cdap_fixed_relative_proportions.csv
 
 CONSTANTS:
-  FULL: 1
-  PART: 2
-  UNIVERSITY: 3
-  NONWORK: 4
-  RETIRED: 5
-  DRIVING: 6
-  SCHOOL: 7
-  PRESCHOOL: 8
+  FULL: 5
+  PART: 6
+  UNIVERSITY: 4
+  NONWORK: 7
+  RETIRED: 8
+  DRIVING: 3
+  SCHOOL: 2
+  PRESCHOOL: 1
 
 PERSON_TYPE_MAP:
   WORKER:
+    - 5
+    - 6
+  CHILD:
     - 1
     - 2
-  CHILD:
-    - 6
-    - 7
-    - 8
+    - 3
 
 annotate_persons:
   SPEC: annotate_persons_cdap
