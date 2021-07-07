@@ -23,20 +23,20 @@ NESTS:
               coefficient: coef_nest_TRANSIT_WALKACCESS
               alternatives:
               - WALK_LOC
-              - WALK_PRM
-              - WALK_MIX
+              #- WALK_PRM
+              #- WALK_MIX
             - name: PNRACCESS
               coefficient: coef_nest_TRANSIT_PNRACCESS
               alternatives:
               - PNR_LOC
-              - PNR_PRM
-              - PNR_MIX
+              #- PNR_PRM
+              #- PNR_MIX
             - name: KNRACCESS
               coefficient: coef_nest_TRANSIT_KNRACCESS
               alternatives:
               - KNR_LOC
-              - KNR_PRM
-              - KNR_MIX
+              #- KNR_PRM
+              #- KNR_MIX
       - name: SCHOOL_BUS
         coefficient: coef_nest_SCHOOL_BUS
         alternatives:

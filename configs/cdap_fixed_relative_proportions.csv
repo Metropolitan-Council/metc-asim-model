@@ -1,5 +1,5 @@
 Description,Expression,M,N,H
-Full-time worker,ptype == 5 & not work_from_home,0.79647,0.09368,0.10985
+Full-time worker,ptype == 5 & not work_from_home,2.79647,0.09368,0.10985
 Full-time worker,ptype == 5 & work_from_home,0,0.460276126,0.539723874
 Part-time worker,ptype == 6 & not work_from_home,0.61678,0.25757,0.12565
 Part-time worker,ptype == 6 & work_from_home,0,0.672120453,0.327879547
