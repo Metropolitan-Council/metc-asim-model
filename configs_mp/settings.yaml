@@ -8,16 +8,16 @@ strict: False
 mem_tick: 30
 use_shadow_pricing: False
 ## - example sample
-households_sample_size: 100
+households_sample_size: 0
 chunk_size: 1000000000
 num_processes: 1
 # - tracing
-trace_hh_id: 352057
+#trace_hh_id: 67537
 trace_od:
-#trace_hh_id: 1482966
+trace_hh_id: 12914
 #trace_od: [5, 11]
 # to resume after last successful checkpoint, specify resume_after: _
-resume_after: telecommute_frequency
+#resume_after: mandatory_tour_frequency
 models:
   ### mp_initialize step
   - initialize_landuse
@@ -31,9 +31,9 @@ models:
   - free_parking
   - telecommute_frequency
   - cdap_simulate
-#  - mandatory_tour_frequency
-#  - mandatory_tour_scheduling
-#  - joint_tour_frequency
+  - mandatory_tour_frequency
+  - mandatory_tour_scheduling
+  - joint_tour_frequency
 #  - joint_tour_composition
 #  - joint_tour_participation
 #  - joint_tour_destination
@@ -77,7 +77,7 @@ output_tables:
     - land_use
     - households
     - persons
-#    - tours
+    - tours
 #    - trips
 #    - school_shadow_prices
 #    - workplace_shadow_prices

@@ -49,7 +49,7 @@ CHOOSER_TABLE_NAME: persons_merged
 MODEL_SELECTOR: workplace
 
 # we can't use use household income_segment as this will also be set for non-workers
-CHOOSER_SEGMENT_COLUMN_NAME: income_segment
+CHOOSER_SEGMENT_COLUMN_NAME: work_segment
 
 # boolean column to filter choosers (True means keep)
 CHOOSER_FILTER_COLUMN_NAME: is_worker
