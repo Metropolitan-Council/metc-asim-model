@@ -14,10 +14,11 @@ num_processes: 1
 # - tracing
 #trace_hh_id: 67537
 trace_od:
-trace_hh_id: 12914
+trace_hh_id: #894924
+
 #trace_od: [5, 11]
 # to resume after last successful checkpoint, specify resume_after: _
-#resume_after: mandatory_tour_frequency
+resume_after: trip_purpose_and_destination
 models:
   ### mp_initialize step
   - initialize_landuse
@@ -34,28 +35,28 @@ models:
   - mandatory_tour_frequency
   - mandatory_tour_scheduling
   - joint_tour_frequency
-#  - joint_tour_composition
-#  - joint_tour_participation
-#  - joint_tour_destination
-#  - joint_tour_scheduling
-#  - non_mandatory_tour_frequency
-#  - non_mandatory_tour_destination
-#  - non_mandatory_tour_scheduling
-#  - tour_mode_choice_simulate
-#  - atwork_subtour_frequency
-#  - atwork_subtour_destination
-#  - atwork_subtour_scheduling
-#  - atwork_subtour_mode_choice
-#  - stop_frequency
-#  - trip_purpose
-#  - trip_destination
-#  - trip_purpose_and_destination
-#  - trip_scheduling
-#  - trip_mode_choice
+  - joint_tour_composition
+  - joint_tour_participation
+  - joint_tour_destination
+  - joint_tour_scheduling
+  - non_mandatory_tour_frequency
+  - non_mandatory_tour_destination
+  - non_mandatory_tour_scheduling
+  - tour_mode_choice_simulate
+  - atwork_subtour_frequency
+  - atwork_subtour_destination
+  - atwork_subtour_scheduling
+  - atwork_subtour_mode_choice
+  - stop_frequency
+  - trip_purpose
+  - trip_destination
+  - trip_purpose_and_destination
+  - trip_scheduling
+  - trip_mode_choice
 #  ### mp_summarize step
   - write_data_dictionary
   - write_tables
-#  - write_trip_matrices
+  - write_trip_matrices
 
 multiprocess_steps:
   - name: mp_initialize
@@ -78,10 +79,10 @@ output_tables:
     - households
     - persons
     - tours
-#    - trips
+    - trips
 #    - school_shadow_prices
 #    - workplace_shadow_prices
-#    - joint_tour_participants
+    - joint_tour_participants
 
 # read cached skims (using numpy memmap) from output directory (memmap is faster than omx )
 #read_skim_cache: True

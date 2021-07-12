@@ -188,7 +188,7 @@ preprocessor:
 # to reduce memory needs filter chooser table to these fields
 TOURS_MERGED_CHOOSER_COLUMNS:
   - hhsize
-  - age
+  - AGE
   - auto_ownership
   - number_of_participants
   - tour_category

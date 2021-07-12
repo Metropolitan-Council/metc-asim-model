@@ -9,8 +9,8 @@ util_number_of_non_workers,Number of Non-Workers in the household,num_nonwork_ma
 util_number_of_children_too_young_for_school,Number of Children too Young for School in the household,num_preschool_max3,,coef_number_of_children_too_young_for_school_children,coef_number_of_children_too_young_for_school_mixed
 util_number_of_pre_driving_age_children,Number of Pre-driving Age Children in the household,num_school_max3,,coef_number_of_pre_driving_age_children_children,coef_number_of_pre_driving_age_children_mixed
 util_number_of_driving_age_children,Number of Driving-age Children in the household,num_driving_max3,,coef_number_of_driving_age_children_children,coef_number_of_driving_age_children_mixed
-util_low_income_households,Low income households (dummy),income_in_thousands<30,coef_low_income_households_adults,,coef_low_income_households_mixed
-util_medium_income_households,Medium income households (dummy),(income_in_thousands>=30) & (income_in_thousands<60),coef_medium_income_households,,
+util_low_income_households,Low income households (dummy),income_segment<3,coef_low_income_households_adults,,coef_low_income_households_mixed
+util_medium_income_households,Medium income households (dummy),(income_segment>=3) & (income_segment<4),coef_medium_income_households,,
 util_household_has_more_cars_than_workers,Household has more cars than workers (dummy),more_cars_than_workers,coef_household_has_more_cars_than_workers_adults,,coef_household_has_more_cars_than_workers_mixed
 util_household_in_urban_area,Household is located in an urban area type (dummy),home_is_urban,coef_household_in_urban_area,,
 util_household_in_suburban_area,Household is located in a suburban area type (dummy),~(home_is_urban | home_is_rural),coef_household_in_suburban_area_adults,,coef_household_in_suburban_area_mixed
