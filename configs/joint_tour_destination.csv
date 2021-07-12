@@ -1,5 +1,5 @@
 Description,Expression,escort,shopping,eatout,othmaint,social,othdiscr
-local_dist,_DIST@skims['DIST'],1,1,1,1,1,1
+local_dist,_DIST@skims['SOV_DIST'],1,1,1,1,1,1
 util_dist,@_DIST,coef_dist_escort,coef_dist_shopping,coef_dist_eatout,coef_dist_othmaint,coef_dist_social,coef_dist_othdiscr
 util_dist_squared,"@(_DIST).clip(0,20)**2",coef_dist_squared_escort,coef_dist_squared_shopping,coef_dist_squared_eatout,coef_dist_squared_othmaint,,coef_dist_squared_othdiscr
 util_dist_cubed,"@(_DIST).clip(0,20)**3",coef_dist_cubed_escort,coef_dist_cubed_shopping,coef_dist_cubed_eatout,coef_dist_cubed_othmaint,,coef_dist_cubed_othdiscr

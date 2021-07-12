@@ -41,7 +41,7 @@ dest terminal time not counted at home,_dest_terminal_time,"np.where(inbound & l
 ,origin_parking_cost,origin_duration*origin_hourly_peak_parking_cost
 ,dest_parking_cost,dest_duration*dest_hourly_peak_parking_cost
 ,total_parking_cost,(origin_parking_cost + dest_parking_cost) / 2.0
-,trip_topology,"np.where(df.outbound, reindex(land_use.TOPOLOGY, df[DESTINATION]), reindex(land_use.TOPOLOGY, df[ORIGIN]))"
+#,trip_topology,"np.where(df.outbound, reindex(land_use.TOPOLOGY, df[DESTINATION]), reindex(land_use.TOPOLOGY, df[ORIGIN]))"
 ,density_index,"np.where(df.outbound, reindex(land_use.density_index, df[DESTINATION]), reindex(land_use.density_index, df[ORIGIN]))"
 ,origin_density_index,"np.where(df.outbound, reindex(land_use.density_index, df[ORIGIN]), reindex(land_use.density_index, df[DESTINATION]))"
 # FIXME no transit subzones so all zones short walk to transit,,
@@ -66,24 +66,24 @@ dest terminal time not counted at home,_dest_terminal_time,"np.where(inbound & l
 ,origin_zone_sharedTNC_wait_time_sd,"origin_density.map({k: v for k, v in TNC_shared_waitTime_sd.items()})"
 ,origSharedTNCWaitTime,"rng.lognormal_for_df(df, mu=origin_zone_sharedTNC_wait_time_mean, sigma=origin_zone_sharedTNC_wait_time_sd, broadcast=True, scale=True).clip(min_waitTime, max_waitTime)"
 #,,
-,sov_available,(odt_skims['SOV_TIME']>0) & tour_mode_not_drive_transit
-,hov2_available,(odt_skims['HOV2_TIME']>0) & tour_mode_not_drive_transit
-,hov3_available,(odt_skims['HOV3_TIME']>0) & tour_mode_not_drive_transit
-,walk_local_available,walk_transit_available & (odt_skims['WLK_LOC_IVT']>0)
-,walk_premium_available,walk_transit_available & (odt_skims['WLK_PRM_IVT']>0)
-,walk_mix_available,walk_transit_available & (odt_skims['WLK_MIX_IVT']>0)
-,pnr_local_available_outbound,pnr_transit_available & df.outbound & (odt_skims['PNR_LOC_IVT']>0)
-,pnr_local_available_inbound,pnr_transit_available & ~df.outbound & (odt_skims['PNRE_LOC_IVT']>0)
-,pnr_premium_available_outbound,pnr_transit_available & df.outbound & (odt_skims['PNR_PRM_IVT']>0)
-,pnr_premium_available_inbound,pnr_transit_available & ~df.outbound & (odt_skims['PNRE_PRM_IVT']>0)
-,pnr_mix_available_outbound,pnr_transit_available & df.outbound & (odt_skims['PNR_MIX_IVT']>0)
-,pnr_mix_available_inbound,pnr_transit_available & ~df.outbound & (odt_skims['PNRE_MIX_IVT']>0)
-,knr_local_available_outbound,knr_transit_available & df.outbound & (odt_skims['KNR_LOC_IVT']>0)
-,knr_local_available_inbound,knr_transit_available & ~df.outbound & (odt_skims['KNRE_LOC_IVT']>0)
-,knr_premium_available_outbound,knr_transit_available & df.outbound & (odt_skims['KNR_PRM_IVT']>0)
-,knr_premium_available_inbound,knr_transit_available & ~df.outbound &  (odt_skims['KNRE_PRM_IVT']>0)
-,knr_mix_available_outbound,knr_transit_available & df.outbound & (odt_skims['KNR_MIX_IVT']>0)
-,knr_mix_available_inbound,knr_transit_available & ~df.outbound & (odt_skims['KNRE_MIX_IVT']>0)
+,sov_available,(odt_skims['SOV_N_TIME']>0) & tour_mode_not_drive_transit
+,hov2_available,(odt_skims['HOV2_N_TIME']>0) & tour_mode_not_drive_transit
+,hov3_available,(odt_skims['HOV3_N_TIME']>0) & tour_mode_not_drive_transit
+,walk_local_available,walk_transit_available & (odt_skims['WLK_TRN_IVT']>0)
+,walk_premium_available,walk_transit_available & (odt_skims['WLK_TRN_IVT']>0)
+,walk_mix_available,walk_transit_available & (odt_skims['WLK_TRN_IVT']>0)
+,pnr_local_available_outbound,pnr_transit_available & df.outbound & (odt_skims['DRV_TRN_IVT']>0)
+,pnr_local_available_inbound,pnr_transit_available & ~df.outbound & (odt_skims['DRV_TRN_IVT']>0)
+,pnr_premium_available_outbound,pnr_transit_available & df.outbound & (odt_skims['DRV_TRN_IVT']>0)
+,pnr_premium_available_inbound,pnr_transit_available & ~df.outbound & (odt_skims['DRV_TRN_IVT']>0)
+,pnr_mix_available_outbound,pnr_transit_available & df.outbound & (odt_skims['DRV_TRN_IVT']>0)
+,pnr_mix_available_inbound,pnr_transit_available & ~df.outbound & (odt_skims['DRV_TRN_IVT']>0)
+,knr_local_available_outbound,knr_transit_available & df.outbound & (odt_skims['DRV_TRN_IVT']>0)
+,knr_local_available_inbound,knr_transit_available & ~df.outbound & (odt_skims['DRV_TRN_IVT']>0)
+,knr_premium_available_outbound,knr_transit_available & df.outbound & (odt_skims['DRV_TRN_IVT']>0)
+,knr_premium_available_inbound,knr_transit_available & ~df.outbound &  (odt_skims['DRV_TRN_IVT']>0)
+,knr_mix_available_outbound,knr_transit_available & df.outbound & (odt_skims['DRV_TRN_IVT']>0)
+,knr_mix_available_inbound,knr_transit_available & ~df.outbound & (odt_skims['DRV_TRN_IVT']>0)
 #,od_dist_walk,od_skims['DISTWALK']
 #,do_dist_walk,od_skims.reverse('DISTWALK')
 #,max_dist_walk,od_skims.max('DISTWALK')

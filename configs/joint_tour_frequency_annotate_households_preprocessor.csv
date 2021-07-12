@@ -10,21 +10,21 @@ Description,Target,Expression
 #,,
 ,cdap_home_full_max3,"_PEMPLOY_CDAP_PATTERN_COUNT(PEMPLOY_FULL, 'H', households, persons).clip(0,3)"
 ,cdap_home_part_max3,"_PEMPLOY_CDAP_PATTERN_COUNT(PEMPLOY_PART, 'H', households, persons).clip(0,3)"
-,cdap_home_nonwork_max3,"_PTYPE_CDAP_PATTERN_COUNT(4, 'H', households, persons).clip(0,3)"
-,cdap_home_retired_max3,"_PTYPE_CDAP_PATTERN_COUNT(5, 'H', households, persons).clip(0,3)"
-,cdap_home_univ_driving_max3,"_2_PTYPE_CDAP_PATTERN_COUNT(3, 6, 'H', households, persons).clip(0,3)"
-,cdap_home_nondriving_child_max3,"_2_PTYPE_CDAP_PATTERN_COUNT(7, 8, 'H', households, persons).clip(0,3)"
+,cdap_home_nonwork_max3,"_PTYPE_CDAP_PATTERN_COUNT(PTYPE_NONWORK, 'H', households, persons).clip(0,3)"
+,cdap_home_retired_max3,"_PTYPE_CDAP_PATTERN_COUNT(PTYPE_RETIRED, 'H', households, persons).clip(0,3)"
+,cdap_home_univ_driving_max3,"_2_PTYPE_CDAP_PATTERN_COUNT(PTYPE_UNIVERSITY, PTYPE_DRIVING, 'H', households, persons).clip(0,3)"
+,cdap_home_nondriving_child_max3,"_2_PTYPE_CDAP_PATTERN_COUNT(PTYPE_SCHOOL, PTYPE_SCHOOL, 'H', households, persons).clip(0,3)"
 ,cdap_nonmand_full_max3,"_PEMPLOY_CDAP_PATTERN_COUNT(PEMPLOY_FULL, 'N', households, persons).clip(0,3)"
 ,cdap_nonmand_part_max3,"_PEMPLOY_CDAP_PATTERN_COUNT(PEMPLOY_PART, 'N', households, persons).clip(0,3)"
-,cdap_nonmand_nonwork_max3,"_PTYPE_CDAP_PATTERN_COUNT(4, 'N', households, persons).clip(0,3)"
-,cdap_nonmand_retired_max3,"_PTYPE_CDAP_PATTERN_COUNT(5, 'N', households, persons).clip(0,3)"
-,cdap_nonmand_univ_driving_max3,"_2_PTYPE_CDAP_PATTERN_COUNT(3, 6, 'N', households, persons).clip(0,3)"
-,cdap_nonmand_nondriving_child_max3,"_2_PTYPE_CDAP_PATTERN_COUNT(7, 8, 'N', households, persons).clip(0,3)"
+,cdap_nonmand_nonwork_max3,"_PTYPE_CDAP_PATTERN_COUNT(PTYPE_NONWORK, 'N', households, persons).clip(0,3)"
+,cdap_nonmand_retired_max3,"_PTYPE_CDAP_PATTERN_COUNT(PTYPE_RETIRED, 'N', households, persons).clip(0,3)"
+,cdap_nonmand_univ_driving_max3,"_2_PTYPE_CDAP_PATTERN_COUNT(PTYPE_UNIVERSITY, PTYPE_DRIVING, 'N', households, persons).clip(0,3)"
+,cdap_nonmand_nondriving_child_max3,"_2_PTYPE_CDAP_PATTERN_COUNT(PTYPE_SCHOOL, PTYPE_SCHOOL, 'N', households, persons).clip(0,3)"
 ,cdap_mand_full_max3,"_PEMPLOY_CDAP_PATTERN_COUNT(PEMPLOY_FULL, 'M', households, persons).clip(0,3)"
-,cdap_mand_univ_driving_max3,"_2_PTYPE_CDAP_PATTERN_COUNT(3, 6, 'M', households, persons).clip(0,3)"
-,cdap_mand_nondriving_child_max3,"_2_PTYPE_CDAP_PATTERN_COUNT(7, 8, 'M', households, persons).clip(0,3)"
-,income_between_50_and_100,(households.income > 50000) & (households.income <= 100000)
-,income_greater_than_100,households.income > 100000
+,cdap_mand_univ_driving_max3,"_2_PTYPE_CDAP_PATTERN_COUNT(PTYPE_UNIVERSITY, PTYPE_DRIVING, 'M', households, persons).clip(0,3)"
+,cdap_mand_nondriving_child_max3,"_2_PTYPE_CDAP_PATTERN_COUNT(PTYPE_SCHOOL, PTYPE_SCHOOL, 'M', households, persons).clip(0,3)"
+,income_between_50_and_100,(households.income_segment > 2) & (households.income_segment <= 4)
+,income_greater_than_100,households.income_segment > 4
 ,income_missing,0
 logTimeWindowOverlapAdult,log_time_window_overlap_adult,np.log1p(time_window_overlap_adult)
 logTimeWindowOverlapChild,log_time_window_overlap_child,np.log1p(time_window_overlap_child)

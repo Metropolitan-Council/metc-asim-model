@@ -14,56 +14,56 @@ HH_EXPANSION_WEIGHT_COL: sample_rate  # added when households read in
 SAVE_TRIPS_TABLE: True
 
 MATRICES:
-  - file_name: trips_ea.omx
+  - file_name: trips_nt.omx
     tables:
       - name: DRIVEALONE
-        data_field: DRIVEALONE_EA
+        data_field: DRIVEALONE_NT
       - name: SHARED2
-        data_field: SHARED2_EA
+        data_field: SHARED2_NT
       - name: SHARED3
-        data_field: SHARED3_EA
+        data_field: SHARED3_NT
       - name: WALK
-        data_field: WALK_EA
+        data_field: WALK_NT
       - name: BIKE
-        data_field: BIKE_EA
+        data_field: BIKE_NT
       - name: WALK_LOC
-        data_field: WALK_LOC_EA
+        data_field: WALK_LOC_NT
       - name: WALK_PRM
-        data_field: WALK_PRM_EA
+        data_field: WALK_PRM_NT
       - name: WALK_MIX
-        data_field: WALK_MIX_EA
+        data_field: WALK_MIX_NT
       - name: PNR_LOC
-        data_field: PNR_LOC_EA
+        data_field: PNR_LOC_NT
       - name: PNR_PRM
-        data_field: PNR_PRM_EA
+        data_field: PNR_PRM_NT
       - name: PNR_MIX
-        data_field: PNR_MIX_EA
+        data_field: PNR_MIX_NT
       - name: KNR_LOC
-        data_field: KNR_LOC_EA
+        data_field: KNR_LOC_NT
       - name: KNR_PRM
-        data_field: KNR_PRM_EA
+        data_field: KNR_PRM_NT
       - name: KNR_MIX
-        data_field: KNR_MIX_EA
-      - name: PNRE_LOC
-        data_field: PNRE_LOC_EA
-      - name: PNRE_PRM
-        data_field: PNRE_PRM_EA
-      - name: PNRE_MIX
-        data_field: PNRE_MIX_EA
-      - name: KNRE_LOC
-        data_field: KNRE_LOC_EA
-      - name: KNRE_PRM
-        data_field: KNRE_PRM_EA
-      - name: KNRE_MIX
-        data_field: KNRE_MIX_EA
+        data_field: KNR_MIX_NT
+#      - name: PNRE_LOC
+#        data_field: PNRE_LOC_NT
+#      - name: PNRE_PRM
+#        data_field: PNRE_PRM_NT
+#      - name: PNRE_MIX
+#        data_field: PNRE_MIX_NT
+#      - name: KNRE_LOC
+#        data_field: KNRE_LOC_NT
+#      - name: KNRE_PRM
+#        data_field: KNRE_PRM_NT
+#      - name: KNRE_MIX
+#        data_field: KNRE_MIX_NT
       - name: SCHOOLBUS
-        data_field: SCHOOLBUS_EA
+        data_field: SCHOOLBUS_NT
       - name: TAXI
-        data_field: TAXI_EA
+        data_field: TAXI_NT
       - name: TNC_SINGLE
-        data_field: TNC_SINGLE_EA
+        data_field: TNC_SINGLE_NT
       - name: TNC_SHARED
-        data_field: TNC_SHARED_EA
+        data_field: TNC_SHARED_NT
   - file_name: trips_am.omx
     tables:
       - name: DRIVEALONE
@@ -94,18 +94,18 @@ MATRICES:
         data_field: KNR_PRM_AM
       - name: KNR_MIX
         data_field: KNR_MIX_AM
-      - name: PNRE_LOC
-        data_field: PNRE_LOC_AM
-      - name: PNRE_PRM
-        data_field: PNRE_PRM_AM
-      - name: PNRE_MIX
-        data_field: PNRE_MIX_AM
-      - name: KNRE_LOC
-        data_field: KNRE_LOC_AM
-      - name: KNRE_PRM
-        data_field: KNRE_PRM_AM
-      - name: KNRE_MIX
-        data_field: KNRE_MIX_AM
+#      - name: PNRE_LOC
+#        data_field: PNRE_LOC_AM
+#      - name: PNRE_PRM
+#        data_field: PNRE_PRM_AM
+#      - name: PNRE_MIX
+#        data_field: PNRE_MIX_AM
+#      - name: KNRE_LOC
+#        data_field: KNRE_LOC_AM
+#      - name: KNRE_PRM
+#        data_field: KNRE_PRM_AM
+#      - name: KNRE_MIX
+#        data_field: KNRE_MIX_AM
       - name: SCHOOLBUS
         data_field: SCHOOLBUS_AM
       - name: TAXI
@@ -144,18 +144,18 @@ MATRICES:
         data_field: KNR_PRM_MD
       - name: KNR_MIX
         data_field: KNR_MIX_MD
-      - name: PNRE_LOC
-        data_field: PNRE_LOC_MD
-      - name: PNRE_PRM
-        data_field: PNRE_PRM_MD
-      - name: PNRE_MIX
-        data_field: PNRE_MIX_MD
-      - name: KNRE_LOC
-        data_field: KNRE_LOC_MD
-      - name: KNRE_PRM
-        data_field: KNRE_PRM_MD
-      - name: KNRE_MIX
-        data_field: KNRE_MIX_MD
+#      - name: PNRE_LOC
+#        data_field: PNRE_LOC_MD
+#      - name: PNRE_PRM
+#        data_field: PNRE_PRM_MD
+#      - name: PNRE_MIX
+#        data_field: PNRE_MIX_MD
+#      - name: KNRE_LOC
+#        data_field: KNRE_LOC_MD
+#      - name: KNRE_PRM
+#        data_field: KNRE_PRM_MD
+#      - name: KNRE_MIX
+#        data_field: KNRE_MIX_MD
       - name: SCHOOLBUS
         data_field: SCHOOLBUS_MD
       - name: TAXI
@@ -194,18 +194,18 @@ MATRICES:
         data_field: KNR_PRM_PM
       - name: KNR_MIX
         data_field: KNR_MIX_PM
-      - name: PNRE_LOC
-        data_field: PNRE_LOC_PM
-      - name: PNRE_PRM
-        data_field: PNRE_PRM_PM
-      - name: PNRE_MIX
-        data_field: PNRE_MIX_PM
-      - name: KNRE_LOC
-        data_field: KNRE_LOC_PM
-      - name: KNRE_PRM
-        data_field: KNRE_PRM_PM
-      - name: KNRE_MIX
-        data_field: KNRE_MIX_PM
+#      - name: PNRE_LOC
+#        data_field: PNRE_LOC_PM
+#      - name: PNRE_PRM
+#        data_field: PNRE_PRM_PM
+#      - name: PNRE_MIX
+#        data_field: PNRE_MIX_PM
+#      - name: KNRE_LOC
+#        data_field: KNRE_LOC_PM
+#      - name: KNRE_PRM
+#        data_field: KNRE_PRM_PM
+#      - name: KNRE_MIX
+#        data_field: KNRE_MIX_PM
       - name: SCHOOLBUS
         data_field: SCHOOLBUS_PM
       - name: TAXI
@@ -214,73 +214,73 @@ MATRICES:
         data_field: TNC_SINGLE_PM
       - name: TNC_SHARED
         data_field: TNC_SHARED_PM
-  - file_name: trips_ev.omx
-    tables:
-      - name: DRIVEALONE
-        data_field: DRIVEALONE_EV
-      - name: SHARED2
-        data_field: SHARED2_EV
-      - name: SHARED3
-        data_field: SHARED3_EV
-      - name: WALK
-        data_field: WALK_EV
-      - name: BIKE
-        data_field: BIKE_EV
-      - name: WALK_LOC
-        data_field: WALK_LOC_EV
-      - name: WALK_PRM
-        data_field: WALK_PRM_EV
-      - name: WALK_MIX
-        data_field: WALK_MIX_EV
-      - name: PNR_LOC
-        data_field: PNR_LOC_EV
-      - name: PNR_PRM
-        data_field: PNR_PRM_EV
-      - name: PNR_MIX
-        data_field: PNR_MIX_EV
-      - name: KNR_LOC
-        data_field: KNR_LOC_EV
-      - name: KNR_PRM
-        data_field: KNR_PRM_EV
-      - name: KNR_MIX
-        data_field: KNR_MIX_EV
-      - name: PNRE_LOC
-        data_field: PNRE_LOC_EV
-      - name: PNRE_PRM
-        data_field: PNRE_PRM_EV
-      - name: PNRE_MIX
-        data_field: PNRE_MIX_EV
-      - name: KNRE_LOC
-        data_field: KNRE_LOC_EV
-      - name: KNRE_PRM
-        data_field: KNRE_PRM_EV
-      - name: KNRE_MIX
-        data_field: KNRE_MIX_EV
-      - name: SCHOOLBUS
-        data_field: SCHOOLBUS_EV
-      - name: TAXI
-        data_field: TAXI_EV
-      - name: TNC_SINGLE
-        data_field: TNC_SINGLE_EV
-      - name: TNC_SHARED
-        data_field: TNC_SHARED_EV
+#  - file_name: trips_ev.omx
+#    tables:
+#      - name: DRIVEALONE
+#        data_field: DRIVEALONE_EV
+#      - name: SHARED2
+#        data_field: SHARED2_EV
+#      - name: SHARED3
+#        data_field: SHARED3_EV
+#      - name: WALK
+#        data_field: WALK_EV
+#      - name: BIKE
+#        data_field: BIKE_EV
+#      - name: WALK_LOC
+#        data_field: WALK_LOC_EV
+#      - name: WALK_PRM
+#        data_field: WALK_PRM_EV
+#      - name: WALK_MIX
+#        data_field: WALK_MIX_EV
+#      - name: PNR_LOC
+#        data_field: PNR_LOC_EV
+#      - name: PNR_PRM
+#        data_field: PNR_PRM_EV
+#      - name: PNR_MIX
+#        data_field: PNR_MIX_EV
+#      - name: KNR_LOC
+#        data_field: KNR_LOC_EV
+#      - name: KNR_PRM
+#        data_field: KNR_PRM_EV
+#      - name: KNR_MIX
+#        data_field: KNR_MIX_EV
+#      - name: PNRE_LOC
+#        data_field: PNRE_LOC_EV
+#      - name: PNRE_PRM
+#        data_field: PNRE_PRM_EV
+#      - name: PNRE_MIX
+#        data_field: PNRE_MIX_EV
+#      - name: KNRE_LOC
+#        data_field: KNRE_LOC_EV
+#      - name: KNRE_PRM
+#        data_field: KNRE_PRM_EV
+#      - name: KNRE_MIX
+#        data_field: KNRE_MIX_EV
+#      - name: SCHOOLBUS
+#        data_field: SCHOOLBUS_EV
+#      - name: TAXI
+#        data_field: TAXI_EV
+#      - name: TNC_SINGLE
+#        data_field: TNC_SINGLE_EV
+#      - name: TNC_SHARED
+#        data_field: TNC_SHARED_EV
 
 CONSTANTS:
   time_periods:
-    EA:
+    NT1:
       first_hour: 1
-      last_hour: 6
+      last_hour: 11
     AM:
-      first_hour: 7
-      last_hour: 12
+      first_hour: 12
+      last_hour: 19
     MD:
-      first_hour: 13
-      last_hour: 24
+      first_hour: 20
+      last_hour: 29
     PM:
-      first_hour: 25
-      last_hour: 32
-    EV:
-      first_hour: 33
+      first_hour: 30
+      last_hour: 37
+    NT2:
+      first_hour: 38
       last_hour: 48
 
   # SHARED2 and SHARED2 Occupancies

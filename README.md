@@ -8,7 +8,7 @@ Currently in Development.
 
 ## Getting Started
 
-Install the correct version of ActivitySim with `pip install activitysim==0.9.7`
+Install the correct version of ActivitySim with `pip install activitysim==0.9.9.1`
 
 Create a data subfolder and copy the input data to it
 
