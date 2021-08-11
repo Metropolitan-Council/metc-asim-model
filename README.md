@@ -26,11 +26,17 @@ Anaconda 3 64 bit is required to create the environment and run Activitysim. Thi
 
 ### Settings
 
-The settings.yml should be adjusted based on the size of the model. For a small sample of 500 households, set the following:
+The settings.yml should be adjusted based on the size of the model. 
+
+**Small Sample** 
+
+For a small sample of 500 households, set the following:
 
 multiprocess: False
 num_processes: 1
 chunk_training_mode: disabled
+
+**Large Sample**
 
 For a large sample, such as the entire model region, set the following:
 
