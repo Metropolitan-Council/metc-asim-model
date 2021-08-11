@@ -1,1 +1,1 @@
-python simulation.py -c configs_mp -c configs -d data -o output
+python simulation.py -c configs_mp -c configs -d data -o output_1003

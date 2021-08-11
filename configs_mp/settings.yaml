@@ -9,7 +9,8 @@ mem_tick: 30
 use_shadow_pricing: False
 ## - example sample
 households_sample_size: 0
-chunk_size: 500_000_000
+chunk_training_mode: training
+chunk_size: 50_000_000_000
 num_processes: 22 
 # - tracing
 #trace_hh_id: 67537
