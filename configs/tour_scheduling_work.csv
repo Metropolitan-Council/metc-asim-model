@@ -11,16 +11,16 @@ util_Low_income_lt_25000_Arrival_after_6_pm,Low income (<25000) - Arrival after 
 util_Med_income_25k_to_60k_Departure_before_7_am,Med income (25k to 60k) - Departure before 7:00 am  - Linear,@((df.is_income_25K_to_60K) & (df.start<14)) * df.departureLinearShift1,coef_Med_income_25k_to_60k_Departure_before_7_am
 util_Med_income_25k_to_60k_Arrival_after_6_pm,Med income (25k to 60k) - Arrival after 6:00 pm - Linear,@((df.is_income_25K_to_60K) & (df.end>36)) * df.arrivalLinearShift1,coef_Med_income_25k_to_60k_Arrival_after_6_pm
 util_Medhigh_income_60k_to_120k_Departure_before_7_am,Med-high income (60k to 120k) - Departure before 7:00 am  - Linear,@((df.is_income_60K_to_120K) & (df.start<14)) * df.departureLinearShift1,coef_Medhigh_income_60k_to_120k_Departure_before_7_am
-util_Age_16_to_18_yrs_Departure_Before_7_am,Age 16 to 18 yrs - Departure Before 7:00 am,@((df.age==4) & (df.start<14)) * df.departureLinearShift1,coef_Age_16_to_18_yrs_Departure_Before_7_am
-util_Age_16_to_18_yrs_Departure_After_7_am,Age 16 to 18 yrs - Departure After 7:30 am,@((df.age==4) & (df.start>15)) * df.departureLinearShift1,coef_Age_16_to_18_yrs_Departure_After_7_am
-util_Age_19_to_24_yrs_Departure_After_7_am,Age 19 to 24 yrs - Departure After 7:30 am,@((df.age==5) &  (df.start>15)) * df.departureLinearShift1,coef_Age_19_to_24_yrs_Departure_After_7_am
-util_Age_25_to_40_yrs_Departure_Before_7_am,Age 25 to 40 yrs - Departure Before 7:00 am,@(((df.age>=6) & (df.age<=7)) & (df.start<14)) * df.departureLinearShift1,coef_Age_25_to_40_yrs_Departure_Before_7_am
-util_Age_65_plus_yrs_Departure_After_7_am,Age 65+ yrs - Departure After 7:30 am,@((df.age>=10) & (df.start>15)) * df.departureLinearShift1,coef_Age_65_plus_yrs_Departure_After_7_am
-util_Age_19_to_24_yrs_Arrival_after_6_pm,Age 19 to 24 yrs - Arrival after 6:00 pm ,@((df.age==5) & (df.end>36)) * df.arrivalLinearShift1,coef_Age_19_to_24_yrs_Arrival_after_6_pm
-util_Age_25_to_40_yrs_Arrival_before_5_pm,Age 25 to 40 yrs - Arrival before 5:30 pm ,@(((df.age>=6) & (df.age<=7)) & (df.end<35)) * df.arrivalLinearShift1,coef_Age_25_to_40_yrs_Arrival_before_5_pm
-util_Age_56_to_64_yrs_Arrival_after_6_pm,Age 56 to 64 yrs - Arrival after 6:00 pm ,@((df.age==9) & (df.end>36)) * df.arrivalLinearShift1,coef_Age_56_to_64_yrs_Arrival_after_6_pm
-util_Age_65_plus_yrs_Arrival_before_5_pm,Age 65+ yrs - Arrival before 5:30 pm ,@((df.age>=10) & (df.end<35)) * df.arrivalLinearShift1,coef_Age_65_plus_yrs_Arrival_before_5_pm
-util_Age_65_plus_yrs_Arrival_after_6_pm,Age 65+ yrs - Arrival after 6:00 pm ,@((df.age>=10) & (df.end>36)) * df.arrivalLinearShift1,coef_Age_65_plus_yrs_Arrival_after_6_pm
+util_Age_16_to_18_yrs_Departure_Before_7_am,Age 16 to 18 yrs - Departure Before 7:00 am,@((df.AGE==4) & (df.start<14)) * df.departureLinearShift1,coef_Age_16_to_18_yrs_Departure_Before_7_am
+util_Age_16_to_18_yrs_Departure_After_7_am,Age 16 to 18 yrs - Departure After 7:30 am,@((df.AGE==4) & (df.start>15)) * df.departureLinearShift1,coef_Age_16_to_18_yrs_Departure_After_7_am
+util_Age_19_to_24_yrs_Departure_After_7_am,Age 19 to 24 yrs - Departure After 7:30 am,@((df.AGE==5) &  (df.start>15)) * df.departureLinearShift1,coef_Age_19_to_24_yrs_Departure_After_7_am
+util_Age_25_to_40_yrs_Departure_Before_7_am,Age 25 to 40 yrs - Departure Before 7:00 am,@(((df.AGE>=6) & (df.AGE<=7)) & (df.start<14)) * df.departureLinearShift1,coef_Age_25_to_40_yrs_Departure_Before_7_am
+util_Age_65_plus_yrs_Departure_After_7_am,Age 65+ yrs - Departure After 7:30 am,@((df.AGE>=10) & (df.start>15)) * df.departureLinearShift1,coef_Age_65_plus_yrs_Departure_After_7_am
+util_Age_19_to_24_yrs_Arrival_after_6_pm,Age 19 to 24 yrs - Arrival after 6:00 pm ,@((df.AGE==5) & (df.end>36)) * df.arrivalLinearShift1,coef_Age_19_to_24_yrs_Arrival_after_6_pm
+util_Age_25_to_40_yrs_Arrival_before_5_pm,Age 25 to 40 yrs - Arrival before 5:30 pm ,@(((df.age>=6) & (df.AGE<=7)) & (df.end<35)) * df.arrivalLinearShift1,coef_Age_25_to_40_yrs_Arrival_before_5_pm
+util_Age_56_to_64_yrs_Arrival_after_6_pm,Age 56 to 64 yrs - Arrival after 6:00 pm ,@((df.AGE==9) & (df.end>36)) * df.arrivalLinearShift1,coef_Age_56_to_64_yrs_Arrival_after_6_pm
+util_Age_65_plus_yrs_Arrival_before_5_pm,Age 65+ yrs - Arrival before 5:30 pm ,@((df.AGE>=10) & (df.end<35)) * df.arrivalLinearShift1,coef_Age_65_plus_yrs_Arrival_before_5_pm
+util_Age_65_plus_yrs_Arrival_after_6_pm,Age 65+ yrs - Arrival after 6:00 pm ,@((df.AGE>=10) & (df.end>36)) * df.arrivalLinearShift1,coef_Age_65_plus_yrs_Arrival_after_6_pm
 util_Zero_auto_HH_Departure_before_7_am,Zero auto HH - Departure before 7:00 am  - Linear,@((df.auto_ownership == 0) & (df.start<14)) * df.departureLinearShift1,coef_Zero_auto_HH_Departure_before_7_am
 util_Zero_auto_HH_Arrival_after_6_pm,Zero auto HH - Arrival after 6:00 pm - Linear,@((df.auto_ownership == 0) & (df.end>36)) * df.arrivalLinearShift1,coef_Zero_auto_HH_Arrival_after_6_pm
 util_Parttime_worker_Departure_before_7_am,Part-time worker - Departure before 7:00 am  - Linear,@((df.ptype==6) & (df.start<14)) * df.departureLinearShift1,coef_Parttime_worker_Departure_before_7_am
