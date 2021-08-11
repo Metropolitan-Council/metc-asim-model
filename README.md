@@ -31,21 +31,20 @@ The settings.yml should be adjusted based on the size of the model.
 **Small Sample** 
 
 For a small sample of 500 households, set the following:
-
+```
 multiprocess: False
-
 num_processes: 1
-
 chunk_training_mode: disabled
+```
 
 **Large Sample**
 
 For a large sample, such as the entire model region, set the following:
 
+```
 multiprocess: True
-
 num_processes - set to the number of processes to use, should be less than or equal to the number of physical cores 
-
 chunk_size - set to a decent amount (500_000_000 has been used in development, indicating 500,000,000 / 500 MB RAM; this should probably be considered a minimum)
+```
 
 (note that the above portion related to the entire model may change)
