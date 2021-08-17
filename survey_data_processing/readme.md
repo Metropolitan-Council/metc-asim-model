@@ -23,7 +23,7 @@
   * Data processing scripts read the settings file so that you don't have to change the path references in every script
 	* You DO need to change the settings file path in the scripts that reference it (to reference the correct path on your computer/server), but that is easier than changing many paths.
 
-## To run automatically & skip the steps 1-5 -- 
+## To run automatically & skip the steps 1-5:
 
 * Data prep, SPA, and visualizer summaries:
 	* run_data_prep_scripts.bat
