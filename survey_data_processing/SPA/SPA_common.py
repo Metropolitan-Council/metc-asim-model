@@ -2544,8 +2544,8 @@ class Joint_ultrip:
 
     def print_header_unique(fp):
         _header=["HH_ID", "JTRIP_ID", "NUMBER_HH"]
-        #PERSON_1 to PERSON_9
-        for _i in range(1, 10):
+        #PERSON_1 to PERSON_11
+        for _i in range(1, 12):
             _header.append("PERSON_"+str(_i))
         _header.append("COMPOSITION")
         fp.write(','.join(['%s' %field for field in _header])+'\n')
@@ -2557,8 +2557,8 @@ class Joint_ultrip:
         _party = sorted(self.travel_party)
         for _i in range(0, self.number_hh):
             fp.write(',{}'.format(_party[_i]))
-        #fill nan up to person 9
-        for _i in range(self.number_hh, 9):
+        #fill nan up to person 11
+        for _i in range(self.number_hh, 11):
             fp.write(',nan')
         #write out group composition
         fp.write(',{}\n'.format(self.composition))

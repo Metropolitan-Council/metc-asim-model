@@ -1,4 +1,8 @@
 from collections import defaultdict
+import sys
+import yaml as yaml
+
+
 ################## Constants ##########################################
 COMPUTE_TRIP_DIST = True     #true if trip distance is to be computed from route file
 NEGLIGIBLE_DELTA_TIME = 10   #time stamps within this margin of difference can be considered as identical
@@ -12,11 +16,21 @@ TIME_WINDOW_BIN_MIN = 30    #bin width in minutes
 #   primary trip location
 USE_DISTANCE_IN_PRIMARY_LOCATION_SCORE = True
 
-IN_DIR = 'E:/Projects/Clients/MetCouncilASIM/tasks/survey_data_processing/SPA_Inputs/'
-if USE_DISTANCE_IN_PRIMARY_LOCATION_SCORE:
-    OUT_DIR = 'E:/Projects/Clients/MetCouncilASIM/tasks/survey_data_processing/SPA_processed/'
+if len(sys.argv) > 1:
+    settings_file = sys.argv[1]
 else:
-    OUT_DIR = 'E:/Projects/Clients/SEMCOG/Tasks/Task1_SurveyProcessing/SPA_processed/trip_purp_no_distance/'
+   settings_file = r'E:/Projects/Clients/MetCouncilASIM/tasks/survey_data_processing/metc_inputs.yml'
+
+
+with open(settings_file) as file:
+    settings = yaml.full_load(file)
+
+IN_DIR = settings['SPA_input_dir'] + '/'
+if USE_DISTANCE_IN_PRIMARY_LOCATION_SCORE:
+    OUT_DIR = settings['SPA_output_dir']  + '/'
+else:
+    OUT_DIR = path.join(settings['SPA_output_dir'], 'trip_purp_no_distance')
+
 
 
 SurveyChangeModeCode = 12
