@@ -9,3 +9,8 @@
 
 ## Outputs
 output
+
+!trip_weights.rds
+!hh_weights.rds
+!person_weights.rds
+!day_weights.rds
