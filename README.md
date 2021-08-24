@@ -16,7 +16,7 @@ Anaconda 3 64 bit is required to create the environment and run Activitysim. Thi
 
 1. Create an Anaconda environment: `conda env create -f environment.yml`
 
-2. Install the correct version of ActivitySim with `pip install activitysim==0.9.9.1`
+2. Install the correct version of ActivitySim with `pip install activitysim==1.0.2`
 
 3. Create a data subfolder and copy the input data to it
 
