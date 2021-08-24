@@ -3,11 +3,10 @@
 proj_dir: 'E:/Projects/Clients/MetCouncilASIM/tasks/survey_data_processing'
 data_dir: 'E:/Projects/Clients/MetCouncilASIM/data/survey_data/tbi_survey_unlabeled_raw'
 labeled_data_dir: 'E:/Projects/Clients/MetCouncilASIM/data/survey_data/tbi_survey_labeled'
+obs_dir: 'E:/Projects/Clients/MetCouncilASIM/data/survey_data/obs'
 
 updated_weights_dir: 'E:/Projects/Clients/MetCouncilASIM/data/updated_weights'
 
-SPA_input_dir: 'E:/Projects/Clients/MetCouncilASIM/tasks/survey_data_processing/SPA_Inputs'
-SPA_output_dir: 'E:/Projects/Clients/MetCouncilASIM/tasks/survey_data_processing/SPA_Processed'
 SPA_code_dir: "E:/Projects/Clients/MetCouncilASIM/tasks/survey_data_processing/SPA"
 
 
@@ -25,4 +24,4 @@ skims_filename: 'allskims.omx'
 
 
 abm_dir: 'E:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/output'
-abm_summaries_dir: 'E:/Projects/Clients/MetCouncilASIM/tasks/survey_data_processing/Visualizer//data/calibration_runs/summarized'
+abm_summaries_dir: 'E:/Projects/Clients/MetCouncilASIM/tasks/survey_data_processing/Visualizer/data/calibration_runs/summarized'
