@@ -559,7 +559,7 @@ write.csv(HH_TEST, file.path(output_dir, "HH_SPA_INPUT.csv"), row.names = F)
 write.csv(PER_TEST, file.path(output_dir, "PER_SPA_INPUT.csv"), row.names = F)
 
 for (i in 1:4) {
-  write.csv(PLACE[DOW==i & SAMPN %in% HH_TEST[, SAMPN],], file.path(settings$SPA_input_dir, paste0('place_', as.character(i), ".csv")), row.names = F)
+  write.csv(PLACE[DOW==i & SAMPN %in% HH_TEST[, SAMPN],], file.path(output_dir, paste0('place_', as.character(i), ".csv")), row.names = F)
 }
 
 # # #
