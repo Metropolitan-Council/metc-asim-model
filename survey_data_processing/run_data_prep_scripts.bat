@@ -3,7 +3,7 @@
 SET SETTINGS_FILE= "E:\Projects\Clients\MetCouncilASIM\tasks\survey_data_processing\metc_inputs.yml"
 
 @echo off
-::Rscript pre_spa_processing.R %SETTINGS_FILE%
+Rscript pre_spa_processing.R %SETTINGS_FILE%
 python SPA\__init__.py %SETTINGS_FILE%
 
 Rscript Visualizer\scripts\install_packages.R

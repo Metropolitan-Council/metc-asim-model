@@ -53,8 +53,10 @@ settings = yaml.load_file(settings_file)
 
 
 data_dir = settings$data_dir
-output_dir = settings$SPA_input_dir
+output_dir = file.path(settings$proj_dir, 'SPA_Inputs')
 
+dir.create(output_dir, showWarnings = FALSE)
+dir.create( file.path(settings$proj_dir, 'SPA_Processed'), showWarnings = FALSE) # also create processed folder if doesn't exist
 
 hh_raw = fread(file.path(data_dir, 'household.csv'))
 per_raw = fread(file.path(data_dir,'person.csv'))
