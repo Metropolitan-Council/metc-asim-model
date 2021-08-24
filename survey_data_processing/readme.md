@@ -19,9 +19,11 @@
 
 * Create/edit settings file with filepaths
   * Example: survey_data_processing/metc_settings.yaml (edit or replace this)
-  * Replace file paths with file/folder paths you'll use (it's OK to add these as they come up, rather than all at once)
+  * Replace file paths with file/folder paths you'll use 
+  * For visualizer sub-folders; you can re-create the same folder structure expressed in the existing settings
+    * Mostly applies to the Visualizer/data/calibration_runs/summarized subfolder
   * Data processing scripts read the settings file so that you don't have to change the path references in every script
-	* You DO need to change the settings file path in the scripts that reference it (to reference the correct path on your computer/server), but that is easier than changing many paths.
+	* You DO need to change the settings file path in the scripts that reference it if you're not running from the .bat file (to reference the correct path on your computer/server)
 
 ## To run automatically & skip the steps 1-5:
 
