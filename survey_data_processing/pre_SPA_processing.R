@@ -161,7 +161,7 @@ per_raw[, SCHOL := fcase(school_type %in% c(1, 2), 1, # nanny/babysitter,
                          school_type == 3, 3, # k-8
                          school_type %in% c(5, 6), 3, # k-8 if missing schol but age 6-12
                          school_type == 4 & age < 3, 3, # k-8 if homeschool < 15 (approximation)
-                         school_type == 4 & age %in% c(4, 5), 4, # 9-12 homeschool < 15 (approximation)
+                         school_type == 4 & age %in% c(3, 4), 4, # 9-12 homeschool < 15 (approximation)
                          school_type == 7, 4, # 9-12
                          school_type == 8, 5, #vocational/technical
                          school_type == 9, 6, #  2 yr
