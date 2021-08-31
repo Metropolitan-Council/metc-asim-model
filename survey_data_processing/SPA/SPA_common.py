@@ -3044,7 +3044,6 @@ class Trip:
         _is_taxi       = np.any(df['MODE'].iloc[1:]==SurveyMode['TAXI'])          #if any segment of the trip used txi
         _is_tnc_reg    = np.any(df['MODE'].iloc[1:]==SurveyMode['TNC-SINGLE']) # if any segment of the trip used tnc
         _is_tnc_pool   = np.any(df['MODE'].iloc[1:]==SurveyMode['TNC-SHARED']) # if any segment of the trip used tnc
-        _is_auto       = 1 if _is_taxi else _is_auto
         _auto_occ      = 0  # initialize to 0
         _output_mode   = 0
 
