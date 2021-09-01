@@ -1476,7 +1476,6 @@ if(IS_BASE_SURVEY=="Yes"){
 }else{
   base_df <- base_data[[which(base_csv_names=="tmodeProfile_vis")]]
 }
-# base_df <- base_data[[which(base_csv_names=="tmodeProfile_vis_calib")]]
 base_df$purpose <- as.character(base_df$purpose)
 base_df$purpose <- purpose_type_df$name[match(base_df$purpose, purpose_type_df$code)]
 if(BASE_SCENARIO_NAME == "SEMCOG_HTS") {
@@ -1814,14 +1813,9 @@ Distribution of trips by trip mode and tour mode, which constrains the availabil
 ```{r tripMode}
 if(IS_BASE_SURVEY=="Yes"){
   base_df <- base_data[[which(base_csv_names=="tripModeProfile_vis_HTS")]]
-  # base_df <- base_data[[which(base_csv_names=="tripModeProfile_vis_calib")]]
 }else{
   base_df <- base_data[[which(base_csv_names=="tripModeProfile_vis_HTS")]]
 }
-# base_df <- base_data[[which(base_csv_names=="tripModeProfile_vis_calib")]]
-# base_df <- base_data[[which(base_csv_names=="tripModeProfile_vis_HTS")]]
-# base_df <- base_data[[which(base_csv_names=="tripModeProfile_vis_CHTS_OBS")]]
-# build_df <- build_data[[which(build_csv_names=="tripModeProfile_vis_CHTS")]]
 if(BUILD_SCENARIO_NAME == 'SEMCOG_HTS') {
   build_df <- build_data[[which(build_csv_names=="tripModeProfile_vis")]]
 } else {
