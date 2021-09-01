@@ -1,6 +1,6 @@
 install_if_missing = function(library) {
   if (!library %in% installed.packages()) {
-    install.packages(library)
+    install.packages(library, repos='http://cran.us.r-project.org')   
   }
 }
 
