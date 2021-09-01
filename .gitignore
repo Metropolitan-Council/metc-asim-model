@@ -24,3 +24,9 @@ output
 !survey_data_processing/Visualizer/summaries/ACS_2018_5yr_AutoOwn.csv
 !survey_data_processing/Visualizer/summaries/countyFlowsCensus.csv
 !survey_data_processing/Visualizer/summaries/hhSizeCensus.csv
+
+
+!survey_data_processing/Visualizer/templates/summaryFilesNames_ActivitySim_MetC.csv
+!survey_data_processing/Visualizer/templates/summaryFilesNames_census_MetC.csv
+!survey_data_processing/Visualizer/templates/summaryFilesNames_survey_MetC.csv
+
