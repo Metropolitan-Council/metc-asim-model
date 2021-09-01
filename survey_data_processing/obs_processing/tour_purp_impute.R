@@ -14,22 +14,46 @@ settings = yaml.load_file('E:/Projects/Clients/MetCouncilASIM/tasks/survey_data_
 project_dir = settings$proj_dir
 data_dir = file.path(project_dir, 'SPA_Processed')
 
+trips = data.table()
+tours = data.table()
 
-tours = fread(file.path(data_dir, 'tours.csv'))
-trips = fread(file.path(data_dir, 'trips.csv'))
+for(dow in c(1:4)){
+  cat(dow)
+  
+  trip_data = fread(file.path(data_dir,  paste0('day', as.character(dow)), "trips.csv"))
+  trip_data[, dow_num := dow]
+  
+  trips = rbindlist(list(trips, trip_data), use.names = TRUE, fill = TRUE)
+  
+  tour_data = fread(file.path(data_dir,  paste0('day', as.character(dow)), "tours.csv"))
+  tour_data[, dow_num := dow]
+  
+  tours = rbindlist(list(tours, tour_data), use.names = TRUE, fill = TRUE)
+  
+  
+}
 
-trips[, origDepHr9AMTo3PM  := ifelse(ORIG_DEP_HR %in% c(9:14), 1, 0)]
-trips[, origDepHr3PMTo7PM   := ifelse(ORIG_DEP_HR %in% c(15:18), 1, 0)]
-trips[, origDepHr7PMTo10PM   := ifelse(ORIG_DEP_HR %in% c(19:21), 1, 0)]
+
+trips[, origDepHr9AMTo3PM  := ifelse(ORIG_DEP_HR %in% c(9:15), 1, 0)]
+trips[, origDepHr4PM   := ifelse(ORIG_DEP_HR == 16, 1, 0)]
+trips[, origDepHr5PM   := ifelse(ORIG_DEP_HR == 17, 1, 0)]
+trips[, origDepHr6PM   := ifelse(ORIG_DEP_HR == 18, 1, 0)]
+trips[, origDepHr7PM   := ifelse(ORIG_DEP_HR == 19, 1, 0)]
+trips[, origDepHr8PM   := ifelse(ORIG_DEP_HR == 20, 1, 0)]
+trips[, origDepHr9PM   := ifelse(ORIG_DEP_HR >= 21, 1, 0)]
 trips[, Disc := ifelse(DEST_PURP %in% c(7:9), 1, 0)]
 trips[, Maint := ifelse(DEST_PURP %in% c(5:6), 1, 0)]
-trips[, KNR := ifelse(TRIPMODE %in% c(7, 9), 1, 0)]
-trips[, PNR := ifelse(TRIPMODE == 8, 1, 0)]
+trips[, KNR := ifelse(TRIPMODE %in% c(12, 14), 1, 0)]
+trips[, PNR := ifelse(TRIPMODE %in% c(9:11), 1, 0)]
 trips[, tour_purp_work := ifelse(TOURPURP == 1, 1, 0)]
 
 model_rhs = ~ origDepHr9AMTo3PM +
-  origDepHr3PMTo7PM +
-  origDepHr7PMTo10PM +
+  origDepHr4PM +
+  origDepHr5PM +
+  origDepHr6PM +
+  origDepHr7PM + 
+  origDepHr8PM +
+  origDepHr9PM +
   Disc +
   KNR +
   PNR
@@ -75,8 +99,11 @@ DescTools::PseudoR2(model_worksub)
 trips[tours, is_fully_joint := ifelse(FULLY_JOINT == 1, 1, 0), on = .(PER_ID, HH_ID, TOUR_ID)]
 
 model_rhs = ~origDepHr9AMTo3PM +
-  origDepHr3PMTo7PM +
-  origDepHr7PMTo10PM +
+  origDepHr4PM +
+  origDepHr5PM +
+  origDepHr6PM +
+  origDepHr7PM + 
+  origDepHr8PM +
   Disc + 
   Maint
 
