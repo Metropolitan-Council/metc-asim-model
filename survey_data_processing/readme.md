@@ -28,7 +28,8 @@
 ## To run automatically & skip the steps 1-5:
 
 * Data prep, SPA, and visualizer summaries:
-	* run_data_prep_scripts.bat
+	* run_data_prep_scripts.bat 
+	  * Make sure you are in the python environment you want to be in -- either activate before running the .bat, or add a line to the .bat file
 	* Edit the settings file path
 	* Run via command line
 * Run the visualizer (see step 6)
