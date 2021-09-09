@@ -1,7 +1,7 @@
 
 SAMPLE_SPEC: joint_tour_destination_sample.csv
 SPEC: joint_tour_destination.csv
-COEFFICIENTS: joint_tour_destination_coeffs.csv
+COEFFICIENTS: joint_tour_destination_coefficients.csv
 
 SEGMENTS:
   - shopping
