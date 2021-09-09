@@ -2,7 +2,7 @@
 # borrowed from free parking model
 
 SPEC: telecommute_frequency.csv
-COEFFICIENTS: telecommute_frequency_coeffs.csv
+COEFFICIENTS: telecommute_frequency_coefficients.csv
 
 #LOGIT_TYPE: NL
 LOGIT_TYPE: MNL

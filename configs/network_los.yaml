@@ -13,5 +13,5 @@ taz_skims: allskims.omx
 skim_time_periods:
     time_window: 1440
     period_minutes: 30
-    periods: [0, 12, 20, 30, 38, 48]
-    labels: ['NT', 'AM', 'MD', 'PM', 'NT']
+    periods: [0, 8, 18, 26, 48]
+    labels: ['AM', 'MD', 'PM', 'NT']
