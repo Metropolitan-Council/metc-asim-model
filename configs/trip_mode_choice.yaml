@@ -1,57 +1,39 @@
-# trip_mode_choice.yaml
-
-SPEC: trip_mode_choice.csv
-COEFFICIENTS: trip_mode_choice_coefficients.csv
-COEFFICIENT_TEMPLATE: trip_mode_choice_coefficients_template.csv
-
 LOGIT_TYPE: NL
 
 NESTS:
   name: root
-  coefficient: 1.00
+  coefficient: coef_nest_root
   alternatives:
       - name: AUTO
-        coefficient: 0.72
+        coefficient: coef_nest_AUTO
         alternatives:
             - DRIVEALONE
             - SHARED2
             - SHARED3
       - name: NONMOTORIZED
-        coefficient: 0.72
+        coefficient: coef_nest_NONMOTORIZED
         alternatives:
           - WALK
           - BIKE
       - name: TRANSIT
-        coefficient:  0.72
+        coefficient:  coef_nest_TRANSIT
         alternatives:
-            - name: WALKACCESS
-              coefficient: 0.5
-              alternatives:
-              - WALK_LOC
-              - WALK_PRM
-              - WALK_MIX
-            - name: PNRACCESS
-              coefficient: 0.5
-              alternatives:
-              - PNR_LOC
-              - PNR_PRM
-              - PNR_MIX
-            - name: KNRACCESS
-              coefficient: 0.5
-              alternatives:
-              - KNR_LOC
-              - KNR_PRM
-              - KNR_MIX
+            - TRNWALKACCESS
+            - TRNDRIVEACCESS
       - name: SCHOOL_BUS
-        coefficient: 0.72
+        coefficient: coef_nest_SCHOOL_BUS
         alternatives:
           - SCHOOLBUS
       - name: RIDEHAIL
-        coefficient: 0.36
+        coefficient: coef_nest_RIDEHAIL
         alternatives:
           - TAXI
           - TNC_SINGLE
           - TNC_SHARED
+
+SPEC: trip_mode_choice.csv
+COEFFICIENTS: trip_mode_choice_coefficients.csv
+COEFFICIENT_TEMPLATE: trip_mode_choice_coefficients_template.csv
 
 CONSTANTS:
   orig_col_name: origin
@@ -66,12 +48,6 @@ CONSTANTS:
   walkSpeed: 3.00
   bikeThresh: 6.00
   bikeSpeed: 12.00
-#    maxCbdAreaTypeThresh: 2
-#    indivTour: 1.00000
-#    upperEA: 5
-#    upperAM: 10
-#    upperMD: 15
-#    upperPM: 19
   I_MODE_MAP:
     DRIVEALONE: 1
     SHARED2: 2

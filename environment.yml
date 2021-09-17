@@ -191,3 +191,4 @@ dependencies:
     - tables==3.5.1
     - xlrd==1.2.0
     - zbox==1.2.0
+    - activitysim==1.0.3
