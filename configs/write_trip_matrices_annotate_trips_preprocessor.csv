@@ -14,28 +14,8 @@ Description,Target,Expression
 ,SHARED3_NT,"((trips.trip_mode.isin(['SHARED3', 'TNC_SHARED'])) & is_nt) * tour_participants / OCC_SHARED3"
 ,WALK_NT,((trips.trip_mode == 'WALK') & is_nt) * tour_participants
 ,BIKE_NT,((trips.trip_mode == 'BIKE') & is_nt) * tour_participants
-,WALK_LOC_NT,((trips.trip_mode == 'WALK_LOC') & is_nt) * tour_participants
-,WALK_PRM_NT,((trips.trip_mode == 'WALK_PRM') & is_nt) * tour_participants
-,WALK_MIX_NT,((trips.trip_mode == 'WALK_MIX') & is_nt) * tour_participants
-#FIXME: The below are for Andrew to compare with R, can be adjusted to the commented items for access/egress
-,PNR_LOC_NT,((trips.trip_mode == 'PNR_LOC') & is_nt) * tour_participants
-,PNR_PRM_NT,((trips.trip_mode == 'PNR_PRM') & is_nt) * tour_participants
-,PNR_MIX_NT,((trips.trip_mode == 'PNR_MIX') & is_nt) * tour_participants
-,KNR_LOC_NT,((trips.trip_mode == 'KNR_LOC') & is_nt) * tour_participants
-,KNR_PRM_NT,((trips.trip_mode == 'KNR_PRM') & is_nt) * tour_participants
-,KNR_MIX_NT,((trips.trip_mode == 'KNR_MIX') & is_nt) * tour_participants
-#,PNR_LOC_NT,((trips.trip_mode == 'PNR_LOC') & is_nt & trips.outbound) * tour_participants
-#,PNR_PRM_NT,((trips.trip_mode == 'PNR_PRM') & is_nt & trips.outbound) * tour_participants
-#,PNR_MIX_NT,((trips.trip_mode == 'PNR_MIX') & is_nt & trips.outbound) * tour_participants
-#,KNR_LOC_NT,((trips.trip_mode == 'KNR_LOC') & is_nt & trips.outbound) * tour_participants
-#,KNR_PRM_NT,((trips.trip_mode == 'KNR_PRM') & is_nt & trips.outbound) * tour_participants
-#,KNR_MIX_NT,((trips.trip_mode == 'KNR_MIX') & is_nt & trips.outbound) * tour_participants
-#,PNRE_LOC_NT,((trips.trip_mode == 'PNR_LOC') & is_nt & ~trips.outbound) * tour_participants
-#,PNRE_PRM_NT,((trips.trip_mode == 'PNR_PRM') & is_nt & ~trips.outbound) * tour_participants
-#,PNRE_MIX_NT,((trips.trip_mode == 'PNR_MIX') & is_nt & ~trips.outbound) * tour_participants
-#,KNRE_LOC_NT,((trips.trip_mode == 'KNR_LOC') & is_nt & ~trips.outbound) * tour_participants
-#,KNRE_PRM_NT,((trips.trip_mode == 'KNR_PRM') & is_nt & ~trips.outbound) * tour_participants
-#,KNRE_MIX_NT,((trips.trip_mode == 'KNR_MIX') & is_nt & ~trips.outbound) * tour_participants
+,TRNWALKACCESS_NT,((trips.trip_mode == 'TRNWALKACCESS') & is_nt) * tour_participants
+,TRNDRIVEACCESS_NT,((trips.trip_mode == 'TRNDRIVEACCESS') & is_nt) * tour_participants
 ,SCHOOLBUS_NT,((trips.trip_mode == 'SCHOOLBUS') & is_nt) * tour_participants
 ,TAXI_NT,((trips.trip_mode == 'TAXI') & is_nt) * tour_participants
 ,TNC_SINGLE_NT,((trips.trip_mode == 'TNC_SINGLE') & is_nt) * tour_participants
@@ -46,28 +26,8 @@ Description,Target,Expression
 ,SHARED3_AM,"((trips.trip_mode.isin(['SHARED3', 'TNC_SHARED'])) & is_am) * tour_participants / OCC_SHARED3"
 ,WALK_AM,((trips.trip_mode == 'WALK') & is_am) * tour_participants
 ,BIKE_AM,((trips.trip_mode == 'BIKE') & is_am) * tour_participants
-,WALK_LOC_AM,((trips.trip_mode == 'WALK_LOC') & is_am) * tour_participants
-,WALK_PRM_AM,((trips.trip_mode == 'WALK_PRM') & is_am) * tour_participants
-,WALK_MIX_AM,((trips.trip_mode == 'WALK_MIX') & is_am) * tour_participants
-#FIXME: The below are for Andrew to compare with R, can be adjusted to the commented items for access/egress
-,PNR_LOC_AM,((trips.trip_mode == 'PNR_LOC') & is_am) * tour_participants
-,PNR_PRM_AM,((trips.trip_mode == 'PNR_PRM') & is_am) * tour_participants
-,PNR_MIX_AM,((trips.trip_mode == 'PNR_MIX') & is_am) * tour_participants
-,KNR_LOC_AM,((trips.trip_mode == 'KNR_LOC') & is_am) * tour_participants
-,KNR_PRM_AM,((trips.trip_mode == 'KNR_PRM') & is_am) * tour_participants
-,KNR_MIX_AM,((trips.trip_mode == 'KNR_MIX') & is_am) * tour_participants
-#,PNR_LOC_AM,((trips.trip_mode == 'PNR_LOC') & is_am & trips.outbound) * tour_participants
-#,PNR_PRM_AM,((trips.trip_mode == 'PNR_PRM') & is_am & trips.outbound) * tour_participants
-#,PNR_MIX_AM,((trips.trip_mode == 'PNR_MIX') & is_am & trips.outbound) * tour_participants
-#,KNR_LOC_AM,((trips.trip_mode == 'KNR_LOC') & is_am & trips.outbound) * tour_participants
-#,KNR_PRM_AM,((trips.trip_mode == 'KNR_PRM') & is_am & trips.outbound) * tour_participants
-#,KNR_MIX_AM,((trips.trip_mode == 'KNR_MIX') & is_am & trips.outbound) * tour_participants
-#,PNRE_LOC_AM,((trips.trip_mode == 'PNR_LOC') & is_am & ~trips.outbound) * tour_participants
-#,PNRE_PRM_AM,((trips.trip_mode == 'PNR_PRM') & is_am & ~trips.outbound) * tour_participants
-#,PNRE_MIX_AM,((trips.trip_mode == 'PNR_MIX') & is_am & ~trips.outbound) * tour_participants
-#,KNRE_LOC_AM,((trips.trip_mode == 'KNR_LOC') & is_am & ~trips.outbound) * tour_participants
-#,KNRE_PRM_AM,((trips.trip_mode == 'KNR_PRM') & is_am & ~trips.outbound) * tour_participants
-#,KNRE_MIX_AM,((trips.trip_mode == 'KNR_MIX') & is_am & ~trips.outbound) * tour_participants
+,TRNWALKACCESS_AM,((trips.trip_mode == 'TRNWALKACCESS') & is_am) * tour_participants
+,TRNDRIVEACCESS_AM,((trips.trip_mode == 'TRNDRIVEACCESS') & is_am) * tour_participants
 ,SCHOOLBUS_AM,((trips.trip_mode == 'SCHOOLBUS') & is_am) * tour_participants
 ,TAXI_AM,((trips.trip_mode == 'TAXI') & is_am) * tour_participants
 ,TNC_SINGLE_AM,((trips.trip_mode == 'TNC_SINGLE') & is_am) * tour_participants
@@ -78,28 +38,8 @@ Description,Target,Expression
 ,SHARED3_MD,"((trips.trip_mode.isin(['SHARED3', 'TNC_SHARED'])) & is_md) * tour_participants / OCC_SHARED3"
 ,WALK_MD,((trips.trip_mode == 'WALK') & is_md) * tour_participants
 ,BIKE_MD,((trips.trip_mode == 'BIKE') & is_md) * tour_participants
-,WALK_LOC_MD,((trips.trip_mode == 'WALK_LOC') & is_md) * tour_participants
-,WALK_PRM_MD,((trips.trip_mode == 'WALK_PRM') & is_md) * tour_participants
-,WALK_MIX_MD,((trips.trip_mode == 'WALK_MIX') & is_md) * tour_participants
-#FIXME: The below are for Andrew to compare with R, can be adjusted to the commented items for access/egress
-,PNR_LOC_MD,((trips.trip_mode == 'PNR_LOC') & is_md) * tour_participants
-,PNR_PRM_MD,((trips.trip_mode == 'PNR_PRM') & is_md) * tour_participants
-,PNR_MIX_MD,((trips.trip_mode == 'PNR_MIX') & is_md) * tour_participants
-,KNR_LOC_MD,((trips.trip_mode == 'KNR_LOC') & is_md) * tour_participants
-,KNR_PRM_MD,((trips.trip_mode == 'KNR_PRM') & is_md) * tour_participants
-,KNR_MIX_MD,((trips.trip_mode == 'KNR_MIX') & is_md) * tour_participants
-#,PNR_LOC_MD,((trips.trip_mode == 'PNR_LOC') & is_md & trips.outbound) * tour_participants
-#,PNR_PRM_MD,((trips.trip_mode == 'PNR_PRM') & is_md & trips.outbound) * tour_participants
-#,PNR_MIX_MD,((trips.trip_mode == 'PNR_MIX') & is_md & trips.outbound) * tour_participants
-#,KNR_LOC_MD,((trips.trip_mode == 'KNR_LOC') & is_md & trips.outbound) * tour_participants
-#,KNR_PRM_MD,((trips.trip_mode == 'KNR_PRM') & is_md & trips.outbound) * tour_participants
-#,KNR_MIX_MD,((trips.trip_mode == 'KNR_MIX') & is_md & trips.outbound) * tour_participants
-#,PNRE_LOC_MD,((trips.trip_mode == 'PNR_LOC') & is_md & ~trips.outbound) * tour_participants
-#,PNRE_PRM_MD,((trips.trip_mode == 'PNR_PRM') & is_md & ~trips.outbound) * tour_participants
-#,PNRE_MIX_MD,((trips.trip_mode == 'PNR_MIX') & is_md & ~trips.outbound) * tour_participants
-#,KNRE_LOC_MD,((trips.trip_mode == 'KNR_LOC') & is_md & ~trips.outbound) * tour_participants
-#,KNRE_PRM_MD,((trips.trip_mode == 'KNR_PRM') & is_md & ~trips.outbound) * tour_participants
-#,KNRE_MIX_MD,((trips.trip_mode == 'KNR_MIX') & is_md & ~trips.outbound) * tour_participants
+,TRNWALKACCESS_MD,((trips.trip_mode == 'TRNWALKACCESS') & is_md) * tour_participants
+,TRNDRIVEACCESS_MD,((trips.trip_mode == 'TRNDRIVEACCESS') & is_md) * tour_participants
 ,SCHOOLBUS_MD,((trips.trip_mode == 'SCHOOLBUS') & is_md) * tour_participants
 ,TAXI_MD,((trips.trip_mode == 'TAXI') & is_md) * tour_participants
 ,TNC_SINGLE_MD,((trips.trip_mode == 'TNC_SINGLE') & is_md) * tour_participants
@@ -110,54 +50,9 @@ Description,Target,Expression
 ,SHARED3_PM,"((trips.trip_mode.isin(['SHARED3', 'TNC_SHARED'])) & is_pm) * tour_participants / OCC_SHARED3"
 ,WALK_PM,((trips.trip_mode == 'WALK') & is_pm) * tour_participants
 ,BIKE_PM,((trips.trip_mode == 'BIKE') & is_pm) * tour_participants
-,WALK_LOC_PM,((trips.trip_mode == 'WALK_LOC') & is_pm) * tour_participants
-,WALK_PRM_PM,((trips.trip_mode == 'WALK_PRM') & is_pm) * tour_participants
-,WALK_MIX_PM,((trips.trip_mode == 'WALK_MIX') & is_pm) * tour_participants
-#FIXME: The below are for Andrew to compare with R, can be adjusted to the commented items for access/egress
-,PNR_LOC_PM,((trips.trip_mode == 'PNR_LOC') & is_pm) * tour_participants
-,PNR_PRM_PM,((trips.trip_mode == 'PNR_PRM') & is_pm) * tour_participants
-,PNR_MIX_PM,((trips.trip_mode == 'PNR_MIX') & is_pm) * tour_participants
-,KNR_LOC_PM,((trips.trip_mode == 'KNR_LOC') & is_pm) * tour_participants
-,KNR_PRM_PM,((trips.trip_mode == 'KNR_PRM') & is_pm) * tour_participants
-,KNR_MIX_PM,((trips.trip_mode == 'KNR_MIX') & is_pm) * tour_participants
-#,PNR_LOC_PM,((trips.trip_mode == 'PNR_LOC') & is_pm & trips.outbound) * tour_participants
-#,PNR_PRM_PM,((trips.trip_mode == 'PNR_PRM') & is_pm & trips.outbound) * tour_participants
-#,PNR_MIX_PM,((trips.trip_mode == 'PNR_MIX') & is_pm & trips.outbound) * tour_participants
-#,KNR_LOC_PM,((trips.trip_mode == 'KNR_LOC') & is_pm & trips.outbound) * tour_participants
-#,KNR_PRM_PM,((trips.trip_mode == 'KNR_PRM') & is_pm & trips.outbound) * tour_participants
-#,KNR_MIX_PM,((trips.trip_mode == 'KNR_MIX') & is_pm & trips.outbound) * tour_participants
-#,PNRE_LOC_PM,((trips.trip_mode == 'PNR_LOC') & is_pm & ~trips.outbound) * tour_participants
-#,PNRE_PRM_PM,((trips.trip_mode == 'PNR_PRM') & is_pm & ~trips.outbound) * tour_participants
-#,PNRE_MIX_PM,((trips.trip_mode == 'PNR_MIX') & is_pm & ~trips.outbound) * tour_participants
-#,KNRE_LOC_PM,((trips.trip_mode == 'KNR_LOC') & is_pm & ~trips.outbound) * tour_participants
-#,KNRE_PRM_PM,((trips.trip_mode == 'KNR_PRM') & is_pm & ~trips.outbound) * tour_participants
-#,KNRE_MIX_PM,((trips.trip_mode == 'KNR_MIX') & is_pm & ~trips.outbound) * tour_participants
+,TRNWALKACCESS_PM,((trips.trip_mode == 'TRNWALKACCESS') & is_pm) * tour_participants
+,TRNDRIVEACCESS_PM,((trips.trip_mode == 'TRNDRIVEACCESS') & is_pm) * tour_participants
 ,SCHOOLBUS_PM,((trips.trip_mode == 'SCHOOLBUS') & is_pm) * tour_participants
 ,TAXI_PM,((trips.trip_mode == 'TAXI') & is_pm) * tour_participants
 ,TNC_SINGLE_PM,((trips.trip_mode == 'TNC_SINGLE') & is_pm) * tour_participants
 ,TNC_SHARED_PM,((trips.trip_mode == 'TNC_SHARED') & is_pm) * tour_participants
-# ev trips,,
-#,DRIVEALONE_EV,((trips.trip_mode == 'DRIVEALONE') & is_ev) * tour_participants
-#,SHARED2_EV,"((trips.trip_mode.isin(['SHARED2', 'TAXI', 'TNC_SINGLE'])) & is_ev) * tour_participants / OCC_SHARED2"
-#,SHARED3_EV,"((trips.trip_mode.isin(['SHARED3', 'TNC_SHARED'])) & is_ev) * tour_participants / OCC_SHARED3"
-#,WALK_EV,((trips.trip_mode == 'WALK') & is_ev) * tour_participants
-#,BIKE_EV,((trips.trip_mode == 'BIKE') & is_ev) * tour_participants
-#,WALK_LOC_EV,((trips.trip_mode == 'WALK_LOC') & is_ev) * tour_participants
-#,WALK_PRM_EV,((trips.trip_mode == 'WALK_PRM') & is_ev) * tour_participants
-#,WALK_MIX_EV,((trips.trip_mode == 'WALK_MIX') & is_ev) * tour_participants
-#,PNR_LOC_EV,((trips.trip_mode == 'PNR_LOC') & is_ev & trips.outbound) * tour_participants
-#,PNR_PRM_EV,((trips.trip_mode == 'PNR_PRM') & is_ev & trips.outbound) * tour_participants
-#,PNR_MIX_EV,((trips.trip_mode == 'PNR_MIX') & is_ev & trips.outbound) * tour_participants
-#,KNR_LOC_EV,((trips.trip_mode == 'KNR_LOC') & is_ev & trips.outbound) * tour_participants
-#,KNR_PRM_EV,((trips.trip_mode == 'KNR_PRM') & is_ev & trips.outbound) * tour_participants
-#,KNR_MIX_EV,((trips.trip_mode == 'KNR_MIX') & is_ev & trips.outbound) * tour_participants
-#,PNRE_LOC_EV,((trips.trip_mode == 'PNR_LOC') & is_ev & ~trips.outbound) * tour_participants
-#,PNRE_PRM_EV,((trips.trip_mode == 'PNR_PRM') & is_ev & ~trips.outbound) * tour_participants
-#,PNRE_MIX_EV,((trips.trip_mode == 'PNR_MIX') & is_ev & ~trips.outbound) * tour_participants
-#,KNRE_LOC_EV,((trips.trip_mode == 'KNR_LOC') & is_ev & ~trips.outbound) * tour_participants
-#,KNRE_PRM_EV,((trips.trip_mode == 'KNR_PRM') & is_ev & ~trips.outbound) * tour_participants
-#,KNRE_MIX_EV,((trips.trip_mode == 'KNR_MIX') & is_ev & ~trips.outbound) * tour_participants
-#,SCHOOLBUS_EV,((trips.trip_mode == 'SCHOOLBUS') & is_ev) * tour_participants
-#,TAXI_EV,((trips.trip_mode == 'TAXI') & is_ev) * tour_participants
-#,TNC_SINGLE_EV,((trips.trip_mode == 'TNC_SINGLE') & is_ev) * tour_participants
-#,TNC_SHARED_EV,((trips.trip_mode == 'TNC_SHARED') & is_ev) * tour_participants
