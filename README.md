@@ -16,11 +16,9 @@ Anaconda 3 64 bit is required to create the environment and run Activitysim. Thi
 
 1. Create an Anaconda environment: `conda env create -f environment.yml`
 
-2. Install the correct version of ActivitySim with `pip install activitysim==1.0.2`
+2. Create a data subfolder and copy the input data to it
 
-3. Create a data subfolder and copy the input data to it
-
-4. Run ActivitySim with the batch file `runAsim.bat`
+3. Run ActivitySim with the batch file `runAsim.bat`
 
 (expect this to change as the model is developed)
 
@@ -39,7 +37,7 @@ chunk_training_mode: disabled
 
 **Large Sample**
 
-For a large sample, such as the entire model region, set the following:
+For a large sample (greater than 5,000 households), set the following:
 
 ```
 multiprocess: True

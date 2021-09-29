@@ -8,7 +8,7 @@ SYSTEM_SCRIPTS_PATH   <- file.path(SYSTEM_APP_PATH, "scripts")
 OUTPUT_PATH           <- file.path(SYSTEM_APP_PATH, "outputs")
 RUNTIME_PATH          <- file.path(SYSTEM_APP_PATH, "runtime")
 BASE_DATA_PATH        <- file.path(SYSTEM_DATA_PATH, "base")
-BUILD_DATA_PATH       <- file.path(SYSTEM_DATA_PATH, "build")
+BUILD_DATA_PATH       <- file.path(SYSTEM_DATA_PATH, "calibration_runs\\summarized")
 
 ### Names
 if(IS_BASE_SURVEY=="Yes"){
@@ -125,7 +125,7 @@ occp_type_df          <- data.frame(code = occp_type_codes, name = occp_type_nam
 ### Functions
 copyFile <- function(fileList, sourceDir, targetDir){
   error <- F
-  setwd(sourceDir)
+  #setwd(sourceDir)
   for(file in fileList){
     full_file <- paste(sourceDir, file, sep = "/")
     ## check if file exists - copy if exists else error out

@@ -13,7 +13,8 @@
 ### Read Command Line Arguments
 args                <- commandArgs(trailingOnly = TRUE)
 Parameters_File     <- args[1]
- # Parameters_File <- "E:/Projects/Clients/MetCouncilASIM/tasks/survey_data_processing/Visualizer/runtime/parameters.csv"
+Parameters_File <- "E:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/Visualizer/runtime/parameters.csv"
+                  
 #Run_switch          <- "FULL"
 
 ### Read parameters from Parameters_File
@@ -34,12 +35,11 @@ FULL_HTML_NAME      <- trimws(paste(parameters$Value[parameters$Key=="FULL_HTML_
 SHP_FILE_NAME       <- trimws(paste(parameters$Value[parameters$Key=="SHP_FILE_NAME"]))
 CT_ZERO_AUTO_FILE_NAME       <- trimws(paste(parameters$Value[parameters$Key=="CT_ZERO_AUTO_FILE_NAME"]))
 IS_BASE_SURVEY      <- trimws(paste(parameters$Value[parameters$Key=="IS_BASE_SURVEY"]))
-BUILD_SUMMARY_DIR      <- trimws(paste(parameters$Value[parameters$Key=="BUILD_SUMMARY_DIR"]))
+BUILD_SUMMARY_DIR      <- trimws(paste(parameters$Value[parameters$Key=="ABM_SUMMARY_DIR"])) #FIXME: This should be better - kludged by ASR
 # BUILD_SUMMARY_DIR   <- ifelse(Run_switch=="SN",
 #                               file.path(CALIBRATION_DIR, "ABM_Summaries_subset"),
 #                               file.path(CALIBRATION_DIR, "ABM_Summaries"))
 OUTPUT_HTML_NAME    <- FULL_HTML_NAME
-
 
 ### Initialization
 # Load global variables
@@ -48,21 +48,25 @@ Sys.getenv("RSTUDIO_PANDOC")
 cat("Using the R packages found in ", .libPaths(), "\n")
 # cat("Pandoc version: ", pandoc_available())
 # cat(installed.packages())
-source(paste(WORKING_DIR, "scripts/_SYSTEM_VARIABLES.R", sep = "/"))
+
+source(paste(WORKING_DIR, "/scripts/_SYSTEM_VARIABLES.R", sep = "/"))
 
 ### Copy summary CSVs
-# base_csv_list <- ifelse(IS_BASE_SURVEY=="Yes", "summaryFilesNames_survey_SEMCOG.csv", "summaryFilesNames_survey_SEMCOG.csv")
+
 base_csv_list <- "summaryFilesNames_survey_MetC.csv"
 summaryFileList_base <- read.csv(paste(SYSTEM_TEMPLATES_PATH, base_csv_list, sep = "/"), as.is = T)
-summaryFileList_base <- as.list(summaryFileList_base$summaryFile)
-retVal <- copyFile(summaryFileList_base, sourceDir = BASE_SUMMARY_DIR, targetDir = BASE_DATA_PATH)
-if(retVal) q(save = "no", status = 11)
 
-census_csv_list <- "summaryFilesNames_census_MetC.csv"
-summaryFileList_census <- read.csv(paste(SYSTEM_TEMPLATES_PATH, census_csv_list, sep = '/'), as.is = T)
-summaryFileList_census <- as.list(summaryFileList_census$summaryFile)
-retVal <- copyFile(summaryFileList_census, sourceDir = BASE_SUMMARY_DIR, targetDir = BASE_DATA_PATH)
-if(retVal) q(save = "no", status = 11)
+summaryFileList_base <- as.list(summaryFileList_base$summaryFile)
+
+# ASR Commented because I put the files where they need
+retVal <- copyFile(summaryFileList_base, sourceDir = BASE_SUMMARY_DIR, targetDir = BASE_DATA_PATH)
+#if(retVal) q(save = "no", status = 11)
+
+#census_csv_list <- "summaryFilesNames_census_MetC.csv"
+#summaryFileList_census <- read.csv(paste(SYSTEM_TEMPLATES_PATH, census_csv_list, sep = '/'), as.is = T)
+#summaryFileList_census <- as.list(summaryFileList_census$summaryFile)
+#retVal <- copyFile(summaryFileList_census, sourceDir = BASE_SUMMARY_DIR, targetDir = BASE_DATA_PATH)
+#if(retVal) q(save = "no", status = 11)
 
 # calibration_csv_list <- "summaryFilesNames_calibration_SEMCOG.csv"
 # summaryFileList_calibration <- read.csv(paste(SYSTEM_TEMPLATES_PATH, calibration_csv_list, sep = '/'), as.is = T)
@@ -79,7 +83,7 @@ if(BUILD_SCENARIO_NAME == "SEMCOG_HTS") {
 summaryFileList_build <- read.csv(paste(SYSTEM_TEMPLATES_PATH, build_csv_list, sep = '/'), as.is = T)
 summaryFileList_build <- as.list(summaryFileList_build$summaryFile)
 retVal <- copyFile(summaryFileList_build, sourceDir = BUILD_SUMMARY_DIR, targetDir = BUILD_DATA_PATH)
-if(retVal) q(save = "no", status = 11)
+#if(retVal) q(save = "no", status = 11)
 
 ### Copy jpegs
 jpeg_list <- list.files(BUILD_SUMMARY_DIR, "*.jpeg")
@@ -90,6 +94,12 @@ SYSTEM_REPORT_PKGS <- c("DT", "flexdashboard", "leaflet", "geojsonio", "htmltool
                         "knitr", "mapview", "plotly", "RColorBrewer", "rgdal", "rgeos", "crosstalk","treemap", "htmlTable",
                         "rmarkdown", "scales", "stringr", "jsonlite", "pander", "ggplot2", "reshape", "raster", "dplyr",
                         "chorddiag")
+	
+.libPaths(c(.libPaths(), R_LIBRARY))
+if("devtools" %in% rownames(installed.packages()) == FALSE) install.packages("devtools", lib=R_LIBRARY, repos='http://cran.us.r-project.org')
+if("chorddiag" %in% rownames(installed.packages()) == FALSE) devtools::install_github("mattflor/chorddiag")
+
+lib_inst <- suppressWarnings(suppressMessages(lapply(SYSTEM_REPORT_PKGS, function(x){if (x %in% rownames(installed.packages()) == FALSE) install.packages(x, lib=R_LIBRARY, repos='http://cran.us.r-project.org')})))
 
 lib_sink <- suppressWarnings(suppressMessages(lapply(SYSTEM_REPORT_PKGS, library, character.only = TRUE)))
 
@@ -135,9 +145,5 @@ template.html <- readLines(file.path(RUNTIME_PATH, "template.html"))
 idx <- which(template.html == "window.FlexDashboardComponents = [];")[1]
 template.html <- append(template.html, "L_PREFER_CANVAS = true;", after = idx)
 writeLines(template.html, file.path(OUTPUT_PATH, paste(OUTPUT_HTML_NAME, ".html", sep = "")))
-
-
-
-
 
 # finish

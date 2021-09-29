@@ -3,17 +3,25 @@
 ### Edited: July 2021
 ###################################################################################
 
-start_time <- Sys.time()
-
 ### Read Command Line Arguments
 args = commandArgs(trailingOnly = TRUE)
-
 if(length(args) > 0){
-  settings_file = args[1]
-} else {
-  settings_file = 'E:/Projects/Clients/MetCouncilASIM/tasks/survey_data_processing/metc_inputs.yml'
+  Parameters_File = args[1]
+  settings_file = args[2]
+}else{
+	print("NEED ARGUMENTS")
+	q(save = "no")
 }
 
+parameters          <- read.csv(Parameters_File, header = TRUE)
+R_LIBRARY           <- trimws(paste(parameters$Value[parameters$Key=="R_LIBRARY"]))
+
+.libPaths(c(.libPaths(), R_LIBRARY))
+if("yaml" %in% rownames(installed.packages()) == FALSE) install.packages("yaml", lib=R_LIBRARY, repos='http://cran.us.r-project.org')
+
+library(yaml)
+
+start_time <- Sys.time()
 
 SYSTEM_REPORT_PKGS <- c("data.table", "plyr", "weights", "reshape", "stringr", "foreign")
 lib_sink <- suppressWarnings(suppressMessages(lapply(SYSTEM_REPORT_PKGS, library, character.only = TRUE))) 
@@ -33,6 +41,8 @@ ABM_SUMMARY_DIR     <- settings$abm_summaries_dir
 SKIMS_DIR           <- settings$skims_dir
 ZONES_DIR           <- settings$zone_dir
 
+print(paste("Using ABM Results in", ABM_DIR))
+
 library(omxr)
 WD <- ABM_SUMMARY_DIR
 
@@ -41,18 +51,17 @@ xwalk <- read.dbf(xwalk_file, as.is=FALSE)
 # skim_file = file.path(SKIMS_DIR, "DIST.omx")
 skim_file = file.path(SKIMS_DIR, "allskims.omx")
 
-setwd(ABM_DIR)
-hh                 <- read.csv("final_households.csv", header = TRUE)
-per                <- read.csv("final_persons.csv", header = TRUE)
-all_tours          <- read.csv("final_tours.csv", header = TRUE)
-all_trips          <- read.csv("final_trips.csv", header = TRUE)
-jtour_participants <- read.csv("final_joint_tour_participants.csv", header = TRUE)
+hh                 <- read.csv(file.path(ABM_DIR, "final_households.csv"), header = TRUE)
+per                <- read.csv(file.path(ABM_DIR, "final_persons.csv"), header = TRUE)
+all_tours          <- read.csv(file.path(ABM_DIR, "final_tours.csv"), header = TRUE)
+all_trips          <- read.csv(file.path(ABM_DIR, "final_trips.csv"), header = TRUE)
+jtour_participants <- read.csv(file.path(ABM_DIR, "final_joint_tour_participants.csv"), header = TRUE)
 
 setwd(WD)
 
 #-----------------------------------------------
 # Define other variables
-pertypeCodes <- data.frame(code = c(1,2,3,4,5,6,7,8,"All"), 
+pertypeCodes <- data.frame(code = c(5, 6, 4, 7, 8, 3, 2, 1, "All"),  #code = c(1,2,3,4,5,6,7,8,"All"), 
                            name = c("FT Worker", "PT Worker", "Univ Stud", "Non Worker", "Retiree", "Driv Stud", "NonDriv Stud", "Pre-School", "All"))
 # ensure persontype coding already in per file is consistent with above
 
@@ -61,8 +70,8 @@ purposeCodes <- data.frame(code = c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
 
 modeCodes <- data.frame(code = c(1, 2, 3, 4, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9,9, 9, 10),
                         name = c("DRIVEALONE", "SHARED2", "SHARED3", "WALK", "BIKE",
-                                 "WALK_LOC", "WALK_MIX", "WALK_PRM",  # 6 = WT
-                                 "PNR_LOC", "PNR_MIX", "PNR_PRM", # 7 = PNR
+                                 "TRNWALKACCESS", "WALK_MIX", "WALK_PRM",  # 6 = WT
+                                 "TRNDRIVEACCESS", "PNR_MIX", "PNR_PRM", # 7 = PNR
                                  "KNR_LOC", "KNR_MIX", "KNR_PRM",  # 8 = KNR
                                  "TAXI", "TNC_SINGLE", "TNC_SHARED", #9 = ridehail
                                  "SCHOOLBUS"
@@ -139,7 +148,7 @@ hh$WORKERS <- hh$num_workers
 hh$ADULTS <- hh$num_adults
 
 # HHVEH X Workers CrossTab
-write.csv(xtabs(finalweight~HHVEH+WORKERS, data = hh), "xtab_HHVEH_WORKERS.csv", row.names = T)
+write.csv(xtabs(finalweight~HHVEH+WORKERS, data = hh), file.path(WD, "xtab_HHVEH_WORKERS.csv"), row.names = T)
 
 
 #--------------------------------------------------
@@ -147,16 +156,16 @@ write.csv(xtabs(finalweight~HHVEH+WORKERS, data = hh), "xtab_HHVEH_WORKERS.csv",
 
 # Auto ownership
 autoOwnership <- count(hh, c("HHVEH"), "finalweight")
-write.csv(autoOwnership, "autoOwnership.csv", row.names = TRUE)
+write.csv(autoOwnership, file.path(WD, "autoOwnership.csv"), row.names = TRUE)
 
 hh$COUNTY <- xwalk$COUNTY_NAME[match(hh$home_zone_id, xwalk$TAZ)]
 autoOwnershipCY <- count(hh, c("COUNTY", "HHVEH"), "finalweight")
 autoOwnershipCY <- cast(autoOwnershipCY, COUNTY~HHVEH, value = "freq", sum)
-write.csv(autoOwnershipCY, "autoOwnershipCY.csv", row.names = F)
+write.csv(autoOwnershipCY, file.path(WD, "autoOwnershipCY.csv"), row.names = F)
 
 # Persons by person type
 pertypeDistbn <- count(per, c("PERTYPE"), "finalweight")
-write.csv(pertypeDistbn, "pertypeDistbn.csv", row.names = TRUE)
+write.csv(pertypeDistbn, file.path(WD, "pertypeDistbn.csv"), row.names = TRUE)
 
 
 # Mandatory DC
@@ -205,9 +214,9 @@ tlfd_schl$Total <- rowSums(tlfd_schl[,!colnames(tlfd_schl) %in% c("distbin")])
 tlfd_schl_df <- merge(x = distBinCat, y = tlfd_schl, by = "distbin", all.x = TRUE)
 tlfd_schl_df[is.na(tlfd_schl_df)] <- 0
 
-write.csv(tlfd_work_df, "workTLFD.csv", row.names = F)
-write.csv(tlfd_univ_df, "univTLFD.csv", row.names = F)
-write.csv(tlfd_schl_df, "schlTLFD.csv", row.names = F)
+write.csv(tlfd_work_df, file.path(WD, "workTLFD.csv"), row.names = F)
+write.csv(tlfd_univ_df, file.path(WD, "univTLFD.csv"), row.names = F)
+write.csv(tlfd_schl_df, file.path(WD, "schlTLFD.csv"), row.names = F)
 
 cat("\n Average distance to workplace (Total): ", weighted.mean(workers$distance_to_work, workers$finalweight, na.rm = TRUE))
 cat("\n Average distance to university (Total): ", weighted.mean(students$distance_to_school[students$PERTYPE==3], students$finalweight[students$PERTYPE==3], na.rm = TRUE))
@@ -236,7 +245,7 @@ mandTourLengths <- merge(mandTourLengths, schlTourLengths, by='HDISTRICT', all=T
 colnames(mandTourLengths) <- c("District", "Work", "Univ", "Schl")
 # rearranging such that the "Total" comes at the end
 mandTourLengths <- rbind(mandTourLengths[!(mandTourLengths$District == "Total"),], mandTourLengths[(mandTourLengths$District == "Total"),])
-write.csv(mandTourLengths, "mandTourLengths.csv", row.names = F)
+write.csv(mandTourLengths, file.path(WD, "mandTourLengths.csv"), row.names = F)
 
 # Work from home [for each district and total]
 districtWorkers <- ddply(per[per$is_worker=="True",c("HDISTRICT", "finalweight")], c("HDISTRICT"), summarise, workers = sum(finalweight))
@@ -252,13 +261,13 @@ colnames(wfh_summary) <- c("District", "Workers", "WFH")
 totalwfh        <- data.frame("Total", sum((per$is_worker=="True")*per$finalweight), sum((per$is_worker=="True" & per$work_from_home=="True")*per$finalweight))
 colnames(totalwfh) <- colnames(wfh_summary)
 wfh_summary <- rbind(wfh_summary, totalwfh)
-write.csv(wfh_summary, "wfh_summary.csv", row.names = F)
+write.csv(wfh_summary, file.path(WD, "wfh_summary.csv"), row.names = F)
 
 # Telecommute Frequency
 telecommuteFrequency <- count(per[!is.na(per$telecommute_frequency),], c("telecommute_frequency"), "finalweight")
 #drop the empty rows count
 telecommuteFrequency <- telecommuteFrequency[-c(1), ]
-write.csv(telecommuteFrequency, "telecommuteFrequency.csv", row.names = TRUE)
+write.csv(telecommuteFrequency, file.path(WD, "telecommuteFrequency.csv"), row.names = TRUE)
 
 # County-County Flows
 countyFlows <- xtabs(finalweight~HDISTRICT+WDISTRICT, data = workers)
@@ -267,7 +276,7 @@ countyFlows <- addmargins(as.table(countyFlows))
 countyFlows <- as.data.frame.matrix(countyFlows)
 colnames(countyFlows)[colnames(countyFlows)=="Sum"] <- "Total"
 rownames(countyFlows)[rownames(countyFlows)=="Sum"] <- "Total"
-write.csv(countyFlows, "countyFlows.csv", row.names = T)
+write.csv(countyFlows, file.path(WD, "countyFlows.csv"), row.names = T)
 
 
 
@@ -492,7 +501,7 @@ temp_tour$STOP_FREQ_ALT[temp_tour$num_ob_stops>=3 & temp_tour$num_ib_stops>=3] <
 temp_tour$STOP_FREQ_ALT[is.na(temp_tour$STOP_FREQ_ALT)] <- 0
 
 stopFreqModel_summary <- xtabs(finalweight~STOP_FREQ_ALT+TOURPURP, data = temp_tour[temp_tour$TOURPURP<=10,])
-write.csv(stopFreqModel_summary, "stopFreqModel_summary.csv", row.names = T)
+write.csv(stopFreqModel_summary, file.path(WD, "stopFreqModel_summary.csv"), row.names = T)
 
 
 # Create Stops tables
@@ -606,13 +615,13 @@ persons_nomand <- temp2[temp2$freq_m==0,] #active persons with 0 mandatory tours
 freq_nmtours_mand <- count(persons_mand, c("PERTYPE","freq_nm"), "finalweight")
 freq_nmtours_nomand <- count(persons_nomand, c("PERTYPE","freq_nm"), "finalweight")
 test <- count(temp2, c("PERTYPE","freq_inm","freq_m","freq_nm","freq_atwork"), "finalweight")
-write.csv(test, "tour_rate_debug.csv", row.names = F)
-write.csv(temp2,"temp2.csv", row.names = F)
+write.csv(test, file.path(WD, "tour_rate_debug.csv"), row.names = F)
+write.csv(temp2, file.path(WD, "temp2.csv"), row.names = F)
 
-# write.table("Non-Mandatory Tours for Persons with at-least 1 Mandatory Tour", "indivNMTourFreq.csv", sep = ",", row.names = F, append = F)
-# write.table(freq_nmtours_mand, "indivNMTourFreq.csv", sep = ",", row.names = F, append = T)
-# write.table("Non-Mandatory Tours for Active Persons with 0 Mandatory Tour", "indivNMTourFreq.csv", sep = ",", row.names = F, append = T)
-# write.table(freq_nmtours_nomand, "indivNMTourFreq.csv", sep = ",", row.names = F, append = TRUE)
+# write.table("Non-Mandatory Tours for Persons with at-least 1 Mandatory Tour", file.path(WD, "indivNMTourFreq.csv"), sep = ",", row.names = F, append = F)
+# write.table(freq_nmtours_mand, file.path(WD, "indivNMTourFreq.csv"), sep = ",", row.names = F, append = T)
+# write.table("Non-Mandatory Tours for Active Persons with 0 Mandatory Tour", file.path(WD, "indivNMTourFreq.csv"), sep = ",", row.names = F, append = T)
+# write.table(freq_nmtours_nomand, file.path(WD, "indivNMTourFreq.csv"), sep = ",", row.names = F, append = TRUE)
 
 # end of addition for calibration
 # -----------------------
@@ -686,7 +695,7 @@ per$atWorkTours[is.na(per$atWorkTours)] <- 0
 # Total tours by person type
 per$numTours[is.na(per$numTours)] <- 0
 toursPertypeDistbn <- count(tours[tours$PERTYPE>0 & tours$TOURPURP!=10,], c("PERTYPE"), "finalweight")
-write.csv(toursPertypeDistbn, "toursPertypeDistbn.csv", row.names = TRUE)
+write.csv(toursPertypeDistbn, file.path(WD, "toursPertypeDistbn.csv"), row.names = TRUE)
 
 # count joint tour fr each person type
 temp_joint <- melt(unique_joint_tours[, c("household_id","tour_id","PTYPE1","PTYPE2","PTYPE3","PTYPE4","PTYPE5","PTYPE6","PTYPE7","PTYPE8","finalweight")], id = c("household_id", "tour_id", "finalweight"))
@@ -696,12 +705,12 @@ jtoursPertypeDistbn <- count(temp_joint[temp_joint$PERTYPE>0,], c("PERTYPE"), "f
 # Total tours by person type for visualizer
 totaltoursPertypeDistbn <- toursPertypeDistbn
 totaltoursPertypeDistbn$freq <- totaltoursPertypeDistbn$freq + jtoursPertypeDistbn$freq
-write.csv(totaltoursPertypeDistbn, "total_tours_by_pertype_vis.csv", row.names = F)
+write.csv(totaltoursPertypeDistbn, file.path(WD, "total_tours_by_pertype_vis.csv"), row.names = F)
 
 
 # Total indi NM tours by person type and purpose
 tours_pertype_purpose <- count(tours[tours$TOURPURP>=4 & tours$TOURPURP<=9,], c("PERTYPE", "TOURPURP"), "finalweight")
-write.csv(tours_pertype_purpose, "tours_pertype_purpose.csv", row.names = TRUE)
+write.csv(tours_pertype_purpose, file.path(WD, "tours_pertype_purpose.csv"), row.names = TRUE)
 
 tours_pertype_purpose <- xtabs(freq~PERTYPE+TOURPURP, tours_pertype_purpose)
 tours_pertype_purpose[is.na(tours_pertype_purpose)] <- 0
@@ -729,18 +738,18 @@ nm_tour_rates$tour_purp[nm_tour_rates$tour_purp==7] <- "EatingOut"
 nm_tour_rates$tour_purp[nm_tour_rates$tour_purp==8] <- "Visiting"
 nm_tour_rates$tour_purp[nm_tour_rates$tour_purp==9] <- "Discretionary"
 
-write.csv(nm_tour_rates, "nm_tour_rates.csv", row.names = F)
+write.csv(nm_tour_rates, file.path(WD, "nm_tour_rates.csv"), row.names = F)
 
 # Total tours by purpose X tourtype
 t1 <- wtd.hist(tours$TOURPURP[tours$TOURPURP<10], breaks = seq(1,10, by=1), freq = NULL, right=FALSE, weight=tours$finalweight[tours$TOURPURP<10])
 t3 <- wtd.hist(unique_joint_tours$JOINT_PURP, breaks = seq(1,10, by=1), freq = NULL, right=FALSE, weight=unique_joint_tours$finalweight[unique_joint_tours$JOINT_PURP<10])
 tours_purpose_type <- data.frame(t1$counts, t3$counts)
 colnames(tours_purpose_type) <- c("indi", "joint")
-write.csv(tours_purpose_type, "tours_purpose_type.csv", row.names = TRUE)
+write.csv(tours_purpose_type, file.path(WD, "tours_purpose_type.csv"), row.names = TRUE)
 
 # DAP by pertype
 dapSummary <- count(per, c("PERTYPE", "cdap_activity"), "finalweight")
-write.csv(dapSummary, "dapSummary.csv", row.names = TRUE)
+write.csv(dapSummary, file.path(WD, "dapSummary.csv"), row.names = TRUE)
 
 # Prepare DAP summary for visualizer
 dapSummary_vis <- xtabs(freq~PERTYPE+cdap_activity, dapSummary)
@@ -754,11 +763,11 @@ dapSummary_vis$PERTYPE <- as.character(dapSummary_vis$PERTYPE)
 dapSummary_vis$DAP <- as.character(dapSummary_vis$DAP)
 dapSummary_vis <- dapSummary_vis[dapSummary_vis$DAP!="Sum",]
 dapSummary_vis$PERTYPE[dapSummary_vis$PERTYPE=="Sum"] <- "Total"
-write.csv(dapSummary_vis, "dapSummary_vis.csv", row.names = TRUE)
+write.csv(dapSummary_vis, file.path(WD, "dapSummary_vis.csv"), row.names = TRUE)
 
 # HHSize X Joint
 hhsizeJoint <- count(hh[hh$HHSIZE>=2,], c("HHSIZE", "JOINT"), "finalweight")
-write.csv(hhsizeJoint, "hhsizeJoint.csv", row.names = TRUE)
+write.csv(hhsizeJoint, file.path(WD, "hhsizeJoint.csv"), row.names = TRUE)
 
 #mandatory tour frequency
 per$imf_choice <- 0
@@ -769,8 +778,8 @@ per$imf_choice[per$mandatory_tour_frequency == "school2"]         <- 4
 per$imf_choice[per$mandatory_tour_frequency == "work_and_school"] <- 5
 
 mtfSummary <- count(per[per$imf_choice > 0,], c("PERTYPE", "imf_choice"), "finalweight")
-write.csv(mtfSummary, "mtfSummary.csv")
-#write.csv(tours, "tours_test.csv")
+write.csv(mtfSummary, file.path(WD, "mtfSummary.csv"))
+#write.csv(tours, file.path(WD, "tours_test.csv"))
 
 # Prepare MTF summary for visualizer
 mtfSummary_vis <- xtabs(freq~PERTYPE+imf_choice, mtfSummary)
@@ -784,7 +793,7 @@ mtfSummary_vis$PERTYPE <- as.character(mtfSummary_vis$PERTYPE)
 mtfSummary_vis$MTF <- as.character(mtfSummary_vis$MTF)
 mtfSummary_vis <- mtfSummary_vis[mtfSummary_vis$MTF!="Sum",]
 mtfSummary_vis$PERTYPE[mtfSummary_vis$PERTYPE=="Sum"] <- "Total"
-write.csv(mtfSummary_vis, "mtfSummary_vis.csv")
+write.csv(mtfSummary_vis, file.path(WD, "mtfSummary_vis.csv"))
 
 # indi NM summary
 inm0Summary <- count(per[per$numTours==0,], c("PERTYPE"), "finalweight")
@@ -798,7 +807,7 @@ inmSummary$tour1 <- inm1Summary$freq[match(inmSummary$PERTYPE, inm1Summary$PERTY
 inmSummary$tour2 <- inm2Summary$freq[match(inmSummary$PERTYPE, inm2Summary$PERTYPE)]
 inmSummary$tour3pl <- inm3Summary$freq[match(inmSummary$PERTYPE, inm3Summary$PERTYPE)]
 
-write.table(inmSummary, "innmSummary.csv", col.names=TRUE, sep=",")
+write.table(inmSummary, file.path(WD, "innmSummary.csv"), col.names=TRUE, sep=",")
 
 # prepare INM summary for visualizer
 inmSummary_vis <- melt(inmSummary, id=c("PERTYPE"))
@@ -818,7 +827,7 @@ inmSummary_vis$PERTYPE <- as.character(inmSummary_vis$PERTYPE)
 inmSummary_vis$nmtours <- as.character(inmSummary_vis$nmtours)
 inmSummary_vis <- inmSummary_vis[inmSummary_vis$nmtours!="Sum",]
 inmSummary_vis$PERTYPE[inmSummary_vis$PERTYPE=="Sum"] <- "Total"
-write.csv(inmSummary_vis, "inmSummary_vis.csv")
+write.csv(inmSummary_vis, file.path(WD, "inmSummary_vis.csv"))
 
 # Joint Tour Frequency and composition
 jtfSummary <- count(hh[!is.na(hh$jtf),], c("jtf"), "finalweight")
@@ -832,11 +841,11 @@ hh$jointCat[hh$jtours>=2] <- 2
 
 jointToursHHSize <- count(hh[!is.na(hh$HHSIZE) & !is.na(hh$jointCat),], c("HHSIZE", "jointCat"), "finalweight")
 
-# write.table(jtfSummary, "jtfSummary.csv", col.names=TRUE, sep=",")
-# write.table(jointComp, "jtfSummary.csv", col.names=TRUE, sep=",", append=TRUE)
-# write.table(jointPartySize, "jtfSummary.csv", col.names=TRUE, sep=",", append=TRUE)
-# write.table(jointCompPartySize, "jtfSummary.csv", col.names=TRUE, sep=",", append=TRUE)
-# write.table(jointToursHHSize, "jtfSummary.csv", col.names=TRUE, sep=",", append=TRUE)
+# write.table(jtfSummary, file.path(WD, "jtfSummary.csv"), col.names=TRUE, sep=",")
+# write.table(jointComp, file.path(WD, "jtfSummary.csv"), col.names=TRUE, sep=",", append=TRUE)
+# write.table(jointPartySize, file.path(WD, "jtfSummary.csv"), col.names=TRUE, sep=",", append=TRUE)
+# write.table(jointCompPartySize, file.path(WD, "jtfSummary.csv"), col.names=TRUE, sep=",", append=TRUE)
+# write.table(jointToursHHSize, file.path(WD, "jtfSummary.csv"), col.names=TRUE, sep=",", append=TRUE)
 
 #cap joint party size to 5+
 jointPartySize$freq[jointPartySize$NUMBER_HH==5] <- sum(jointPartySize$freq[jointPartySize$NUMBER_HH>=5])
@@ -898,11 +907,11 @@ jointCompPartySizeProp$freq[jointCompPartySizeProp$comp=="Total" & jointCompPart
 jointCompPartySizeProp <- jointCompPartySizeProp[jointCompPartySizeProp$partysize<=5,]
 
 
-write.csv(jtf, "jtf.csv", row.names = F)
-write.csv(jointComp, "jointComp.csv", row.names = F)
-write.csv(jointPartySize, "jointPartySize.csv", row.names = F)
-write.csv(jointCompPartySizeProp, "jointCompPartySize.csv", row.names = F)
-write.csv(jointToursHHSizeProp, "jointToursHHSize.csv", row.names = F)
+write.csv(jtf, file.path(WD, "jtf.csv"), row.names = F)
+write.csv(jointComp, file.path(WD, "jointComp.csv"), row.names = F)
+write.csv(jointPartySize, file.path(WD, "jointPartySize.csv"), row.names = F)
+write.csv(jointCompPartySizeProp, file.path(WD, "jointCompPartySize.csv"), row.names = F)
+write.csv(jointToursHHSizeProp, file.path(WD, "jointToursHHSize.csv"), row.names = F)
 
 # TOD Profile
 #------------------------------------
@@ -923,7 +932,7 @@ todDepProfile <- data.frame(tod1$counts, tod2$counts, tod3$counts, tod4$counts, 
                             , todj56$counts, todj789$counts, tod15$counts)
 colnames(todDepProfile) <- c("work", "univ", "sch", "esc", "imain", "idisc", 
                              "jmain", "jdisc", "atwork")
-write.csv(todDepProfile, "todDepProfile.csv")
+write.csv(todDepProfile, file.path(WD, "todDepProfile.csv"))
 
 # prepare input for visualizer
 todDepProfile_vis <- todDepProfile
@@ -958,7 +967,7 @@ todArrProfile <- data.frame(tod1$counts, tod2$counts, tod3$counts, tod4$counts, 
                             , todj56$counts, todj789$counts, tod15$counts)
 colnames(todArrProfile) <- c("work", "univ", "sch", "esc", "imain", "idisc", 
                              "jmain", "jdisc", "atwork")
-write.csv(todArrProfile, "todArrProfile.csv")
+write.csv(todArrProfile, file.path(WD, "todArrProfile.csv"))
 
 # prepare input for visualizer
 todArrProfile_vis <- todArrProfile
@@ -994,7 +1003,7 @@ todDurProfile <- data.frame(tod1$counts, tod2$counts, tod3$counts, tod4$counts, 
                             , todj56$counts, todj789$counts, tod15$counts)
 colnames(todDurProfile) <- c("work", "univ", "sch", "esc", "imain", "idisc", 
                              "jmain", "jdisc", "atwork")
-write.csv(todDurProfile, "todDurProfile.csv")
+write.csv(todDurProfile, file.path(WD, "todDurProfile.csv"))
 
 # prepare input for visualizer
 todDurProfile_vis <- todDurProfile
@@ -1020,7 +1029,7 @@ todArrProfile_vis <- todArrProfile_vis[order(todArrProfile_vis$timebin, todArrPr
 todDurProfile_vis <- todDurProfile_vis[order(todDurProfile_vis$timebin, todDurProfile_vis$PURPOSE), ]
 todProfile_vis <- data.frame(todDepProfile_vis, todArrProfile_vis$freq, todDurProfile_vis$freq)
 colnames(todProfile_vis) <- c("id", "purpose", "freq_dep", "freq_arr", "freq_dur")
-write.csv(todProfile_vis, "todProfile_vis.csv", row.names = F)
+write.csv(todProfile_vis, file.path(WD, "todProfile_vis.csv"), row.names = F)
 
 unique_joint_tours$numberhh_wgt <- unique_joint_tours$finalweight*unique_joint_tours$NUMBER_HH
 
@@ -1037,7 +1046,7 @@ tmode8_as0 <- wtd.hist(tours$TOURMODE[tours$TOURPURP==10 & tours$AUTOSUFF==0], b
 tmodeAS0Profile <- data.frame(tmode1_as0$counts, tmode2_as0$counts, tmode3_as0$counts, tmode4_as0$counts,
                               tmode5_as0$counts, tmode6_as0$counts, tmode7_as0$counts, tmode8_as0$counts)
 colnames(tmodeAS0Profile) <- c("work", "univ", "sch", "imain", "idisc", "jmain", "jdisc", "atwork")
-write.csv(tmodeAS0Profile, "tmodeAS0Profile.csv")
+write.csv(tmodeAS0Profile, file.path(WD, "tmodeAS0Profile.csv"))
 
 # Prepeare data for visualizer
 tmodeAS0Profile_vis <- tmodeAS0Profile[1:10,]
@@ -1070,7 +1079,7 @@ tmode8_as1 <- wtd.hist(tours$TOURMODE[tours$TOURPURP==10 & tours$AUTOSUFF==1], b
 tmodeAS1Profile <- data.frame(tmode1_as1$counts, tmode2_as1$counts, tmode3_as1$counts, tmode4_as1$counts,
                               tmode5_as1$counts, tmode6_as1$counts, tmode7_as1$counts, tmode8_as1$counts)
 colnames(tmodeAS1Profile) <- c("work", "univ", "sch", "imain", "idisc", "jmain", "jdisc", "atwork")
-write.csv(tmodeAS1Profile, "tmodeAS1Profile.csv")
+write.csv(tmodeAS1Profile, file.path(WD, "tmodeAS1Profile.csv"))
 
 # Prepeare data for visualizer 
 
@@ -1104,7 +1113,7 @@ tmode8_as2 <- wtd.hist(tours$TOURMODE[tours$TOURPURP==10 & tours$AUTOSUFF==2], b
 tmodeAS2Profile <- data.frame(tmode1_as2$counts, tmode2_as2$counts, tmode3_as2$counts, tmode4_as2$counts,
                               tmode5_as2$counts, tmode6_as2$counts, tmode7_as2$counts, tmode8_as2$counts)
 colnames(tmodeAS2Profile) <- c("work", "univ", "sch", "imain", "idisc", "jmain", "jdisc", "atwork")
-write.csv(tmodeAS2Profile, "tmodeAS2Profile.csv")
+write.csv(tmodeAS2Profile, file.path(WD, "tmodeAS2Profile.csv"))
 
 # Prepeare data for visualizer
 tmodeAS2Profile_vis <- tmodeAS2Profile[1:10,]
@@ -1130,7 +1139,7 @@ tmodeAS2Profile_vis$purpose[tmodeAS2Profile_vis$purpose=="Sum"] <- "Total"
 tmodeProfile_vis <- data.frame(tmodeAS0Profile_vis, tmodeAS1Profile_vis$freq_as1, tmodeAS2Profile_vis$freq_as2)
 colnames(tmodeProfile_vis) <- c("id", "purpose", "freq_as0", "freq_as1", "freq_as2")
 tmodeProfile_vis$freq_all <- tmodeProfile_vis$freq_as0 + tmodeProfile_vis$freq_as1 + tmodeProfile_vis$freq_as2
-write.csv(tmodeProfile_vis, "tmodeProfile_vis.csv", row.names = F)
+write.csv(tmodeProfile_vis, file.path(WD, "tmodeProfile_vis.csv"), row.names = F)
 
 
 # Non Mand Tour lengths
@@ -1146,7 +1155,7 @@ tourDistProfile <- data.frame(tourdist4$counts, tourdisti56$counts, tourdisti789
 
 colnames(tourDistProfile) <- c("esco", "imain", "idisc", "jmain", "jdisc", "atwork")
 
-write.csv(tourDistProfile, "nonMandTourDistProfile.csv")
+write.csv(tourDistProfile, file.path(WD, "nonMandTourDistProfile.csv"))
 
 #prepare input for visualizer
 tourDistProfile_vis <- tourDistProfile
@@ -1166,7 +1175,7 @@ tourDistProfile_vis <- tourDistProfile_vis[tourDistProfile_vis$distbin!="Sum",]
 tourDistProfile_vis$PURPOSE[tourDistProfile_vis$PURPOSE=="Sum"] <- "Total"
 tourDistProfile_vis$distbin <- as.numeric(tourDistProfile_vis$distbin)
 
-write.csv(tourDistProfile_vis, "tourDistProfile_vis.csv", row.names = F)
+write.csv(tourDistProfile_vis, file.path(WD, "tourDistProfile_vis.csv"), row.names = F)
 
 cat("\n Average Tour Distance [esco]: ", weighted.mean(tours$SKIMDIST[tours$TOURPURP==4], tours$finalweight[tours$TOURPURP==4], na.rm = TRUE))
 cat("\n Average Tour Distance [imain]: ", weighted.mean(tours$SKIMDIST[tours$TOURPURP>=5 & tours$TOURPURP<=6], tours$finalweight[tours$TOURPURP>=5 & tours$TOURPURP<=6], na.rm = TRUE))
@@ -1219,7 +1228,7 @@ nonMandTourPurpose <- c("esco", "imain", "idisc", "jmain", "jdisc", "atwork", "T
 
 nonMandTourLengths <- data.frame(purpose = nonMandTourPurpose, avgTourLength = avgTourLengths)
 
-write.csv(nonMandTourLengths, "nonMandTourLengths.csv", row.names = F)
+write.csv(nonMandTourLengths, file.path(WD, "nonMandTourLengths.csv"), row.names = F)
 
 
 
@@ -1239,7 +1248,7 @@ stopfreq10 <- wtd.hist(tours$num_ob_stops[tours$TOURPURP==10], breaks = c(seq(0,
 stopFreq <- data.frame(stopfreq1$counts, stopfreq2$counts, stopfreq3$counts, stopfreq4$counts, stopfreqi56$counts
                        , stopfreqi789$counts, stopfreqj56$counts, stopfreqj789$counts, stopfreq10$counts)
 colnames(stopFreq) <- c("work", "univ", "sch", "esco","imain", "idisc", "jmain", "jdisc", "atwork")
-write.csv(stopFreq, "stopFreqOutProfile.csv")
+write.csv(stopFreq, file.path(WD, "stopFreqOutProfile.csv"))
 
 # prepare stop frequency input for visualizer
 stopFreqout_vis <- stopFreq
@@ -1272,7 +1281,7 @@ stopfreq10 <- wtd.hist(tours$num_ib_stops[tours$TOURPURP==10], breaks = c(seq(0,
 stopFreq <- data.frame(stopfreq1$counts, stopfreq2$counts, stopfreq3$counts, stopfreq4$counts, stopfreqi56$counts
                        , stopfreqi789$counts, stopfreqj56$counts, stopfreqj789$counts, stopfreq10$counts)
 colnames(stopFreq) <- c("work", "univ", "sch", "esco","imain", "idisc", "jmain", "jdisc", "atwork")
-write.csv(stopFreq, "stopFreqInbProfile.csv")
+write.csv(stopFreq, file.path(WD, "stopFreqInbProfile.csv"))
 
 # prepare stop frequency input for visualizer
 stopFreqinb_vis <- stopFreq
@@ -1294,7 +1303,7 @@ stopFreqinb_vis$purpose[stopFreqinb_vis$purpose=="Sum"] <- "Total"
 
 stopfreqDir_vis <- data.frame(stopFreqout_vis, stopFreqinb_vis$freq)
 colnames(stopfreqDir_vis) <- c("purpose", "nstops", "freq_out", "freq_inb")
-write.csv(stopfreqDir_vis, "stopfreqDir_vis.csv", row.names = F)
+write.csv(stopfreqDir_vis, file.path(WD, "stopfreqDir_vis.csv"), row.names = F)
 
 
 #Total
@@ -1311,7 +1320,7 @@ stopfreq10 <- wtd.hist(tours$num_tot_stops[tours$TOURPURP==10], breaks = c(seq(0
 stopFreq <- data.frame(stopfreq1$counts, stopfreq2$counts, stopfreq3$counts, stopfreq4$counts, stopfreqi56$counts
                        , stopfreqi789$counts, stopfreqj56$counts, stopfreqj789$counts, stopfreq10$counts)
 colnames(stopFreq) <- c("work", "univ", "sch", "esco","imain", "idisc", "jmain", "jdisc", "atwork")
-write.csv(stopFreq, "stopFreqTotProfile.csv")
+write.csv(stopFreq, file.path(WD, "stopFreqTotProfile.csv"))
 
 # prepare stop frequency input for visualizer
 stopFreq_vis <- stopFreq
@@ -1330,7 +1339,7 @@ stopFreq_vis$nstops <- as.character(stopFreq_vis$nstops)
 stopFreq_vis <- stopFreq_vis[stopFreq_vis$nstops!="Sum",]
 stopFreq_vis$purpose[stopFreq_vis$purpose=="Sum"] <- "Total"
 
-write.csv(stopFreq_vis, "stopfreq_total_vis.csv", row.names = F)
+write.csv(stopFreq_vis, file.path(WD, "stopfreq_total_vis.csv"), row.names = F)
 
 jstops$nump_wgt <- jstops$finalweight*jstops$num_participants
 
@@ -1348,7 +1357,7 @@ stopfreq10 <- wtd.hist(stops$DPURP[stops$TOURPURP==10], breaks = c(seq(1,10, by=
 stopFreq <- data.frame(stopfreq1$counts, stopfreq2$counts, stopfreq3$counts, stopfreq4$counts, stopfreqi56$counts
                        , stopfreqi789$counts, stopfreqj56$counts, stopfreqj789$counts, stopfreq10$counts)
 colnames(stopFreq) <- c("work", "univ", "sch", "esco","imain", "idisc", "jmain", "jdisc", "atwork")
-write.csv(stopFreq, "stopPurposeByTourPurpose.csv")
+write.csv(stopFreq, file.path(WD, "stopPurposeByTourPurpose.csv"))
 
 # prepare stop frequency input for visualizer
 stopFreq_vis <- stopFreq
@@ -1367,7 +1376,7 @@ stopFreq_vis$stop_purp <- as.character(stopFreq_vis$stop_purp)
 stopFreq_vis <- stopFreq_vis[stopFreq_vis$stop_purp!="Sum",]
 stopFreq_vis$purpose[stopFreq_vis$purpose=="Sum"] <- "Total"
 
-write.csv(stopFreq_vis, "stoppurpose_tourpurpose_vis.csv", row.names = F)
+write.csv(stopFreq_vis, file.path(WD, "stoppurpose_tourpurpose_vis.csv"), row.names = F)
 
 #Out of direction - Stop Location
 stopfreq1 <- wtd.hist(stops$out_dir_dist[stops$TOURPURP==1], breaks = c(-9999,seq(0,40, by=1), 9999), freq = NULL, right=FALSE, weight = stops$finalweight[stops$TOURPURP==1])
@@ -1383,7 +1392,7 @@ stopfreq10 <- wtd.hist(stops$out_dir_dist[stops$TOURPURP==10], breaks = c(-9999,
 stopFreq <- data.frame(stopfreq1$counts, stopfreq2$counts, stopfreq3$counts, stopfreq4$counts, stopfreqi56$counts
                        , stopfreqi789$counts, stopfreqj56$counts, stopfreqj789$counts, stopfreq10$counts)
 colnames(stopFreq) <- c("work", "univ", "sch", "esco","imain", "idisc", "jmain", "jdisc", "atwork")
-write.csv(stopFreq, "stopOutOfDirectionDC.csv")
+write.csv(stopFreq, file.path(WD, "stopOutOfDirectionDC.csv"))
 
 # prepare stop location input for visualizer
 stopDC_vis <- stopFreq
@@ -1403,7 +1412,7 @@ stopDC_vis <- stopDC_vis[stopDC_vis$distbin!="Sum",]
 stopDC_vis$PURPOSE[stopDC_vis$PURPOSE=="Sum"] <- "Total"
 stopDC_vis$distbin <- as.numeric(stopDC_vis$distbin)
 
-write.csv(stopDC_vis, "stopDC_vis.csv", row.names = F)
+write.csv(stopDC_vis, file.path(WD, "stopDC_vis.csv"), row.names = F)
 
 # compute average out of dir distance for visualizer
 avgDistances <- c(weighted.mean(stops$out_dir_dist[stops$TOURPURP==1], weight = stops$finalweight[stops$TOURPURP==1], na.rm = TRUE),
@@ -1436,7 +1445,7 @@ avgDistances <- c(avgDistances, totAvgStopDist)
 
 avgStopOutofDirectionDist <- data.frame(purpose = purp, avgDist = avgDistances)
 
-write.csv(avgStopOutofDirectionDist, "avgStopOutofDirectionDist_vis.csv", row.names = F)
+write.csv(avgStopOutofDirectionDist, file.path(WD, "avgStopOutofDirectionDist_vis.csv"), row.names = F)
 
 #Stop Departure Time
 stopfreq1 <- wtd.hist(stops$depart_hour[stops$TOURPURP==1], breaks =  c(seq(5,23, by=1), 9999), freq = NULL, right=FALSE, weight = stops$finalweight[stops$TOURPURP==1])
@@ -1452,7 +1461,7 @@ stopfreq10 <- wtd.hist(stops$depart_hour[stops$TOURPURP==10], breaks =  c(seq(5,
 stopFreq <- data.frame(stopfreq1$counts, stopfreq2$counts, stopfreq3$counts, stopfreq4$counts, stopfreqi56$counts
                        , stopfreqi789$counts, stopfreqj56$counts, stopfreqj789$counts, stopfreq10$counts)
 colnames(stopFreq) <- c("work", "univ", "sch", "esco","imain", "idisc", "jmain", "jdisc", "atwork")
-write.csv(stopFreq, "stopDeparture.csv")
+write.csv(stopFreq, file.path(WD, "stopDeparture.csv"))
 
 # prepare stop departure input for visualizer
 stopDep_vis <- stopFreq
@@ -1487,7 +1496,7 @@ stopfreq10 <- wtd.hist(trips$depart_hour[trips$TOURPURP==10], breaks =  c(seq(5,
 stopFreq <- data.frame(stopfreq1$counts, stopfreq2$counts, stopfreq3$counts, stopfreq4$counts, stopfreqi56$counts
                        , stopfreqi789$counts, stopfreqj56$counts, stopfreqj789$counts, stopfreq10$counts)
 colnames(stopFreq) <- c("work", "univ", "sch", "esco","imain", "idisc", "jmain", "jdisc", "atwork")
-write.csv(stopFreq, "tripDeparture.csv")
+write.csv(stopFreq, file.path(WD, "tripDeparture.csv"))
 
 # prepare stop departure input for visualizer
 tripDep_vis <- stopFreq
@@ -1510,7 +1519,7 @@ tripDep_vis$timebin <- as.numeric(tripDep_vis$timebin)
 
 stopTripDep_vis <- data.frame(stopDep_vis, tripDep_vis$freq)
 colnames(stopTripDep_vis) <- c("id", "purpose", "freq_stop", "freq_trip")
-write.csv(stopTripDep_vis, "stopTripDep_vis.csv", row.names = F)
+write.csv(stopTripDep_vis, file.path(WD, "stopTripDep_vis.csv"), row.names = F)
 
 # Trip Mode Summary
 # ---------------------------------
@@ -1534,7 +1543,7 @@ tripModeProfile <- data.frame(tripmode1$counts, tripmode2$counts, tripmode3$coun
                               tripmode9$counts, tripmode10$counts)
 colnames(tripModeProfile) <- c("tourmode1", "tourmode2", "tourmode3", "tourmode4", "tourmode5", 
                                "tourmode6", "tourmode7", "tourmode8", "tourmode9", "tourmode10")
-write.csv(tripModeProfile, "tripModeProfile_Work.csv")
+write.csv(tripModeProfile, file.path(WD, "tripModeProfile_Work.csv"))
 
 # Prepeare data for visualizer
 tripModeProfile1_vis <- tripModeProfile[1:10,]
@@ -1574,7 +1583,7 @@ tripModeProfile <- data.frame(tripmode1$counts, tripmode2$counts, tripmode3$coun
                               tripmode10$counts)
 colnames(tripModeProfile) <- c("tourmode1", "tourmode2", "tourmode3", "tourmode4", "tourmode5", "tourmode6", 
                                "tourmode7", "tourmode8", "tourmode9", "tourmode10")
-write.csv(tripModeProfile, "tripModeProfile_Univ.csv")
+write.csv(tripModeProfile, file.path(WD, "tripModeProfile_Univ.csv"))
 
 tripModeProfile2_vis <- tripModeProfile[1:10,]
 tripModeProfile2_vis$id <- row.names(tripModeProfile2_vis)
@@ -1612,7 +1621,7 @@ tripModeProfile <- data.frame(tripmode1$counts, tripmode2$counts, tripmode3$coun
                               tripmode9$counts, tripmode10$counts)
 colnames(tripModeProfile) <- c("tourmode1", "tourmode2", "tourmode3", "tourmode4", "tourmode5", "tourmode6",
                                "tourmode7", "tourmode8", "tourmode9", "tourmode10")
-write.csv(tripModeProfile, "tripModeProfile_Schl.csv")
+write.csv(tripModeProfile, file.path(WD, "tripModeProfile_Schl.csv"))
 
 tripModeProfile3_vis <- tripModeProfile[1:10,]
 tripModeProfile3_vis$id <- row.names(tripModeProfile3_vis)
@@ -1650,7 +1659,7 @@ tripModeProfile <- data.frame(tripmode1$counts, tripmode2$counts, tripmode3$coun
                               tripmode9$counts, tripmode10$counts)
 colnames(tripModeProfile) <- c("tourmode1", "tourmode2", "tourmode3", "tourmode4", "tourmode5", 
                                "tourmode6", "tourmode7", "tourmode8", "tourmode9", "tourmode10")
-write.csv(tripModeProfile, "tripModeProfile_iMain.csv")
+write.csv(tripModeProfile, file.path(WD, "tripModeProfile_iMain.csv"))
 
 tripModeProfile4_vis <- tripModeProfile[1:10,]
 tripModeProfile4_vis$id <- row.names(tripModeProfile4_vis)
@@ -1688,7 +1697,7 @@ tripModeProfile <- data.frame(tripmode1$counts, tripmode2$counts, tripmode3$coun
                               tripmode9$counts, tripmode10$counts)
 colnames(tripModeProfile) <- c("tourmode1", "tourmode2", "tourmode3", "tourmode4", "tourmode5", 
                                "tourmode6", "tourmode7", "tourmode8", "tourmode9", "tourmode10")
-write.csv(tripModeProfile, "tripModeProfile_iDisc.csv")
+write.csv(tripModeProfile, file.path(WD, "tripModeProfile_iDisc.csv"))
 
 tripModeProfile5_vis <- tripModeProfile[1:10,]
 tripModeProfile5_vis$id <- row.names(tripModeProfile5_vis)
@@ -1728,7 +1737,7 @@ tripModeProfile <- data.frame(tripmode1$counts, tripmode2$counts, tripmode3$coun
                               tripmode9$counts, tripmode10$counts)
 colnames(tripModeProfile) <- c("tourmode1", "tourmode2", "tourmode3", "tourmode4", "tourmode5", 
                                "tourmode6", "tourmode7", "tourmode8", "tourmode9", "tourmode10")
-write.csv(tripModeProfile, "tripModeProfile_jMain.csv")
+write.csv(tripModeProfile, file.path(WD, "tripModeProfile_jMain.csv"))
 
 tripModeProfile6_vis <- tripModeProfile[1:10,]
 tripModeProfile6_vis$id <- row.names(tripModeProfile6_vis)
@@ -1766,7 +1775,7 @@ tripModeProfile <- data.frame(tripmode1$counts, tripmode2$counts, tripmode3$coun
                               tripmode9$counts, tripmode10$counts)
 colnames(tripModeProfile) <- c("tourmode1", "tourmode2", "tourmode3", "tourmode4", "tourmode5", 
                                "tourmode6", "tourmode7", "tourmode8", "tourmode9", "tourmode10")
-write.csv(tripModeProfile, "tripModeProfile_jDisc.csv")
+write.csv(tripModeProfile, file.path(WD, "tripModeProfile_jDisc.csv"))
 
 tripModeProfile7_vis <- tripModeProfile[1:10,]
 tripModeProfile7_vis$id <- row.names(tripModeProfile7_vis)
@@ -1804,7 +1813,7 @@ tripModeProfile <- data.frame(tripmode1$counts, tripmode2$counts, tripmode3$coun
                               tripmode9$counts, tripmode10$counts)
 colnames(tripModeProfile) <- c("tourmode1", "tourmode2", "tourmode3", "tourmode4", "tourmode5", 
                                "tourmode6", "tourmode7", "tourmode8", "tourmode9", "tourmode10")
-write.csv(tripModeProfile, "tripModeProfile_AtWork.csv")
+write.csv(tripModeProfile, file.path(WD, "tripModeProfile_AtWork.csv"))
 
 tripModeProfile8_vis <- tripModeProfile[1:10,]
 tripModeProfile8_vis$id <- row.names(tripModeProfile8_vis)
@@ -1854,7 +1863,7 @@ tripModeProfile <- data.frame(itripmode1$counts+jtripmode1$counts, itripmode2$co
                               itripmode5$counts+jtripmode5$counts, itripmode6$counts+jtripmode6$counts, itripmode7$counts+jtripmode7$counts, itripmode8$counts+jtripmode8$counts, 
                               itripmode9$counts+jtripmode9$counts, itripmode10$counts+jtripmode10$counts)
 colnames(tripModeProfile) <- c("tourmode1", "tourmode2", "tourmode3", "tourmode4", "tourmode5", "tourmode6", "tourmode7", "tourmode8", "tourmode9", "tourmode10")
-write.csv(tripModeProfile, "tripModeProfile_Total.csv")
+write.csv(tripModeProfile, file.path(WD, "tripModeProfile_Total.csv"))
 
 tripModeProfile9_vis <- tripModeProfile[1:10,]
 tripModeProfile9_vis$id <- row.names(tripModeProfile9_vis)
@@ -1883,7 +1892,7 @@ colnames(tripModeProfile_vis) <- c("tripmode", "tourmode", "work", "univ", "schl
 
 temp <- melt(tripModeProfile_vis, id = c("tripmode", "tourmode"))
 #tripModeProfile_vis <- cast(temp, tripmode+variable~tourmode)
-#write.csv(tripModeProfile_vis, "tripModeProfile_vis.csv", row.names = F)
+#write.csv(tripModeProfile_vis, file.path(WD, "tripModeProfile_vis.csv"), row.names = F)
 temp$grp_var <- paste(temp$variable, temp$tourmode, sep = "")
 
 # rename tour mode to standard names
@@ -1893,14 +1902,14 @@ temp$tourmode[temp$tourmode=="tourmode3"] <- 'Auto 3+ Person'
 temp$tourmode[temp$tourmode=="tourmode4"] <- 'Walk'
 temp$tourmode[temp$tourmode=="tourmode5"] <- 'Bike/Moped'
 temp$tourmode[temp$tourmode=="tourmode6"] <- 'Walk-Transit'
-temp$tourmode[temp$tourmode=="tourmode7"] <- 'PNR-Transit'
+temp$tourmode[temp$tourmode=="tourmode7"] <- 'PNR-Transit'  #FIXME!!!
 temp$tourmode[temp$tourmode=="tourmode8"] <- 'KNR-Transit'
 temp$tourmode[temp$tourmode=="tourmode9"] <- 'School Bus'
 temp$tourmode[temp$tourmode=="tourmode10"] <- 'Ride Hail'
 
 colnames(temp) <- c("tripmode","tourmode","purpose","value","grp_var")
 
-write.csv(temp, "tripModeProfile_vis.csv", row.names = F)
+write.csv(temp, file.path(WD, "tripModeProfile_vis.csv"), row.names = F)
 
 # Total number of stops, trips & tours
 cat("\n Total number of stops : ", sum(stops$finalweight) + sum(jstops$nump_wgt))
@@ -1941,15 +1950,15 @@ totals_val <- c(total_population,total_households, total_tours, total_trips, tot
 
 totals_df <- data.frame(name = totals_var, value = totals_val)
 
-write.csv(totals_df, "totals.csv", row.names = F)
+write.csv(totals_df, file.path(WD, "totals.csv"), row.names = F)
 
 # HH Size distribution
 hhSizeDist <- count(hh[hh$TYPE == 1,], c("HHSIZE"), "finalweight") #only counting non-GQ households
-write.csv(hhSizeDist, "hhSizeDist.csv", row.names = F)
+write.csv(hhSizeDist, file.path(WD, "hhSizeDist.csv"), row.names = F)
 
 # Active Persons by person type
 actpertypeDistbn <- count(per[per$cdap_activity!="H",], c("PERTYPE"), "finalweight")
-write.csv(actpertypeDistbn, "activePertypeDistbn.csv", row.names = TRUE)
+write.csv(actpertypeDistbn, file.path(WD, "activePertypeDistbn.csv"), row.names = TRUE)
 
 
 # County-County trip flow by Tour Purpose and Trip Mode
@@ -1981,16 +1990,17 @@ names(trips_flow_total)[names(trips_flow_total) == "V1"] <- "count"
 trips_flow <- rbind(trips_flow, trips_flow_total[,c("OCOUNTY", "DCOUNTY", "trip_mode", "primary_purpose", "count")])
 
 
-# write.table(trips_flow, paste(WD,"trips_flow.csv", sep = "//"), sep = ",", row.names = F)
+write.table(trips_flow, file.path(WD, "trips_flow.csv"), sep = ",", row.names = F)
 
 
 # Transit Trips
 # ---------------------------------------------------
 # County-County Flow
-trips_transit <- all_trips[all_trips$TRIPMODE %in% c(6,7,8),]
+
+trips_transit <- all_trips[all_trips$TRIPMODE %in% c(6,7),]
 trips_transit$access_mode[trips_transit$TRIPMODE==6] <- "walk"
-trips_transit$access_mode[trips_transit$TRIPMODE==7] <- "pnr"
-trips_transit$access_mode[trips_transit$TRIPMODE==8] <- "knr"
+trips_transit$access_mode[trips_transit$TRIPMODE==7] <- "drive"
+#trips_transit$access_mode[trips_transit$TRIPMODE==8] <- "knr"
 trips_transit$tourtype <- "Non-Mandatory"
 trips_transit$tourtype[trips_transit$TOURPURP <= 3] <- "Mandatory"
 transit_trips <- trips_transit
@@ -2009,7 +2019,7 @@ trips_transit_summary_total$access_mode <- "Total"
 names(trips_transit_summary_total)[names(trips_transit_summary_total) == "V1"] <- "count"
 trips_transit_summary <- rbind(trips_transit_summary, trips_transit_summary_total[,c("OCOUNTY", "DCOUNTY", "access_mode", "count")])
 
-# write.table(trips_transit_summary, paste(WD,"trips_transit_summary.csv", sep = "//"), sep = ",", row.names = F)
+write.table(trips_transit_summary, file.path(WD,"trips_transit_summary.csv"), sep = ",", row.names = F)
 
 
 ### Trip Length Distribution of Trasit Trips ###
@@ -2027,7 +2037,7 @@ tlfd_transit <- cast(tlfd_transit, distbin~access_mode, value = "transit", sum)
 tlfd_transit$Total <- rowSums(tlfd_transit[,!colnames(tlfd_transit) %in% c("distbin")])
 tlfd_transit_df <- merge(x = distBinCat, y = tlfd_transit, by = "distbin", all.x = TRUE)
 tlfd_transit_df[is.na(tlfd_transit_df)] <- 0
-write.csv(tlfd_transit_df, "transitTLFD.csv", row.names = F)
+write.csv(tlfd_transit_df, file.path(WD, "transitTLFD.csv"), row.names = F)
 
 # compute TLFDs by tenths of mile
 tlfd_transit <- ddply(transit_trips[,c("access_mode", "distbin10")], c("access_mode", "distbin10"), summarise, transit = sum(!is.na(access_mode)))
@@ -2035,7 +2045,7 @@ tlfd_transit <- cast(tlfd_transit, distbin10~access_mode, value = "transit", sum
 tlfd_transit$Total <- rowSums(tlfd_transit[,!colnames(tlfd_transit) %in% c("distbin10")])
 tlfd_transit_df <- merge(x = distBinCat10, y = tlfd_transit, by = "distbin10", all.x = TRUE)
 tlfd_transit_df[is.na(tlfd_transit_df)] <- 0
-write.csv(tlfd_transit_df, "transitTLFD10.csv", row.names = F)
+write.csv(tlfd_transit_df, file.path(WD, "transitTLFD10.csv"), row.names = F)
 
 # work tour going to parking constraint
 # tours_transit <- tours[tours$TOURMODE %in% c(6,7,8),]
@@ -2045,14 +2055,14 @@ write.csv(tlfd_transit_df, "transitTLFD10.csv", row.names = F)
 # # tours_transit$dest_park <- zoneData$parkConstraint[match(tours_transit$dest_taz, zoneData$taz)]
 # 
 # work_Tours <- table(tours_transit$access_mode[tours_transit$dest_park==1 & tours_transit$TOURPURP==1])
-# write.table("work_Tours", "work_Tours.csv", sep = ",")
-# write.table(work_Tours, "work_Tours.csv", sep = ",", row.names = F, append = T)
+# write.table("work_Tours", file.path(WD, "work_Tours.csv"), sep = ",")
+# write.table(work_Tours, file.path(WD, "work_Tours.csv"), sep = ",", row.names = F, append = T)
 
 # Number of workers with work location in parking constraint zones
 # wsLoc$dest_park <- zoneData$parkConstraint[match(wsLoc$WorkLocation, zoneData$taz)]
 # workersParkZone <- table(wsLoc$dest_park)
-# write.table("workersParkZone", "workersParkZone.csv", sep = ",")
-# write.table(workersParkZone, "workersParkZone.csv", sep = ",", row.names = F, append = T)
+# write.table("workersParkZone", file.path(WD, "workersParkZone.csv"), sep = ",")
+# write.table(workersParkZone, file.path(WD, "workersParkZone.csv"), sep = ",", row.names = F, append = T)
 
 
 #finish

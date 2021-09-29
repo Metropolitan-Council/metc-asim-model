@@ -65,7 +65,7 @@ args = commandArgs(trailingOnly = TRUE)
 if(length(args) > 0){
   settings_file = args[1]
 } else {
-  settings_file = 'E:/Projects/Clients/MetCouncilASIM/tasks/survey_data_processing/metc_inputs.yml'
+  settings_file = 'E:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/metc_inputs.yml'
 }
 
 settings = yaml.load_file(settings_file)
@@ -159,7 +159,7 @@ setwd(WD)
 
 library(omxr)
 skim_file = file.path(settings$skims_dir, settings$skims_filename)
-print('Processing Distance Skim Matrix...')
+print(paste('Processing Distance Skim Matrix...', skim_file))
 skimMat <- read_omx(skim_file, "SOV_DIST")
 DST_SKM <- melt(skimMat)
 colnames(DST_SKM) <- c("o", "d", "dist")
@@ -449,9 +449,9 @@ tours$TOURMODE[tours$TOURMODE_ORIG == 8]  = 6  #WT
 tours$TOURMODE[tours$TOURMODE_ORIG == 9] = 7  #PNR
 tours$TOURMODE[tours$TOURMODE_ORIG == 10] = 7  #PNR
 tours$TOURMODE[tours$TOURMODE_ORIG == 11] = 7  #PNR
-tours$TOURMODE[tours$TOURMODE_ORIG == 12] = 8  #KNR
-tours$TOURMODE[tours$TOURMODE_ORIG == 13] = 8  #KNR
-tours$TOURMODE[tours$TOURMODE_ORIG == 14] = 8  #KNR
+tours$TOURMODE[tours$TOURMODE_ORIG == 12] = 7  #KNR
+tours$TOURMODE[tours$TOURMODE_ORIG == 13] = 7  #KNR
+tours$TOURMODE[tours$TOURMODE_ORIG == 14] = 7  #KNR
 tours$TOURMODE[tours$TOURMODE_ORIG %in% c(15:17)] =9 # RIDEHAIL
 
 tours$TOURMODE[tours$TOURMODE_ORIG == 18] = 10  #SchoolBus
@@ -637,9 +637,9 @@ trips$TRIPMODE[trips$TRIPMODE_ORIG == 8]  = 6  #WT
 trips$TRIPMODE[trips$TRIPMODE_ORIG == 9] = 7  #PNR
 trips$TRIPMODE[trips$TRIPMODE_ORIG == 10] = 7  #PNR
 trips$TRIPMODE[trips$TRIPMODE_ORIG == 11] = 7  #PNR
-trips$TRIPMODE[trips$TRIPMODE_ORIG == 12] = 8  #KNR
-trips$TRIPMODE[trips$TRIPMODE_ORIG == 13] = 8  #KNR
-trips$TRIPMODE[trips$TRIPMODE_ORIG == 14] = 8  #KNR
+trips$TRIPMODE[trips$TRIPMODE_ORIG == 12] = 7  #KNR
+trips$TRIPMODE[trips$TRIPMODE_ORIG == 13] = 7  #KNR
+trips$TRIPMODE[trips$TRIPMODE_ORIG == 14] = 7  #KNR
 trips$TRIPMODE[trips$TRIPMODE_ORIG == 18] = 10  #SchoolBus
 trips$TRIPMODE[trips$TRIPMODE_ORIG %in% c(15:17)] = 9 # RIDEHAIL
 trips$TRIPMODE[trips$TRIPMODE_ORIG %in% c(19)] = 11 #Other
@@ -2170,8 +2170,8 @@ temp$tourmode[temp$tourmode=="tourmode3"] = 'Auto 3+ Person'
 temp$tourmode[temp$tourmode=="tourmode4"] = 'Walk'
 temp$tourmode[temp$tourmode=="tourmode5"] = 'Bike/Moped'
 temp$tourmode[temp$tourmode=="tourmode6"] = 'Walk-Transit'
-temp$tourmode[temp$tourmode=="tourmode7"] = 'PNR-Transit'
-temp$tourmode[temp$tourmode=="tourmode8"] = 'KNR-Transit'
+temp$tourmode[temp$tourmode=="tourmode7"] = 'Drive-Transit'
+temp$tourmode[temp$tourmode=="tourmode8"] = 'Drive-Transit'
 temp$tourmode[temp$tourmode=="tourmode9"] = 'Taxi'
 temp$tourmode[temp$tourmode=="tourmode10"] = 'School Bus'
 
@@ -2264,8 +2264,8 @@ trips_sample = trips_sample[trips_sample$tour_purpose != "Other",]
 trips_sample = trips_sample[trips_sample$OCOUNTY!="Missing" & trips_sample$DCOUNTY!="Missing",]
 trips_sample = trips_sample[trips_sample$TRIPMODE>0 & trips_sample$TRIPMODE<10,]
 
-tripModeNames = c('Auto SOV','Auto 2 Person','Auto 3+ Person','Walk','Bike/Moped','Walk-Transit','PNR-Transit','KNR-Transit','TNR-Transit', 'Taxi/TNC', 'School Bus')
-tripModeCodes = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)
+tripModeNames = c('Auto SOV','Auto 2 Person','Auto 3+ Person','Walk','Bike/Moped','Walk-Transit','Drive-Transit','Drive-Transit','TNR-Transit', 'Taxi/TNC', 'School Bus')
+tripModeCodes = c(1, 2, 3, 4, 5, 6, 7, 7, 9, 10, 11)
 tripMode_df = data.frame(tripModeCodes, tripModeNames)
 trips_sample$trip_mode = tripMode_df$tripModeNames[match(trips_sample$TRIPMODE, tripMode_df$tripModeCodes)]
 
