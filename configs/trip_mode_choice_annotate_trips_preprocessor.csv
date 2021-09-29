@@ -21,8 +21,8 @@ Description,Target,Expression
 ,tour_mode_is_walk_transit,i_tour_mode.isin(I_WALK_TRANSIT_MODES)
 ,tour_mode_is_drive_transit,i_tour_mode.isin(I_DRIVE_TRANSIT_MODES)
 ,tour_mode_not_drive_transit,~tour_mode_is_drive_transit
-,tour_mode_is_pnr_transit,i_tour_mode.isin(I_PNR_TRANSIT_MODES)
-,tour_mode_is_knr_transit,i_tour_mode.isin(I_KNR_TRANSIT_MODES)
+#,tour_mode_is_drive_transit,i_tour_mode.isin(I_PNR_TRANSIT_MODES)
+#,tour_mode_is_knr_transit,i_tour_mode.isin(I_KNR_TRANSIT_MODES)
 ,tour_mode_is_school_bus,i_tour_mode.isin(I_SCHOOLBUS_MODE)
 ,tour_mode_is_ride_hail,i_tour_mode.isin(I_RIDE_HAIL_MODES)
 #,,
@@ -48,8 +48,8 @@ dest terminal time not counted at home,_dest_terminal_time,"np.where(inbound & l
 ,_walk_transit_origin,True
 ,_walk_transit_destination,True
 ,walk_transit_available,_walk_transit_origin & _walk_transit_destination & (tour_mode_not_drive_transit)
-,pnr_transit_available,tour_mode_is_pnr_transit
-,knr_transit_available,tour_mode_is_knr_transit
+,drive_transit_available,tour_mode_is_drive_transit
+#,knr_transit_available,tour_mode_is_knr_transit
 ,origin_walk_time,shortWalk*60/walkSpeed
 ,destination_walk_time,shortWalk*60/walkSpeed
 # RIDEHAIL,,
@@ -72,18 +72,18 @@ dest terminal time not counted at home,_dest_terminal_time,"np.where(inbound & l
 ,walk_local_available,walk_transit_available & (odt_skims['WLK_TRN_IVT']>0)
 ,walk_premium_available,walk_transit_available & (odt_skims['WLK_TRN_IVT']>0)
 ,walk_mix_available,walk_transit_available & (odt_skims['WLK_TRN_IVT']>0)
-,pnr_local_available_outbound,pnr_transit_available & df.outbound & (odt_skims['DRV_TRN_IVT']>0)
-,pnr_local_available_inbound,pnr_transit_available & ~df.outbound & (odt_skims['DRV_TRN_IVT']>0)
-,pnr_premium_available_outbound,pnr_transit_available & df.outbound & (odt_skims['DRV_TRN_IVT']>0)
-,pnr_premium_available_inbound,pnr_transit_available & ~df.outbound & (odt_skims['DRV_TRN_IVT']>0)
-,pnr_mix_available_outbound,pnr_transit_available & df.outbound & (odt_skims['DRV_TRN_IVT']>0)
-,pnr_mix_available_inbound,pnr_transit_available & ~df.outbound & (odt_skims['DRV_TRN_IVT']>0)
-,knr_local_available_outbound,knr_transit_available & df.outbound & (odt_skims['DRV_TRN_IVT']>0)
-,knr_local_available_inbound,knr_transit_available & ~df.outbound & (odt_skims['DRV_TRN_IVT']>0)
-,knr_premium_available_outbound,knr_transit_available & df.outbound & (odt_skims['DRV_TRN_IVT']>0)
-,knr_premium_available_inbound,knr_transit_available & ~df.outbound &  (odt_skims['DRV_TRN_IVT']>0)
-,knr_mix_available_outbound,knr_transit_available & df.outbound & (odt_skims['DRV_TRN_IVT']>0)
-,knr_mix_available_inbound,knr_transit_available & ~df.outbound & (odt_skims['DRV_TRN_IVT']>0)
+,drive_transit_available_outbound,drive_transit_available & df.outbound & (odt_skims['DRV_TRN_IVT']>0)
+,drive_transit_available_inbound,drive_transit_available & ~df.outbound & (odt_skims['DRV_TRN_IVT']>0)
+#,pnr_premium_available_outbound,pnr_transit_available & df.outbound & (odt_skims['DRV_TRN_IVT']>0)
+#,pnr_premium_available_inbound,pnr_transit_available & ~df.outbound & (odt_skims['DRV_TRN_IVT']>0)
+#,pnr_mix_available_outbound,pnr_transit_available & df.outbound & (odt_skims['DRV_TRN_IVT']>0)
+#,pnr_mix_available_inbound,pnr_transit_available & ~df.outbound & (odt_skims['DRV_TRN_IVT']>0)
+#,knr_local_available_outbound,knr_transit_available & df.outbound & (odt_skims['DRV_TRN_IVT']>0)
+#,knr_local_available_inbound,knr_transit_available & ~df.outbound & (odt_skims['DRV_TRN_IVT']>0)
+#,knr_premium_available_outbound,knr_transit_available & df.outbound & (odt_skims['DRV_TRN_IVT']>0)
+#,knr_premium_available_inbound,knr_transit_available & ~df.outbound &  (odt_skims['DRV_TRN_IVT']>0)
+#,knr_mix_available_outbound,knr_transit_available & df.outbound & (odt_skims['DRV_TRN_IVT']>0)
+#,knr_mix_available_inbound,knr_transit_available & ~df.outbound & (odt_skims['DRV_TRN_IVT']>0)
 #,od_dist_walk,od_skims['DISTWALK']
 #,do_dist_walk,od_skims.reverse('DISTWALK')
 #,max_dist_walk,od_skims.max('DISTWALK')

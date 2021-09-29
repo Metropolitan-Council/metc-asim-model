@@ -10,20 +10,20 @@
 :: #    with appropriate Census sources names wherever applicable
 :: ############################################################################
 @ECHO off
-SET WORKING_DIR= "E:\Projects\Clients\MetCouncilASIM\tasks\survey_data_processing\Visualizer"
+SET WORKING_DIR="E:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model\survey_data_processing\Visualizer"
 
 :: User Inputs
 :: ###########
 
 :: Set up dependencies
 :: ###################
-SET R_SCRIPT=C:\Users\leah.flake\Documents\R-4.0.3\bin\Rscript
-SET R_LIBRARY=C:\Users\leah.flake\Documents\R-4.0.3\library
+SET R_SCRIPT="C:\Program Files\R\R-4.0.2\bin\Rscript"
+SET R_LIBRARY="E:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/RPKG"
 :: Set PANDOC path
-SET RSTUDIO_PANDOC=C:\Users\leah.flake\Documents\Pandoc
+SET RSTUDIO_PANDOC="C:\Users\andrew.rohne\pandoc-2.14.2"
 :: Parameters file
-SET PARAMETERS_FILE=E:\Projects\Clients\MetCouncilASIM\tasks\survey_data_processing\Visualizer\runtime\parameters_test.csv
-
+SET PARAMETERS_FILE="E:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model\survey_data_processing\Visualizer\runtime\parameters.csv"
+SET SETTINGS_FILE="E:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model\survey_data_processing\metc_inputs.yml"
 SET FULL_HTML_NAME=MetCouncil_visualizer
 
 SET BASE_SCENARIO_NAME=Survey
@@ -58,7 +58,7 @@ ECHO Key,Value > %PARAMETERS_FILE%
 REM ECHO WORKING_DIR,%WORKING_DIR% >> %PARAMETERS_FILE%
 REM ECHO PROJECT_DIR,%PROJECT_DIR% >> %PARAMETERS_FILE%
 REM ECHO ABM_SUMMARY_DIR,%ABM_SUMMARY_DIR% >> %PARAMETERS_FILE%
-REM ECHO CALIBRATION_DIR,%CALIBRATION_DIR% >> %PARAMETERS_FILE%
+ECHO CALIBRATION_DIR,%CALIBRATION_DIR% >> %PARAMETERS_FILE%
 REM ECHO BASE_SUMMARY_DIR,%BASE_SUMMARY_DIR% >> %PARAMETERS_FILE%
 REM ECHO BUILD_SUMMARY_DIR,%BUILD_SUMMARY_DIR% >> %PARAMETERS_FILE%
 REM ECHO BASE_SUMMARY_DIR_SUBSET,%BASE_SUMMARY_DIR_SUBSET% >> %PARAMETERS_FILE%
@@ -73,9 +73,10 @@ ECHO FULL_HTML_NAME,%FULL_HTML_NAME% >> %PARAMETERS_FILE%
 REM ECHO SHP_FILE_NAME,%SHP_FILE_NAME% >> %PARAMETERS_FILE%
 ECHO CT_ZERO_AUTO_FILE_NAME,%CT_ZERO_AUTO_FILE_NAME% >> %PARAMETERS_FILE%
 ECHO IS_BASE_SURVEY,%IS_BASE_SURVEY% >> %PARAMETERS_FILE%
-%R_SCRIPT% scripts\settings_to_parameters_csv.R
+%R_SCRIPT% scripts\settings_to_parameters_csv.R %PARAMETERS_FILE% %SETTINGS_FILE%
 
-
+ECHO %startTime%%Time%: Summarizing ActivitySim Outputs...
+%R_SCRIPT% scripts\Summarize_ActivitySim_metc.R %PARAMETERS_FILE% %SETTINGS_FILE%
 :: Create calibration output directory
 :: ############################################################################
 REM mkdir %CALIBRATION_DIR%\
@@ -124,4 +125,4 @@ ECHO Model Failed
 
 
 :END
-PAUSE
+REM PAUSE
