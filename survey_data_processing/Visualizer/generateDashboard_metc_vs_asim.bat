@@ -10,20 +10,20 @@
 :: #    with appropriate Census sources names wherever applicable
 :: ############################################################################
 @ECHO off
-SET WORKING_DIR="E:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model\survey_data_processing\Visualizer"
+SET WORKING_DIR="F:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model\survey_data_processing\Visualizer"
 
 :: User Inputs
 :: ###########
 
 :: Set up dependencies
 :: ###################
-SET R_SCRIPT="C:\Program Files\R\R-4.0.2\bin\Rscript"
-SET R_LIBRARY="E:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/RPKG"
+SET R_SCRIPT="C:\Program Files\R\R-4.0.3\bin\Rscript"
+SET R_LIBRARY="F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/RPKG"
 :: Set PANDOC path
 SET RSTUDIO_PANDOC="C:\Users\andrew.rohne\pandoc-2.14.2"
 :: Parameters file
-SET PARAMETERS_FILE="E:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model\survey_data_processing\Visualizer\runtime\parameters.csv"
-SET SETTINGS_FILE="E:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model\survey_data_processing\metc_inputs.yml"
+SET PARAMETERS_FILE="F:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model\survey_data_processing\Visualizer\runtime\parameters.csv"
+SET SETTINGS_FILE="F:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model\survey_data_processing\metc_inputs.yml"
 SET FULL_HTML_NAME=MetCouncil_visualizer
 
 SET BASE_SCENARIO_NAME=Survey
