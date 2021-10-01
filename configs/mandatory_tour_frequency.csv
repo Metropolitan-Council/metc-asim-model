@@ -92,8 +92,8 @@ util_nome_urban_driving_age_student,Home is in urban area - Driving-age student 
 util_nome_urban_pre_driving_age_student,Home is in urban area - Pre-driving age child who is in school interaction,(ptype == 2) & home_is_urban,coef_home_urban_work1,,0,coef_home_urban_school2,
 util_availability_ft,Unavailable: Full-time worker,ptype == 5,,,coef_unavailable,coef_unavailable,
 util_availability_pt,Unavailable: Part-time worker,ptype == 6,,,coef_unavailable,coef_unavailable,
-util_availability_non_working_adult,Unavailable: Non-working adult,ptype == 7,,,,coef_unavailable,coef_unavailable
-util_availability_retired,Unavailable: Retired,ptype == 8,,,,coef_unavailable,coef_unavailable
+#util_availability_non_working_adult,Unavailable: Non-working adult,ptype == 7,,,,coef_unavailable,coef_unavailable
+#util_availability_retired,Unavailable: Retired,ptype == 8,,,,coef_unavailable,coef_unavailable
 #util_availability_driving_age_child,Unavailable: Driving-age child,ptype == 3,coef_unavailable,coef_unavailable,,,
 util_availability_pre_driving_age_student,Unavailable: Pre-driving age child who is in school,ptype == 2,coef_unavailable,coef_unavailable,,,coef_unavailable
 util_availability_pre_driving_age_not_in_school,Unavailable: Pre-driving age child who is not in school,ptype == 1,coef_unavailable,coef_unavailable,,coef_unavailable,coef_unavailable

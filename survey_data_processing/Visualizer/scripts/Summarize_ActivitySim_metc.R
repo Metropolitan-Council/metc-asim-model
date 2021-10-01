@@ -68,7 +68,7 @@ pertypeCodes <- data.frame(code = c(5, 6, 4, 7, 8, 3, 2, 1, "All"),  #code = c(1
 purposeCodes <- data.frame(code = c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
                            name = c("Home", "work", "univ", "school", "escort", "shopping", "othmaint", "eatout", "social", "othdiscr", "atwork"))
 
-modeCodes <- data.frame(code = c(1, 2, 3, 4, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9,9, 9, 10),
+modeCodes <- data.frame(code = c(1, 2, 3, 4, 5, 6, 6, 6, 7, 7, 7, 7, 7, 7, 9,9, 9, 10),
                         name = c("DRIVEALONE", "SHARED2", "SHARED3", "WALK", "BIKE",
                                  "TRNWALKACCESS", "WALK_MIX", "WALK_PRM",  # 6 = WT
                                  "TRNDRIVEACCESS", "PNR_MIX", "PNR_PRM", # 7 = PNR
@@ -282,6 +282,7 @@ write.csv(countyFlows, file.path(WD, "countyFlows.csv"), row.names = T)
 
 #--------------------------------------------------------
 # Process Tour file
+print("Processing Tour File...")
 all_tours$TOURPURP <- purposeCodes$code[match(all_tours$primary_purpose, purposeCodes$name)]
 all_tours$TOURMODE <- modeCodes$code[match(all_tours$tour_mode, modeCodes$name)]
 all_tours$TOURCAT <- tourcatCodes$code[match(all_tours$tour_category, tourcatCodes$name)]
@@ -326,6 +327,7 @@ all_tours$finalweight[is.na(all_tours$finalweight)] <- 0
 
 #--------------------------------------------------
 # Process Trips file
+print("Processing Trip File...")
 all_trips$TOURPURP <- purposeCodes$code[match(all_trips$primary_purpose, purposeCodes$name)]
 all_trips$TRIPPURP <- purposeCodes$code[match(all_trips$purpose, purposeCodes$name)]
 
@@ -1902,8 +1904,8 @@ temp$tourmode[temp$tourmode=="tourmode3"] <- 'Auto 3+ Person'
 temp$tourmode[temp$tourmode=="tourmode4"] <- 'Walk'
 temp$tourmode[temp$tourmode=="tourmode5"] <- 'Bike/Moped'
 temp$tourmode[temp$tourmode=="tourmode6"] <- 'Walk-Transit'
-temp$tourmode[temp$tourmode=="tourmode7"] <- 'PNR-Transit'  #FIXME!!!
-temp$tourmode[temp$tourmode=="tourmode8"] <- 'KNR-Transit'
+temp$tourmode[temp$tourmode=="tourmode7"] <- 'Drive-Transit'  #FIXME!!!
+#temp$tourmode[temp$tourmode=="tourmode8"] <- 'KNR-Transit'
 temp$tourmode[temp$tourmode=="tourmode9"] <- 'School Bus'
 temp$tourmode[temp$tourmode=="tourmode10"] <- 'Ride Hail'
 
@@ -1958,14 +1960,14 @@ write.csv(hhSizeDist, file.path(WD, "hhSizeDist.csv"), row.names = F)
 
 # Active Persons by person type
 actpertypeDistbn <- count(per[per$cdap_activity!="H",], c("PERTYPE"), "finalweight")
-write.csv(actpertypeDistbn, file.path(WD, "activePertypeDistbn.csv"), row.names = TRUE)
+write.csv(actpertypeDistbn, file.path(WD, "activePertypeDistbn.csv"), row.names = FALSE)
 
 
 # County-County trip flow by Tour Purpose and Trip Mode
 trips_sample <- rbind(trips[,c("OCOUNTY", "DCOUNTY", "TRIPMODE", "primary_purpose", "num_participants", "finalweight")], 
                       jtrips[,c("OCOUNTY", "DCOUNTY", "TRIPMODE", "primary_purpose", "num_participants", "finalweight")])
 
-tripModeNames <- c('Auto SOV','Auto 2 Person','Auto 3+ Person','Walk','Bike/Moped','Walk-Transit','PNR-Transit','KNR-Transit','School Bus')
+tripModeNames <- c('Auto SOV','Auto 2 Person','Auto 3+ Person','Walk','Bike/Moped','Walk-Transit','Drive-Transit','School Bus')
 tripModeCodes <- c(1, 2, 3, 4, 5, 6, 7, 8, 9)
 tripMode_df <- data.frame(tripModeCodes, tripModeNames)
 
@@ -2069,4 +2071,4 @@ write.csv(tlfd_transit_df, file.path(WD, "transitTLFD10.csv"), row.names = F)
 
 end_time <- Sys.time()
 end_time - start_time
-cat("\n Script finished, run time: ", end_time - start_time, "mins \n")
+cat("\n Summarize ActivitySim Script finished, run time: ", end_time - start_time, "mins \n")

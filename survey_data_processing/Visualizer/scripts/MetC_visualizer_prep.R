@@ -157,6 +157,8 @@ trip_weights = readRDS(file.path(wt_dir, 'trip_weights.rds'))
 #######################################################################################
 setwd(WD)
 
+print(paste("Saving files to", WD))
+
 library(omxr)
 skim_file = file.path(settings$skims_dir, settings$skims_filename)
 print(paste('Processing Distance Skim Matrix...', skim_file))

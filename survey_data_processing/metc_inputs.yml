@@ -1,27 +1,27 @@
 # CMAP data processing/qc inputs
 
-proj_dir: 'E:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing'
-data_dir: 'E:/Projects/Clients/MetCouncilASIM/data/survey_data/tbi_survey_unlabeled_raw'
-labeled_data_dir: 'E:/Projects/Clients/MetCouncilASIM/data/survey_data/tbi_survey_labeled'
-obs_dir: 'E:/Projects/Clients/MetCouncilASIM/data/survey_data/obs'
+proj_dir: 'F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing'
+data_dir: 'F:/Projects/Clients/MetCouncilASIM/data/survey_data/tbi_survey_unlabeled_raw'
+labeled_data_dir: 'F:/Projects/Clients/MetCouncilASIM/data/survey_data/tbi_survey_labeled'
+obs_dir: 'F:/Projects/Clients/MetCouncilASIM/data/survey_data/obs'
 
-updated_weights_dir: 'E:/Projects/Clients/MetCouncilASIM/data/updated_weights'
+updated_weights_dir: 'F:/Projects/Clients/MetCouncilASIM/data/updated_weights'
 
-SPA_code_dir: "E:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/SPA"
+SPA_code_dir: "F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/SPA"
 
 
-zone_dir: 'E:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/Visualizer/data/SHP'
+zone_dir: 'F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/Visualizer/data/SHP'
 zone_shp_file: 'TAZ2010.shp'
 
-county_flows_csv: 'E:/Projects/Clients/MetCouncilASIM/tasks/survey_data_processing/Visualizer/acs_commute_flows_wi_mn.csv'
+county_flows_csv: 'F:/Projects/Clients/MetCouncilASIM/tasks/survey_data_processing/Visualizer/acs_commute_flows_wi_mn.csv'
 
 
-visualizer_dir: 'E:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/Visualizer'
-visualizer_summaries: 'E:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/Visualizer/summaries'
+visualizer_dir: 'F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/Visualizer'
+visualizer_summaries: 'F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/Visualizer/summaries'
 
-skims_dir: 'E:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/data'
+skims_dir: 'F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/data'
 skims_filename: 'allskims.omx'
 
 
-abm_dir: 'E:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/soutput'
-abm_summaries_dir: 'E:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/Visualizer/data/calibration_runs/summarized'
+abm_dir: 'F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/output'
+abm_summaries_dir: 'F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/Visualizer/data/calibration_runs/summarized'

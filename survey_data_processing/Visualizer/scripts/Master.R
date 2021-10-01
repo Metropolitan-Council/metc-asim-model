@@ -10,10 +10,15 @@
 #
 #############################################################################################################################
 
+print("Starting Master Dashboard Script")
+
 ### Read Command Line Arguments
 args                <- commandArgs(trailingOnly = TRUE)
-Parameters_File     <- args[1]
-Parameters_File <- "E:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/Visualizer/runtime/parameters.csv"
+if(length(args) > 0){
+  Parameters_File     <- args[1]
+}else{
+  Parameters_File <- "F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/Visualizer/runtime/parameters.csv"
+}
                   
 #Run_switch          <- "FULL"
 
@@ -59,7 +64,7 @@ summaryFileList_base <- read.csv(paste(SYSTEM_TEMPLATES_PATH, base_csv_list, sep
 summaryFileList_base <- as.list(summaryFileList_base$summaryFile)
 
 # ASR Commented because I put the files where they need
-retVal <- copyFile(summaryFileList_base, sourceDir = BASE_SUMMARY_DIR, targetDir = BASE_DATA_PATH)
+#retVal <- copyFile(summaryFileList_base, sourceDir = BASE_SUMMARY_DIR, targetDir = BASE_DATA_PATH)
 #if(retVal) q(save = "no", status = 11)
 
 #census_csv_list <- "summaryFilesNames_census_MetC.csv"
@@ -80,6 +85,7 @@ if(BUILD_SCENARIO_NAME == "SEMCOG_HTS") {
   build_csv_list <- "summaryFilesNames_ActivitySim_MetC.csv"
 }
 
+print(paste("Copying files from", BUILD_SUMMARY_DIR, "to", BUILD_DATA_PATH, "..."))
 summaryFileList_build <- read.csv(paste(SYSTEM_TEMPLATES_PATH, build_csv_list, sep = '/'), as.is = T)
 summaryFileList_build <- as.list(summaryFileList_build$summaryFile)
 retVal <- copyFile(summaryFileList_build, sourceDir = BUILD_SUMMARY_DIR, targetDir = BUILD_DATA_PATH)
@@ -90,6 +96,7 @@ jpeg_list <- list.files(BUILD_SUMMARY_DIR, "*.jpeg")
 jpeg_copy_retval <- file.copy(jpeg_list, SYSTEM_JPEG_PATH, overwrite = TRUE)
 
 ### Load required libraries
+print("Loading Libraries...")
 SYSTEM_REPORT_PKGS <- c("DT", "flexdashboard", "leaflet", "geojsonio", "htmltools", "htmlwidgets", "kableExtra", "shiny",
                         "knitr", "mapview", "plotly", "RColorBrewer", "rgdal", "rgeos", "crosstalk","treemap", "htmlTable",
                         "rmarkdown", "scales", "stringr", "jsonlite", "pander", "ggplot2", "reshape", "raster", "dplyr",
@@ -103,20 +110,24 @@ lib_inst <- suppressWarnings(suppressMessages(lapply(SYSTEM_REPORT_PKGS, functio
 
 lib_sink <- suppressWarnings(suppressMessages(lapply(SYSTEM_REPORT_PKGS, library, character.only = TRUE)))
 
-### Read Target and Output SUmmary files
+### Read Target and Output Summary files
 currDir <- getwd()
 setwd(BASE_DATA_PATH)
 base_csv = list.files(pattern="*.csv")
+
 ### test
 #for(i in 1:length(base_csv)){
 #  file_name <- base_csv[[i]]
 #  cat(file_name, "\n")
 #  #t <- read.csv(file_name)
 #}
+print(BASE_DATA_PATH)
+print(base_csv)
 
 base_data <- lapply(base_csv, function(x){
-  #print(x)
-  read.csv(x, row.names = NULL)})
+	print(paste("Reading", x, "..."))
+	read.csv(x, row.names = NULL)}
+	)
 base_csv_names <- unlist(lapply(base_csv, function (x) {gsub(".csv", "", x)}))
 
 

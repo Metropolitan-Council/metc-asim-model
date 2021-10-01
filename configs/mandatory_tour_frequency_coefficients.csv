@@ -17,10 +17,12 @@ coef_univ_worker_non_family_work_and_school,-0.538294137808463,F
 coef_unavailable,-999.0,T
 coef_ft_worker_work2_asc,-3.3781,F
 coef_pt_worker_work2_asc,-3.0476,F
-coef_univ_work1_asc,-2.630262534,F
-coef_univ_work2_asc,-4.5,F
-coef_univ_school2_asc,-3.841285259,F
-coef_univ_work_and_school_asc,-4.529863127,F
+#ASR NOTE: divided below by 10 because they seemed too big
+coef_univ_work1_asc,-0.2630262534,F
+coef_univ_work2_asc,-0.45,F
+coef_univ_school2_asc,-0.3841285259,F
+coef_univ_work_and_school_asc,-0.4529863127,F
+# FIN
 coef_driving_age_child_school2_asc,-3.136,F
 coef_driving_age_child_work_and_school_asc,-4.4362,F
 coef_pre_driving_age_child_school2_asc,-3.9703,F

@@ -7,8 +7,7 @@ coef_nest_AUTO_SHAREDRIDE3,0.35,T
 coef_nest_NONMOTORIZED,0.72,T
 coef_nest_TRANSIT,0.72,T
 coef_nest_TRANSIT_WALKACCESS,0.5,T
-coef_nest_TRANSIT_KNRACCESS,0.5,T
-coef_nest_TRANSIT_PNRACCESS,0.5,T
+coef_nest_TRANSIT_DRIVEACCESS,0.5,T
 coef_nest_SCHOOL_BUS,0.72,T
 coef_nest_RIDEHAIL,0.36,T
 coef_ivt_eatout_escort_othdiscr_othmaint_shopping_social,-0.0175,F
