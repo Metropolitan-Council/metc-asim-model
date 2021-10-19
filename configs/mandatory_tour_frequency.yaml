@@ -1,7 +1,16 @@
-
 SPEC: mandatory_tour_frequency.csv
 COEFFICIENTS: mandatory_tour_frequency_coefficients.csv
 
+CONSTANTS:
+  PTYPE_FULL: 1
+  PTYPE_PART: 2
+  PTYPE_UNIVERSITY: 3
+  PTYPE_NONWORK: 4
+  PTYPE_RETIRED: 5
+  PTYPE_DRIVING: 6
+  PTYPE_SCHOOL: 7
+  PTYPE_PRESCHOOL: 8
+  
 annotate_persons:
   SPEC: annotate_persons_mtf
   DF: persons

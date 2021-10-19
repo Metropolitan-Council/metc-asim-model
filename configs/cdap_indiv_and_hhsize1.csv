@@ -1,75 +1,76 @@
 Description,Expression,M,N,H
-Full-time worker alternative-specific constants,ptype == 5,1.378734579,0.622662391,
-Part-time worker alternative-specific constants,ptype == 6,-0.718823738,0.636032467,
-University student alternative-specific constants,ptype == 4,2.353595176,0.609709846,
-Non-working adult alternative-specific constants,ptype == 7,-999,0.594645386,
-Retired alternative-specific constants,ptype == 8,-999,0.408202071,
-Driving-age child who is in school ALTERNATIVE-specific constants,(ptype == 3) & (is_student) ,2.330918685,-0.599119112,
-Pre-driving-age child who is in school alternative-specific constants,(ptype <= 2) & (is_student),3.295863529,0.57142434,
-Pre-driving-age child who is in school interaction with age 6 to 9,(ptype <= 2) & (age == 2) & (is_student),-0.2943,,
-Pre-driving-age child who is in school interaction with age 13 to 15,(ptype <= 2) & (age == 3) & (is_student),-0.7141,-0.672,
-Pre-driving-age child who is too young for school alternative-specific constants,ptype == 1,1.052531189,-0.837567776,
+Full-time worker alternative-specific constants,"@(df.ptype == FULL)",1.378734579,0.622662391,
+Part-time worker alternative-specific constants,"@(df.ptype == PART)",-0.718823738,0.636032467,
+University student alternative-specific constants,"@(df.ptype == UNIVERSITY)",2.353595176,0.609709846,
+Non-working adult alternative-specific constants,"@(df.ptype == NONWORK)",-999,0.594645386,
+Retired alternative-specific constants,"@(df.ptype == RETIRED)",-999,0.408202071,
+Driving-age child who is in school ALTERNATIVE-specific constants,"@(df.ptype == DRIVING) & (df.is_student)",2.330918685,-0.599119112,
+Pre-driving-age child who is in school alternative-specific constants,"@(df.ptype == SCHOOL) & (df.is_student)",3.295863529,0.57142434,
+Pre-driving-age child who is in school interaction with age 6 to 9,"@(df.ptype == SCHOOL) & (df.age == 2) & (df.is_student)",-0.2943,,
+Pre-driving-age child who is in school interaction with age 13 to 15,"@(df.ptype == SCHOOL) & (df.age == 3) & (df.is_student)",-0.7141,-0.672,
+Pre-driving-age child who is too young for school alternative-specific constants,"@(df.ptype == PRESCHOOL)",1.052531189,-0.837567776,
 # corrected tm1 age bug,,,,
-#Pre-driving-age child who is too young for school interaction with age 0 to 1,(ptype == 1) & (age == 1),-0.4515,,
-Pre-driving-age child who is too young for school interaction with age 4 to 5,(ptype == 1) & (age == 1),-0.6107,,
+#Pre-driving-age child who is too young for school interaction with age 0 to 1,"@(df.ptype == PRESCHOOL) & (df.age == 1)",-0.4515,,
+Pre-driving-age child who is too young for school interaction with age 4 to 5,"@(df.ptype == PRESCHOOL) & (df.age == 1)",-0.6107,,
 #,,,,
-Full-time worker interaction with age less than 40,(ptype == 5) & (age <= 7),0.2091,,
-Retired interaction with age more than 80,(ptype == 8) & (age == 10),,,0.7666
-Full-time worker interaction with female gender,(ptype == 5) & (sex == 2),-0.1259,,
-Non-working adult interaction with female gender,(ptype == 7) & (sex == 2),-0.743,,
-Retired interaction with female,(ptype == 8) & (female),0.4769,,
-Non-working adult interaction with more cars than workers,(ptype == 7) & (auto_ownership > num_workers),0.6515,0.8168,
-Retired interaction with more cars than workers,(ptype == 8) & (auto_ownership > num_workers),2.992,1.056,
-Pre-driving-age child who is too young for school interaction with more cars than workers,(ptype <= 2) & (auto_ownership > num_workers),,0.2991,
-Full-time worker interaction with fewer cars than workers,(ptype == 5) & (auto_ownership < num_workers),,,0.5039
-Non-working adult interaction with fewer cars than workers,(ptype == 7) & (auto_ownership < num_workers),,,0.8965
-Retired interaction with fewer cars than workers,(ptype == 8) & (auto_ownership < num_workers),,,0.5496
-Driving-age child who is in school interaction with fewer cars than workers,(ptype == 3) & (auto_ownership < num_workers),,,0.6475
-Pre-driving-age child who is in school interaction with fewer cars than workers,(ptype == 2) & (auto_ownership < num_workers),,,0.5862
-Pre-driving-age child who is too young for school interaction with fewer cars than workers,(ptype == 2) & (auto_ownership < num_workers),,,0.5061
-Full-time worker interaction with income less than $20k,(ptype == 5) & (income_segment == 1),,,0.5313
-Retired interaction with income less than $20k,(ptype == 8) & (income_segment == 1),,,0.533
-Part-time worker interaction with income less than $20k,(ptype == 6) & (income_segment == 1),,,0.3232
-Part-time worker interaction with income between $50k and $100k,(ptype == 6) & (income_segment >= 3) & (income_segment <= 4),,,-0.4032
-Part-time worker interaction with income more than $100k,(ptype == 6) & (income_segment == 5),,0.4207,-0.3534
-Non-working adult interaction with income between $50k and $100k,(ptype == 7) & (income_segment >= 3) & (income_segment <= 4),,,-0.5602
-Non-working adult interaction with income more than $100k,(ptype == 7) & (income_segment >= 4),,,-0.7188
-Driving-age child who is in school interaction with less than $20k,(ptype == 3) & (income_segment == 1),,,1.307
-Driving-age child who is in school interaction income between $50k and $100k,(ptype == 3) & (income_segment >= 3) & (income_segment <= 4),,,-0.5031
-Driving-age child who is in school interaction with income more than $100k,(ptype == 3) & (income_segment == 1),,,-2.046
-Pre-driving-age child who is too young for school interaction with income between $50k and $100k,(ptype <= 2) & (income_segment >= 3) & (income_segment <= 4),,,-0.5708
-Pre-driving-age child who is too young for school interaction with income more than $100k,(ptype <= 2) & (income_segment == 1),,,-0.6186
-Full-time worker intraction with peak accessibility to all employment,(ptype == 5) * auPkTotal,0.1212,,
-Part-time worker interaction with peak accessibility to all employment,(ptype == 6) * auPkTotal,0.2004,,
-Non-working adult interaction with peak accessibility to all employment,(ptype == 7) * auPkTotal,0.2314,,
-Retired interaction with peak accessibility to all employment,(ptype == 8) * auPkTotal,0.2792,,
-Non-working adult interaction with off-peak accessibility to retail,(ptype == 7) * auOpRetail,,0.07207,
-Retired interaction with off-peak accessibility to retail,(ptype == 8) * auOpRetail,,0.07207,
-University student interaction with off-peak accessibility to retail,(ptype == 4) * auOpRetail,,0.07207,
-Driving-age child who is in school interaction with off-peak accessibility to retail,(ptype == 3) * auOpRetail,,0.08233,
-Pre-driving-age child who is in school interaction with off-peak accessibility to retail,(ptype == 2) * auOpRetail,,0.08233,
-Pre-driving-age child who is too young for school interaction with off-peak accessibility to retail,(ptype == 1) * auOpRetail,,0.08233,
+Full-time worker interaction with age less than 40,"@(df.ptype == FULL) & (df.age <= 7)",0.2091,,
+Retired interaction with age more than 80,"@(df.ptype == RETIRED) & (df.age == 10)",,,0.7666
+Full-time worker interaction with female gender,"@(df.ptype == FULL) & (df.sex == 2)",-0.1259,,
+Non-working adult interaction with female gender,"@(df.ptype == NONWORK) & (df.sex == 2)",-0.743,,
+Retired interaction with female,"@(df.ptype == RETIRED) & (df.female)",0.4769,,
+Non-working adult interaction with more cars than workers,"@(df.ptype == NONWORK) & (df.auto_ownership > df.num_workers)",0.6515,0.8168,
+Retired interaction with more cars than workers,"@(df.ptype == RETIRED) & (df.auto_ownership > df.num_workers)",2.992,1.056,
+Pre-driving-age child who is too young for school interaction with more cars than workers,"@(df.ptype == SCHOOL) & (df.auto_ownership > df.num_workers)",,0.2991,
+Full-time worker interaction with fewer cars than workers,"@(df.ptype == FULL) & (df.auto_ownership < df.num_workers)",,,0.5039
+Non-working adult interaction with fewer cars than workers,"@(df.ptype == NONWORK) & (df.auto_ownership < df.num_workers)",,,0.8965
+Retired interaction with fewer cars than workers,"@(df.ptype == RETIRED) & (df.auto_ownership < df.num_workers)",,,0.5496
+Driving-age child who is in school interaction with fewer cars than workers,"@(df.ptype == DRIVING) & (df.auto_ownership < df.num_workers)",,,0.6475
+Pre-driving-age child who is in school interaction with fewer cars than workers,"@(df.ptype == SCHOOL) & (df.auto_ownership < df.num_workers)",,,0.5862
+Pre-driving-age child who is too young for school interaction with fewer cars than workers,"@(df.ptype == PRESCHOOL) & (df.auto_ownership < df.num_workers)",,,0.5061
+Full-time worker interaction with income less than $20k,"@(df.ptype == FULL) & (df.income_segment == 1)",,,0.5313
+Retired interaction with income less than $20k,"@(df.ptype == RETIRED) & (df.income_segment == 1)",,,0.533
+Part-time worker interaction with income less than $20k,"@(df.ptype == PART) & (df.income_segment == 1)",,,0.3232
+Part-time worker interaction with income between $50k and $100k,"@(df.ptype == PART) & (df.income_segment >= 3) & (df.income_segment <= 4)",,,-0.4032
+Part-time worker interaction with income more than $100k,"@(df.ptype == PART) & (df.income_segment == 5)",,0.4207,-0.3534
+Non-working adult interaction with income between $50k and $100k,"@(df.ptype == NONWORK) & (df.income_segment >= 3) & (df.income_segment <= 4)",,,-0.5602
+Non-working adult interaction with income more than $100k,"@(df.ptype == NONWORK) & (df.income_segment >= 4)",,,-0.7188
+Driving-age child who is in school interaction with less than $20k,"@(df.ptype == DRIVING) & (df.income_segment == 1)",,,1.307
+Driving-age child who is in school interaction income between $50k and $100k,"@(df.ptype == DRIVING) & (df.income_segment >= 3) & (df.income_segment <= 4)",,,-0.5031
+Driving-age child who is in school interaction with income more than $100k,"@(df.ptype == DRIVING) & (df.income_segment == 1)",,,-2.046
+Pre-driving-age child who is too young for school interaction with income between $50k and $100k,"@(df.ptype == SCHOOL) & (df.income_segment >= 3) & (df.income_segment <= 4)",,,-0.5708
+Pre-driving-age child who is too young for school interaction with income more than $100k,"@(df.ptype == SCHOOL) & (df.income_segment == 1)",,,-0.6186
+Full-time worker intraction with peak accessibility to all employment,"@(df.ptype == FULL) * df.auPkTotal",0.1212,,
+Part-time worker interaction with peak accessibility to all employment,"@(df.ptype == PART) * df.auPkTotal",0.2004,,
+Non-working adult interaction with peak accessibility to all employment,"@(df.ptype == NONWORK) * df.auPkTotal",0.2314,,
+Retired interaction with peak accessibility to all employment,"@(df.ptype == RETIRED) * df.auPkTotal",0.2792,,
+Non-working adult interaction with off-peak accessibility to retail,"@(df.ptype == NONWORK) * df.auOpRetail",,0.07207,
+Retired interaction with off-peak accessibility to retail,"@(df.ptype == RETIRED) * df.auOpRetail",,0.07207,
+University student interaction with off-peak accessibility to retail,"@(df.ptype == UNIVERSITY) * df.auOpRetail",,0.07207,
+Driving-age child who is in school interaction with off-peak accessibility to retail,"@(df.ptype == DRIVING) * df.auOpRetail",,0.08233,
+Pre-driving-age child who is in school interaction with off-peak accessibility to retail,"@(df.ptype == SCHOOL) * df.auOpRetail",,0.08233,
+Pre-driving-age child who is too young for school interaction with off-peak accessibility to retail,"@(df.ptype == PRESCHOOL) * df.auOpRetail",,0.08233,
 # University Student CDAP calibration,,,,
-working university student in non-family housing,(ptype == 4) & (is_worker) & (HHT >= 4),0.0959892286938419,-0.5653157666171066,
-working university student in family housing,(ptype == 4) & (is_worker) & (HHT < 4) & (TYPE != 3),0.16088350372344598,-0.9394837517087071,
-working university student in GQ housing,(ptype == 4) & (is_worker) & (HHT < 4) & (TYPE == 3),0.273268828618079,-1.2556696279944286,
-non-working university student in non-family housing,(ptype == 4) & (~is_worker) & (HHT >= 4),0.16573332752946932,-1.2223963004171414,
-non-working university student in family housing,(ptype == 4) & (~is_worker) & (HHT < 4) & (TYPE != 3),0.058646779881048675,-0.22458840819910103,
-non-working university student in GQ housing,(ptype == 4) & (~is_worker) & (HHT < 4) & (TYPE == 3),0.2231239703501062,-1.1839396062896261,
+working university student in non-family housing,"@(df.ptype == UNIVERSITY) & (df.is_worker) & (df.HHT >= 4)",0.0959892286938419,-0.5653157666171066,
+working university student in family housing,"@(df.ptype == UNIVERSITY) & (df.is_worker) & (df.HHT < 4) & (df.TYPE != 3)",0.16088350372344598,-0.9394837517087071,
+working university student in GQ housing,"@(df.ptype == UNIVERSITY) & (df.is_worker) & (df.HHT < 4) & (df.TYPE == 3)",0.273268828618079,-1.2556696279944286,
+non-working university student in non-family housing,"@(df.ptype == UNIVERSITY) & (~df.is_worker) & (df.HHT >= 4)",0.16573332752946932,-1.2223963004171414,
+non-working university student in family housing,"@(df.ptype == UNIVERSITY) & (~df.is_worker) & (df.HHT < 4) & (df.TYPE != 3)",0.058646779881048675,-0.22458840819910103,
+non-working university student in GQ housing,"@(df.ptype == UNIVERSITY) & (~df.is_worker) & (df.HHT < 4) & (df.TYPE == 3)",0.2231239703501062,-1.1839396062896261,
 # commented out because not used in mtctm1,,,,
-# Full-time worker interaction with usual work location is home,(ptype == 1) * usualWorkLocationIsHome,-1.758,,0.1813
-# Part-time worker interaction with usual work location is home,(ptype == 2) * usualWorkLocationIsHome,-1.758,,0.1813
-# Full-time worker interaction with no usual work location,(ptype == 1) * noUsualWorkLocation,-0.5935,,
-# Part-time worker interaction with no usual work location,(ptype == 2) * noUsualWorkLocation,-0.5935,,
-# Driving-age child who is in school interaction with no usual school location,(ptype == 6) * noUsualWorkLocation,-0.866,,
-# Pre-driving age child who is in school interaction with no usual school location,(ptype == 7) * noUsualWorkLocation,-0.866,,
+# Full-time worker interaction with usual work location is home,"@df.ptype == FULL * usualWorkLocationIsHome",-1.758,,0.1813
+# Part-time worker interaction with usual work location is home,"@df.ptype == PART * usualWorkLocationIsHome,-1.758,,0.1813
+# Full-time worker interaction with no usual work location,"@df.ptype == FULL * noUsualWorkLocation",-0.5935,,
+# Part-time worker interaction with no usual work location,"@df.ptype == PART * noUsualWorkLocation,-0.5935,,
+# Driving-age child who is in school interaction with no usual school location,"@(df.ptype == DRIVING) * noUsualWorkLocation,-0.866,,
+# Pre-driving age child who is in school interaction with no usual school location,"@(ptype == SCHOOL) * noUsualWorkLocation,-0.866,,
 #tm1 scenario test,,,,
 #Simulate telecommuting by reducing mandatory patterns,(ptype == 1) * (income_in_thousands >= 50),-0.142930042,,
 Telecommutes 1 day per week,telecommute_frequency=='1_day_week',,0.526,0.496
 Telecommutes 2-3 days per week,telecommute_frequency=='2_3_days_week',,1.387,1.584
 Telecommutes 4 days per week,telecommute_frequency=='4_days_week',,1.848,1.711
 #Turning Mandatory pattern off for FT and PT who work from home (sandag),,,,
-"Full time worker, works from home",(ptype == 5) & (work_from_home),-999,,
-"Part time worker, works from home",(ptype == 6) & (work_from_home),-999,,
-PTYPE 3 with no work or school,(ptype <= 3) & (~is_worker) & (~is_student),-999,,
-Child with no school,(ptype < 3) & (~is_student),-999.0,,
+"Full time worker, works from home","@(df.ptype == FULL) & (df.work_from_home)",-999,,
+"Part time worker, works from home","@(df.ptype == PART) & (df.work_from_home)",-999,,
+#Metc specific - commented out when changing ptype codes
+#PTYPE 3 with no work or school,(ptype <= 3) & (~is_worker) & (~is_student),-999,,
+Child with no school,"@((df.ptype == DRIVING) | (df.ptype == SCHOOL) | (df.ptype == PRESCHOOL)) & (~df.is_student)",-999.0,,

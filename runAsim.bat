@@ -4,7 +4,7 @@ SET OUTFOLDER="output"
 REM Run Cube Skimming, externals, freight, etc (TODO)
 
 REM Run Activitysim
-python simulation.py -c configs_mp -c configs -d data -o %OUTFOLDER%
+python simulation.py -c configs -d data -o %OUTFOLDER%
 
 REM Run Cube Assignment (TODO)
-%CUBE% cube\convertOutputMatrices.s /Start
+REM %CUBE% cube\convertOutputMatrices.s /Start

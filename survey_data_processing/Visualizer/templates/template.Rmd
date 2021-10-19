@@ -528,13 +528,13 @@ base_df <- base_data[[base_pos]]
 census_df = base_data[[which(base_csv_names=="hhSizeCensus")]]
 
 
-# build_pos <- which(build_csv_names=="hhSizeDist")
-# build_df <- build_data[[build_pos]]
+build_pos <- which(build_csv_names=="hhSizeDist")
+build_df <- build_data[[build_pos]]
 
-colnames(census_df) <- colnames(base_df)
+colnames(build_df) <- colnames(base_df)
 
-std_DF <- get_standardDF(data_df1 = base_df, data_df2 = census_df, x = "HHSIZE", y = c("freq"))
-p <- plotly_bar_plotter(data = std_DF, xlabel = "HH Size", ylabel = "Percent", ynames = c(BASE_SCENARIO_NAME, 'Census'), percent = T)
+std_DF <- get_standardDF(data_df1 = base_df, data_df2 = build_df, x = "HHSIZE", y = c("freq"))
+p <- plotly_bar_plotter(data = std_DF, xlabel = "HH Size", ylabel = "Percent", ynames = c(BASE_SCENARIO_NAME, BUILD_SCENARIO_NAME), percent = T)
 p
 
 ```
@@ -1400,11 +1400,11 @@ sd.purpose <- get_sharedData(data_df1 = base_df, data_df2 = build_df, run1_name 
                              run2_name = BUILD_SCENARIO_NAME, x = "id", y = c("freq_dep", "freq_arr", "freq_dur"), grp = "purpose")
 
 p1 <- plotly_density_plotter(sd.purpose, index = "one", xlabel = "Tour Departure", percent = T, left_offset = 25,
-                             tickvals = seq(1,19), ticktext = todBins, bottom_offset = 150, tickangle = 315, height = 275)
+                             tickvals = seq(1,48), ticktext = todBins, bottom_offset = 150, tickangle = 315, height = 275)
 p2 <- plotly_density_plotter(sd.purpose, index = "two", xlabel = "Tour Arrival", percent = T, left_offset = 25,
-                             tickvals = seq(1,19), ticktext = todBins, bottom_offset = 150, tickangle = 315, height = 275)
+                             tickvals = seq(1,48), ticktext = todBins, bottom_offset = 150, tickangle = 315, height = 275)
 p3 <- plotly_density_plotter(sd.purpose, index = "three", xlabel = "Tour Duration", percent = T, left_offset = 25,
-                             tickvals = seq(1,19), ticktext = durBins, bottom_offset = 50, tickangle = 315, height = 225)
+                             tickvals = seq(1,48), ticktext = durBins, bottom_offset = 50, tickangle = 315, height = 225)
 
 bscols(widths=c(2,10),
   filter_select("Tour Purpose", "Select Tour Purpose", sd.purpose, ~grp_var,multiple=F),
@@ -1739,9 +1739,9 @@ sd.purpose <- get_sharedData(data_df1 = base_df, data_df2 = build_df, run1_name 
                              run2_name = BUILD_SCENARIO_NAME, x = "timebin", y = c("freq_stop", "freq_trip"), grp = "purpose")
 
 p1 <- plotly_density_plotter(sd.purpose, index = "one", xlabel = "Stop Departure", percent = T, left_offset = 25,
-                             tickvals = seq(1,24), ticktext = todBins, bottom_offset = 150, tickangle = 315, height = 400)
+                             tickvals = seq(1,48), ticktext = todBins, bottom_offset = 150, tickangle = 315, height = 400)
 p2 <- plotly_density_plotter(sd.purpose, index = "two", xlabel = "Trip Departure", percent = T, left_offset = 25,
-                             tickvals = seq(1,24), ticktext = todBins, bottom_offset = 150, tickangle = 315, height = 400)
+                             tickvals = seq(1,48), ticktext = todBins, bottom_offset = 150, tickangle = 315, height = 400)
 #p3 <- datatable(sd.purpose$data())
 bscols(widths=c(2,10),
   filter_select("Tour Purpose", "Select Tour Purpose", sd.purpose, ~grp_var,multiple=F),

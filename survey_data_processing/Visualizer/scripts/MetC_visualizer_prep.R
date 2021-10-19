@@ -65,7 +65,7 @@ args = commandArgs(trailingOnly = TRUE)
 if(length(args) > 0){
   settings_file = args[1]
 } else {
-  settings_file = 'E:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/metc_inputs.yml'
+  settings_file = 'F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/metc_inputs.yml'
 }
 
 settings = yaml.load_file(settings_file)
@@ -162,7 +162,7 @@ print(paste("Saving files to", WD))
 library(omxr)
 skim_file = file.path(settings$skims_dir, settings$skims_filename)
 print(paste('Processing Distance Skim Matrix...', skim_file))
-skimMat <- read_omx(skim_file, "SOV_DIST")
+skimMat <- read_omx(skim_file, "DIST")
 DST_SKM <- melt(skimMat)
 colnames(DST_SKM) <- c("o", "d", "dist")
 
@@ -454,9 +454,9 @@ tours$TOURMODE[tours$TOURMODE_ORIG == 11] = 7  #PNR
 tours$TOURMODE[tours$TOURMODE_ORIG == 12] = 7  #KNR
 tours$TOURMODE[tours$TOURMODE_ORIG == 13] = 7  #KNR
 tours$TOURMODE[tours$TOURMODE_ORIG == 14] = 7  #KNR
-tours$TOURMODE[tours$TOURMODE_ORIG %in% c(15:17)] =9 # RIDEHAIL
+tours$TOURMODE[tours$TOURMODE_ORIG %in% c(15:17)] =8 # RIDEHAIL
 
-tours$TOURMODE[tours$TOURMODE_ORIG == 18] = 10  #SchoolBus
+tours$TOURMODE[tours$TOURMODE_ORIG == 18] = 9  #SchoolBus
 tours$TOURMODE[tours$TOURMODE_ORIG %in% c(19)] = 11 #Other
 
 # Removing Other modes
@@ -470,23 +470,21 @@ tours$TOUR_DUR_BIN[tours$TOUR_DUR_BIN<=1] = 1
 
 # Recode time bin windows
 
-bin_xwalk = data.frame(bin48 = seq(1:48), 
-                       bin23 = c(rep(5,6),
-                                 rep(6:22, each = 2),
-                                 rep(23, 8)))
+# bin_xwalk = data.frame(bin48 = seq(1:48), 
+#                        bin23 = c(seq(1,24, each = 2)))
 
 
 
 # cap tour duration at 20 hours
 tours$TOUR_DUR_BIN[tours$TOUR_DUR_BIN>=40] = 40
 
-tours = merge(tours, bin_xwalk, by.x = 'ANCHOR_DEPART_BIN', by.y = 'bin48', all.x = T)
-names(tours)[names(tours)=="bin23"]   = 'ANCHOR_DEPART_BIN_RECODE'
+# tours = merge(tours, bin_xwalk, by.x = 'ANCHOR_DEPART_BIN', by.y = 'bin48', all.x = T)
+# names(tours)[names(tours)=="bin48"]   = 'ANCHOR_DEPART_BIN_RECODE'
+# 
+# tours = merge(tours, bin_xwalk, by.x = 'ANCHOR_ARRIVE_BIN', by.y = 'bin48', all.x = T)
+# names(tours)[names(tours)=="bin48"]   = 'ANCHOR_ARRIVE_BIN_RECODE'
 
-tours = merge(tours, bin_xwalk, by.x = 'ANCHOR_ARRIVE_BIN', by.y = 'bin48', all.x = T)
-names(tours)[names(tours)=="bin23"]   = 'ANCHOR_ARRIVE_BIN_RECODE'
-
-tours$TOUR_DUR_BIN_RECODE = tours$ANCHOR_ARRIVE_BIN_RECODE - tours$ANCHOR_DEPART_BIN_RECODE + 1
+tours$TOUR_DUR_BIN_RECODE = tours$ANCHOR_ARRIVE_BIN - tours$ANCHOR_DEPART_BIN + 1
 
 
 # Recode tour purpose into unique market segmentations
@@ -536,9 +534,9 @@ jtours$TOURMODE = tours$TOURMODE[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10,
                                                     tours$HH_ID*1000+tours$JTOUR_ID*10)]
 jtours$AUTOSUFF = tours$AUTOSUFF[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10,
                                                     tours$HH_ID*1000+tours$JTOUR_ID*10)]
-jtours$ANCHOR_DEPART_BIN_RECODE = tours$ANCHOR_DEPART_BIN_RECODE[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10,
+jtours$ANCHOR_DEPART_BIN = tours$ANCHOR_DEPART_BIN[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10,
                                                                       tours$HH_ID*1000+tours$JTOUR_ID*10)]
-jtours$ANCHOR_ARRIVE_BIN_RECODE = tours$ANCHOR_ARRIVE_BIN_RECODE[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10,
+jtours$ANCHOR_ARRIVE_BIN = tours$ANCHOR_ARRIVE_BIN[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10,
                                                                       tours$HH_ID*1000+tours$JTOUR_ID*10)]
 jtours$TOUR_DUR_BIN_RECODE = tours$TOUR_DUR_BIN_RECODE[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10,
                                                             tours$HH_ID*1000+tours$JTOUR_ID*10)]
@@ -642,22 +640,22 @@ trips$TRIPMODE[trips$TRIPMODE_ORIG == 11] = 7  #PNR
 trips$TRIPMODE[trips$TRIPMODE_ORIG == 12] = 7  #KNR
 trips$TRIPMODE[trips$TRIPMODE_ORIG == 13] = 7  #KNR
 trips$TRIPMODE[trips$TRIPMODE_ORIG == 14] = 7  #KNR
-trips$TRIPMODE[trips$TRIPMODE_ORIG == 18] = 10  #SchoolBus
-trips$TRIPMODE[trips$TRIPMODE_ORIG %in% c(15:17)] = 9 # RIDEHAIL
+trips$TRIPMODE[trips$TRIPMODE_ORIG == 18] = 9  #SchoolBus
+trips$TRIPMODE[trips$TRIPMODE_ORIG %in% c(15:17)] = 8 # RIDEHAIL
 trips$TRIPMODE[trips$TRIPMODE_ORIG %in% c(19)] = 11 #Other
 # REMOVING OTHER MODES
 #trips = subset(trips, TRIPMODE <= 9)
 
 # Recode time bin windows
 
-trips = merge(trips, bin_xwalk, by.x = 'ORIG_DEP_BIN', by.y = 'bin48', all.x = T)
-names(trips)[names(trips)=="bin23"]   = 'ORIG_DEP_BIN_RECODE'
-trips = merge(trips, bin_xwalk, by.x = 'ORIG_ARR_BIN', by.y = 'bin48', all.x = T)
-names(trips)[names(trips)=="bin23"]   = 'ORIG_ARR_BIN_RECODE'
-trips = merge(trips, bin_xwalk, by.x = 'DEST_DEP_BIN', by.y = 'bin48', all.x = T)
-names(trips)[names(trips)=="bin23"]   = 'DEST_DEP_BIN_RECODE'
-trips = merge(trips, bin_xwalk, by.x = 'DEST_ARR_BIN', by.y = 'bin48', all.x = T)
-names(trips)[names(trips)=="bin23"]   = 'DEST_ARR_BIN_RECODE'
+# trips = merge(trips, bin_xwalk, by.x = 'ORIG_DEP_BIN', by.y = 'bin48', all.x = T)
+# names(trips)[names(trips)=="bin48"]   = 'ORIG_DEP_BIN_RECODE'
+# trips = merge(trips, bin_xwalk, by.x = 'ORIG_ARR_BIN', by.y = 'bin48', all.x = T)
+# names(trips)[names(trips)=="bin48"]   = 'ORIG_ARR_BIN_RECODE'
+# trips = merge(trips, bin_xwalk, by.x = 'DEST_DEP_BIN', by.y = 'bin48', all.x = T)
+# names(trips)[names(trips)=="bin48"]   = 'DEST_DEP_BIN_RECODE'
+# trips = merge(trips, bin_xwalk, by.x = 'DEST_ARR_BIN', by.y = 'bin48', all.x = T)
+# names(trips)[names(trips)=="bin48"]   = 'DEST_ARR_BIN_RECODE'
 
 #trips$ORIG_DEP_BIN[trips$ORIG_DEP_HOUR<=4] = 1
 #trips$ORIG_DEP_BIN[!is.na(trips$ORIG_DEP_HOUR) & trips$ORIG_DEP_HOUR>=5 & trips$ORIG_DEP_HOUR<=22] = trips$ORIG_DEP_HOUR[!is.na(trips$ORIG_DEP_HOUR) & trips$ORIG_DEP_HOUR>=5 & trips$ORIG_DEP_HOUR<=22]
@@ -759,8 +757,8 @@ jtrips$ORIG_TAZ = trips$ORIG_TAZ[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,tr
 jtrips$DEST_TAZ = trips$DEST_TAZ[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]	
 jtrips$TOUROTAZ = trips$TOUROTAZ[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]	
 jtrips$TOURDTAZ = trips$TOURDTAZ[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]
-jtrips$DEST_DEP_BIN_RECODE = trips$DEST_DEP_BIN_RECODE[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]
-jtrips$ORIG_DEP_BIN_RECODE = trips$ORIG_DEP_BIN_RECODE[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]
+jtrips$DEST_DEP_BIN = trips$DEST_DEP_BIN[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]
+jtrips$ORIG_DEP_BIN = trips$ORIG_DEP_BIN[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]
 jtrips$IS_INBOUND = trips$IS_INBOUND[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]	
 jtrips$ANCHOR_DEPART_HOUR = trips$ANCHOR_DEPART_HOUR[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]															  
 jtrips$ANCHOR_DEPART_MIN = trips$ANCHOR_DEPART_MIN[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]															  
@@ -1211,15 +1209,15 @@ write.csv(jointCompPartySizeProp, "jointCompPartySize.csv", row.names = F)
 write.csv(jointToursHHSizeProp, "jointToursHHSize.csv", row.names = F)
 
 # TOD Profile
-tod1 = wtd.hist(tours$ANCHOR_DEPART_BIN_RECODE[tours$TOURPURP==1 & tours$IS_SUBTOUR == 0], breaks = seq(5,23, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP==1 & tours$IS_SUBTOUR == 0])
-tod2 = wtd.hist(tours$ANCHOR_DEPART_BIN_RECODE[tours$TOURPURP==2 & tours$IS_SUBTOUR == 0], breaks = seq(5,23, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP==2 & tours$IS_SUBTOUR == 0])
-tod3 = wtd.hist(tours$ANCHOR_DEPART_BIN_RECODE[tours$TOURPURP==3 & tours$IS_SUBTOUR == 0], breaks = seq(5,23, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP==3 & tours$IS_SUBTOUR == 0])
-tod4 = wtd.hist(tours$ANCHOR_DEPART_BIN_RECODE[tours$TOURPURP==4 & tours$IS_SUBTOUR == 0], breaks = seq(5,23, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP==4 & tours$IS_SUBTOUR == 0])
-todi56 = wtd.hist(tours$ANCHOR_DEPART_BIN_RECODE[tours$TOURPURP>=5 & tours$TOURPURP<=6 & tours$FULLY_JOINT==0 & tours$IS_SUBTOUR == 0], breaks = seq(5,23, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP>=5 & tours$TOURPURP<=6 & tours$FULLY_JOINT==0 & tours$IS_SUBTOUR == 0])
-todi789 = wtd.hist(tours$ANCHOR_DEPART_BIN_RECODE[tours$TOURPURP>=7 & tours$TOURPURP<=9 & tours$FULLY_JOINT==0 & tours$IS_SUBTOUR == 0], breaks = seq(5,23, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP>=7 & tours$TOURPURP<=9 & tours$FULLY_JOINT==0 & tours$IS_SUBTOUR == 0])
-todj56 = wtd.hist(jtours$ANCHOR_DEPART_BIN_RECODE[jtours$JOINT_PURP>=5 & jtours$JOINT_PURP<=6], breaks = seq(5,23, by=1), freq = NULL, right=FALSE, weight = jtours$finalweight[jtours$JOINT_PURP>=5 & jtours$JOINT_PURP<=6])
-todj789 = wtd.hist(jtours$ANCHOR_DEPART_BIN_RECODE[jtours$JOINT_PURP>=7 & jtours$JOINT_PURP<=9], breaks = seq(5,23, by=1), freq = NULL, right=FALSE, weight = jtours$finalweight[jtours$JOINT_PURP>=7 & jtours$JOINT_PURP<=9])
-tod15 = wtd.hist(tours$ANCHOR_DEPART_BIN_RECODE[tours$IS_SUBTOUR == 1], breaks = seq(5,23, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$IS_SUBTOUR == 1])
+tod1 = wtd.hist(tours$ANCHOR_DEPART_BIN[tours$TOURPURP==1 & tours$IS_SUBTOUR == 0], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP==1 & tours$IS_SUBTOUR == 0])
+tod2 = wtd.hist(tours$ANCHOR_DEPART_BIN[tours$TOURPURP==2 & tours$IS_SUBTOUR == 0], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP==2 & tours$IS_SUBTOUR == 0])
+tod3 = wtd.hist(tours$ANCHOR_DEPART_BIN[tours$TOURPURP==3 & tours$IS_SUBTOUR == 0], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP==3 & tours$IS_SUBTOUR == 0])
+tod4 = wtd.hist(tours$ANCHOR_DEPART_BIN[tours$TOURPURP==4 & tours$IS_SUBTOUR == 0], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP==4 & tours$IS_SUBTOUR == 0])
+todi56 = wtd.hist(tours$ANCHOR_DEPART_BIN[tours$TOURPURP>=5 & tours$TOURPURP<=6 & tours$FULLY_JOINT==0 & tours$IS_SUBTOUR == 0], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP>=5 & tours$TOURPURP<=6 & tours$FULLY_JOINT==0 & tours$IS_SUBTOUR == 0])
+todi789 = wtd.hist(tours$ANCHOR_DEPART_BIN[tours$TOURPURP>=7 & tours$TOURPURP<=9 & tours$FULLY_JOINT==0 & tours$IS_SUBTOUR == 0], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP>=7 & tours$TOURPURP<=9 & tours$FULLY_JOINT==0 & tours$IS_SUBTOUR == 0])
+todj56 = wtd.hist(jtours$ANCHOR_DEPART_BIN[jtours$JOINT_PURP>=5 & jtours$JOINT_PURP<=6], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = jtours$finalweight[jtours$JOINT_PURP>=5 & jtours$JOINT_PURP<=6])
+todj789 = wtd.hist(jtours$ANCHOR_DEPART_BIN[jtours$JOINT_PURP>=7 & jtours$JOINT_PURP<=9], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = jtours$finalweight[jtours$JOINT_PURP>=7 & jtours$JOINT_PURP<=9])
+tod15 = wtd.hist(tours$ANCHOR_DEPART_BIN[tours$IS_SUBTOUR == 1], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$IS_SUBTOUR == 1])
 
 todDepProfile = data.frame(tod1$counts, tod2$counts, tod3$counts, tod4$counts, todi56$counts, todi789$counts
                             , todj56$counts, todj789$counts, tod15$counts)
@@ -1246,15 +1244,15 @@ todDepProfile_vis = todDepProfile_vis[todDepProfile_vis$timebin!="Sum",]
 todDepProfile_vis$PURPOSE[todDepProfile_vis$PURPOSE=="Sum"] = "Total"
 todDepProfile_vis$timebin = as.numeric(todDepProfile_vis$timebin)
 
-arr1 = wtd.hist(tours$ANCHOR_ARRIVE_BIN_RECODE[tours$TOURPURP==1 & tours$IS_SUBTOUR == 0], breaks = seq(5,23, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP==1 & tours$IS_SUBTOUR == 0])
-arr2 = wtd.hist(tours$ANCHOR_ARRIVE_BIN_RECODE[tours$TOURPURP==2 & tours$IS_SUBTOUR == 0], breaks = seq(5,23, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP==2 & tours$IS_SUBTOUR == 0])
-arr3 = wtd.hist(tours$ANCHOR_ARRIVE_BIN_RECODE[tours$TOURPURP==3 & tours$IS_SUBTOUR == 0], breaks = seq(5,23, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP==3 & tours$IS_SUBTOUR == 0])
-arr4 = wtd.hist(tours$ANCHOR_ARRIVE_BIN_RECODE[tours$TOURPURP==4 & tours$IS_SUBTOUR == 0], breaks = seq(5,23, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP==4 & tours$IS_SUBTOUR == 0])
-arri56 = wtd.hist(tours$ANCHOR_ARRIVE_BIN_RECODE[tours$TOURPURP>=5 & tours$TOURPURP<=6 & tours$FULLY_JOINT==0 & tours$IS_SUBTOUR == 0], breaks = seq(5,23, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP>=5 & tours$TOURPURP<=6 & tours$FULLY_JOINT==0 & tours$IS_SUBTOUR == 0])
-arri789 = wtd.hist(tours$ANCHOR_ARRIVE_BIN_RECODE[tours$TOURPURP>=7 & tours$TOURPURP<=9 & tours$FULLY_JOINT==0 & tours$IS_SUBTOUR == 0], breaks = seq(5,23, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP>=7 & tours$TOURPURP<=9 & tours$FULLY_JOINT==0 & tours$IS_SUBTOUR == 0])
-arrj56 = wtd.hist(jtours$ANCHOR_ARRIVE_BIN_RECODE[jtours$JOINT_PURP>=5 & jtours$JOINT_PURP<=6], breaks = seq(5,23, by=1), freq = NULL, right=FALSE, weight = jtours$finalweight[jtours$JOINT_PURP>=5 & jtours$JOINT_PURP<=6])
-arrj789 = wtd.hist(jtours$ANCHOR_ARRIVE_BIN_RECODE[jtours$JOINT_PURP>=7 & jtours$JOINT_PURP<=9], breaks = seq(5,23, by=1), freq = NULL, right=FALSE, weight = jtours$finalweight[jtours$JOINT_PURP>=7 & jtours$JOINT_PURP<=9])
-arr15 = wtd.hist(tours$ANCHOR_ARRIVE_BIN_RECODE[tours$IS_SUBTOUR == 1], breaks = seq(5,23, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$IS_SUBTOUR == 1])
+arr1 = wtd.hist(tours$ANCHOR_ARRIVE_BIN[tours$TOURPURP==1 & tours$IS_SUBTOUR == 0], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP==1 & tours$IS_SUBTOUR == 0])
+arr2 = wtd.hist(tours$ANCHOR_ARRIVE_BIN[tours$TOURPURP==2 & tours$IS_SUBTOUR == 0], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP==2 & tours$IS_SUBTOUR == 0])
+arr3 = wtd.hist(tours$ANCHOR_ARRIVE_BIN[tours$TOURPURP==3 & tours$IS_SUBTOUR == 0], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP==3 & tours$IS_SUBTOUR == 0])
+arr4 = wtd.hist(tours$ANCHOR_ARRIVE_BIN[tours$TOURPURP==4 & tours$IS_SUBTOUR == 0], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP==4 & tours$IS_SUBTOUR == 0])
+arri56 = wtd.hist(tours$ANCHOR_ARRIVE_BIN[tours$TOURPURP>=5 & tours$TOURPURP<=6 & tours$FULLY_JOINT==0 & tours$IS_SUBTOUR == 0], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP>=5 & tours$TOURPURP<=6 & tours$FULLY_JOINT==0 & tours$IS_SUBTOUR == 0])
+arri789 = wtd.hist(tours$ANCHOR_ARRIVE_BIN[tours$TOURPURP>=7 & tours$TOURPURP<=9 & tours$FULLY_JOINT==0 & tours$IS_SUBTOUR == 0], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$TOURPURP>=7 & tours$TOURPURP<=9 & tours$FULLY_JOINT==0 & tours$IS_SUBTOUR == 0])
+arrj56 = wtd.hist(jtours$ANCHOR_ARRIVE_BIN[jtours$JOINT_PURP>=5 & jtours$JOINT_PURP<=6], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = jtours$finalweight[jtours$JOINT_PURP>=5 & jtours$JOINT_PURP<=6])
+arrj789 = wtd.hist(jtours$ANCHOR_ARRIVE_BIN[jtours$JOINT_PURP>=7 & jtours$JOINT_PURP<=9], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = jtours$finalweight[jtours$JOINT_PURP>=7 & jtours$JOINT_PURP<=9])
+arr15 = wtd.hist(tours$ANCHOR_ARRIVE_BIN[tours$IS_SUBTOUR == 1], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = tours$finalweight[tours$IS_SUBTOUR == 1])
 
 
 todArrProfile = data.frame(arr1$counts, arr2$counts, arr3$counts, arr4$counts, arri56$counts, arri789$counts
@@ -1285,15 +1283,15 @@ todArrProfile_vis$timebin = as.numeric(todArrProfile_vis$timebin)
 tours_posdur = tours[tours$TOUR_DUR_BIN_RECODE >= 1,]
 jtours_posdur = jtours[jtours$TOUR_DUR_BIN_RECODE >= 1,]
 
-dur1 = wtd.hist(tours_posdur$TOUR_DUR_BIN_RECODE[tours_posdur$TOURPURP==1 & tours_posdur$IS_SUBTOUR == 0], breaks = seq(1,19, by=1), freq = NULL, right=FALSE, weight = tours_posdur$finalweight[tours_posdur$TOURPURP==1 & tours_posdur$IS_SUBTOUR == 0])
-dur2 = wtd.hist(tours_posdur$TOUR_DUR_BIN_RECODE[tours_posdur$TOURPURP==2 & tours_posdur$IS_SUBTOUR == 0], breaks = seq(1,19, by=1), freq = NULL, right=FALSE, weight = tours_posdur$finalweight[tours_posdur$TOURPURP==2 & tours_posdur$IS_SUBTOUR == 0])
-dur3 = wtd.hist(tours_posdur$TOUR_DUR_BIN_RECODE[tours_posdur$TOURPURP==3 & tours_posdur$IS_SUBTOUR == 0], breaks = seq(1,19, by=1), freq = NULL, right=FALSE, weight = tours_posdur$finalweight[tours_posdur$TOURPURP==3 & tours_posdur$IS_SUBTOUR == 0])
-dur4 = wtd.hist(tours_posdur$TOUR_DUR_BIN_RECODE[tours_posdur$TOURPURP==4 & tours_posdur$IS_SUBTOUR == 0], breaks = seq(1,19, by=1), freq = NULL, right=FALSE, weight = tours_posdur$finalweight[tours_posdur$TOURPURP==4 & tours_posdur$IS_SUBTOUR == 0])
-duri56 = wtd.hist(tours_posdur$TOUR_DUR_BIN_RECODE[tours_posdur$TOURPURP>=5 & tours_posdur$TOURPURP<=6 & tours_posdur$FULLY_JOINT==0 & tours_posdur$IS_SUBTOUR == 0], breaks = seq(1,19, by=1), freq = NULL, right=FALSE, weight = tours_posdur$finalweight[tours_posdur$TOURPURP>=5 & tours_posdur$TOURPURP<=6 & tours_posdur$FULLY_JOINT==0 & tours_posdur$IS_SUBTOUR == 0])
-duri789 = wtd.hist(tours_posdur$TOUR_DUR_BIN_RECODE[tours_posdur$TOURPURP>=7 & tours_posdur$TOURPURP<=9 & tours_posdur$FULLY_JOINT==0 & tours_posdur$IS_SUBTOUR == 0], breaks = seq(1,19, by=1), freq = NULL, right=FALSE, weight = tours_posdur$finalweight[tours_posdur$TOURPURP>=7 & tours_posdur$TOURPURP<=9 & tours_posdur$FULLY_JOINT==0 & tours_posdur$IS_SUBTOUR == 0])
-durj56 = wtd.hist(jtours_posdur$TOUR_DUR_BIN_RECODE[jtours_posdur$JOINT_PURP>=5 & jtours_posdur$JOINT_PURP<=6], breaks = seq(1,19, by=1), freq = NULL, right=FALSE, weight = jtours_posdur$finalweight[jtours_posdur$JOINT_PURP>=5 & jtours_posdur$JOINT_PURP<=6])
-durj789 = wtd.hist(jtours_posdur$TOUR_DUR_BIN_RECODE[jtours_posdur$JOINT_PURP>=7 & jtours_posdur$JOINT_PURP<=9], breaks = seq(1,19, by=1), freq = NULL, right=FALSE, weight = jtours_posdur$finalweight[jtours_posdur$JOINT_PURP>=7 & jtours_posdur$JOINT_PURP<=9])
-dur15 = wtd.hist(tours_posdur$TOUR_DUR_BIN_RECODE[tours_posdur$IS_SUBTOUR == 1], breaks = seq(1,19, by=1), freq = NULL, right=FALSE, weight = tours_posdur$finalweight[tours_posdur$IS_SUBTOUR == 1])
+dur1 = wtd.hist(tours_posdur$TOUR_DUR_BIN_RECODE[tours_posdur$TOURPURP==1 & tours_posdur$IS_SUBTOUR == 0], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = tours_posdur$finalweight[tours_posdur$TOURPURP==1 & tours_posdur$IS_SUBTOUR == 0])
+dur2 = wtd.hist(tours_posdur$TOUR_DUR_BIN_RECODE[tours_posdur$TOURPURP==2 & tours_posdur$IS_SUBTOUR == 0], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = tours_posdur$finalweight[tours_posdur$TOURPURP==2 & tours_posdur$IS_SUBTOUR == 0])
+dur3 = wtd.hist(tours_posdur$TOUR_DUR_BIN_RECODE[tours_posdur$TOURPURP==3 & tours_posdur$IS_SUBTOUR == 0], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = tours_posdur$finalweight[tours_posdur$TOURPURP==3 & tours_posdur$IS_SUBTOUR == 0])
+dur4 = wtd.hist(tours_posdur$TOUR_DUR_BIN_RECODE[tours_posdur$TOURPURP==4 & tours_posdur$IS_SUBTOUR == 0], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = tours_posdur$finalweight[tours_posdur$TOURPURP==4 & tours_posdur$IS_SUBTOUR == 0])
+duri56 = wtd.hist(tours_posdur$TOUR_DUR_BIN_RECODE[tours_posdur$TOURPURP>=5 & tours_posdur$TOURPURP<=6 & tours_posdur$FULLY_JOINT==0 & tours_posdur$IS_SUBTOUR == 0], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = tours_posdur$finalweight[tours_posdur$TOURPURP>=5 & tours_posdur$TOURPURP<=6 & tours_posdur$FULLY_JOINT==0 & tours_posdur$IS_SUBTOUR == 0])
+duri789 = wtd.hist(tours_posdur$TOUR_DUR_BIN_RECODE[tours_posdur$TOURPURP>=7 & tours_posdur$TOURPURP<=9 & tours_posdur$FULLY_JOINT==0 & tours_posdur$IS_SUBTOUR == 0], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = tours_posdur$finalweight[tours_posdur$TOURPURP>=7 & tours_posdur$TOURPURP<=9 & tours_posdur$FULLY_JOINT==0 & tours_posdur$IS_SUBTOUR == 0])
+durj56 = wtd.hist(jtours_posdur$TOUR_DUR_BIN_RECODE[jtours_posdur$JOINT_PURP>=5 & jtours_posdur$JOINT_PURP<=6], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = jtours_posdur$finalweight[jtours_posdur$JOINT_PURP>=5 & jtours_posdur$JOINT_PURP<=6])
+durj789 = wtd.hist(jtours_posdur$TOUR_DUR_BIN_RECODE[jtours_posdur$JOINT_PURP>=7 & jtours_posdur$JOINT_PURP<=9], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = jtours_posdur$finalweight[jtours_posdur$JOINT_PURP>=7 & jtours_posdur$JOINT_PURP<=9])
+dur15 = wtd.hist(tours_posdur$TOUR_DUR_BIN_RECODE[tours_posdur$IS_SUBTOUR == 1], breaks = seq(1,48, by=1), freq = NULL, right=FALSE, weight = tours_posdur$finalweight[tours_posdur$IS_SUBTOUR == 1])
 
 todDurProfile = data.frame(dur1$counts, dur2$counts, dur3$counts, dur4$counts, duri56$counts, duri789$counts
                             , durj56$counts, durj789$counts, dur15$counts)
@@ -1733,15 +1731,15 @@ write.csv(avgStopOutofDirectionDist, "avgStopOutofDirectionDist_vis.csv", row.na
 
 
 #Stop Departure Time
-stopfreq1 = wtd.hist(stops$DEST_DEP_BIN_RECODE[stops$TOURPURP==1 & stops$IS_SUBTOUR == 0], breaks = c(seq(5,23, by=1), 9999), freq = NULL, right=FALSE, weight = stops$finalweight[stops$TOURPURP==1 & stops$IS_SUBTOUR == 0])
-stopfreq2 = wtd.hist(stops$DEST_DEP_BIN_RECODE[stops$TOURPURP==2 & stops$IS_SUBTOUR == 0], breaks = c(seq(5,23, by=1), 9999), freq = NULL, right=FALSE, weight = stops$finalweight[stops$TOURPURP==2 & stops$IS_SUBTOUR == 0])
-stopfreq3 = wtd.hist(stops$DEST_DEP_BIN_RECODE[stops$TOURPURP==3 & stops$IS_SUBTOUR == 0], breaks = c(seq(5,23, by=1), 9999), freq = NULL, right=FALSE, weight = stops$finalweight[stops$TOURPURP==3 & stops$IS_SUBTOUR == 0])
-stopfreq4 = wtd.hist(stops$DEST_DEP_BIN_RECODE[stops$TOURPURP==4 & stops$IS_SUBTOUR == 0], breaks = c(seq(5,23, by=1), 9999), freq = NULL, right=FALSE, weight = stops$finalweight[stops$TOURPURP==4 & stops$IS_SUBTOUR == 0])
-stopfreqi56 = wtd.hist(stops$DEST_DEP_BIN_RECODE[stops$TOURPURP>=5 & stops$TOURPURP<=6 & stops$FULLY_JOINT==0 & stops$IS_SUBTOUR == 0], breaks = c(seq(5,23, by=1), 9999), freq = NULL, right=FALSE, weight = stops$finalweight[stops$TOURPURP>=5 & stops$TOURPURP<=6 & stops$FULLY_JOINT==0 & stops$IS_SUBTOUR == 0])
-stopfreqi789 = wtd.hist(stops$DEST_DEP_BIN_RECODE[stops$TOURPURP>=7 & stops$TOURPURP<=9 & stops$FULLY_JOINT==0 & stops$IS_SUBTOUR == 0], breaks = c(seq(5,23, by=1), 9999), freq = NULL, right=FALSE, weight = stops$finalweight[stops$TOURPURP>=7 & stops$TOURPURP<=9 & stops$FULLY_JOINT==0 & stops$IS_SUBTOUR == 0])
-stopfreqj56 = wtd.hist(jstops$DEST_DEP_BIN_RECODE[jstops$TOURPURP>=5 & jstops$TOURPURP<=6], breaks = c(seq(5,23, by=1), 9999), freq = NULL, right=FALSE, weight = jstops$finalweight[jstops$TOURPURP>=5 & jstops$TOURPURP<=6])
-stopfreqj789 = wtd.hist(jstops$DEST_DEP_BIN_RECODE[jstops$TOURPURP>=7 & jstops$TOURPURP<=9], breaks = c(seq(5,23, by=1), 9999), freq = NULL, right=FALSE, weight = jstops$finalweight[jstops$TOURPURP>=7 & jstops$TOURPURP<=9])
-stopfreq10 = wtd.hist(stops$DEST_DEP_BIN_RECODE[stops$SUBTOUR==1], breaks = c(seq(5,23, by=1), 9999), freq = NULL, right=FALSE, weight = stops$finalweight[stops$SUBTOUR==1])
+stopfreq1 = wtd.hist(stops$DEST_DEP_BIN[stops$TOURPURP==1 & stops$IS_SUBTOUR == 0], breaks = c(seq(1,48, by=1), 9999), freq = NULL, right=FALSE, weight = stops$finalweight[stops$TOURPURP==1 & stops$IS_SUBTOUR == 0])
+stopfreq2 = wtd.hist(stops$DEST_DEP_BIN[stops$TOURPURP==2 & stops$IS_SUBTOUR == 0], breaks = c(seq(1,48, by=1), 9999), freq = NULL, right=FALSE, weight = stops$finalweight[stops$TOURPURP==2 & stops$IS_SUBTOUR == 0])
+stopfreq3 = wtd.hist(stops$DEST_DEP_BIN[stops$TOURPURP==3 & stops$IS_SUBTOUR == 0], breaks = c(seq(1,48, by=1), 9999), freq = NULL, right=FALSE, weight = stops$finalweight[stops$TOURPURP==3 & stops$IS_SUBTOUR == 0])
+stopfreq4 = wtd.hist(stops$DEST_DEP_BIN[stops$TOURPURP==4 & stops$IS_SUBTOUR == 0], breaks = c(seq(1,48, by=1), 9999), freq = NULL, right=FALSE, weight = stops$finalweight[stops$TOURPURP==4 & stops$IS_SUBTOUR == 0])
+stopfreqi56 = wtd.hist(stops$DEST_DEP_BIN[stops$TOURPURP>=5 & stops$TOURPURP<=6 & stops$FULLY_JOINT==0 & stops$IS_SUBTOUR == 0], breaks = c(seq(1,48, by=1), 9999), freq = NULL, right=FALSE, weight = stops$finalweight[stops$TOURPURP>=5 & stops$TOURPURP<=6 & stops$FULLY_JOINT==0 & stops$IS_SUBTOUR == 0])
+stopfreqi789 = wtd.hist(stops$DEST_DEP_BIN[stops$TOURPURP>=7 & stops$TOURPURP<=9 & stops$FULLY_JOINT==0 & stops$IS_SUBTOUR == 0], breaks = c(seq(1,48, by=1), 9999), freq = NULL, right=FALSE, weight = stops$finalweight[stops$TOURPURP>=7 & stops$TOURPURP<=9 & stops$FULLY_JOINT==0 & stops$IS_SUBTOUR == 0])
+stopfreqj56 = wtd.hist(jstops$DEST_DEP_BIN[jstops$TOURPURP>=5 & jstops$TOURPURP<=6], breaks = c(seq(1,48, by=1), 9999), freq = NULL, right=FALSE, weight = jstops$finalweight[jstops$TOURPURP>=5 & jstops$TOURPURP<=6])
+stopfreqj789 = wtd.hist(jstops$DEST_DEP_BIN[jstops$TOURPURP>=7 & jstops$TOURPURP<=9], breaks = c(seq(1,48, by=1), 9999), freq = NULL, right=FALSE, weight = jstops$finalweight[jstops$TOURPURP>=7 & jstops$TOURPURP<=9])
+stopfreq10 = wtd.hist(stops$DEST_DEP_BIN[stops$SUBTOUR==1], breaks = c(seq(1,48, by=1), 9999), freq = NULL, right=FALSE, weight = stops$finalweight[stops$SUBTOUR==1])
 
 stopFreq = data.frame(stopfreq1$counts, stopfreq2$counts, stopfreq3$counts, stopfreq4$counts, stopfreqi56$counts
                        , stopfreqi789$counts, stopfreqj56$counts, stopfreqj789$counts, stopfreq10$counts)
@@ -1768,15 +1766,15 @@ stopDep_vis$PURPOSE[stopDep_vis$PURPOSE=="Sum"] = "Total"
 stopDep_vis$timebin = as.numeric(stopDep_vis$timebin)
 
 #Trip Departure Time
-stopfreq1 = wtd.hist(trips$ORIG_DEP_BIN_RECODE[trips$TOURPURP==1 & trips$IS_SUBTOUR == 0], breaks = c(seq(5,23, by=1), 9999), freq = NULL, right=FALSE, weight = trips$finalweight[trips$TOURPURP==1 & trips$IS_SUBTOUR == 0])
-stopfreq2 = wtd.hist(trips$ORIG_DEP_BIN_RECODE[trips$TOURPURP==2 & trips$IS_SUBTOUR == 0], breaks = c(seq(5,23, by=1), 9999), freq = NULL, right=FALSE, weight = trips$finalweight[trips$TOURPURP==2 & trips$IS_SUBTOUR == 0])
-stopfreq3 = wtd.hist(trips$ORIG_DEP_BIN_RECODE[trips$TOURPURP==3 & trips$IS_SUBTOUR == 0], breaks = c(seq(5,23, by=1), 9999), freq = NULL, right=FALSE, weight = trips$finalweight[trips$TOURPURP==3 & trips$IS_SUBTOUR == 0])
-stopfreq4 = wtd.hist(trips$ORIG_DEP_BIN_RECODE[trips$TOURPURP==4 & trips$IS_SUBTOUR == 0], breaks = c(seq(5,23, by=1), 9999), freq = NULL, right=FALSE, weight = trips$finalweight[trips$TOURPURP==4 & trips$IS_SUBTOUR == 0])
-stopfreqi56 = wtd.hist(trips$ORIG_DEP_BIN_RECODE[trips$TOURPURP>=5 & trips$TOURPURP<=6 & trips$FULLY_JOINT==0 & trips$IS_SUBTOUR == 0], breaks = c(seq(5,23, by=1), 9999), freq = NULL, right=FALSE, weight = trips$finalweight[trips$TOURPURP>=5 & trips$TOURPURP<=6 & trips$FULLY_JOINT==0 & trips$IS_SUBTOUR == 0])
-stopfreqi789 = wtd.hist(trips$ORIG_DEP_BIN_RECODE[trips$TOURPURP>=7 & trips$TOURPURP<=9 & trips$FULLY_JOINT==0 & trips$IS_SUBTOUR == 0], breaks = c(seq(5,23, by=1), 9999), freq = NULL, right=FALSE, weight = trips$finalweight[trips$TOURPURP>=7 & trips$TOURPURP<=9 & trips$FULLY_JOINT==0 & trips$IS_SUBTOUR == 0])
-stopfreqj56 = wtd.hist(jtrips$ORIG_DEP_BIN_RECODE[jtrips$TOURPURP>=5 & jtrips$TOURPURP<=6], breaks = c(seq(5,23, by=1), 9999), freq = NULL, right=FALSE, weight = jtrips$finalweight[jtrips$TOURPURP>=5 & jtrips$TOURPURP<=6])
-stopfreqj789 = wtd.hist(jtrips$ORIG_DEP_BIN_RECODE[jtrips$TOURPURP>=7 & jtrips$TOURPURP<=9], breaks = c(seq(5,23, by=1), 9999), freq = NULL, right=FALSE, weight = jtrips$finalweight[jtrips$TOURPURP>=7 & jtrips$TOURPURP<=9])
-stopfreq10 = wtd.hist(trips$ORIG_DEP_BIN_RECODE[trips$SUBTOUR==1], breaks = c(seq(5,23, by=1), 9999), freq = NULL, right=FALSE, weight = trips$finalweight[trips$SUBTOUR==1])
+stopfreq1 = wtd.hist(trips$ORIG_DEP_BIN[trips$TOURPURP==1 & trips$IS_SUBTOUR == 0], breaks = c(seq(1,48, by=1), 9999), freq = NULL, right=FALSE, weight = trips$finalweight[trips$TOURPURP==1 & trips$IS_SUBTOUR == 0])
+stopfreq2 = wtd.hist(trips$ORIG_DEP_BIN[trips$TOURPURP==2 & trips$IS_SUBTOUR == 0], breaks = c(seq(1,48, by=1), 9999), freq = NULL, right=FALSE, weight = trips$finalweight[trips$TOURPURP==2 & trips$IS_SUBTOUR == 0])
+stopfreq3 = wtd.hist(trips$ORIG_DEP_BIN[trips$TOURPURP==3 & trips$IS_SUBTOUR == 0], breaks = c(seq(1,48, by=1), 9999), freq = NULL, right=FALSE, weight = trips$finalweight[trips$TOURPURP==3 & trips$IS_SUBTOUR == 0])
+stopfreq4 = wtd.hist(trips$ORIG_DEP_BIN[trips$TOURPURP==4 & trips$IS_SUBTOUR == 0], breaks = c(seq(1,48, by=1), 9999), freq = NULL, right=FALSE, weight = trips$finalweight[trips$TOURPURP==4 & trips$IS_SUBTOUR == 0])
+stopfreqi56 = wtd.hist(trips$ORIG_DEP_BIN[trips$TOURPURP>=5 & trips$TOURPURP<=6 & trips$FULLY_JOINT==0 & trips$IS_SUBTOUR == 0], breaks = c(seq(1,48, by=1), 9999), freq = NULL, right=FALSE, weight = trips$finalweight[trips$TOURPURP>=5 & trips$TOURPURP<=6 & trips$FULLY_JOINT==0 & trips$IS_SUBTOUR == 0])
+stopfreqi789 = wtd.hist(trips$ORIG_DEP_BIN[trips$TOURPURP>=7 & trips$TOURPURP<=9 & trips$FULLY_JOINT==0 & trips$IS_SUBTOUR == 0], breaks = c(seq(1,48, by=1), 9999), freq = NULL, right=FALSE, weight = trips$finalweight[trips$TOURPURP>=7 & trips$TOURPURP<=9 & trips$FULLY_JOINT==0 & trips$IS_SUBTOUR == 0])
+stopfreqj56 = wtd.hist(jtrips$ORIG_DEP_BIN[jtrips$TOURPURP>=5 & jtrips$TOURPURP<=6], breaks = c(seq(1,48, by=1), 9999), freq = NULL, right=FALSE, weight = jtrips$finalweight[jtrips$TOURPURP>=5 & jtrips$TOURPURP<=6])
+stopfreqj789 = wtd.hist(jtrips$ORIG_DEP_BIN[jtrips$TOURPURP>=7 & jtrips$TOURPURP<=9], breaks = c(seq(1,48, by=1), 9999), freq = NULL, right=FALSE, weight = jtrips$finalweight[jtrips$TOURPURP>=7 & jtrips$TOURPURP<=9])
+stopfreq10 = wtd.hist(trips$ORIG_DEP_BIN[trips$SUBTOUR==1], breaks = c(seq(1,48, by=1), 9999), freq = NULL, right=FALSE, weight = trips$finalweight[trips$SUBTOUR==1])
 
 stopFreq = data.frame(stopfreq1$counts, stopfreq2$counts, stopfreq3$counts, stopfreq4$counts, stopfreqi56$counts
                        , stopfreqi789$counts, stopfreqj56$counts, stopfreqj789$counts, stopfreq10$counts)
@@ -2266,8 +2264,8 @@ trips_sample = trips_sample[trips_sample$tour_purpose != "Other",]
 trips_sample = trips_sample[trips_sample$OCOUNTY!="Missing" & trips_sample$DCOUNTY!="Missing",]
 trips_sample = trips_sample[trips_sample$TRIPMODE>0 & trips_sample$TRIPMODE<10,]
 
-tripModeNames = c('Auto SOV','Auto 2 Person','Auto 3+ Person','Walk','Bike/Moped','Walk-Transit','Drive-Transit','Drive-Transit','TNR-Transit', 'Taxi/TNC', 'School Bus')
-tripModeCodes = c(1, 2, 3, 4, 5, 6, 7, 7, 9, 10, 11)
+tripModeNames = c('Auto SOV','Auto 2 Person','Auto 3+ Person','Walk','Bike/Moped','Walk-Transit','Drive-Transit','TNR-Transit', 'Taxi/TNC', 'School Bus')
+tripModeCodes = c(1, 2, 3, 4, 5, 6, 7, 9, 10, 11)
 tripMode_df = data.frame(tripModeCodes, tripModeNames)
 trips_sample$trip_mode = tripMode_df$tripModeNames[match(trips_sample$TRIPMODE, tripMode_df$tripModeCodes)]
 

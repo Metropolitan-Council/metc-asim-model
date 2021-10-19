@@ -42,9 +42,9 @@ home_is_rural,home_is_rural,"reindex(land_use.RURAL, households.home_zone_id) ==
 #,, default for work and school location logsums before auto_ownership model is run
 #,auto_ownership,households.auto_ownership
 TAZ column to match settings file,TAZ,households.home_zone_id
-number of pre-driving age children in the household,num_predrive_child,"_PERSON_COUNT('ptype == 2', persons, households)"
-number of non-working adult in the household,num_nonworker_adults,"_PERSON_COUNT('ptype == 7', persons, households)"
-number of full time workers,num_fullTime_workers,"_PERSON_COUNT('ptype == 5', persons, households)"
-number of part time workers,num_partTime_workers,"_PERSON_COUNT('ptype == 6', persons, households)"
-number of retired adults in the household,_num_retired_adults,"_PERSON_COUNT('ptype == 8', persons, households)"
+number of pre-driving age children in the household,num_predrive_child,"_PERSON_COUNT('ptype == 6', persons, households)"
+number of non-working adult in the household,num_nonworker_adults,"_PERSON_COUNT('ptype == 4', persons, households)"
+number of full time workers,num_fullTime_workers,"_PERSON_COUNT('ptype == 1', persons, households)"
+number of part time workers,num_partTime_workers,"_PERSON_COUNT('ptype == 2', persons, households)"
+number of retired adults in the household,_num_retired_adults,"_PERSON_COUNT('ptype == 5', persons, households)"
 Retired Adults Only Households,retired_adults_only_hh,(households.hhsize > 0) & (households.hhsize == _num_retired_adults)
