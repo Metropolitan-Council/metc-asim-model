@@ -1,14 +1,14 @@
 Description,Expression,M,N,H
-Full-time worker,ptype == 5 & not work_from_home,2.79647,0.09368,0.10985
-Full-time worker,ptype == 5 & work_from_home,0,0.460276126,0.539723874
-Part-time worker,ptype == 6 & not work_from_home,0.61678,0.25757,0.12565
-Part-time worker,ptype == 6 & work_from_home,0,0.672120453,0.327879547
-University student,ptype == 4,0.69229,0.15641,0.1513
-Non-working adult,ptype == 7,0,0.67169,0.32831
-Retired,ptype == 8,0,0.54295,0.45705
-Driving-age child who is in school,ptype == 3 & is_student,0.77609,0.06004,0.16387
-Pre-driving-age child who is in school,ptype == 2 & is_student,0.68514,0.09144,0.22342
-Child who is too young for school,ptype == 1 & is_student,0.14056,0.06512,0.79432
-Driving-age child who is in school,ptype == 3 & not is_student,0,0.26814345,0.73185655
-Pre-driving-age child who is in school,ptype == 2 & not is_student,0,0.290414788,0.709585212
-Child who is too young for school,ptype == 1 & not is_student,0,0.075770269,0.924229731
+Full-time worker,"@(df.ptype == FULL) & (~df.work_from_home)",2.79647,0.09368,0.10985
+Full-time worker,"@(df.ptype == FULL) & (df.work_from_home)",0,0.460276126,0.539723874
+Part-time worker,"@(df.ptype == PART) & (~df.work_from_home)",0.61678,0.25757,0.12565
+Part-time worker,"@(df.ptype == PART) & (df.work_from_home)",0,0.672120453,0.327879547
+University student,"@(df.ptype == UNIVERSITY)",0.69229,0.15641,0.1513
+Non-working adult,"@(df.ptype == NONWORK)",0,0.67169,0.32831
+Retired,"@(df.ptype == RETIRED)",0,0.54295,0.45705
+Driving-age child who is in school,"@(df.ptype == SCHOOL) & (df.is_student)",0.77609,0.06004,0.16387
+Pre-driving-age child who is in school,"@(df.ptype == DRIVING) & (df.is_student)",0.68514,0.09144,0.22342
+Child who is too young for school,"@(df.ptype == PRESCHOOL) & (df.is_student)",0.14056,0.06512,0.79432
+Driving-age child who is in school,"@(df.ptype == SCHOOL) & (~df.is_student)",0,0.26814345,0.73185655
+Pre-driving-age child who is in school,"@(df.ptype == DRIVING) & (~df.is_student)",0,0.290414788,0.709585212
+Child who is too young for school,"@(df.ptype == PRESCHOOL) & (~df.is_student)",0,0.075770269,0.924229731

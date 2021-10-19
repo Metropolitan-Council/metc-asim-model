@@ -1,10 +1,13 @@
+
+inherit_settings: True
+
 shadow_pricing_models:
   school: school_location
   workplace: workplace_location
 
 # global switch to enable/disable loading of saved shadow prices
 # (ignored if global use_shadow_pricing switch is False)
-LOAD_SAVED_SHADOW_PRICES: True
+LOAD_SAVED_SHADOW_PRICES: False
 
 # number of shadow price iterations for cold start
 MAX_ITERATIONS: 10
@@ -19,7 +22,7 @@ SIZE_THRESHOLD: 10
 PERCENT_TOLERANCE: 5
 
 # max percentage of zones allowed to fail
-FAIL_THRESHOLD: 10
+FAIL_THRESHOLD: 1
 
 # CTRAMP or daysim
 SHADOW_PRICE_METHOD: ctramp

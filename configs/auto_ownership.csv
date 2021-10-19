@@ -5,8 +5,8 @@ util_drivers_4_up,4+ Adults (age 16+),num_drivers>3,-1,coef_cars1_drivers_4_up,c
 util_persons_16_17,Persons age 16-17,num_children_16_to_17,-1,coef_cars1_persons_16_17,coef_cars2_persons_16_17,coef_cars34_persons_16_17,coef_cars34_persons_16_17
 util_persons_18_24,Persons age 18-24,num_college_age,-1,coef_cars1_persons_18_24,coef_cars2_persons_18_24,coef_cars34_persons_18_24,coef_cars34_persons_18_24
 util_persons_25_34,Persons age 35-34,num_young_adults,-2,coef_cars1_persons_25_34,coef_cars2_persons_25_34,coef_cars34_persons_25_34,coef_cars34_persons_25_34
-util_presence_children_0_4,Presence of children age 0-4,num_young_children>0,,coef_cars1_presence_children_0_4,coef_cars234_presence_children_0_4,coef_cars234_presence_children_0_4,coef_cars234_presence_children_0_4
-util_presence_children_5_17,Presence of children age 5-17,(num_children_5_to_15+num_children_16_to_17)>0,,coef_cars1_presence_children_5_17,coef_cars2_presence_children_5_17,coef_cars34_presence_children_5_17,coef_cars34_presence_children_5_17
+util_presence_children_0_4,Presence of children age 0-4,num_young_children>0,-1,coef_cars1_presence_children_0_4,coef_cars234_presence_children_0_4,coef_cars234_presence_children_0_4,coef_cars234_presence_children_0_4
+util_presence_children_5_17,Presence of children age 5-17,(num_children_5_to_15+num_children_16_to_17)>0,-1,coef_cars1_presence_children_5_17,coef_cars2_presence_children_5_17,coef_cars34_presence_children_5_17,coef_cars34_presence_children_5_17
 util_num_workers_clip_3,"Number of workers, capped at 3",@df.num_workers.clip(upper=3),,coef_cars1_num_workers_clip_3,coef_cars2_num_workers_clip_3,coef_cars3_num_workers_clip_3,coef_cars4_num_workers_clip_3
 util_hh_income_0_30k,"Piecewise Linear household income, $0-30k","@df.HHINC5S == 0",,coef_cars1_hh_income_0_30k,coef_cars2_hh_income_0_30k,coef_cars3_hh_income_0_30k,coef_cars4_hh_income_0_30k
 util_hh_income_30_75k,"Piecewise Linear household income, $30-75k","@(df.HHINC5S == 1) | (df.HHINC5S == 2)",,coef_cars1_hh_income_30_up,coef_cars2_hh_income_30_up,coef_cars3_hh_income_30_up,coef_cars4_hh_income_30_up

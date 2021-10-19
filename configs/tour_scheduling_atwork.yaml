@@ -1,6 +1,6 @@
 
 SPEC: tour_scheduling_atwork.csv
-COEFFICIENTS: tour_scheduling_atwork_coefficients.csv
+COEFFICIENTS: tour_scheduling_atwork_coeffs.csv
 
 preprocessor:
    SPEC: tour_scheduling_atwork_preprocessor
@@ -14,3 +14,11 @@ SIMULATE_CHOOSER_COLUMNS:
   
 CONSTANTS:
   time_cap: 30
+  PTYPE_FULL: 1
+  PTYPE_PART: 2
+  PTYPE_UNIVERSITY: 3
+  PTYPE_NONWORK: 4
+  PTYPE_RETIRED: 5
+  PTYPE_DRIVING: 6
+  PTYPE_SCHOOL: 7
+  PTYPE_PRESCHOOL: 8

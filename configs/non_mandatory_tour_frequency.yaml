@@ -4,28 +4,28 @@ SPEC: non_mandatory_tour_frequency.csv
 
 SPEC_SEGMENTS:
   - NAME: PTYPE_FULL
-    PTYPE: 5
+    PTYPE: 1
     COEFFICIENTS: non_mandatory_tour_frequency_coefficients_PTYPE_FULL.csv
   - NAME: PTYPE_PART
-    PTYPE: 6
+    PTYPE: 2
     COEFFICIENTS: non_mandatory_tour_frequency_coefficients_PTYPE_PART.csv
   - NAME: PTYPE_UNIVERSITY
-    PTYPE: 4
+    PTYPE: 3
     COEFFICIENTS: non_mandatory_tour_frequency_coefficients_PTYPE_UNIVERSITY.csv
   - NAME: PTYPE_NONWORK
-    PTYPE: 7
+    PTYPE: 4
     COEFFICIENTS: non_mandatory_tour_frequency_coefficients_PTYPE_NONWORK.csv
   - NAME: PTYPE_RETIRED
-    PTYPE: 8
+    PTYPE: 5
     COEFFICIENTS: non_mandatory_tour_frequency_coefficients_PTYPE_RETIRED.csv
   - NAME: PTYPE_DRIVING
-    PTYPE: 3
+    PTYPE: 6
     COEFFICIENTS: non_mandatory_tour_frequency_coefficients_PTYPE_DRIVING.csv
   - NAME: PTYPE_SCHOOL
-    PTYPE: 2
+    PTYPE: 7
     COEFFICIENTS: non_mandatory_tour_frequency_coefficients_PTYPE_SCHOOL.csv
   - NAME: PTYPE_PRESCHOOL
-    PTYPE: 1
+    PTYPE: 8
     COEFFICIENTS: non_mandatory_tour_frequency_coefficients_PTYPE_PRESCHOOL.csv
 
 annotate_persons:

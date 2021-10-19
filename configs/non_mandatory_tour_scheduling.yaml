@@ -1,5 +1,5 @@
 SPEC: tour_scheduling_nonmandatory.csv
-COEFFICIENTS: tour_scheduling_nonmandatory_coefficients.csv
+COEFFICIENTS: tour_scheduling_nonmandatory_coeffs.csv
 
 LOGIT_TYPE: MNL
 
@@ -11,11 +11,12 @@ preprocessor:
     - joint_tour_participants
 
 SIMULATE_CHOOSER_COLUMNS:
-
+  - home_zone_id
   - age
   - female
   - adult
   - ptype
+  - is_university
   - has_pre_school_child_with_mandatory
   - has_driving_age_child_with_mandatory
   - retired_adults_only_hh
@@ -32,7 +33,7 @@ SIMULATE_CHOOSER_COLUMNS:
   - num_add_shop_maint_tours
   - num_add_soc_discr_tours
 
-#LOGSUM_SETTINGS: tour_mode_choice.yaml
+LOGSUM_SETTINGS: tour_mode_choice.yaml
 
 # map : <tour_segment>: <spec_segment>
 # segmentation of tours for processing may differ from segmentation of spec
@@ -47,6 +48,16 @@ TOUR_SPEC_SEGMENTS:
   othdiscr: othdiscr
   othmaint: othmaint
   social: social
+  
+CONSTANTS:
+  PTYPE_FULL: 1
+  PTYPE_PART: 2
+  PTYPE_UNIVERSITY: 3
+  PTYPE_NONWORK: 4
+  PTYPE_RETIRED: 5
+  PTYPE_DRIVING: 6
+  PTYPE_SCHOOL: 7
+  PTYPE_PRESCHOOL: 8
 
 # spec keyed by <spec_segment>
 SPEC_SEGMENTS:
@@ -90,4 +101,4 @@ SPEC_SEGMENTS:
 #    SPEC: non_mandatory_tour_scheduling_annotate_alts_preprocessor.csv
 #    DF: alt_tdd
 #
-#DESTINATION_FOR_TOUR_PURPOSE: destination
+DESTINATION_FOR_TOUR_PURPOSE: destination
