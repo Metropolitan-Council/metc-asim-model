@@ -45,9 +45,9 @@ CONSTANTS:
     walkThresh: 1.50
     shortWalk: 0.333
     longWalk: 0.667
-    walkSpeed: 3.00
+    walkSpeed: 2.5 #reduced from 3, from survey: mean=2.163, median=2.475, 3q=2.846
     bikeThresh: 6.00
-    bikeSpeed: 12.00
+    bikeSpeed: 10.00 #reduced from 12, from survey: mean=7.687, median=7.69, 3q=10.262
     maxCbdAreaTypeThresh: 2
     indivTour: 1.00000
     # RIDEHAIL Settings

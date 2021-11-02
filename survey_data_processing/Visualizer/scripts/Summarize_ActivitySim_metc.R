@@ -61,7 +61,7 @@ setwd(WD)
 
 #-----------------------------------------------
 # Define other variables
-pertypeCodes <- data.frame(code = c(5, 6, 4, 7, 8, 3, 2, 1, "All"),  #code = c(1,2,3,4,5,6,7,8,"All"), 
+pertypeCodes <- data.frame(code = c(1,2,3,4,5,6,7,8,"All"), 
                            name = c("FT Worker", "PT Worker", "Univ Stud", "Non Worker", "Retiree", "Driv Stud", "NonDriv Stud", "Pre-School", "All"))
 # ensure persontype coding already in per file is consistent with above
 
@@ -442,7 +442,7 @@ unique_joint_tours$JOINT_PURP <- unique_joint_tours$TOURPURP
 # Creating individual columns for up to 12 persons in each joint tour: PER1, PER2,... and PTYPE1, PTYPE2,....
 max_participant_num <- max(jtour_participants$participant_num)
 
-participant_pivot <- dcast(jtour_participants, tour_id ~ participant_num, value.var = "person_id")
+participant_pivot <- reshape2::dcast(jtour_participants, tour_id ~ participant_num, value.var = "person_id")
 
 for(i in seq(1, 12)){
   perid_colname <- paste("PER", i, sep="")

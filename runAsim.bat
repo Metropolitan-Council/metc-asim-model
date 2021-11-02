@@ -8,3 +8,4 @@ python simulation.py -c configs -d data -o %OUTFOLDER%
 
 REM Run Cube Assignment (TODO)
 REM %CUBE% cube\convertOutputMatrices.s /Start
+

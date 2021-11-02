@@ -49,6 +49,6 @@ coef_maintenance_duration_constant_duration_greater_than_1_hr_square_root,-0.139
 coef_maintenance_calibration_constant_duration_1,0.0,F
 coef_maintenance_calibration_constant_duration_2,0.0,F
 coef_maintenance_calibration_constant_duration_3,0.0,F
-coef_maintenance_calibration_constant_duration_4,0.25854243359403917,F
-coef_maintenance_calibration_constant_duration_5,0.22211610318873198,F
+coef_maintenance_calibration_constant_duration_4,0.0,F #.25854243359403917,F
+coef_maintenance_calibration_constant_duration_5,0.0,F #.22211610318873198,F
 coef_mode_choice_logsum,0.23911188143948614,F

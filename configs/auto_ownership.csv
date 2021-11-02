@@ -23,3 +23,4 @@ util_retail_non_motor_no_workers,"Retail accessibility by non-motorized, if 0 wo
 util_retail_non_motor_workers,"Retail accessibility by non-motorized, if 1+ workers",(num_workers>0)*nmRetail,,coef_cars1_retail_non_motor_workers,coef_cars2_retail_non_motor_workers,coef_cars34_retail_non_motor_workers,coef_cars34_retail_non_motor_workers
 util_auto_time_saving_per_worker,Auto time savings per worker to work,"@np.where(df.num_workers > 0, df.hh_work_auto_savings_ratio / df.num_workers, 0)",,coef_cars1_auto_time_saving_per_worker,coef_cars2_auto_time_saving_per_worker,coef_cars3_auto_time_saving_per_worker,coef_cars4_auto_time_saving_per_worker
 #util_univ_students_GQ,University Students living in GQ households,(num_college_age > 0) & (TYPE == 3),,coef_cars1_univ_GQ,coef_unavailable,coef_unavailable,coef_unavailable
+util_cars_calib_adj,d,1,,coef_calib1a,coef_calib2a,coef_calib3a,coef_calib4a
