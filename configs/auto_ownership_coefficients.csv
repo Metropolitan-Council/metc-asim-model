@@ -73,3 +73,7 @@ coef_cars1_retail_transit_workers,-0.368402822,F
 coef_cars2_retail_transit_workers,-0.561291527,F
 coef_cars34_retail_transit_workers,-0.661791197,F
 coef_cars1_univ_GQ,-3.562778707,F
+coef_calib1a,1.1,F
+coef_calib2a,1.5,F
+coef_calib3a,0.75,F
+coef_calib4a,0.5,F

@@ -1,6 +1,6 @@
 Description,Target,Expression
 # Fix the person types
-person type,ptype,"np.where(persons.PTYPE==1,8,np.where(persons.PTYPE==2,6,np.where(persons.PTYPE==3,7,np.where(persons.PTYPE==4,3,np.where(persons.PTYPE==5,1,np.where(persons.PTYPE==6,2,np.where(persons.PTYPE==7,4,5)))))))"
+person type,ptype,"np.where(persons.PTYPE==1,8,np.where(persons.PTYPE==2,7,np.where(persons.PTYPE==3,6,np.where(persons.PTYPE==4,3,np.where(persons.PTYPE==5,1,np.where(persons.PTYPE==6,2,np.where(persons.PTYPE==7,4,5)))))))"
 #,, annotate persons table after import
 age_0_to_5,age_0_to_5,"persons.AGE == 1"
 age_6_to_12,age_6_to_12,"persons.AGE == 2"

@@ -8,13 +8,20 @@ strict: False
 mem_tick: 30
 use_shadow_pricing: False
 ## - example sample
-households_sample_size: 50000
+households_sample_size: 100000
 chunk_training_mode: disabled
 chunk_size: 100_000_000_000
 num_processes: 10
 default_initial_rows_per_chunk: 1000000000
 # - tracing
-trace_hh_id: 41746
+# trace_hh_id: 214
+# trace_hh_id: 1986
+# trace_hh_id: 4218
+# trace_hh_id: 345105 
+# trace_hh_id: 345208
+# trace_hh_id: 345490
+#trace_hh_id: 346694
+trace_hh_id: 729358
 #trace_od:
 
 # input tables
@@ -72,7 +79,7 @@ household_median_value_of_time:
 
 #trace_od: [5, 11]
 # to resume after last successful checkpoint, specify resume_after: _
-# resume_after: cdap_simulate
+#resume_after: cdap_simulate
 models:
   ### mp_initialize step
   - initialize_landuse

@@ -94,6 +94,8 @@ per                  = fread(file.path(Survey_Dir, "PER_SPA_INPUT.csv"))
 
 processedPerson      = data.table(HH_ID = numeric(),PER_ID  = numeric())
 proc_hh              = data.table(HH_ID = numeric())
+perDays = data.table(HH_ID = numeric(),PER_ID  = numeric(), dow = numeric())
+hhDays = data.table(HH_ID = numeric(), dow = numeric())
 
 trips = data.table()
 tours = data.table()
@@ -106,10 +108,13 @@ for(dow in c(1:4)){
   cat(dow)
   
   per_data = fread(file.path(Survey_Processed_Dir, paste0('day', as.character(dow)), "persons.csv"))
+  perDays = rbindlist(list(perDays, data.frame(HH_ID = per_data$HH_ID, PER_ID = per_data$PER_ID, dow = dow)))
+  
   per_data = per_data[!processedPerson, on = .(HH_ID, PER_ID)]
   processedPerson = rbindlist(list(processedPerson, per_data), use.names = TRUE, fill = TRUE)
   
   hh_data   = fread(file.path(Survey_Processed_Dir, paste0('day', as.character(dow)), "households.csv"))
+  hhDays = rbindlist(list(hhDays, data.frame(HH_ID = hh_data$HH_ID, dow = dow)))
   hh_data = hh_data[!proc_hh, on = .(HH_ID)]
   
   proc_hh = rbindlist(list(processedPerson, per_data), use.names = TRUE, fill = TRUE)
@@ -136,8 +141,9 @@ for(dow in c(1:4)){
   jutrip_data[, dow_num := dow]
   
   jutrips = rbindlist(list(jutrips, jutrip_data), use.names = TRUE, fill = TRUE)
-  
+
 }
+
 
 zones = st_read(file.path(zone_dir, "TAZ2010.shp"))
 zones_dt = setDT(zones)
@@ -152,6 +158,11 @@ person_weights = readRDS(file.path(wt_dir, 'person_weights.rds'))
 day_weights = readRDS(file.path(wt_dir, 'day_weights.rds'))
 trip_weights = readRDS(file.path(wt_dir, 'trip_weights.rds'))
 
+#NOTE: these are not being used, but the weights already in the HH file are the same
+
+#CHECK: do we have too many persons?
+per = per[(per$SAMPN*10+per$PERNO) %in% (processedPerson$HH_ID*10+processedPerson$PER_ID),]
+
 
 ## Prepare Data Files
 #######################################################################################
@@ -163,7 +174,7 @@ library(omxr)
 skim_file = file.path(settings$skims_dir, settings$skims_filename)
 print(paste('Processing Distance Skim Matrix...', skim_file))
 skimMat <- read_omx(skim_file, "DIST")
-DST_SKM <- melt(skimMat)
+DST_SKM <- reshape2::melt(skimMat)
 colnames(DST_SKM) <- c("o", "d", "dist")
 
 hh$hhtaz = hh$HH_ZONE_ID
@@ -238,8 +249,14 @@ hh$ADULTS[is.na(hh$ADULTS)] = 0
 per[processedPerson, PERTYPE := i.PERSONTYPE, on = .(SAMPN = HHID, PERNO = PERID)]
 per$hhtaz = hh$HH_ZONE_ID[match(per$SAMPN, hh$SAMPN)]
 
-##-------Compute Summary Statistics-------
-##########################################
+
+# Compute tour days to adjust rates (many days -> one day)
+tourDays = as.data.frame(table(tours$HH_ID*1000+tours$PER_ID*10+tours$dow_num), stringsAsFactors = F)
+per$tourDays = tourDays$Freq[match(per$SAMPN*100+per$PERNO, as.integer(as.numeric(tourDays$Var1)/10))]
+per[is.na(per$tourDays),]$tourDays = 0
+
+##-------Compute Summary Statistics-------#### 
+
 print("Computing summary statistics...")
 
 # Auto ownership
@@ -394,7 +411,7 @@ hh$WORKERS[is.na(hh$WORKERS)] = 0
 # Process Tour file
 #------------------
 print("Processing tour file...")
-#tours$finalweight = hh$finalweight[match(tours$HH_ID, hh$SAMPN)]
+#tours$finalweight = hh$finalweight[match(tours$HH_ID, hh$SAMPN)] #NOTE: do not uncomment - it skyrockets tours
 tours = tours[!is.na(tours$finalweight),]
 tours$PERTYPE = per$PERTYPE[match(tours$HH_ID*100+tours$PER_ID, per$SAMPN*100+per$PERNO)]
 #tours$DISTMILE = tours$dist/5280
@@ -517,12 +534,12 @@ write.csv(tours[,c("HH_ID", "PER_ID", "TOUR_ID","TOURMODE_RECODE", "TOURPURP_REC
 tours$TOURPURP[tours$TOURPURP == 10] = 1
 
 # Copy TOURPURP to trip file
-trips$TOURPURP = tours$TOURPURP[match(trips$HH_ID*10000+trips$PER_ID*1000+trips$TOUR_ID*10, tours$HH_ID*10000+tours$PER_ID*1000+tours$TOUR_ID*10)]
-trips$TOURPURP_RECODE = tours$TOURPURP_RECODE[match(trips$HH_ID*10000+trips$PER_ID*1000+trips$TOUR_ID*10, tours$HH_ID*10000+tours$PER_ID*1000+tours$TOUR_ID*10)]
-trips$TOURMODE_RECODE = tours$TOURMODE_RECODE[match(trips$HH_ID*10000+trips$PER_ID*1000+trips$TOUR_ID*10, tours$HH_ID*10000+tours$PER_ID*1000+tours$TOUR_ID*10)]
-trips$TOURMODE = tours$TOURMODE[match(trips$HH_ID*10000+trips$PER_ID*1000+trips$TOUR_ID*10, tours$HH_ID*10000+tours$PER_ID*1000+tours$TOUR_ID*10)]
-trips$AUTOSUFF = tours$AUTOSUFF[match(trips$HH_ID*10000+trips$PER_ID*1000+trips$TOUR_ID*10, tours$HH_ID*10000+tours$PER_ID*1000+tours$TOUR_ID*10)]
-trips$IS_SUBTOUR = tours$IS_SUBTOUR[match(trips$HH_ID*10000+trips$PER_ID*1000+trips$TOUR_ID*10, tours$HH_ID*10000+tours$PER_ID*1000+tours$TOUR_ID*10)]
+trips$TOURPURP = tours$TOURPURP[match(trips$HH_ID*10000+trips$PER_ID*1000+trips$TOUR_ID*10+trips$dow_num, tours$HH_ID*10000+tours$PER_ID*1000+tours$TOUR_ID*10+tours$dow_num)]
+trips$TOURPURP_RECODE = tours$TOURPURP_RECODE[match(trips$HH_ID*10000+trips$PER_ID*1000+trips$TOUR_ID*10+trips$dow_num, tours$HH_ID*10000+tours$PER_ID*1000+tours$TOUR_ID*10+tours$dow_num)]
+trips$TOURMODE_RECODE = tours$TOURMODE_RECODE[match(trips$HH_ID*10000+trips$PER_ID*1000+trips$TOUR_ID*10+trips$dow_num, tours$HH_ID*10000+tours$PER_ID*1000+tours$TOUR_ID*10+tours$dow_num)]
+trips$TOURMODE = tours$TOURMODE[match(trips$HH_ID*10000+trips$PER_ID*1000+trips$TOUR_ID*10+trips$dow_num, tours$HH_ID*10000+tours$PER_ID*1000+tours$TOUR_ID*10+tours$dow_num)]
+trips$AUTOSUFF = tours$AUTOSUFF[match(trips$HH_ID*10000+trips$PER_ID*1000+trips$TOUR_ID*10+trips$dow_num, tours$HH_ID*10000+tours$PER_ID*1000+tours$TOUR_ID*10+tours$dow_num)]
+trips$IS_SUBTOUR = tours$IS_SUBTOUR[match(trips$HH_ID*10000+trips$PER_ID*1000+trips$TOUR_ID*10+trips$dow_num, tours$HH_ID*10000+tours$PER_ID*1000+tours$TOUR_ID*10+tours$dow_num)]
 
 tours$TOTAL_STOPS = tours$OUTBOUND_STOPS + tours$INBOUND_STOPS
 
@@ -530,28 +547,28 @@ tours$TOTAL_STOPS = tours$OUTBOUND_STOPS + tours$INBOUND_STOPS
 jtours = jtours[!is.na(jtours$finalweight),]
 
 #copy tour mode & other attributes
-jtours$TOURMODE = tours$TOURMODE[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10,
-                                                    tours$HH_ID*1000+tours$JTOUR_ID*10)]
-jtours$AUTOSUFF = tours$AUTOSUFF[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10,
-                                                    tours$HH_ID*1000+tours$JTOUR_ID*10)]
-jtours$ANCHOR_DEPART_BIN = tours$ANCHOR_DEPART_BIN[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10,
-                                                                      tours$HH_ID*1000+tours$JTOUR_ID*10)]
-jtours$ANCHOR_ARRIVE_BIN = tours$ANCHOR_ARRIVE_BIN[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10,
-                                                                      tours$HH_ID*1000+tours$JTOUR_ID*10)]
-jtours$TOUR_DUR_BIN_RECODE = tours$TOUR_DUR_BIN_RECODE[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10,
-                                                            tours$HH_ID*1000+tours$JTOUR_ID*10)]
-jtours$dist = tours$dist[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10,
-                                            tours$HH_ID*1000+tours$JTOUR_ID*10)]
+jtours$TOURMODE = tours$TOURMODE[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10+jtours$dow_num,
+                                                    tours$HH_ID*1000+tours$JTOUR_ID*10+tours$dow_num)]
+jtours$AUTOSUFF = tours$AUTOSUFF[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10+jtours$dow_num,
+                                                    tours$HH_ID*1000+tours$JTOUR_ID*10+tours$dow_num)]
+jtours$ANCHOR_DEPART_BIN = tours$ANCHOR_DEPART_BIN[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10+jtours$dow_num,
+                                                                      tours$HH_ID*1000+tours$JTOUR_ID*10+tours$dow_num)]
+jtours$ANCHOR_ARRIVE_BIN = tours$ANCHOR_ARRIVE_BIN[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10+jtours$dow_num,
+                                                                      tours$HH_ID*1000+tours$JTOUR_ID*10+tours$dow_num)]
+jtours$TOUR_DUR_BIN_RECODE = tours$TOUR_DUR_BIN_RECODE[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10+jtours$dow_num,
+                                                            tours$HH_ID*1000+tours$JTOUR_ID*10+tours$dow_num)]
+jtours$dist = tours$dist[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10+jtours$dow_num,
+                                            tours$HH_ID*1000+tours$JTOUR_ID*10+tours$dow_num)]
 #jtours$DISTMILE = jtours$dist/5280
 
-jtours$OUTBOUND_STOPS = tours$OUTBOUND_STOPS[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10,
-                                                                tours$HH_ID*1000+tours$JTOUR_ID*10)]
-jtours$INBOUND_STOPS = tours$INBOUND_STOPS[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10,
-                                                              tours$HH_ID*1000+tours$JTOUR_ID*10)]
-jtours$TOTAL_STOPS = tours$TOTAL_STOPS[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10,
-                                                          tours$HH_ID*1000+tours$JTOUR_ID*10)]
-jtours$SKIMDIST = tours$SKIMDIST[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10,
-                                                    tours$HH_ID*1000+tours$JTOUR_ID*10)]
+jtours$OUTBOUND_STOPS = tours$OUTBOUND_STOPS[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10+jtours$dow_num,
+                                                                tours$HH_ID*1000+tours$JTOUR_ID*10+tours$dow_num)]
+jtours$INBOUND_STOPS = tours$INBOUND_STOPS[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10+jtours$dow_num,
+                                                              tours$HH_ID*1000+tours$JTOUR_ID*10+tours$dow_num)]
+jtours$TOTAL_STOPS = tours$TOTAL_STOPS[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10+jtours$dow_num,
+                                                          tours$HH_ID*1000+tours$JTOUR_ID*10+tours$dow_num)]
+jtours$SKIMDIST = tours$SKIMDIST[match(jtours$HH_ID*1000+jtours$JTOUR_ID*10+jtours$dow_num,
+                                                    tours$HH_ID*1000+tours$JTOUR_ID*10+tours$dow_num)]
 
 
 # stop freq model calibration summary
@@ -677,16 +694,16 @@ trips$TRIPMODE[trips$TRIPMODE_ORIG %in% c(19)] = 11 #Other
 trips$stops[trips$DEST_PURP>0 & trips$DEST_PURP<=10 & trips$DEST_IS_TOUR_DEST==0 & trips$DEST_IS_TOUR_ORIG==0] = 1
 trips$stops[is.na(trips$stops)] = 0
 
-trips$TOUROTAZ = tours$ORIG_TAZ[match(trips$HH_ID*1000+trips$PER_ID*100+trips$TOUR_ID, 
-                                   tours$HH_ID*1000+tours$PER_ID*100+tours$TOUR_ID)]
-trips$TOURDTAZ = tours$DEST_TAZ[match(trips$HH_ID*1000+trips$PER_ID*100+trips$TOUR_ID, 
-                                   tours$HH_ID*1000+tours$PER_ID*100+tours$TOUR_ID)]	
+trips$TOUROTAZ = tours$ORIG_TAZ[match(trips$HH_ID*1000+trips$PER_ID*100+10*trips$TOUR_ID+trips$dow_num, 
+                                   tours$HH_ID*1000+tours$PER_ID*100+10*tours$TOUR_ID+tours$dow_num)]
+trips$TOURDTAZ = tours$DEST_TAZ[match(trips$HH_ID*1000+trips$PER_ID*100+10*trips$TOUR_ID+trips$dow_num, 
+                                   tours$HH_ID*1000+tours$PER_ID*100+10*tours$TOUR_ID+tours$dow_num)]	
 
 # copy tour dep hour and minute
-trips$ANCHOR_DEPART_HOUR = tours$ANCHOR_DEPART_HOUR[match(trips$HH_ID*1000+trips$PER_ID*100+trips$TOUR_ID, 
-                                                           tours$HH_ID*1000+tours$PER_ID*100+tours$TOUR_ID)]
-trips$ANCHOR_DEPART_MIN = tours$ANCHOR_DEPART_MIN[match(trips$HH_ID*1000+trips$PER_ID*100+trips$TOUR_ID, 
-                                                         tours$HH_ID*1000+tours$PER_ID*100+tours$TOUR_ID)]
+trips$ANCHOR_DEPART_HOUR = tours$ANCHOR_DEPART_HOUR[match(trips$HH_ID*1000+trips$PER_ID*100+10*trips$TOUR_ID+trips$dow_num, 
+                                                           tours$HH_ID*1000+tours$PER_ID*100+10*tours$TOUR_ID+tours$dow_num)]
+trips$ANCHOR_DEPART_MIN = tours$ANCHOR_DEPART_MIN[match(trips$HH_ID*1000+trips$PER_ID*100+10*trips$TOUR_ID+trips$dow_num, 
+                                                         tours$HH_ID*1000+tours$PER_ID*100+10*tours$TOUR_ID+tours$dow_num)]
 
 trips$od_dist = DST_SKM$dist[match(paste(trips$ORIG_TAZ, trips$DEST_TAZ, sep = "-"), paste(DST_SKM$o, DST_SKM$d, sep = "-"))]
 trips$od_dist[is.na(trips$od_dist)] = 0
@@ -709,18 +726,18 @@ stops$out_dir_dist = stops$os_dist + stops$sd_dist - stops$od_dist
 #---------------------------------------------------------------------------------------------
 print("Processing joint trips file...")
 # create joint trips file from trip file [trips belonging to fully joint tours]
-trips$JTOUR_ID = tours$JTOUR_ID[match(trips$HH_ID*10000+trips$PER_ID*1000+trips$TOUR_ID*10, 
-                                       tours$HH_ID*10000+tours$PER_ID*1000+tours$TOUR_ID*10)]
+trips$JTOUR_ID = tours$JTOUR_ID[match(trips$HH_ID*10000+trips$PER_ID*1000+trips$TOUR_ID*10+trips$dow_num, 
+                                       tours$HH_ID*10000+tours$PER_ID*1000+tours$TOUR_ID*10+tours$dow_num)]
 trips$JTOUR_ID[is.na(trips$JTOUR_ID)] = 0
 
 jtrips = trips[trips$JTOUR_ID>0 & trips$JTRIP_ID>0,]   #this contains a joint trip for each person
 
 # joint trips should be a household level file, therefore, remove person dimension
 jtrips$PER_ID = NULL
-jtrips = unique(jtrips[,c("HH_ID", "JTRIP_ID")])
-jtrips$uid = paste(jtrips$HH_ID, jtrips$JTRIP_ID, sep = "-")
+jtrips = unique(jtrips[,c("HH_ID", "JTRIP_ID", "dow_num")])
+jtrips$uid = paste(jtrips$HH_ID, jtrips$JTRIP_ID, jtrips$dow_num, sep = "-")
 
-jutrips$uid = paste(jutrips$HH_ID, jutrips$JTRIP_ID, sep = "-")
+jutrips$uid = paste(jutrips$HH_ID, jutrips$JTRIP_ID, jutrips$dow_num, sep = "-")
 
 jtrips$NUMBER_HH = jutrips$NUMBER_HH[match(jtrips$uid, jutrips$uid)]
 jtrips$PERSON_1 = jutrips$PERSON_1[match(jtrips$uid, jutrips$uid)]
@@ -734,34 +751,34 @@ jtrips$PERSON_8 = jutrips$PERSON_8[match(jtrips$uid, jutrips$uid)]
 jtrips$PERSON_9 = jutrips$PERSON_9[match(jtrips$uid, jutrips$uid)]
 jtrips$COMPOSITION = jutrips$COMPOSITION[match(jtrips$uid, jutrips$uid)]
 
-jtrips$TOUR_ID = trips$TOUR_ID[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]	
-jtrips$JTOUR_ID = trips$JTOUR_ID[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]	
-jtrips$finalweight = trips$finalweight[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]	
+jtrips$TOUR_ID = trips$TOUR_ID[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100+jtrips$dow_num,trips$HH_ID*10000+trips$JTRIP_ID*100+trips$dow_num)]	
+jtrips$JTOUR_ID = trips$JTOUR_ID[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100+jtrips$dow_num,trips$HH_ID*10000+trips$JTRIP_ID*100+trips$dow_num)]	
+jtrips$finalweight = trips$finalweight[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100+jtrips$dow_num,trips$HH_ID*10000+trips$JTRIP_ID*100+trips$dow_num)]	
 
 #remove joint tours from joint_tours with no joint trips in jtrips 
-jtours_jtrips = unique(jtrips[,c("HH_ID", "JTOUR_ID")])
-jtours_jtrips$uid = paste(jtours_jtrips$HH_ID, jtours_jtrips$JTOUR_ID, sep = "-")
+jtours_jtrips = unique(jtrips[,c("HH_ID", "JTOUR_ID", "dow_num")])
+jtours_jtrips$uid = paste(jtours_jtrips$HH_ID, jtours_jtrips$JTOUR_ID, jtours_jtrips$dow_num, sep = "-")
 
-jtours$uid = paste(jtours$HH_ID, jtours$JTOUR_ID, sep = "-")
+jtours$uid = paste(jtours$HH_ID, jtours$JTOUR_ID, jtours$dow_num,sep = "-")
 jtours = jtours[jtours$uid %in% jtours_jtrips$uid,]
 #---------------------------------------------------------------------------------------------
 
 jtrips = jtrips[!is.na(jtrips$finalweight),]
 
-jtrips$stops = trips$stops[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]	
-jtrips$TOURPURP = trips$TOURPURP[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]	
-jtrips$DEST_PURP = trips$DEST_PURP[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]	
-jtrips$TRIPMODE = trips$TRIPMODE[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]
-jtrips$TOURMODE = trips$TOURMODE[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]	
-jtrips$ORIG_TAZ = trips$ORIG_TAZ[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]	
-jtrips$DEST_TAZ = trips$DEST_TAZ[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]	
-jtrips$TOUROTAZ = trips$TOUROTAZ[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]	
-jtrips$TOURDTAZ = trips$TOURDTAZ[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]
-jtrips$DEST_DEP_BIN = trips$DEST_DEP_BIN[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]
-jtrips$ORIG_DEP_BIN = trips$ORIG_DEP_BIN[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]
-jtrips$IS_INBOUND = trips$IS_INBOUND[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]	
-jtrips$ANCHOR_DEPART_HOUR = trips$ANCHOR_DEPART_HOUR[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]															  
-jtrips$ANCHOR_DEPART_MIN = trips$ANCHOR_DEPART_MIN[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100,trips$HH_ID*10000+trips$JTRIP_ID*100)]															  
+jtrips$stops = trips$stops[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100+jtrips$dow_num,trips$HH_ID*10000+trips$JTRIP_ID*100+trips$dow_num)]	
+jtrips$TOURPURP = trips$TOURPURP[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100+jtrips$dow_num,trips$HH_ID*10000+trips$JTRIP_ID*100+trips$dow_num)]	
+jtrips$DEST_PURP = trips$DEST_PURP[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100+jtrips$dow_num,trips$HH_ID*10000+trips$JTRIP_ID*100+trips$dow_num)]	
+jtrips$TRIPMODE = trips$TRIPMODE[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100+jtrips$dow_num,trips$HH_ID*10000+trips$JTRIP_ID*100+trips$dow_num)]
+jtrips$TOURMODE = trips$TOURMODE[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100+jtrips$dow_num,trips$HH_ID*10000+trips$JTRIP_ID*100+trips$dow_num)]	
+jtrips$ORIG_TAZ = trips$ORIG_TAZ[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100+jtrips$dow_num,trips$HH_ID*10000+trips$JTRIP_ID*100+trips$dow_num)]	
+jtrips$DEST_TAZ = trips$DEST_TAZ[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100+jtrips$dow_num,trips$HH_ID*10000+trips$JTRIP_ID*100+trips$dow_num)]	
+jtrips$TOUROTAZ = trips$TOUROTAZ[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100+jtrips$dow_num,trips$HH_ID*10000+trips$JTRIP_ID*100+trips$dow_num)]	
+jtrips$TOURDTAZ = trips$TOURDTAZ[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100+jtrips$dow_num,trips$HH_ID*10000+trips$JTRIP_ID*100+trips$dow_num)]
+jtrips$DEST_DEP_BIN = trips$DEST_DEP_BIN[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100+jtrips$dow_num,trips$HH_ID*10000+trips$JTRIP_ID*100+trips$dow_num)]
+jtrips$ORIG_DEP_BIN = trips$ORIG_DEP_BIN[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100+jtrips$dow_num,trips$HH_ID*10000+trips$JTRIP_ID*100+trips$dow_num)]
+jtrips$IS_INBOUND = trips$IS_INBOUND[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100+jtrips$dow_num,trips$HH_ID*10000+trips$JTRIP_ID*100+trips$dow_num)]	
+jtrips$ANCHOR_DEPART_HOUR = trips$ANCHOR_DEPART_HOUR[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100+jtrips$dow_num,trips$HH_ID*10000+trips$JTRIP_ID*100+trips$dow_num)]															  
+jtrips$ANCHOR_DEPART_MIN = trips$ANCHOR_DEPART_MIN[match(jtrips$HH_ID*10000+jtrips$JTRIP_ID*100+jtrips$dow_num,trips$HH_ID*10000+trips$JTRIP_ID*100+trips$dow_num)]															  
 
 #some joint trips missing in trip file, so couldnt copy their attributes
 jtrips = jtrips[!is.na(jtrips$IS_INBOUND),]
@@ -848,12 +865,13 @@ jstops$out_dir_dist = jstops$os_dist + jstops$sd_dist - jstops$od_dist
 #---------------------------------------------------------------------------------
 print("Computing stop frequencies...")
 
-workCounts = plyr::count(tours[tours$TOURPURP<=10,], c( "HH_ID", "PER_ID"), "(TOURPURP %in% c(1,10)) & IS_SUBTOUR == 0") #[excluding at work subtours]. joint work tours should be considered individual mandatory tours
-atWorkCounts = plyr::count(tours[tours$TOURPURP<=10,], c("HH_ID", "PER_ID"), "(IS_SUBTOUR == 1)") #include joint work-subtours as individual subtours
-schlCounts = plyr::count(tours[tours$TOURPURP<=10,], c("HH_ID", "PER_ID"), "(TOURPURP %in% c(2,3)) & IS_SUBTOUR == 0") #joint school/university tours should be considered individual mandatory tours
-inmCounts = plyr::count(tours[tours$TOURPURP<=10,], c("HH_ID", "PER_ID"), "(TOURPURP>=4 & TOURPURP<=9 & FULLY_JOINT==0 & IS_SUBTOUR == 0) | (TOURPURP==4 & FULLY_JOINT==1 & IS_SUBTOUR == 0)") #joint escort tours should be considered individual non-mandatory tours
-itourCounts = plyr::count(tours[tours$TOURPURP<=10,], c("HH_ID", "PER_ID"), "(TOURPURP <= 10 & IS_SUBTOUR == 0 & FULLY_JOINT==0) | (TOURPURP <= 4 & FULLY_JOINT==1 & IS_SUBTOUR == 0)")  #number of individual tours per person [excluding at work subtours]
-jtourCounts = plyr::count(tours[tours$TOURPURP<=10,], c("HH_ID", "PER_ID"), "TOURPURP >= 5 & TOURPURP <= 9 & IS_SUBTOUR == 0 & FULLY_JOINT==1")  #number of joint tours per person [excluding at work subtours, also excluding joint escort tours]
+workCounts = plyr::count(tours[tours$TOURPURP<=10,], c( "HH_ID", "PER_ID", "dow_num"), "(TOURPURP %in% c(1,10)) & IS_SUBTOUR == 0") #[excluding at work subtours]. joint work tours should be considered individual mandatory tours
+atWorkCounts = plyr::count(tours[tours$TOURPURP<=10,], c("HH_ID", "PER_ID", "dow_num"), "(IS_SUBTOUR == 1)") #include joint work-subtours as individual subtours
+schlCounts = plyr::count(tours[tours$TOURPURP<=10,], c("HH_ID", "PER_ID", "dow_num"), "(TOURPURP %in% c(2,3)) & IS_SUBTOUR == 0") #joint school/university tours should be considered individual mandatory tours
+inmCounts = plyr::count(tours[tours$TOURPURP<=10,], c("HH_ID", "PER_ID", "dow_num"), "(TOURPURP>=4 & TOURPURP<=9 & FULLY_JOINT==0 & IS_SUBTOUR == 0) | (TOURPURP==4 & FULLY_JOINT==1 & IS_SUBTOUR == 0)") #joint escort tours should be considered individual non-mandatory tours
+itourCounts = plyr::count(tours[tours$TOURPURP<=10,], c("HH_ID", "PER_ID", "dow_num"), "(TOURPURP <= 10 & IS_SUBTOUR == 0 & FULLY_JOINT==0) | (TOURPURP <= 4 & FULLY_JOINT==1 & IS_SUBTOUR == 0)")  #number of individual tours per person [excluding at work subtours]
+jtourCounts = plyr::count(tours[tours$TOURPURP<=10,], c("HH_ID", "PER_ID", "dow_num"), "TOURPURP >= 5 & TOURPURP <= 9 & IS_SUBTOUR == 0 & FULLY_JOINT==1")  #number of joint tours per person [excluding at work subtours, also excluding joint escort tours]
+
 
 workCounts_temp = workCounts
 schlCounts_temp = schlCounts
@@ -861,14 +879,24 @@ inmCounts_temp = inmCounts
 jtourCounts_temp = jtourCounts
 atWorkCounts_temp = atWorkCounts
 
-colnames(workCounts_temp)[3] = "freq_work"
-colnames(schlCounts_temp)[3] = "freq_schl"
-colnames(inmCounts_temp)[3] = "freq_inm"
-colnames(jtourCounts_temp)[3] = "freq_joint"
-colnames(atWorkCounts_temp)[3] = "freq_atwork"
+colnames(workCounts_temp)[4] = "freq_work"
+colnames(schlCounts_temp)[4] = "freq_schl"
+colnames(inmCounts_temp)[4] = "freq_inm"
+colnames(jtourCounts_temp)[4] = "freq_joint"
+colnames(atWorkCounts_temp)[4] = "freq_atwork"
 
-temp = merge(workCounts_temp, schlCounts_temp, by = c( "HH_ID", "PER_ID"))
-temp1 = merge(temp, inmCounts_temp, by = c( "HH_ID", "PER_ID"))
+# colnames(workCounts_temp)[3] = "freq_work"
+# colnames(schlCounts_temp)[3] = "freq_schl"
+# colnames(inmCounts_temp)[3] = "freq_inm"
+# colnames(jtourCounts_temp)[3] = "freq_joint"
+# colnames(atWorkCounts_temp)[3] = "freq_atwork"
+
+temp = merge(workCounts_temp, schlCounts_temp, by = c( "HH_ID", "PER_ID", "dow_num"))
+temp1 = merge(temp, inmCounts_temp, by = c( "HH_ID", "PER_ID", "dow_num"))
+
+# temp = merge(workCounts_temp, schlCounts_temp, by = c( "HH_ID", "PER_ID"))
+# temp1 = merge(temp, inmCounts_temp, by = c( "HH_ID", "PER_ID"))
+
 temp1$freq_m = temp1$freq_work + temp1$freq_schl
 temp1 = temp1[temp1$freq_m>0 | temp1$freq_inm>0,]
 
@@ -876,8 +904,12 @@ temp1 = temp1[temp1$freq_m>0 | temp1$freq_inm>0,]
 jtourCounts_temp[is.na(jtourCounts_temp)] = 0
 temp_joint = jtourCounts_temp[jtourCounts_temp$freq_joint>0,]
 
+# temp2 = merge(temp1, temp_joint, by = c("HH_ID", "PER_ID", "dow_num"), all = T)
+# temp2 = merge(temp2, atWorkCounts_temp, by = c("HH_ID", "PER_ID", "dow_num"), all = T)
+
 temp2 = merge(temp1, temp_joint, by = c("HH_ID", "PER_ID"), all = T)
 temp2 = merge(temp2, atWorkCounts_temp, by = c("HH_ID", "PER_ID"), all = T)
+
 temp2[is.na(temp2)] = 0
 
 #add number of joint tours to non-mandatory
@@ -887,13 +919,13 @@ temp2$freq_nm = temp2$freq_inm + temp2$freq_joint
 temp2$total_tours = temp2$freq_nm+temp2$freq_m+temp2$freq_atwork
 
 temp2$PERTYPE = per$PERTYPE[match(temp2$HH_ID*1000+temp2$PER_ID*10,per$SAMPN*1000+per$PERNO*10)]
-temp2$finalweight = per$finalweight[match(temp2$HH_ID*1000+temp2$PER_ID*10,per$SAMPN*1000+per$PERNO*10)]
+temp2$finalweight = per$finalweight[match(temp2$HH_ID*1000+temp2$PER_ID*10,per$SAMPN*1000+per$PERNO*10)] / per$tourDays[match(temp2$HH_ID*1000+temp2$PER_ID*10,per$SAMPN*1000+per$PERNO*10)]
 temp2 = temp2[!is.na(temp2$PERTYPE),]
 
 persons_mand = temp2[temp2$freq_m>0,]  #persons with atleast 1 mandatory tours
 persons_nomand = temp2[temp2$freq_m==0,] #active persons with 0 mandatory tours
 
-# joint tours counted as iNM for calibraiton purpose [model does not allow 0 iNM and >0 JT]
+# joint tours counted as iNM for calibration purpose [model does not allow 0 iNM and >0 JT]
 
 freq_nmtours_mand = plyr::count(persons_mand, c("PERTYPE","freq_nm"), "finalweight")
 freq_nmtours_nomand = plyr::count(persons_nomand, c("PERTYPE","freq_nm"), "finalweight")
@@ -967,6 +999,15 @@ hh$jtf[hh$joint7>=1 & hh$joint9>=1] = 20
 
 hh$jtf[hh$joint8>=1 & hh$joint9>=1] = 21
 
+toursPerDay = data.frame(x = unique(tours$HH_ID*1000+tours$PER_ID*10+tours$dow_num))
+toursPerDay$HH_ID = as.integer(toursPerDay$x / 10)
+
+tourDays = as.data.frame(table(toursPerDay$HH_ID), stringsAsFactors = FALSE)
+tourDays$Var1 = as.integer(tourDays$Var1) * 10
+
+per$tourDays = tourDays$Freq[match(per$SAMPN*1000+per$PERNO*10, tourDays$Var1)]
+per$tourDays[is.na(per$tourDays)] = 1
+
 per$workTours   = workCounts$freq[match(per$SAMPN*1000+per$PERNO*10, workCounts$HH_ID*1000+workCounts$PER_ID*10)]
 per$atWorkTours = atWorkCounts$freq[match(per$SAMPN*1000+per$PERNO*10, atWorkCounts$HH_ID*1000+atWorkCounts$PER_ID*10)]
 per$schlTours   = schlCounts$freq[match(per$SAMPN*1000+per$PERNO*10, schlCounts$HH_ID*1000+schlCounts$PER_ID*10)]
@@ -976,7 +1017,19 @@ per$inumTours = itourCounts$freq[match(per$SAMPN*1000+per$PERNO*10, itourCounts$
 per$inumTours[is.na(per$inumTours)] = 0
 per$jnumTours = jtourCounts$freq[match(per$SAMPN*1000+per$PERNO*10, jtourCounts$HH_ID*1000+jtourCounts$PER_ID*10)]
 per$jnumTours[is.na(per$jnumTours)] = 0
-per$numTours = per$inmTours + per$jnumTours
+per$numTours = per$inumTours + per$jnumTours
+
+
+# per$workTours   = workCounts$freq[match(per$SAMPN*1000+per$PERNO*10, workCounts$HH_ID*1000+workCounts$PER_ID*10)] / per$tourDays
+# per$atWorkTours = atWorkCounts$freq[match(per$SAMPN*1000+per$PERNO*10, atWorkCounts$HH_ID*1000+atWorkCounts$PER_ID*10)] / per$tourDays
+# per$schlTours   = schlCounts$freq[match(per$SAMPN*1000+per$PERNO*10, schlCounts$HH_ID*1000+schlCounts$PER_ID*10)] / per$tourDays
+# per$inmTours    = inmCounts$freq[match(per$SAMPN*1000+per$PERNO*10, inmCounts$HH_ID*1000+inmCounts$PER_ID*10)] / per$tourDays
+# per$inmTours[is.na(per$inmTours)] = 0
+# per$inumTours = itourCounts$freq[match(per$SAMPN*1000+per$PERNO*10, itourCounts$HH_ID*1000+itourCounts$PER_ID*10)] / per$tourDays
+# per$inumTours[is.na(per$inumTours)] = 0
+# per$jnumTours = jtourCounts$freq[match(per$SAMPN*1000+per$PERNO*10, jtourCounts$HH_ID*1000+jtourCounts$PER_ID*10)] / per$tourDays
+# per$jnumTours[is.na(per$jnumTours)] = 0
+# per$numTours = per$inmTours + per$jnumTours
 
 per$workTours[is.na(per$workTours)] = 0
 per$schlTours[is.na(per$schlTours)] = 0
@@ -993,10 +1046,11 @@ write.csv(totaltoursPertypeDistbn, "total_tours_by_pertype_vis.csv", row.names =
 
 
 # Total indi NM tours by person type and purpose
-tours_pertype_purpose = plyr::count(tours[(tours$TOURPURP>=4 & tours$TOURPURP<=9 & tours$FULLY_JOINT==0 & tours$IS_SUBTOUR==0) | (tours$TOURPURP==4 & tours$FULLY_JOINT==0),], c("PERTYPE", "TOURPURP"), "finalweight")
+tours_pertype_purpose = plyr::count(tours[(tours$TOURPURP>=4 & tours$TOURPURP<=9 & tours$FULLY_JOINT==0 & tours$IS_SUBTOUR==0) | (tours$TOURPURP==4 & tours$FULLY_JOINT==0),], c("PERTYPE", "TOURPURP", "dow_num"), "finalweight")
 write.csv(tours_pertype_purpose, "tours_pertype_purpose.csv", row.names = TRUE)
 
-tours_pertype_purpose = xtabs(freq~PERTYPE+TOURPURP, tours_pertype_purpose)
+tours_pertype_purpose = xtabs(freq~PERTYPE+TOURPURP+dow_num, tours_pertype_purpose)
+tours_pertype_purpose = xtabs(Freq~PERTYPE+TOURPURP, tours_pertype_purpose)
 tours_pertype_purpose[is.na(tours_pertype_purpose)] = 0
 tours_pertype_purpose = addmargins(as.table(tours_pertype_purpose))
 tours_pertype_purpose = as.data.frame.matrix(tours_pertype_purpose)
@@ -1007,7 +1061,7 @@ colnames(totalPersons_DF) = colnames(pertypeDistbn)
 pertypeDF = rbind(pertypeDistbn, totalPersons_DF)
 nm_tour_rates = tours_pertype_purpose/pertypeDF$freq
 nm_tour_rates$pertype = row.names(nm_tour_rates)
-nm_tour_rates = melt(nm_tour_rates, id = c("pertype"))
+nm_tour_rates = reshape2::melt(nm_tour_rates, id = c("pertype"))
 colnames(nm_tour_rates) = c("pertype", "tour_purp", "tour_rate")
 nm_tour_rates$pertype = as.character(nm_tour_rates$pertype)
 nm_tour_rates$tour_purp = as.character(nm_tour_rates$tour_purp)
@@ -1036,11 +1090,45 @@ colnames(tours_purpose_type) = c("indi", "joint")
 write.csv(tours_purpose_type, "tours_purpose_type.csv", row.names = TRUE)
 
 
-# DAP by pertype
-per$DAP = "H"
-per$DAP[per$workTours > 0 | per$schlTours > 0] = "M"
-per$DAP[per$numTours > 0 & per$DAP == "H"] = "N"
-dapSummary = plyr::count(per, c("PERTYPE", "DAP"), "finalweight")
+# DAP by pertype+day ####
+# NOTE: This is being recalculated due to the multiday nature of the survey
+
+#FIXME: Remove before flight
+perDays_t = perDays #  perDays = perDays_t 
+
+perDays$workTours   = workCounts$freq[match(perDays$HH_ID*1000+perDays$PER_ID*10+perDays$dow, workCounts$HH_ID*1000+workCounts$PER_ID*10+workCounts$dow_num)]
+perDays$workTours[is.na(perDays$workTours)] = 0
+perDays$atWorkTours = atWorkCounts$freq[match(perDays$HH_ID*1000+perDays$PER_ID*10+perDays$dow, atWorkCounts$HH_ID*1000+atWorkCounts$PER_ID*10+atWorkCounts$dow_num)]
+perDays$atWorkTours[is.na(perDays$atWorkTours)] = 0
+perDays$schlTours   = schlCounts$freq[match(perDays$HH_ID*1000+perDays$PER_ID*10+perDays$dow, schlCounts$HH_ID*1000+schlCounts$PER_ID*10+schlCounts$dow_num)]
+perDays$schlTours[is.na(perDays$schlTours)] = 0
+perDays$inmTours    = inmCounts$freq[match(perDays$HH_ID*1000+perDays$PER_ID*10+perDays$dow, inmCounts$HH_ID*1000+inmCounts$PER_ID*10+inmCounts$dow_num)]
+perDays$inmTours[is.na(perDays$inmTours)] = 0
+perDays$inumTours = 0 #not sure why the below is a warning, but none of the lines above are
+perDays$inumTours = itourCounts$freq[match(perDays$HH_ID*1000+perDays$PER_ID*10+perDays$dow, itourCounts$HH_ID*1000+itourCounts$PER_ID*10+itourCounts$dow_num)]
+perDays$inumTours[is.na(perDays$inumTours)] = 0
+perDays$jnumTours = jtourCounts$freq[match(perDays$HH_ID*1000+perDays$PER_ID*10+perDays$dow, jtourCounts$HH_ID*1000+jtourCounts$PER_ID*10+jtourCounts$dow_num)]
+perDays$jnumTours[is.na(perDays$jnumTours)] = 0
+perDays$numTours = perDays$inumTours + perDays$jnumTours
+
+perDays$DAP = "H"
+perDays$DAP[perDays$workTours > 0 | perDays$schlTours > 0] = "M"
+perDays$DAP[perDays$numTours > 0 & perDays$DAP == "H"] = "N"
+
+perDays$PERTYPE = per$PERTYPE[match(perDays$HH_ID*1000+perDays$PER_ID*10, per$SAMPN*1000+per$PERNO*10)]
+perDays$finalweight = per$finalweight[match(perDays$HH_ID*1000+perDays$PER_ID*10, per$SAMPN*1000+per$PERNO*10)]
+
+#NOTE: the lines below do not matter (it's slicing the same cake into the same number of pieces a different way)
+#The problem is that the weights are over-represented due to the additional days
+
+perN = perDays[, .(.N), by = .(HH_ID*1000+PER_ID)]
+
+perDays$NDays = perN$N[match(perDays$HH_ID*1000+perDays$PER_ID, perN$HH_ID)]
+
+perDays$adjFinalWeight = perDays$finalweight / perDays$NDays
+
+dapSummary = plyr::count(perDays, c("PERTYPE", "DAP"), "adjFinalWeight")
+
 write.csv(dapSummary, "dapSummary.csv", row.names = TRUE)
 
 # Prepare DAP summary for visualizer
@@ -1049,7 +1137,7 @@ dapSummary_vis = addmargins(as.table(dapSummary_vis))
 dapSummary_vis = as.data.frame.matrix(dapSummary_vis)
 
 dapSummary_vis$id = row.names(dapSummary_vis)
-dapSummary_vis = melt(dapSummary_vis, id = c("id"))
+dapSummary_vis = reshape2::melt(dapSummary_vis, id = c("id"))
 colnames(dapSummary_vis) = c("PERTYPE", "DAP", "freq")
 dapSummary_vis$DAP = as.character(dapSummary_vis$DAP)
 dapSummary_vis$PERTYPE = as.character(dapSummary_vis$PERTYPE)
@@ -1062,14 +1150,15 @@ hhsizeJoint = plyr::count(hh[hh$HHSIZE>=2,], c("HHSIZE", "JOINT"), "finalweight"
 write.csv(hhsizeJoint, "hhsizeJoint.csv", row.names = TRUE)
 
 #mandatory tour frequency
-per$mtf = 0
-per$mtf[per$workTours == 1] = 1
-per$mtf[per$workTours >= 2] = 2
-per$mtf[per$schlTours == 1] = 3
-per$mtf[per$schlTours >= 2] = 4
-per$mtf[per$workTours >= 1 & per$schlTours >= 1] = 5
+#NOTE: changed to per-day and adj weights to account for multiple days
+perDays$mtf = 0
+perDays$mtf[perDays$workTours == 1] = 1
+perDays$mtf[perDays$workTours >= 2] = 2
+perDays$mtf[perDays$schlTours == 1] = 3
+perDays$mtf[perDays$schlTours >= 2] = 4
+perDays$mtf[perDays$workTours >= 1 & perDays$schlTours >= 1] = 5
 
-mtfSummary = plyr::count(per[per$mtf > 0,], c("PERTYPE", "mtf"), "finalweight")
+mtfSummary = plyr::count(perDays[perDays$mtf > 0,], c("PERTYPE", "mtf"), "adjFinalWeight")
 write.csv(mtfSummary, "mtfSummary.csv")
 write.csv(tours, "tours_test.csv")
 
@@ -1090,10 +1179,10 @@ write.csv(mtfSummary_vis, "mtfSummary_vis.csv")
 # indi NM summary
 # joint tours included to be consistent with model 
 # [Model doesnt allow 0 iNM and >0 JT]
-inm0Summary = plyr::count(per[per$numTours==0,], c("PERTYPE"), "finalweight")
-inm1Summary = plyr::count(per[per$numTours==1,], c("PERTYPE"), "finalweight")
-inm2Summary = plyr::count(per[per$numTours==2,], c("PERTYPE"), "finalweight")
-inm3Summary = plyr::count(per[per$numTours>=3,], c("PERTYPE"), "finalweight")
+inm0Summary = plyr::count(perDays[perDays$inmTours==0,], c("PERTYPE"), "adjFinalWeight")
+inm1Summary = plyr::count(perDays[perDays$inmTours==1,], c("PERTYPE"), "adjFinalWeight")
+inm2Summary = plyr::count(perDays[perDays$inmTours==2,], c("PERTYPE"), "adjFinalWeight")
+inm3Summary = plyr::count(perDays[perDays$inmTours>=3,], c("PERTYPE"), "adjFinalWeight")
 
 inmSummary = data.frame(PERTYPE = c(1,2,3,4,5,6,7,8))
 inmSummary$tour0 = inm0Summary$freq[match(inmSummary$PERTYPE, inm0Summary$PERTYPE)]
@@ -1104,7 +1193,7 @@ inmSummary$tour3pl = inm3Summary$freq[match(inmSummary$PERTYPE, inm3Summary$PERT
 write.table(inmSummary, "innmSummary.csv", col.names=TRUE, sep=",")
 
 # prepare INM summary for visualizer
-inmSummary_vis = melt(inmSummary, id=c("PERTYPE"))
+inmSummary_vis = reshape2::melt(inmSummary, id=c("PERTYPE"))
 inmSummary_vis$variable = as.character(inmSummary_vis$variable)
 inmSummary_vis$variable[inmSummary_vis$variable=="tour0"] = "0"
 inmSummary_vis$variable[inmSummary_vis$variable=="tour1"] = "1"
@@ -1115,7 +1204,7 @@ inmSummary_vis = addmargins(as.table(inmSummary_vis))
 inmSummary_vis = as.data.frame.matrix(inmSummary_vis)
 
 inmSummary_vis$id = row.names(inmSummary_vis)
-inmSummary_vis = melt(inmSummary_vis, id = c("id"))
+inmSummary_vis = reshape2::melt(inmSummary_vis, id = c("id"))
 colnames(inmSummary_vis) = c("PERTYPE", "nmtours", "freq")
 inmSummary_vis$PERTYPE = as.character(inmSummary_vis$PERTYPE)
 inmSummary_vis$nmtours = as.character(inmSummary_vis$nmtours)
@@ -2213,7 +2302,10 @@ hhSizeDist = plyr::count(hh[!is.na(hh$HHSIZE),], c("HHSIZE"), "finalweight")
 write.csv(hhSizeDist, "hhSizeDist.csv", row.names = F)
 
 # Active Persons by person type
-actpertypeDistbn = plyr::count(per[(!is.na(per$PERTYPE) & (per$DAP!="H")),], c("PERTYPE"), "finalweight")
+perDays$tourDays = per$tourDays[match(1000*perDays$HH_ID+10*perDays$PER_ID, 1000*per$SAMPN+10*per$PERNO)]
+perDays$hhWt = perDays$finalweight / perDays$tourDays
+actpertypeDistbn = plyr::count(perDays[(!is.na(perDays$PERTYPE) & (perDays$DAP!="H")),], c("PERTYPE"), "hhWt")
+
 write.csv(actpertypeDistbn, "activePertypeDistbn.csv", row.names = TRUE)
 
 # Non-drive and drive tours to parking constraint zone

@@ -2,5 +2,5 @@ Description,Target,Expression
 #,, annotate landuse table after import
 household_density,household_density,land_use.HOUSEHOLDS / (land_use.AREA * 640) #NOTE: MetC's area is in Sq Mi
 employment_density,employment_density,land_use.TOT_EMP / (land_use.AREA * 640)
-density_index,density_index,(household_density *employment_density) / (household_density + employment_density).clip(lower=1)
+density_index,density_index,(household_density * employment_density) / (household_density + employment_density).clip(lower=1)
 

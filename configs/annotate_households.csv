@@ -24,19 +24,20 @@ number of non_workers,num_non_workers,households.hhsize - num_workers
 Auto Ownership Placeholder,auto_ownership,num_workers #TODO: Is this needed
 #,,
 #,,we assume that everyone 16 and older is a potential driver
-number of drivers,num_drivers,"_PERSON_COUNT('AGE > 4', persons, households)"
-num_adults,num_adults,"_PERSON_COUNT('AGE > 4', persons, households)"
+number of drivers,num_drivers,"_PERSON_COUNT('AGE >= 4', persons, households)"
+num_adults,num_adults,"_PERSON_COUNT('AGE > 5', persons, households)"
 num_children,num_children,"_PERSON_COUNT('AGE <= 4', persons, households)"
 num_young_children,num_young_children,"_PERSON_COUNT('AGE <= 1', persons, households)"
 num_children_5_to_15,num_children_5_to_15,"_PERSON_COUNT('2 <= AGE <= 3', persons, households)"
 num_children_6_to_12,num_children_6_to_12,"_PERSON_COUNT('AGE == 2', persons, households)"
 num_children_16_to_17,num_children_16_to_17,"_PERSON_COUNT('AGE == 4', persons, households)"
 num_college_age,num_college_age,"_PERSON_COUNT('AGE == 5', persons, households)"
-num_young_adults,num_young_adults,"_PERSON_COUNT('5 <= AGE <= 6', persons, households)"
+num_young_adults,num_young_adults,"_PERSON_COUNT('AGE == 6', persons, households)"
 non_family,non_family,HHT.isin(HHT_NONFAMILY) 
 family,family,HHT.isin(HHT_FAMILY) 
 #home_is_urban,home_is_urban,"reindex(land_use.AreaType, households.home_zone_id) < setting('urban_threshold')"
-home_is_urban,home_is_urban,"(reindex(land_use.CBD, households.home_zone_id) == 1) | (reindex(land_use.SUBURB3, households.home_zone_id) == 1)"
+home_is_urban,home_is_urban,"reindex(land_use.RURAL, households.home_zone_id) == 0"
+#"(reindex(land_use.CBD, households.home_zone_id) == 1) | (reindex(land_use.SUBURB3, households.home_zone_id) == 1)"
 #home_is_rural,home_is_rural,"reindex(land_use.AreaType, households.home_zone_id) > setting('rural_threshold')"
 home_is_rural,home_is_rural,"reindex(land_use.RURAL, households.home_zone_id) == 1"
 #,, default for work and school location logsums before auto_ownership model is run

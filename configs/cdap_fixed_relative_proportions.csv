@@ -1,5 +1,5 @@
 Description,Expression,M,N,H
-Full-time worker,"@(df.ptype == FULL) & (~df.work_from_home)",2.79647,0.09368,0.10985
+Full-time worker,"@(df.ptype == FULL) & (~df.work_from_home)",0.79647,0.09368,0.10985
 Full-time worker,"@(df.ptype == FULL) & (df.work_from_home)",0,0.460276126,0.539723874
 Part-time worker,"@(df.ptype == PART) & (~df.work_from_home)",0.61678,0.25757,0.12565
 Part-time worker,"@(df.ptype == PART) & (df.work_from_home)",0,0.672120453,0.327879547
@@ -10,5 +10,5 @@ Driving-age child who is in school,"@(df.ptype == SCHOOL) & (df.is_student)",0.7
 Pre-driving-age child who is in school,"@(df.ptype == DRIVING) & (df.is_student)",0.68514,0.09144,0.22342
 Child who is too young for school,"@(df.ptype == PRESCHOOL) & (df.is_student)",0.14056,0.06512,0.79432
 Driving-age child who is in school,"@(df.ptype == SCHOOL) & (~df.is_student)",0,0.26814345,0.73185655
-Pre-driving-age child who is in school,"@(df.ptype == DRIVING) & (~df.is_student)",0,0.290414788,0.709585212
+#Pre-driving-age child who is not in school,"@(df.ptype == DRIVING) & (~df.is_student)",0,0.290414788,0.709585212
 Child who is too young for school,"@(df.ptype == PRESCHOOL) & (~df.is_student)",0,0.075770269,0.924229731
