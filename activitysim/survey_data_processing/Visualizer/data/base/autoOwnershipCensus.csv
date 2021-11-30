@@ -1,0 +1,101 @@
+COUNTY,HHVEH,freq
+Anoka,0,6027
+Anoka,1,31420
+Anoka,2,54079
+Anoka,3,23730
+Anoka,4,10816
+Carver,0,1317
+Carver,1,7510
+Carver,2,16899
+Carver,3,7044
+Carver,4,2572
+Chisago,0,955
+Chisago,1,4147
+Chisago,2,7484
+Chisago,3,4933
+Chisago,4,2352
+Dakota,0,6805
+Dakota,1,45865
+Dakota,2,70763
+Dakota,3,25120
+Dakota,4,10224
+Goodhue,0,995
+Goodhue,1,5187
+Goodhue,2,7460
+Goodhue,3,3523
+Goodhue,4,2180
+Hennepin,0,50265
+Hennepin,1,177391
+Hennepin,2,194602
+Hennepin,3,56019
+Hennepin,4,20827
+Isanti,0,601
+Isanti,1,3289
+Isanti,2,5551
+Isanti,3,3202
+Isanti,4,1928
+Le Sueur,0,445
+Le Sueur,1,2480
+Le Sueur,2,4182
+Le Sueur,3,2307
+Le Sueur,4,1430
+McLeod,0,630
+McLeod,1,4046
+McLeod,2,6173
+McLeod,3,2567
+McLeod,4,1344
+Pierce,0,606
+Pierce,1,3337
+Pierce,2,6290
+Pierce,3,3337
+Pierce,4,1732
+Polk,0,665
+Polk,1,4770
+Polk,2,6956
+Polk,3,3902
+Polk,4,1896
+Ramsey,0,22232
+Ramsey,1,77012
+Ramsey,2,78422
+Ramsey,3,22335
+Ramsey,4,8503
+Rice,0,1518
+Rice,1,6210
+Rice,2,9258
+Rice,3,3939
+Rice,4,1974
+Scott,0,1606
+Scott,1,9718
+Scott,2,23276
+Scott,3,9103
+Scott,4,4161
+Sherburne,0,954
+Sherburne,1,5210
+Sherburne,2,14021
+Sherburne,3,7285
+Sherburne,4,3711
+Sibley,0,222
+Sibley,1,1351
+Sibley,2,2320
+Sibley,3,1389
+Sibley,4,711
+St. Croix,0,1041
+St. Croix,1,8012
+St. Croix,2,13697
+St. Croix,3,7406
+St. Croix,4,3233
+Washington,0,2752
+Washington,1,22762
+Washington,2,42643
+Washington,3,16719
+Washington,4,7129
+Wright,0,1787
+Wright,1,9593
+Wright,2,20370
+Wright,3,10563
+Wright,4,4255
+Total,0,101423
+Total,1,429310
+Total,2,584446
+Total,3,214423
+Total,4,90978
