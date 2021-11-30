@@ -1,0 +1,155 @@
+"from","to","value"
+"Dakota","Goodhue",3347.07393991905
+"St. Croix","St. Croix",16228.94980887
+"Wright","Wright",20232.9271471779
+"Wright","Hennepin",30510.9507162376
+"Ramsey","Anoka",8708.1426275399
+"Hennepin","Anoka",11334.053777394
+"Hennepin","Hennepin",373191.485077583
+"Polk","St. Croix",1114.59752362643
+"Ramsey","Ramsey",88377.490824469
+"Hennepin","Washington",3587.71666961527
+"Scott","Scott",20182.6768605745
+"Scott","Hennepin",15912.9992866109
+"Rice","Dakota",3924.46220921704
+"Pierce","Ramsey",728.924385876708
+"Pierce","St. Croix",3086.39731269504
+"Ramsey","Hennepin",61416.3699722701
+"Anoka","Ramsey",25336.5453843102
+"Hennepin","Carver",9288.23181540743
+"Dakota","Dakota",65016.8802231273
+"Anoka","Anoka",40684.0825773583
+"Ramsey","Dakota",5544.84137766586
+"St. Croix","Washington",10556.9157699751
+"St. Croix","Dakota",887.120448833105
+"Scott","Dakota",7611.70087418467
+"Hennepin","Ramsey",46371.2012716596
+"Sherburne","Hennepin",10037.1971560007
+"Sherburne","Isanti",943.953205109184
+"Dakota","Hennepin",54764.1393966273
+"Anoka","Hennepin",47907.922201124
+"Anoka","Washington",4607.17668139503
+"Sherburne","Wright",6390.30366360503
+"Scott","Carver",940.038498839666
+"Le Sueur","Le Sueur",2592.42067499555
+"Le Sueur","Dakota",1204.57524999836
+"Le Sueur","Rice",1148.76488089858
+"Dakota","Ramsey",27756.7484673709
+"Ramsey","Washington",5317.00851747509
+"Washington","Ramsey",32805.678033807
+"Carver","Carver",9345.59352321134
+"Polk","Polk",14725.9161150856
+"Polk","Hennepin",117.349514188798
+"Pierce","Goodhue",1899.55561593098
+"Washington","Washington",30749.7760317755
+"Washington","Hennepin",18382.0927589869
+"Wright","Ramsey",1378.57637534372
+"Isanti","Isanti",8476.51758735257
+"Sherburne","Sherburne",11069.3646600994
+"Polk","Washington",3218.0845919733
+"Chisago","Hennepin",3358.24248807845
+"Hennepin","Rice",1069.28808640357
+"Goodhue","Goodhue",9362.68413191167
+"Scott","Ramsey",1740.69369461169
+"Hennepin","Scott",2758.76841362764
+"Goodhue","Anoka",553.204490422851
+"Dakota","Rice",2138.21951151641
+"St. Croix","Pierce",3840.2420348716
+"Hennepin","Dakota",13626.388906488
+"Carver","Ramsey",1689.30020064549
+"Rice","Le Sueur",106.859659802752
+"Anoka","Scott",203.075884878305
+"Rice","Rice",11173.0455037649
+"Rice","Ramsey",2587.21890432771
+"Carver","Hennepin",20405.0246380049
+"Chisago","Dakota",92.6498497221249
+"McLeod","McLeod",12698.1795866942
+"St. Croix","Hennepin",7192.11971329031
+"Pierce","Pierce",8039.45497400832
+"Washington","Dakota",9931.03444129935
+"Goodhue","Dakota",1067.90827361869
+"St. Croix","Ramsey",7448.23466323598
+"Chisago","Ramsey",4719.2483867361
+"Chisago","Chisago",6301.15850349808
+"Goodhue","Rice",918.949582610533
+"Chisago","Washington",1812.75239508184
+"Carver","Anoka",989.743938747125
+"Polk","Ramsey",1331.64372940919
+"McLeod","Ramsey",52.1581021808533
+"Wright","Anoka",1702.2564673408
+"Anoka","Wright",143.171082252518
+"Hennepin","Wright",4773.52348051016
+"Dakota","Scott",3484.27342190197
+"Sherburne","Anoka",6349.55458279548
+"Dakota","Washington",4624.55771380007
+"Wright","McLeod",794.815250051625
+"Dakota","Carver",1054.83627392989
+"Rice","Hennepin",1797.54128975463
+"Chisago","Anoka",609.345232517178
+"Isanti","Chisago",2633.36284429727
+"Chisago","Sherburne",947.034863836676
+"Isanti","Anoka",4090.67342973028
+"Ramsey","Polk",64.5920557202462
+"Anoka","Dakota",2292.46648395533
+"Washington","Anoka",2741.38575071386
+"Le Sueur","Sibley",1433.12365049711
+"Washington","St. Croix",1127.09441098329
+"Goodhue","Washington",67.1467895036344
+"Washington","Carver",53.8205062433124
+"Sherburne","Ramsey",1549.43345687135
+"Wright","Scott",986.637860082304
+"Hennepin","St. Croix",503.637073510213
+"Anoka","Sherburne",2593.01452519835
+"Isanti","Hennepin",855.258690151007
+"Isanti","Sherburne",107.82013203535
+"Chisago","Isanti",152.549594130152
+"Dakota","Pierce",687.112724757953
+"Ramsey","Carver",50.7309214156415
+"Isanti","Ramsey",2394.57615181448
+"Le Sueur","Scott",1382.69448375413
+"Rice","Carver",146.73182916053
+"Rice","Scott",402.372807003302
+"Wright","Washington",409.901329974765
+"Hennepin","Sherburne",1011.90381281152
+"Isanti","Wright",779.01890993843
+"Chisago","Polk",901.939920611361
+"Ramsey","Chisago",198.782784921938
+"Carver","McLeod",686.506858338883
+"Carver","Scott",2432.15718308282
+"McLeod","Carver",3320.06720926082
+"Anoka","St. Croix",129.12965498966
+"Wright","Sherburne",598.104730391071
+"McLeod","Hennepin",1621.40843582316
+"Polk","Chisago",1740.05525190996
+"Washington","Goodhue",1004.6747066401
+"Le Sueur","Carver",56.09023628804
+"Isanti","Dakota",196.211668013129
+"Pierce","Rice",51.0144040250644
+"Rice","St. Croix",979.009770907277
+"Scott","Le Sueur",1061.42222126726
+"Pierce","Washington",49.8843632808942
+"McLeod","Wright",2030.54989654299
+"Pierce","Hennepin",446.864157047073
+"Scott","Anoka",373.93946905242
+"St. Croix","Goodhue",446.538819096292
+"Sibley","Sibley",2468.75458700035
+"Carver","Dakota",140.194607095149
+"Dakota","St. Croix",1022.17892290104
+"Ramsey","Scott",34.3556362378976
+"Goodhue","Ramsey",418.319134201068
+"Scott","Rice",401.613109539381
+"Wright","Carver",391.521818261215
+"St. Croix","Polk",538.193246093168
+"Le Sueur","Hennepin",1057.25695625198
+"St. Croix","Chisago",67.5442534386028
+"Goodhue","Pierce",49.7286783373982
+"Polk","Anoka",358.521391886021
+"Pierce","Dakota",97.9142500451183
+"Anoka","Isanti",52.7589551300851
+"Goodhue","Hennepin",803.304059210744
+"Ramsey","St. Croix",50.7309214156415
+"Scott","Washington",53.5889564461119
+"Scott","Pierce",94.3240444269352
+"Washington","Chisago",597.82544763331
+"McLeod","Sherburne",234.098033214868
+"Ramsey","Sherburne",56.4267549888204
