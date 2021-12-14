@@ -15,6 +15,26 @@ off-peak round trip distance,_auOpTime,"skim_od[('SOV_N_TIME', 'MD')] + skim_do[
 decay function,_decay, exp(_auOpTime * dispersion_parameter_automobile)
 auto off-peak retail,auOpRetail,df.RET_EMP * _decay
 auto off-peak total,auOpTotal,df.TOT_EMP * _decay
+
+#
+# Tourcast Replicas
+#
+# The below is from TourCast and used in the Toll Transponder pass model
+,_mw100,"skim_od[('SOV_P_TIME', 'AM')]" #daptime
+,_daptoll100,"(skim_od[('SOV_P_TOLL','AM')] > 0) * skim_od[('SOV_P_TIME', 'AM')]"
+#zi.1.tot_emp[j]*exp(-1*C_10*mw[100]/T_bar)
+,_decay,exp(-1 * 10 * _mw100 / 44.2)
+Tourcast te 10,TEhwyacc10,df.TOT_EMP * _decay
+# if daptoll > 0 then mw[22]=zi.1.tot_emp[j]*exp(-1*C_10*mw[100]/T_bar) ;accvalM10
+,_decay,exp(-1 * 10 * _daptoll100 / 44.2)
+Tourcast me 10,MEhwyacc10,df.TOT_EMP * _decay
+
+# this one is transit based
+,_mw100,"skim_od[('WLK_TRN_IVT', 'AM')]"
+#mw[5]=zi.1.tot_emp[j]*exp(-1*C_15*mw[100]/T_bar) ;accvalT15 
+,_decay,exp(-1 * 15 * _mw100 / 38.65447734)
+Tourcast TETRacc15,TETRacc15,df.TOT_EMP * _decay
+
 #,,
 #,, transit peak
 #,,
