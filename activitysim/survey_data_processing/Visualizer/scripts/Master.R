@@ -17,7 +17,7 @@ args                <- commandArgs(trailingOnly = TRUE)
 if(length(args) > 0){
   Parameters_File     <- args[1]
 }else{
-  Parameters_File <- "F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/Visualizer/runtime/parameters.csv"
+  Parameters_File <- "F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/activitysim/survey_data_processing/Visualizer/runtime/parameters.csv"
 }
                   
 #Run_switch          <- "FULL"

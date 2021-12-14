@@ -9,8 +9,8 @@ if(length(args) > 0){
   Parameters_File = args[1]
   settings_file = args[2]
 }else{
-  settings_file = 'F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/metc_inputs.yml'
-  Parameters_File = "F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/Visualizer/runtime/parameters.csv"
+  settings_file = 'F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/activitysim/survey_data_processing/metc_inputs.yml'
+  Parameters_File = "F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/activitysim/survey_data_processing/Visualizer/runtime/parameters.csv"
 }
 
 parameters          <- read.csv(Parameters_File, header = TRUE)

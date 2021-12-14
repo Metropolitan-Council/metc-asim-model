@@ -3,18 +3,26 @@
 *.rds
 *.xlsx
 *.xls
+Input
 
 ## Ignore R history
 .Rhistory
 
 ## Outputs
 output
+*.prn
+*.var
+tppl.prj
+*.log
+
+activitysim/data
+activitysim/data_s
 
 !trip_weights.rds
 !hh_weights.rds
 !person_weights.rds
 !day_weights.rds
-
+activitysim/survey_data_processing/RPKG
 !survey_data_processing/obs_processing/output/tour_mode_choice/.
 !survey_data_processing/obs_processing/output/trip_mode_choice/.
 !survey_data_processing/obs_processing/output/tour_mode_choice_calibration_targets.csv

@@ -43,7 +43,7 @@ if __name__ == "__main__":
     #BMP[09/08/17] - survey data processed separately for each survey day  
     #
 
-    for dayno in range(1,5):
+    for dayno in range(2,5):
         
         print("PROCESSING DAY : "+str(dayno))
 

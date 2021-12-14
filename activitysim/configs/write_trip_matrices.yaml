@@ -6,6 +6,8 @@ preprocessor:
   DF: trips
   TABLES:
     - tours
+    - persons
+    - households
 
 # divide trip counts by household expansion factor
 HH_EXPANSION_WEIGHT_COL: sample_rate  # added when households read in
@@ -13,121 +15,798 @@ HH_EXPANSION_WEIGHT_COL: sample_rate  # added when households read in
 # save preprocessed trips table to pipeline if desired
 SAVE_TRIPS_TABLE: True
 
+
 MATRICES:
-  - file_name: trips_nt.omx
+  - file_name: trips_on.omx
     tables:
-      - name: DRIVEALONE
-        data_field: DRIVEALONE_NT
-      - name: SHARED2
-        data_field: SHARED2_NT
-      - name: SHARED3
-        data_field: SHARED3_NT
-      - name: WALK
-        data_field: WALK_NT
-      - name: BIKE
-        data_field: BIKE_NT
-      - name: TRN_WALK
-        data_field: TRNWALKACCESS_NT
-      - name: TRN_DRV
-        data_field: TRNDRIVEACCESS_NT
-      - name: SCHOOLBUS
-        data_field: SCHOOLBUS_NT
-      - name: TAXI
-        data_field: TAXI_NT
-      - name: TNC_SINGLE
-        data_field: TNC_SINGLE_NT
-      - name: TNC_SHARED
-        data_field: TNC_SHARED_NT
-  - file_name: trips_am.omx
+      - name: DriveAlone_Work_Inc1_XP
+        data_field: DA_Wrk_Inc1_XP_ON
+      - name: DriveAlone_Work_Inc2_XP
+        data_field: DA_Wrk_Inc2_XP_ON
+      - name: DriveAlone_Work_Inc3_XP
+        data_field: DA_Wrk_Inc3_XP_ON
+      - name: DriveAlone_Work_Inc4_XP
+        data_field: DA_Wrk_Inc4_XP_ON
+      - name: DriveAlone_Work_Inc5_XP
+        data_field: DA_Wrk_Inc5_XP_ON
+      - name: SharedRide2_Work_Inc1
+        data_field: SR2_Wrk_Inc1_ON
+      - name: SharedRide2_Work_Inc2
+        data_field: SR2_Wrk_Inc2_ON
+      - name: SharedRide2_Work_Inc3
+        data_field: SR2_Wrk_Inc3_ON
+      - name: SharedRide2_Work_Inc4
+        data_field: SR2_Wrk_Inc4_ON
+      - name: SharedRide2_Work_Inc5
+        data_field: SR2_Wrk_Inc5_ON
+      - name: SharedRide3_Work_Inc1
+        data_field: SR3_Wrk_Inc1_ON
+      - name: SharedRide3_Work_Inc2
+        data_field: SR3_Wrk_Inc2_ON
+      - name: SharedRide3_Work_Inc3
+        data_field: SR3_Wrk_Inc3_ON
+      - name: SharedRide3_Work_Inc4
+        data_field: SR3_Wrk_Inc4_ON
+      - name: SharedRide3_Work_Inc5
+        data_field: SR3_Wrk_Inc5_ON
+      - name: DriveAlone_NonWork_Inc1_XP
+        data_field: DA_NWrk_Inc1_XP_ON
+      - name: DriveAlone_NonWork_Inc2_XP
+        data_field: DA_NWrk_Inc2_XP_ON
+      - name: DriveAlone_NonWork_Inc3_XP
+        data_field: DA_NWrk_Inc3_XP_ON
+      - name: DriveAlone_NonWork_Inc4_XP
+        data_field: DA_NWrk_Inc4_XP_ON
+      - name: DriveAlone_NonWork_Inc5_XP
+        data_field: DA_NWrk_Inc5_XP_ON
+      - name: SharedRide2_NonWork_Inc1
+        data_field: SR2_NWrk_Inc1_ON
+      - name: SharedRide2_NonWork_Inc2
+        data_field: SR2_NWrk_Inc2_ON
+      - name: SharedRide2_NonWork_Inc3
+        data_field: SR2_NWrk_Inc3_ON
+      - name: SharedRide2_NonWork_Inc4
+        data_field: SR2_NWrk_Inc4_ON
+      - name: SharedRide2_NonWork_Inc5
+        data_field: SR2_NWrk_Inc5_ON
+      - name: SharedRide3_NonWork_Inc1
+        data_field: SR3_NWrk_Inc1_ON
+      - name: SharedRide3_NonWork_Inc2
+        data_field: SR3_NWrk_Inc2_ON
+      - name: SharedRide3_NonWork_Inc3
+        data_field: SR3_NWrk_Inc3_ON
+      - name: SharedRide3_NonWork_Inc4
+        data_field: SR3_NWrk_Inc4_ON
+      - name: SharedRide3_NonWork_Inc5
+        data_field: SR3_NWrk_Inc5_ON
+      - name: DriveAlone_All_Inc1_NoXP
+        data_field: DA_Inc1_NoXP_ON
+      - name: DriveAlone_All_Inc2345_NoXP
+        data_field: DA_IncGT1_NoXP_ON
+        
+  - file_name: trips_am1.omx
     tables:
-      - name: DRIVEALONE
-        data_field: DRIVEALONE_AM
-      - name: SHARED2
-        data_field: SHARED2_AM
-      - name: SHARED3
-        data_field: SHARED3_AM
-      - name: WALK
-        data_field: WALK_AM
-      - name: BIKE
-        data_field: BIKE_AM
-      - name: TRN_WALK
-        data_field: TRNWALKACCESS_AM
-      - name: TRN_DRV
-        data_field: TRNDRIVEACCESS_AM
-      - name: SCHOOLBUS
-        data_field: SCHOOLBUS_AM
-      - name: TAXI
-        data_field: TAXI_AM
-      - name: TNC_SINGLE
-        data_field: TNC_SINGLE_AM
-      - name: TNC_SHARED
-        data_field: TNC_SHARED_AM
+      - name: DriveAlone_Work_Inc1_XP
+        data_field: DA_Wrk_Inc1_XP_AM1
+      - name: DriveAlone_Work_Inc2_XP
+        data_field: DA_Wrk_Inc2_XP_AM1
+      - name: DriveAlone_Work_Inc3_XP
+        data_field: DA_Wrk_Inc3_XP_AM1
+      - name: DriveAlone_Work_Inc4_XP
+        data_field: DA_Wrk_Inc4_XP_AM1
+      - name: DriveAlone_Work_Inc5_XP
+        data_field: DA_Wrk_Inc5_XP_AM1
+      - name: SharedRide2_Work_Inc1
+        data_field: SR2_Wrk_Inc1_AM1
+      - name: SharedRide2_Work_Inc2
+        data_field: SR2_Wrk_Inc2_AM1
+      - name: SharedRide2_Work_Inc3
+        data_field: SR2_Wrk_Inc3_AM1
+      - name: SharedRide2_Work_Inc4
+        data_field: SR2_Wrk_Inc4_AM1
+      - name: SharedRide2_Work_Inc5
+        data_field: SR2_Wrk_Inc5_AM1
+      - name: SharedRide3_Work_Inc1
+        data_field: SR3_Wrk_Inc1_AM1
+      - name: SharedRide3_Work_Inc2
+        data_field: SR3_Wrk_Inc2_AM1
+      - name: SharedRide3_Work_Inc3
+        data_field: SR3_Wrk_Inc3_AM1
+      - name: SharedRide3_Work_Inc4
+        data_field: SR3_Wrk_Inc4_AM1
+      - name: SharedRide3_Work_Inc5
+        data_field: SR3_Wrk_Inc5_AM1
+      - name: DriveAlone_NonWork_Inc1_XP
+        data_field: DA_NWrk_Inc1_XP_AM1
+      - name: DriveAlone_NonWork_Inc2_XP
+        data_field: DA_NWrk_Inc2_XP_AM1
+      - name: DriveAlone_NonWork_Inc3_XP
+        data_field: DA_NWrk_Inc3_XP_AM1
+      - name: DriveAlone_NonWork_Inc4_XP
+        data_field: DA_NWrk_Inc4_XP_AM1
+      - name: DriveAlone_NonWork_Inc5_XP
+        data_field: DA_NWrk_Inc5_XP_AM1
+      - name: SharedRide2_NonWork_Inc1
+        data_field: SR2_NWrk_Inc1_AM1
+      - name: SharedRide2_NonWork_Inc2
+        data_field: SR2_NWrk_Inc2_AM1
+      - name: SharedRide2_NonWork_Inc3
+        data_field: SR2_NWrk_Inc3_AM1
+      - name: SharedRide2_NonWork_Inc4
+        data_field: SR2_NWrk_Inc4_AM1
+      - name: SharedRide2_NonWork_Inc5
+        data_field: SR2_NWrk_Inc5_AM1
+      - name: SharedRide3_NonWork_Inc1
+        data_field: SR3_NWrk_Inc1_AM1
+      - name: SharedRide3_NonWork_Inc2
+        data_field: SR3_NWrk_Inc2_AM1
+      - name: SharedRide3_NonWork_Inc3
+        data_field: SR3_NWrk_Inc3_AM1
+      - name: SharedRide3_NonWork_Inc4
+        data_field: SR3_NWrk_Inc4_AM1
+      - name: SharedRide3_NonWork_Inc5
+        data_field: SR3_NWrk_Inc5_AM1
+      - name: DriveAlone_All_Inc1_NoXP
+        data_field: DA_Inc1_NoXP_AM1
+      - name: DriveAlone_All_Inc2345_NoXP
+        data_field: DA_IncGT1_NoXP_AM1
+        
+  - file_name: trips_am2.omx
+    tables:
+      - name: DriveAlone_Work_Inc1_XP
+        data_field: DA_Wrk_Inc1_XP_AM2
+      - name: DriveAlone_Work_Inc2_XP
+        data_field: DA_Wrk_Inc2_XP_AM2
+      - name: DriveAlone_Work_Inc3_XP
+        data_field: DA_Wrk_Inc3_XP_AM2
+      - name: DriveAlone_Work_Inc4_XP
+        data_field: DA_Wrk_Inc4_XP_AM2
+      - name: DriveAlone_Work_Inc5_XP
+        data_field: DA_Wrk_Inc5_XP_AM2
+      - name: SharedRide2_Work_Inc1
+        data_field: SR2_Wrk_Inc1_AM2
+      - name: SharedRide2_Work_Inc2
+        data_field: SR2_Wrk_Inc2_AM2
+      - name: SharedRide2_Work_Inc3
+        data_field: SR2_Wrk_Inc3_AM2
+      - name: SharedRide2_Work_Inc4
+        data_field: SR2_Wrk_Inc4_AM2
+      - name: SharedRide2_Work_Inc5
+        data_field: SR2_Wrk_Inc5_AM2
+      - name: SharedRide3_Work_Inc1
+        data_field: SR3_Wrk_Inc1_AM2
+      - name: SharedRide3_Work_Inc2
+        data_field: SR3_Wrk_Inc2_AM2
+      - name: SharedRide3_Work_Inc3
+        data_field: SR3_Wrk_Inc3_AM2
+      - name: SharedRide3_Work_Inc4
+        data_field: SR3_Wrk_Inc4_AM2
+      - name: SharedRide3_Work_Inc5
+        data_field: SR3_Wrk_Inc5_AM2
+      - name: DriveAlone_NonWork_Inc1_XP
+        data_field: DA_NWrk_Inc1_XP_AM2
+      - name: DriveAlone_NonWork_Inc2_XP
+        data_field: DA_NWrk_Inc2_XP_AM2
+      - name: DriveAlone_NonWork_Inc3_XP
+        data_field: DA_NWrk_Inc3_XP_AM2
+      - name: DriveAlone_NonWork_Inc4_XP
+        data_field: DA_NWrk_Inc4_XP_AM2
+      - name: DriveAlone_NonWork_Inc5_XP
+        data_field: DA_NWrk_Inc5_XP_AM2
+      - name: SharedRide2_NonWork_Inc1
+        data_field: SR2_NWrk_Inc1_AM2
+      - name: SharedRide2_NonWork_Inc2
+        data_field: SR2_NWrk_Inc2_AM2
+      - name: SharedRide2_NonWork_Inc3
+        data_field: SR2_NWrk_Inc3_AM2
+      - name: SharedRide2_NonWork_Inc4
+        data_field: SR2_NWrk_Inc4_AM2
+      - name: SharedRide2_NonWork_Inc5
+        data_field: SR2_NWrk_Inc5_AM2
+      - name: SharedRide3_NonWork_Inc1
+        data_field: SR3_NWrk_Inc1_AM2
+      - name: SharedRide3_NonWork_Inc2
+        data_field: SR3_NWrk_Inc2_AM2
+      - name: SharedRide3_NonWork_Inc3
+        data_field: SR3_NWrk_Inc3_AM2
+      - name: SharedRide3_NonWork_Inc4
+        data_field: SR3_NWrk_Inc4_AM2
+      - name: SharedRide3_NonWork_Inc5
+        data_field: SR3_NWrk_Inc5_AM2
+      - name: DriveAlone_All_Inc1_NoXP
+        data_field: DA_Inc1_NoXP_AM2
+      - name: DriveAlone_All_Inc2345_NoXP
+        data_field: DA_IncGT1_NoXP_AM2
+
+  - file_name: trips_am3.omx
+    tables:
+      - name: DriveAlone_Work_Inc1_XP
+        data_field: DA_Wrk_Inc1_XP_AM3
+      - name: DriveAlone_Work_Inc2_XP
+        data_field: DA_Wrk_Inc2_XP_AM3
+      - name: DriveAlone_Work_Inc3_XP
+        data_field: DA_Wrk_Inc3_XP_AM3
+      - name: DriveAlone_Work_Inc4_XP
+        data_field: DA_Wrk_Inc4_XP_AM3
+      - name: DriveAlone_Work_Inc5_XP
+        data_field: DA_Wrk_Inc5_XP_AM3
+      - name: SharedRide2_Work_Inc1
+        data_field: SR2_Wrk_Inc1_AM3
+      - name: SharedRide2_Work_Inc2
+        data_field: SR2_Wrk_Inc2_AM3
+      - name: SharedRide2_Work_Inc3
+        data_field: SR2_Wrk_Inc3_AM3
+      - name: SharedRide2_Work_Inc4
+        data_field: SR2_Wrk_Inc4_AM3
+      - name: SharedRide2_Work_Inc5
+        data_field: SR2_Wrk_Inc5_AM3
+      - name: SharedRide3_Work_Inc1
+        data_field: SR3_Wrk_Inc1_AM3
+      - name: SharedRide3_Work_Inc2
+        data_field: SR3_Wrk_Inc2_AM3
+      - name: SharedRide3_Work_Inc3
+        data_field: SR3_Wrk_Inc3_AM3
+      - name: SharedRide3_Work_Inc4
+        data_field: SR3_Wrk_Inc4_AM3
+      - name: SharedRide3_Work_Inc5
+        data_field: SR3_Wrk_Inc5_AM3
+      - name: DriveAlone_NonWork_Inc1_XP
+        data_field: DA_NWrk_Inc1_XP_AM3
+      - name: DriveAlone_NonWork_Inc2_XP
+        data_field: DA_NWrk_Inc2_XP_AM3
+      - name: DriveAlone_NonWork_Inc3_XP
+        data_field: DA_NWrk_Inc3_XP_AM3
+      - name: DriveAlone_NonWork_Inc4_XP
+        data_field: DA_NWrk_Inc4_XP_AM3
+      - name: DriveAlone_NonWork_Inc5_XP
+        data_field: DA_NWrk_Inc5_XP_AM3
+      - name: SharedRide2_NonWork_Inc1
+        data_field: SR2_NWrk_Inc1_AM3
+      - name: SharedRide2_NonWork_Inc2
+        data_field: SR2_NWrk_Inc2_AM3
+      - name: SharedRide2_NonWork_Inc3
+        data_field: SR2_NWrk_Inc3_AM3
+      - name: SharedRide2_NonWork_Inc4
+        data_field: SR2_NWrk_Inc4_AM3
+      - name: SharedRide2_NonWork_Inc5
+        data_field: SR2_NWrk_Inc5_AM3
+      - name: SharedRide3_NonWork_Inc1
+        data_field: SR3_NWrk_Inc1_AM3
+      - name: SharedRide3_NonWork_Inc2
+        data_field: SR3_NWrk_Inc2_AM3
+      - name: SharedRide3_NonWork_Inc3
+        data_field: SR3_NWrk_Inc3_AM3
+      - name: SharedRide3_NonWork_Inc4
+        data_field: SR3_NWrk_Inc4_AM3
+      - name: SharedRide3_NonWork_Inc5
+        data_field: SR3_NWrk_Inc5_AM3
+      - name: DriveAlone_All_Inc1_NoXP
+        data_field: DA_Inc1_NoXP_AM3
+      - name: DriveAlone_All_Inc2345_NoXP
+        data_field: DA_IncGT1_NoXP_AM3
+        
+  - file_name: trips_am4.omx
+    tables:
+      - name: DriveAlone_Work_Inc1_XP
+        data_field: DA_Wrk_Inc1_XP_AM4
+      - name: DriveAlone_Work_Inc2_XP
+        data_field: DA_Wrk_Inc2_XP_AM4
+      - name: DriveAlone_Work_Inc3_XP
+        data_field: DA_Wrk_Inc3_XP_AM4
+      - name: DriveAlone_Work_Inc4_XP
+        data_field: DA_Wrk_Inc4_XP_AM4
+      - name: DriveAlone_Work_Inc5_XP
+        data_field: DA_Wrk_Inc5_XP_AM4
+      - name: SharedRide2_Work_Inc1
+        data_field: SR2_Wrk_Inc1_AM4
+      - name: SharedRide2_Work_Inc2
+        data_field: SR2_Wrk_Inc2_AM4
+      - name: SharedRide2_Work_Inc3
+        data_field: SR2_Wrk_Inc3_AM4
+      - name: SharedRide2_Work_Inc4
+        data_field: SR2_Wrk_Inc4_AM4
+      - name: SharedRide2_Work_Inc5
+        data_field: SR2_Wrk_Inc5_AM4
+      - name: SharedRide3_Work_Inc1
+        data_field: SR3_Wrk_Inc1_AM4
+      - name: SharedRide3_Work_Inc2
+        data_field: SR3_Wrk_Inc2_AM4
+      - name: SharedRide3_Work_Inc3
+        data_field: SR3_Wrk_Inc3_AM4
+      - name: SharedRide3_Work_Inc4
+        data_field: SR3_Wrk_Inc4_AM4
+      - name: SharedRide3_Work_Inc5
+        data_field: SR3_Wrk_Inc5_AM4
+      - name: DriveAlone_NonWork_Inc1_XP
+        data_field: DA_NWrk_Inc1_XP_AM4
+      - name: DriveAlone_NonWork_Inc2_XP
+        data_field: DA_NWrk_Inc2_XP_AM4
+      - name: DriveAlone_NonWork_Inc3_XP
+        data_field: DA_NWrk_Inc3_XP_AM4
+      - name: DriveAlone_NonWork_Inc4_XP
+        data_field: DA_NWrk_Inc4_XP_AM4
+      - name: DriveAlone_NonWork_Inc5_XP
+        data_field: DA_NWrk_Inc5_XP_AM4
+      - name: SharedRide2_NonWork_Inc1
+        data_field: SR2_NWrk_Inc1_AM4
+      - name: SharedRide2_NonWork_Inc2
+        data_field: SR2_NWrk_Inc2_AM4
+      - name: SharedRide2_NonWork_Inc3
+        data_field: SR2_NWrk_Inc3_AM4
+      - name: SharedRide2_NonWork_Inc4
+        data_field: SR2_NWrk_Inc4_AM4
+      - name: SharedRide2_NonWork_Inc5
+        data_field: SR2_NWrk_Inc5_AM4
+      - name: SharedRide3_NonWork_Inc1
+        data_field: SR3_NWrk_Inc1_AM4
+      - name: SharedRide3_NonWork_Inc2
+        data_field: SR3_NWrk_Inc2_AM4
+      - name: SharedRide3_NonWork_Inc3
+        data_field: SR3_NWrk_Inc3_AM4
+      - name: SharedRide3_NonWork_Inc4
+        data_field: SR3_NWrk_Inc4_AM4
+      - name: SharedRide3_NonWork_Inc5
+        data_field: SR3_NWrk_Inc5_AM4
+      - name: DriveAlone_All_Inc1_NoXP
+        data_field: DA_Inc1_NoXP_AM4
+      - name: DriveAlone_All_Inc2345_NoXP
+        data_field: DA_IncGT1_NoXP_AM4
+
   - file_name: trips_md.omx
     tables:
-      - name: DRIVEALONE
-        data_field: DRIVEALONE_MD
-      - name: SHARED2
-        data_field: SHARED2_MD
-      - name: SHARED3
-        data_field: SHARED3_MD
-      - name: WALK
-        data_field: WALK_MD
-      - name: BIKE
-        data_field: BIKE_MD
-      - name: TRN_WALK
-        data_field: TRNWALKACCESS_MD
-      - name: TRN_DRV
-        data_field: TRNDRIVEACCESS_MD
-      - name: SCHOOLBUS
-        data_field: SCHOOLBUS_MD
-      - name: TAXI
-        data_field: TAXI_MD
-      - name: TNC_SINGLE
-        data_field: TNC_SINGLE_MD
-      - name: TNC_SHARED
-        data_field: TNC_SHARED_MD
-  - file_name: trips_pm.omx
+      - name: DriveAlone_Work_Inc1_XP
+        data_field: DA_Wrk_Inc1_XP_MD
+      - name: DriveAlone_Work_Inc2_XP
+        data_field: DA_Wrk_Inc2_XP_MD
+      - name: DriveAlone_Work_Inc3_XP
+        data_field: DA_Wrk_Inc3_XP_MD
+      - name: DriveAlone_Work_Inc4_XP
+        data_field: DA_Wrk_Inc4_XP_MD
+      - name: DriveAlone_Work_Inc5_XP
+        data_field: DA_Wrk_Inc5_XP_MD
+      - name: SharedRide2_Work_Inc1
+        data_field: SR2_Wrk_Inc1_MD
+      - name: SharedRide2_Work_Inc2
+        data_field: SR2_Wrk_Inc2_MD
+      - name: SharedRide2_Work_Inc3
+        data_field: SR2_Wrk_Inc3_MD
+      - name: SharedRide2_Work_Inc4
+        data_field: SR2_Wrk_Inc4_MD
+      - name: SharedRide2_Work_Inc5
+        data_field: SR2_Wrk_Inc5_MD
+      - name: SharedRide3_Work_Inc1
+        data_field: SR3_Wrk_Inc1_MD
+      - name: SharedRide3_Work_Inc2
+        data_field: SR3_Wrk_Inc2_MD
+      - name: SharedRide3_Work_Inc3
+        data_field: SR3_Wrk_Inc3_MD
+      - name: SharedRide3_Work_Inc4
+        data_field: SR3_Wrk_Inc4_MD
+      - name: SharedRide3_Work_Inc5
+        data_field: SR3_Wrk_Inc5_MD
+      - name: DriveAlone_NonWork_Inc1_XP
+        data_field: DA_NWrk_Inc1_XP_MD
+      - name: DriveAlone_NonWork_Inc2_XP
+        data_field: DA_NWrk_Inc2_XP_MD
+      - name: DriveAlone_NonWork_Inc3_XP
+        data_field: DA_NWrk_Inc3_XP_MD
+      - name: DriveAlone_NonWork_Inc4_XP
+        data_field: DA_NWrk_Inc4_XP_MD
+      - name: DriveAlone_NonWork_Inc5_XP
+        data_field: DA_NWrk_Inc5_XP_MD
+      - name: SharedRide2_NonWork_Inc1
+        data_field: SR2_NWrk_Inc1_MD
+      - name: SharedRide2_NonWork_Inc2
+        data_field: SR2_NWrk_Inc2_MD
+      - name: SharedRide2_NonWork_Inc3
+        data_field: SR2_NWrk_Inc3_MD
+      - name: SharedRide2_NonWork_Inc4
+        data_field: SR2_NWrk_Inc4_MD
+      - name: SharedRide2_NonWork_Inc5
+        data_field: SR2_NWrk_Inc5_MD
+      - name: SharedRide3_NonWork_Inc1
+        data_field: SR3_NWrk_Inc1_MD
+      - name: SharedRide3_NonWork_Inc2
+        data_field: SR3_NWrk_Inc2_MD
+      - name: SharedRide3_NonWork_Inc3
+        data_field: SR3_NWrk_Inc3_MD
+      - name: SharedRide3_NonWork_Inc4
+        data_field: SR3_NWrk_Inc4_MD
+      - name: SharedRide3_NonWork_Inc5
+        data_field: SR3_NWrk_Inc5_MD
+      - name: DriveAlone_All_Inc1_NoXP
+        data_field: DA_Inc1_NoXP_MD
+      - name: DriveAlone_All_Inc2345_NoXP
+        data_field: DA_IncGT1_NoXP_MD
+
+  - file_name: trips_pm1.omx
     tables:
-      - name: DRIVEALONE
-        data_field: DRIVEALONE_PM
-      - name: SHARED2
-        data_field: SHARED2_PM
-      - name: SHARED3
-        data_field: SHARED3_PM
-      - name: WALK
-        data_field: WALK_PM
-      - name: BIKE
-        data_field: BIKE_PM
-      - name: TRN_WALK
-        data_field: TRNWALKACCESS_PM
-      - name: TRN_DRV
-        data_field: TRNDRIVEACCESS_PM
-      - name: SCHOOLBUS
-        data_field: SCHOOLBUS_PM
-      - name: TAXI
-        data_field: TAXI_PM
-      - name: TNC_SINGLE
-        data_field: TNC_SINGLE_PM
-      - name: TNC_SHARED
-        data_field: TNC_SHARED_PM
+      - name: DriveAlone_Work_Inc1_XP
+        data_field: DA_Wrk_Inc1_XP_PM1
+      - name: DriveAlone_Work_Inc2_XP
+        data_field: DA_Wrk_Inc2_XP_PM1
+      - name: DriveAlone_Work_Inc3_XP
+        data_field: DA_Wrk_Inc3_XP_PM1
+      - name: DriveAlone_Work_Inc4_XP
+        data_field: DA_Wrk_Inc4_XP_PM1
+      - name: DriveAlone_Work_Inc5_XP
+        data_field: DA_Wrk_Inc5_XP_PM1
+      - name: SharedRide2_Work_Inc1
+        data_field: SR2_Wrk_Inc1_PM1
+      - name: SharedRide2_Work_Inc2
+        data_field: SR2_Wrk_Inc2_PM1
+      - name: SharedRide2_Work_Inc3
+        data_field: SR2_Wrk_Inc3_PM1
+      - name: SharedRide2_Work_Inc4
+        data_field: SR2_Wrk_Inc4_PM1
+      - name: SharedRide2_Work_Inc5
+        data_field: SR2_Wrk_Inc5_PM1
+      - name: SharedRide3_Work_Inc1
+        data_field: SR3_Wrk_Inc1_PM1
+      - name: SharedRide3_Work_Inc2
+        data_field: SR3_Wrk_Inc2_PM1
+      - name: SharedRide3_Work_Inc3
+        data_field: SR3_Wrk_Inc3_PM1
+      - name: SharedRide3_Work_Inc4
+        data_field: SR3_Wrk_Inc4_PM1
+      - name: SharedRide3_Work_Inc5
+        data_field: SR3_Wrk_Inc5_PM1
+      - name: DriveAlone_NonWork_Inc1_XP
+        data_field: DA_NWrk_Inc1_XP_PM1
+      - name: DriveAlone_NonWork_Inc2_XP
+        data_field: DA_NWrk_Inc2_XP_PM1
+      - name: DriveAlone_NonWork_Inc3_XP
+        data_field: DA_NWrk_Inc3_XP_PM1
+      - name: DriveAlone_NonWork_Inc4_XP
+        data_field: DA_NWrk_Inc4_XP_PM1
+      - name: DriveAlone_NonWork_Inc5_XP
+        data_field: DA_NWrk_Inc5_XP_PM1
+      - name: SharedRide2_NonWork_Inc1
+        data_field: SR2_NWrk_Inc1_PM1
+      - name: SharedRide2_NonWork_Inc2
+        data_field: SR2_NWrk_Inc2_PM1
+      - name: SharedRide2_NonWork_Inc3
+        data_field: SR2_NWrk_Inc3_PM1
+      - name: SharedRide2_NonWork_Inc4
+        data_field: SR2_NWrk_Inc4_PM1
+      - name: SharedRide2_NonWork_Inc5
+        data_field: SR2_NWrk_Inc5_PM1
+      - name: SharedRide3_NonWork_Inc1
+        data_field: SR3_NWrk_Inc1_PM1
+      - name: SharedRide3_NonWork_Inc2
+        data_field: SR3_NWrk_Inc2_PM1
+      - name: SharedRide3_NonWork_Inc3
+        data_field: SR3_NWrk_Inc3_PM1
+      - name: SharedRide3_NonWork_Inc4
+        data_field: SR3_NWrk_Inc4_PM1
+      - name: SharedRide3_NonWork_Inc5
+        data_field: SR3_NWrk_Inc5_PM1
+      - name: DriveAlone_All_Inc1_NoXP
+        data_field: DA_Inc1_NoXP_PM1
+      - name: DriveAlone_All_Inc2345_NoXP
+        data_field: DA_IncGT1_NoXP_PM1
+        
+  - file_name: trips_pm2.omx
+    tables:
+      - name: DriveAlone_Work_Inc1_XP
+        data_field: DA_Wrk_Inc1_XP_PM2
+      - name: DriveAlone_Work_Inc2_XP
+        data_field: DA_Wrk_Inc2_XP_PM2
+      - name: DriveAlone_Work_Inc3_XP
+        data_field: DA_Wrk_Inc3_XP_PM2
+      - name: DriveAlone_Work_Inc4_XP
+        data_field: DA_Wrk_Inc4_XP_PM2
+      - name: DriveAlone_Work_Inc5_XP
+        data_field: DA_Wrk_Inc5_XP_PM2
+      - name: SharedRide2_Work_Inc1
+        data_field: SR2_Wrk_Inc1_PM2
+      - name: SharedRide2_Work_Inc2
+        data_field: SR2_Wrk_Inc2_PM2
+      - name: SharedRide2_Work_Inc3
+        data_field: SR2_Wrk_Inc3_PM2
+      - name: SharedRide2_Work_Inc4
+        data_field: SR2_Wrk_Inc4_PM2
+      - name: SharedRide2_Work_Inc5
+        data_field: SR2_Wrk_Inc5_PM2
+      - name: SharedRide3_Work_Inc1
+        data_field: SR3_Wrk_Inc1_PM2
+      - name: SharedRide3_Work_Inc2
+        data_field: SR3_Wrk_Inc2_PM2
+      - name: SharedRide3_Work_Inc3
+        data_field: SR3_Wrk_Inc3_PM2
+      - name: SharedRide3_Work_Inc4
+        data_field: SR3_Wrk_Inc4_PM2
+      - name: SharedRide3_Work_Inc5
+        data_field: SR3_Wrk_Inc5_PM2
+      - name: DriveAlone_NonWork_Inc1_XP
+        data_field: DA_NWrk_Inc1_XP_PM2
+      - name: DriveAlone_NonWork_Inc2_XP
+        data_field: DA_NWrk_Inc2_XP_PM2
+      - name: DriveAlone_NonWork_Inc3_XP
+        data_field: DA_NWrk_Inc3_XP_PM2
+      - name: DriveAlone_NonWork_Inc4_XP
+        data_field: DA_NWrk_Inc4_XP_PM2
+      - name: DriveAlone_NonWork_Inc5_XP
+        data_field: DA_NWrk_Inc5_XP_PM2
+      - name: SharedRide2_NonWork_Inc1
+        data_field: SR2_NWrk_Inc1_PM2
+      - name: SharedRide2_NonWork_Inc2
+        data_field: SR2_NWrk_Inc2_PM2
+      - name: SharedRide2_NonWork_Inc3
+        data_field: SR2_NWrk_Inc3_PM2
+      - name: SharedRide2_NonWork_Inc4
+        data_field: SR2_NWrk_Inc4_PM2
+      - name: SharedRide2_NonWork_Inc5
+        data_field: SR2_NWrk_Inc5_PM2
+      - name: SharedRide3_NonWork_Inc1
+        data_field: SR3_NWrk_Inc1_PM2
+      - name: SharedRide3_NonWork_Inc2
+        data_field: SR3_NWrk_Inc2_PM2
+      - name: SharedRide3_NonWork_Inc3
+        data_field: SR3_NWrk_Inc3_PM2
+      - name: SharedRide3_NonWork_Inc4
+        data_field: SR3_NWrk_Inc4_PM2
+      - name: SharedRide3_NonWork_Inc5
+        data_field: SR3_NWrk_Inc5_PM2
+      - name: DriveAlone_All_Inc1_NoXP
+        data_field: DA_Inc1_NoXP_PM2
+      - name: DriveAlone_All_Inc2345_NoXP
+        data_field: DA_IncGT1_NoXP_PM2
+
+  - file_name: trips_pm3.omx
+    tables:
+      - name: DriveAlone_Work_Inc1_XP
+        data_field: DA_Wrk_Inc1_XP_PM3
+      - name: DriveAlone_Work_Inc2_XP
+        data_field: DA_Wrk_Inc2_XP_PM3
+      - name: DriveAlone_Work_Inc3_XP
+        data_field: DA_Wrk_Inc3_XP_PM3
+      - name: DriveAlone_Work_Inc4_XP
+        data_field: DA_Wrk_Inc4_XP_PM3
+      - name: DriveAlone_Work_Inc5_XP
+        data_field: DA_Wrk_Inc5_XP_PM3
+      - name: SharedRide2_Work_Inc1
+        data_field: SR2_Wrk_Inc1_PM3
+      - name: SharedRide2_Work_Inc2
+        data_field: SR2_Wrk_Inc2_PM3
+      - name: SharedRide2_Work_Inc3
+        data_field: SR2_Wrk_Inc3_PM3
+      - name: SharedRide2_Work_Inc4
+        data_field: SR2_Wrk_Inc4_PM3
+      - name: SharedRide2_Work_Inc5
+        data_field: SR2_Wrk_Inc5_PM3
+      - name: SharedRide3_Work_Inc1
+        data_field: SR3_Wrk_Inc1_PM3
+      - name: SharedRide3_Work_Inc2
+        data_field: SR3_Wrk_Inc2_PM3
+      - name: SharedRide3_Work_Inc3
+        data_field: SR3_Wrk_Inc3_PM3
+      - name: SharedRide3_Work_Inc4
+        data_field: SR3_Wrk_Inc4_PM3
+      - name: SharedRide3_Work_Inc5
+        data_field: SR3_Wrk_Inc5_PM3
+      - name: DriveAlone_NonWork_Inc1_XP
+        data_field: DA_NWrk_Inc1_XP_PM3
+      - name: DriveAlone_NonWork_Inc2_XP
+        data_field: DA_NWrk_Inc2_XP_PM3
+      - name: DriveAlone_NonWork_Inc3_XP
+        data_field: DA_NWrk_Inc3_XP_PM3
+      - name: DriveAlone_NonWork_Inc4_XP
+        data_field: DA_NWrk_Inc4_XP_PM3
+      - name: DriveAlone_NonWork_Inc5_XP
+        data_field: DA_NWrk_Inc5_XP_PM3
+      - name: SharedRide2_NonWork_Inc1
+        data_field: SR2_NWrk_Inc1_PM3
+      - name: SharedRide2_NonWork_Inc2
+        data_field: SR2_NWrk_Inc2_PM3
+      - name: SharedRide2_NonWork_Inc3
+        data_field: SR2_NWrk_Inc3_PM3
+      - name: SharedRide2_NonWork_Inc4
+        data_field: SR2_NWrk_Inc4_PM3
+      - name: SharedRide2_NonWork_Inc5
+        data_field: SR2_NWrk_Inc5_PM3
+      - name: SharedRide3_NonWork_Inc1
+        data_field: SR3_NWrk_Inc1_PM3
+      - name: SharedRide3_NonWork_Inc2
+        data_field: SR3_NWrk_Inc2_PM3
+      - name: SharedRide3_NonWork_Inc3
+        data_field: SR3_NWrk_Inc3_PM3
+      - name: SharedRide3_NonWork_Inc4
+        data_field: SR3_NWrk_Inc4_PM3
+      - name: SharedRide3_NonWork_Inc5
+        data_field: SR3_NWrk_Inc5_PM3
+      - name: DriveAlone_All_Inc1_NoXP
+        data_field: DA_Inc1_NoXP_PM3
+      - name: DriveAlone_All_Inc2345_NoXP
+        data_field: DA_IncGT1_NoXP_PM3
+        
+  - file_name: trips_pm4.omx
+    tables:
+      - name: DriveAlone_Work_Inc1_XP
+        data_field: DA_Wrk_Inc1_XP_PM4
+      - name: DriveAlone_Work_Inc2_XP
+        data_field: DA_Wrk_Inc2_XP_PM4
+      - name: DriveAlone_Work_Inc3_XP
+        data_field: DA_Wrk_Inc3_XP_PM4
+      - name: DriveAlone_Work_Inc4_XP
+        data_field: DA_Wrk_Inc4_XP_PM4
+      - name: DriveAlone_Work_Inc5_XP
+        data_field: DA_Wrk_Inc5_XP_PM4
+      - name: SharedRide2_Work_Inc1
+        data_field: SR2_Wrk_Inc1_PM4
+      - name: SharedRide2_Work_Inc2
+        data_field: SR2_Wrk_Inc2_PM4
+      - name: SharedRide2_Work_Inc3
+        data_field: SR2_Wrk_Inc3_PM4
+      - name: SharedRide2_Work_Inc4
+        data_field: SR2_Wrk_Inc4_PM4
+      - name: SharedRide2_Work_Inc5
+        data_field: SR2_Wrk_Inc5_PM4
+      - name: SharedRide3_Work_Inc1
+        data_field: SR3_Wrk_Inc1_PM4
+      - name: SharedRide3_Work_Inc2
+        data_field: SR3_Wrk_Inc2_PM4
+      - name: SharedRide3_Work_Inc3
+        data_field: SR3_Wrk_Inc3_PM4
+      - name: SharedRide3_Work_Inc4
+        data_field: SR3_Wrk_Inc4_PM4
+      - name: SharedRide3_Work_Inc5
+        data_field: SR3_Wrk_Inc5_PM4
+      - name: DriveAlone_NonWork_Inc1_XP
+        data_field: DA_NWrk_Inc1_XP_PM4
+      - name: DriveAlone_NonWork_Inc2_XP
+        data_field: DA_NWrk_Inc2_XP_PM4
+      - name: DriveAlone_NonWork_Inc3_XP
+        data_field: DA_NWrk_Inc3_XP_PM4
+      - name: DriveAlone_NonWork_Inc4_XP
+        data_field: DA_NWrk_Inc4_XP_PM4
+      - name: DriveAlone_NonWork_Inc5_XP
+        data_field: DA_NWrk_Inc5_XP_PM4
+      - name: SharedRide2_NonWork_Inc1
+        data_field: SR2_NWrk_Inc1_PM4
+      - name: SharedRide2_NonWork_Inc2
+        data_field: SR2_NWrk_Inc2_PM4
+      - name: SharedRide2_NonWork_Inc3
+        data_field: SR2_NWrk_Inc3_PM4
+      - name: SharedRide2_NonWork_Inc4
+        data_field: SR2_NWrk_Inc4_PM4
+      - name: SharedRide2_NonWork_Inc5
+        data_field: SR2_NWrk_Inc5_PM4
+      - name: SharedRide3_NonWork_Inc1
+        data_field: SR3_NWrk_Inc1_PM4
+      - name: SharedRide3_NonWork_Inc2
+        data_field: SR3_NWrk_Inc2_PM4
+      - name: SharedRide3_NonWork_Inc3
+        data_field: SR3_NWrk_Inc3_PM4
+      - name: SharedRide3_NonWork_Inc4
+        data_field: SR3_NWrk_Inc4_PM4
+      - name: SharedRide3_NonWork_Inc5
+        data_field: SR3_NWrk_Inc5_PM4
+      - name: DriveAlone_All_Inc1_NoXP
+        data_field: DA_Inc1_NoXP_PM4
+      - name: DriveAlone_All_Inc2345_NoXP
+        data_field: DA_IncGT1_NoXP_PM4
+
+  - file_name: trips_ev.omx
+    tables:
+      - name: DriveAlone_Work_Inc1_XP
+        data_field: DA_Wrk_Inc1_XP_EV
+      - name: DriveAlone_Work_Inc2_XP
+        data_field: DA_Wrk_Inc2_XP_EV
+      - name: DriveAlone_Work_Inc3_XP
+        data_field: DA_Wrk_Inc3_XP_EV
+      - name: DriveAlone_Work_Inc4_XP
+        data_field: DA_Wrk_Inc4_XP_EV
+      - name: DriveAlone_Work_Inc5_XP
+        data_field: DA_Wrk_Inc5_XP_EV
+      - name: SharedRide2_Work_Inc1
+        data_field: SR2_Wrk_Inc1_EV
+      - name: SharedRide2_Work_Inc2
+        data_field: SR2_Wrk_Inc2_EV
+      - name: SharedRide2_Work_Inc3
+        data_field: SR2_Wrk_Inc3_EV
+      - name: SharedRide2_Work_Inc4
+        data_field: SR2_Wrk_Inc4_EV
+      - name: SharedRide2_Work_Inc5
+        data_field: SR2_Wrk_Inc5_EV
+      - name: SharedRide3_Work_Inc1
+        data_field: SR3_Wrk_Inc1_EV
+      - name: SharedRide3_Work_Inc2
+        data_field: SR3_Wrk_Inc2_EV
+      - name: SharedRide3_Work_Inc3
+        data_field: SR3_Wrk_Inc3_EV
+      - name: SharedRide3_Work_Inc4
+        data_field: SR3_Wrk_Inc4_EV
+      - name: SharedRide3_Work_Inc5
+        data_field: SR3_Wrk_Inc5_EV
+      - name: DriveAlone_NonWork_Inc1_XP
+        data_field: DA_NWrk_Inc1_XP_EV
+      - name: DriveAlone_NonWork_Inc2_XP
+        data_field: DA_NWrk_Inc2_XP_EV
+      - name: DriveAlone_NonWork_Inc3_XP
+        data_field: DA_NWrk_Inc3_XP_EV
+      - name: DriveAlone_NonWork_Inc4_XP
+        data_field: DA_NWrk_Inc4_XP_EV
+      - name: DriveAlone_NonWork_Inc5_XP
+        data_field: DA_NWrk_Inc5_XP_EV
+      - name: SharedRide2_NonWork_Inc1
+        data_field: SR2_NWrk_Inc1_EV
+      - name: SharedRide2_NonWork_Inc2
+        data_field: SR2_NWrk_Inc2_EV
+      - name: SharedRide2_NonWork_Inc3
+        data_field: SR2_NWrk_Inc3_EV
+      - name: SharedRide2_NonWork_Inc4
+        data_field: SR2_NWrk_Inc4_EV
+      - name: SharedRide2_NonWork_Inc5
+        data_field: SR2_NWrk_Inc5_EV
+      - name: SharedRide3_NonWork_Inc1
+        data_field: SR3_NWrk_Inc1_EV
+      - name: SharedRide3_NonWork_Inc2
+        data_field: SR3_NWrk_Inc2_EV
+      - name: SharedRide3_NonWork_Inc3
+        data_field: SR3_NWrk_Inc3_EV
+      - name: SharedRide3_NonWork_Inc4
+        data_field: SR3_NWrk_Inc4_EV
+      - name: SharedRide3_NonWork_Inc5
+        data_field: SR3_NWrk_Inc5_EV
+      - name: DriveAlone_All_Inc1_NoXP
+        data_field: DA_Inc1_NoXP_EV
+      - name: DriveAlone_All_Inc2345_NoXP
+        data_field: DA_IncGT1_NoXP_EV
+
+  - file_name: transit_pk.omx
+    tables:
+      - name: WalkToTransit
+        data_field: TrnW_Pk
+      - name: DriveToTransit
+        data_field: TrnD_Pk
+
+  - file_name: transit_op.omx
+    tables:
+      - name: WalkToTransit
+        data_field: TrnW_Op
+      - name: DriveToTransit
+        data_field: TrnD_Op
 
 CONSTANTS:
   time_periods:
-    NT1:
+    EA:
       first_hour: 1
+      last_hour: 5
+    AM1:
+      first_hour: 6
+      last_hour: 7
+    AM2:
+      first_hour: 8
+      last_hour: 9
+    AM3:
+      first_hour: 10
       last_hour: 11
-    AM:
+    AM4:
       first_hour: 12
-      last_hour: 19
+      last_hour: 13
     MD:
-      first_hour: 20
+      first_hour: 14
+      last_hour: 23
+    PM1:
+      first_hour: 24
+      last_hour: 25
+    PM2:
+      first_hour: 26
+      last_hour: 24
+    PM3:
+      first_hour: 28
       last_hour: 29
-    PM:
+    PM4:
       first_hour: 30
-      last_hour: 37
-    NT2:
-      first_hour: 38
+      last_hour: 31      
+    EV:
+      first_hour: 32
+      last_hour: 41
+    NT:
+      first_hour: 42
       last_hour: 48
+      
 
   # SHARED2 and SHARED2 Occupancies
   OCC_SHARED2: 2.0

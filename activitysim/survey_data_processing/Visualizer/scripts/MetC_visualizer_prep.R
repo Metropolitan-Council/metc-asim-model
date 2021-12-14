@@ -65,7 +65,7 @@ args = commandArgs(trailingOnly = TRUE)
 if(length(args) > 0){
   settings_file = args[1]
 } else {
-  settings_file = 'F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/metc_inputs.yml'
+  settings_file = 'F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/activitysim/survey_data_processing/metc_inputs.yml'
 }
 
 settings = yaml.load_file(settings_file)
@@ -104,7 +104,7 @@ jtours = data.table()
 place = data.table()
 
 
-for(dow in c(1:4)){
+for(dow in c(2:4)){
   cat(dow)
   
   per_data = fread(file.path(Survey_Processed_Dir, paste0('day', as.character(dow)), "persons.csv"))
@@ -161,7 +161,7 @@ trip_weights = readRDS(file.path(wt_dir, 'trip_weights.rds'))
 #NOTE: these are not being used, but the weights already in the HH file are the same
 
 #CHECK: do we have too many persons?
-per = per[(per$SAMPN*10+per$PERNO) %in% (processedPerson$HH_ID*10+processedPerson$PER_ID),]
+#per = per[(per$SAMPN*10+per$PERNO) %in% (processedPerson$HH_ID*10+processedPerson$PER_ID),]
 
 
 ## Prepare Data Files
@@ -1100,6 +1100,11 @@ write.csv(tours_purpose_type, "tours_purpose_type.csv", row.names = TRUE)
 #FIXME: Remove before flight
 perDays_t = perDays #  perDays = perDays_t 
 
+perday_valid = melt(per, id.vars = c("SAMPN", "PERNO"), variable.name = "day_num", measure.vars = c("Complete_2", "Complete_3", "Complete_4"))
+perday_valid$dow = as.integer(substr(perday_valid$day_num, str_length(perday_valid$day_num) , str_length(perday_valid$day_num)))
+
+perDays$validDay = perday_valid$value[match(perDays$HH_ID*1000+perDays$PER_ID*10+perDays$dow, perday_valid$SAMPN*1000+perday_valid$PERNO*10+perday_valid$dow)]
+
 perDays$workTours   = workCounts$freq[match(perDays$HH_ID*1000+perDays$PER_ID*10+perDays$dow, workCounts$HH_ID*1000+workCounts$PER_ID*10+workCounts$dow_num)]
 perDays$workTours[is.na(perDays$workTours)] = 0
 perDays$atWorkTours = atWorkCounts$freq[match(perDays$HH_ID*1000+perDays$PER_ID*10+perDays$dow, atWorkCounts$HH_ID*1000+atWorkCounts$PER_ID*10+atWorkCounts$dow_num)]
@@ -1114,6 +1119,8 @@ perDays$inumTours[is.na(perDays$inumTours)] = 0
 perDays$jnumTours = jtourCounts$freq[match(perDays$HH_ID*1000+perDays$PER_ID*10+perDays$dow, jtourCounts$HH_ID*1000+jtourCounts$PER_ID*10+jtourCounts$dow_num)]
 perDays$jnumTours[is.na(perDays$jnumTours)] = 0
 perDays$numTours = perDays$inumTours + perDays$jnumTours
+
+perDays = perDays[perDays$validDay == 1,]
 
 perDays$DAP = "H"
 perDays$DAP[perDays$workTours > 0 | perDays$schlTours > 0] = "M"

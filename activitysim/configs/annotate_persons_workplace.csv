@@ -1,7 +1,8 @@
 Description,Target,Expression
 #,, annotate persons table after workplace_location model has run
 ,distance_to_work,"np.where(persons.workplace_zone_id>=0,skim_dict.lookup(persons.home_zone_id, persons.workplace_zone_id, ('SOV_DIST', 'MD')),np.nan)"
-workplace_in_cbd,workplace_in_cbd,"reindex((land_use.CBD == 1), persons.workplace_zone_id) < setting('cbd_threshold')"
+workplace_in_cbd,workplace_in_cbd,"reindex((land_use.CBD == 1), persons.workplace_zone_id) == 1"
+workplace_in_suburb,workplace_in_suburb,"reindex((land_use.SUBURB3 + land_use.SUBURB2), persons.workplace_zone_id) == 1"
 work_zone_area_type,work_zone_area_type,"reindex(land_use.area_type, persons.workplace_zone_id)"
 #,, auto time to work - free flow travel time in both directions. MTC TM1 was MD and MD
 #,,roundtrip_auto_time_to_work

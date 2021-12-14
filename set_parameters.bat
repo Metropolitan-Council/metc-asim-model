@@ -221,7 +221,7 @@ SET xit_DR_OPskims=%MAIN_DIRECTORY%\Input\skims\%xit_DR_OPskims_name%
 SET TPP_PATH=C:\Program Files\Citilabs\CubeVoyager;C:\Program Files (x86)\Citilabs\CubeVoyager
 
 :: The location of python
-SET PYTHON_PATH=C:\Users\andrew.rohne\.conda\envs\metc_asim 
+SET PYTHON_PATH=C:\Users\andrew.rohne\.conda\envs\metc_asim
 ::C:\Python27\ArcGIS10.7
 ::SET PYTHON_PATH=C:\Python27\ArcGIS10.5
 
