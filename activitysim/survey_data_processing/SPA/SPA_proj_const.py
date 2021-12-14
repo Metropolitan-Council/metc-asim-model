@@ -20,7 +20,7 @@ USE_DISTANCE_IN_PRIMARY_LOCATION_SCORE = True
 if len(sys.argv) > 1:
     settings_file = sys.argv[1]
 else:
-   settings_file = r'E:/Projects/Clients/MetCouncilASIM/tasks/survey_data_processing/metc_inputs.yml'
+   settings_file = r'F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/activitysim/survey_data_processing/metc_inputs.yml'
 
 
 with open(settings_file) as file:

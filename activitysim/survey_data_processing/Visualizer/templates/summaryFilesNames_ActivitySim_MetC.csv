@@ -35,3 +35,5 @@ activePertypeDistbn.csv
 wfh_summary.csv
 employees_per_taz.csv
 employees_per_co.csv
+workers_per_co.csv
+workers_per_taz.csv

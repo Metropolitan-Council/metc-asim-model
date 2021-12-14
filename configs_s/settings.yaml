@@ -1,7 +1,0 @@
-# Configs File with Sample Rate set by Model Runner
-inherit_settings: True
-
-# For sample - no multiprocess, no chunking
-multiprocess: False
-chunk_training_mode: disabled
-num_processes: 1

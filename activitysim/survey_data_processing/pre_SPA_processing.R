@@ -29,8 +29,8 @@ library(stringr)
 
 # Not sure why Thanksgiving week and Christmas week are in this data... ARohne
 REMOVE_THESE_DATES = c("2018-11-19", "2018-11-20", "2018-11-21", "2018-11-22",
-                       "2018-12-24", "2018-12-25", "2018-12-26", "2018-12-27",
-                       "2019-06-01", "2019-06-02", "2019-06-03", "2019-06-04", "2019-06-05", "2019-06-06",
+                       "2018-12-24", "2018-12-25", "2018-12-26", "2018-12-27")
+SUMMER_DATES = c(      "2019-06-01", "2019-06-02", "2019-06-03", "2019-06-04", "2019-06-05", "2019-06-06",
                        "2019-06-07", "2019-06-08", "2019-06-09", "2019-06-10", "2019-06-11", "2019-06-12", 
                        "2019-06-13", "2019-06-14", "2019-06-15", "2019-06-16", "2019-06-17", "2019-06-18", 
                        "2019-06-19", "2019-06-20", "2019-06-21", "2019-06-22", "2019-06-23", "2019-06-24", 
@@ -63,7 +63,7 @@ args = commandArgs(trailingOnly = TRUE)
 if(length(args) > 0){
   settings_file = args[1]
 } else {
-  settings_file = 'F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/metc_inputs.yml'
+  settings_file = 'F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/activitysim/survey_data_processing/metc_inputs.yml'
 }
 
 settings = yaml.load_file(settings_file)
@@ -305,14 +305,15 @@ for(day_num_i in 1:7){
                                                                               trip_num_day = 1,
                                                                               day_num = day_num_i,
                                                                         trip_weight = person_weight, 
-                                                                        participation_group)]
+                                                                        participation_group)][day_raw[,.(person_num, hh_id, day_num, day_complete)], on = .(person_num, hh_id, day_num), day_complete := i.day_complete]
+                                                                        
   
   if(day_num_i != 1) {
-    dt = dt[participation_group != 2]
+    dt = dt[participation_group != 2 & day_complete == 1]
  } 
   
   dt[hh_raw, travel_date := (day_num - 1) + i.first_travel_date, on = .(hh_id)]
-  dt[, travel_dow := wday(travel_date, week_start = 1)]
+  dt[day_complete == 1, travel_dow := wday(travel_date, week_start = 1)]
   per_without_trips = rbindlist(list(per_without_trips, dt), use.names = TRUE, fill = TRUE)
 }
 
@@ -331,6 +332,7 @@ firsttrip = rbindlist(list(firsttrip, per_without_trips), use.names = TRUE, fill
 # Create initial PLACE file as a copy of TRIP data
 
 place_raw = trip_raw %>%
+  
   mutate(trip_num_day = trip_num_day + 1) %>%
   bind_rows(firsttrip) %>%
   arrange(hh_id, person_num,day_num, trip_num_day) %>%
@@ -401,6 +403,14 @@ place_raw[per_raw, SCHOL := i.SCHOL, on = .(hh_id, person_num)]
 place_raw[per_raw, age := i.age, on = .(hh_id, person_num)]
 place_raw[per_raw, license := i.license, on = .(hh_id, person_num)]
 place_raw[, PURPOSE_original := PURPOSE]
+
+# Add back normal workplace
+place_raw[per_raw, WRK_TAZ := i.PER_WK_ZONE_ID, on = .(hh_id, person_num)]
+#View(place_raw[PURPOSE == 3 & TAZ == WRK_TAZ])
+
+place_raw[per_raw, WORK_DIST := get_distance_meters(c(XCORD, YCORD), c(work_lon, work_lat)) * 0.000621371, on = .(hh_id, person_num) ]
+place_raw[per_raw, work_hours := i.work_hours, on = .(hh_id, person_num)]
+
 place_raw[, PURPOSE := fcase(PURPOSE_original == 1, 0, # home 
                                       PURPOSE_original == 2 , 1, # work (fixed)
                                       PURPOSE_original == 4 & SCHOL %in% c(6:8), 2, # university
@@ -413,7 +423,8 @@ place_raw[, PURPOSE := fcase(PURPOSE_original == 1, 0, # home
                                       d_purpose_imputed %in% c(52, 56), 8, # social/visit
                                       PURPOSE_original == 7, 7, # eat out
                                       d_purpose_imputed %in% c(51, 53:55, 62), 9, # other disc
-                                      PURPOSE_original == 3, 1, # work related --> other maint #FIXME ASR: Remove before flight?
+                                      PURPOSE_original == 3 & (work_hours <= 4 & (TAZ == WRK_TAZ | is.na(WRK_TAZ) | WRK_TAZ == 0 | WORK_DIST < 400)), 1, # These appear to be mis-coded 
+                                      PURPOSE_original == 3 & (TAZ != WRK_TAZ & !is.na(WRK_TAZ) & WRK_TAZ > 0), 6, # work related --> other maint 
                                       PURPOSE_original == 9, 6, # errand/other --> other maint
                                       PURPOSE_original == 10, 12, # change mode
                                      PURPOSE_original %in% c(12, 14), 6, # other maint
@@ -422,6 +433,10 @@ place_raw[, PURPOSE := fcase(PURPOSE_original == 1, 0, # home
                              default = -9 
                                      )]
 
+
+
+hist(place_raw[place_raw$PURPOSE_original == 3 & place_raw$WORK_DIST < 1.6,]$WORK_DIST, breaks = 100)
+
 place_raw[PURPOSE == -1, PURPOSE := -9]
 place_raw[PLACENO > 1, .N, PURPOSE][order(PURPOSE)]
 
@@ -429,6 +444,7 @@ place_raw[PLACENO > 1, .N, PURPOSE][order(PURPOSE)]
 place_raw[day_raw, trip_weight := ifelse(PLACENO == 1, i.day_weight, trip_weight), on = .(hh_id, person_num, day_num)]
 place_raw[PLACENO == 1 & PURPOSE <0 & trip_weight >0,  PURPOSE := 0] # at home for 0-trip days with no prev purpose
 
+place_raw = place_raw[PURPOSE >= 0] #Added ASR to remove trips that did not have a purpose
 # Assign SPA mode value to each column
 
 # model modes:
@@ -561,11 +577,14 @@ HH[is.na(HH)] = -9
 PER[is.na(PER)] = -9
 PLACE[is.na(PLACE)] = -9
 
+perday = dcast(day_raw[,.(PERNO = person_num, SAMPN = hh_id, travel_dow, day_complete)], SAMPN + PERNO ~ travel_dow, value.var = "day_complete", fun.aggregate = mean)
+perday[is.na(perday)] = 0
+colnames(perday) = c("SAMPN", "PERNO", "Complete_1", "Complete_2", "Complete_3", "Complete_4", "Complete_5", "Complete_6", "Complete_7")
+PER = PER[perday, on = .(SAMPN, PERNO)]
+
 str(HH)
 str(PER)
 str(PLACE)
-
-
 
 # Checking to see if every person in PER file is in PLACE file:
 # -----------------
@@ -578,21 +597,10 @@ paste0("Distict people in PLACE file: ", num_persons_in_PLACE)
 # Writing Output
 # -----------------
 
-HH_TEST = HH[1:400]
-PER_TEST = PER[SAMPN %in% HH_TEST[, SAMPN]]
-
-write.csv(HH_TEST, file.path(output_dir, "HH_SPA_INPUT.csv"), row.names = F)
-write.csv(PER_TEST, file.path(output_dir, "PER_SPA_INPUT.csv"), row.names = F)
-
-for (i in 1:4) {
-  write.csv(PLACE[DOW==i & SAMPN %in% HH_TEST[, SAMPN],], file.path(output_dir, paste0('place_', as.character(i), ".csv")), row.names = F)
-}
-
-# # #
 write.csv(HH, file.path(output_dir, "HH_SPA_INPUT.csv"), row.names = F)
 write.csv(PER, file.path(output_dir, "PER_SPA_INPUT.csv"), row.names = F)
 
-for (i in 1:4) {
+for (i in 2:4) {
   write.csv(PLACE[DOW==i,], file.path(output_dir, paste0('place_', as.character(i), ".csv")), row.names = F)
 }
 
