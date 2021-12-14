@@ -1,0 +1,14 @@
+Label,Description,Expression,no_pass,pass
+util_unav,unavailable if under 16,@df.AGE < 4,0,-999
+util_inc3,income 3,"@df.HHINC5S == 4",0,coef_inc3_mnpass
+util_inc4,income 4,"@df.HHINC5S == 5",0,coef_inc4_mnpass
+util_inc5,income 5,"@df.HHINC5S == 5",0,coef_inc4_mnpass
+utils_suburb3,suburb 3,@df.SUBURB3 == 1,0,coef_suburb3
+util_TEhwyacc10,Accessibility,@df.TEhwyacc10,0,coef_TEhwyacc10
+util_TETRacc15,Accessibility,@df.TETRacc15,0,coef_TETRacc15
+util_MEhwyacc10,Accessibility,@df.MEhwyacc10,0,coef_MEhwyacc10
+util_cars_gt_wrk,cars gt workers,@df.auto_ownership > df.num_workers,0,coef_cars_gt_wrk
+util_work_in_cbd,workplace in cbd,@df.workplace_in_cbd,0,coef_work_in_cbd
+util_work_in_suburb,workplace in suburb,@df.workplace_in_suburb,0,coef_work_in_suburb
+util_hhworkers,n workers in hh,@df.num_workers,0,coef_hhworkers
+utils_pass_asc,Constant,0,1,coef_pass_asc
