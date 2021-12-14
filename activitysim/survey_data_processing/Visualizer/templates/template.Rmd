@@ -886,8 +886,8 @@ bscols(widths=c(6,6),
 base_df <- build_data[[which(build_csv_names=="employees_per_co")]]
 build_df <- build_data[[which(build_csv_names=="workers_per_co")]]
 
-base_df$WDISTRICT = levels(base_df$WDISTRICT)[base_df$WDISTRICT]
-build_df$WDISTRICT = levels(build_df$WDISTRICT)[build_df$WDISTRICT]
+#base_df$WDISTRICT = levels(base_df$WDISTRICT)[base_df$WDISTRICT]
+#build_df$WDISTRICT = levels(build_df$WDISTRICT)[build_df$WDISTRICT]
 build_df = build_df[build_df$WDISTRICT %in% base_df$WDISTRICT,]
 base_df = base_df[base_df$WDISTRICT %in% build_df$WDISTRICT,]
 

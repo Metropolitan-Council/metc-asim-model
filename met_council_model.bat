@@ -246,12 +246,43 @@ runtpp %SCRIPT_PATH%\EVMAT00G.s
 
 
 :: Prepare sedata for ActivitySim
-python %SCRIPT_PATH%\EVMAT00H.py "%SCENARIO_DIR%\set_parameters.txt"
+%PYTHON_PATH%\python.exe %SCRIPT_PATH%\EVMAT00H.py "%SCENARIO_DIR%\set_parameters.txt"
 %check_cube_errors%
 
 :: Run ActivitySim
-python ActivitySim\simulation.py -c ActivitySim\configs -d ActivitySim\data -o ActivitySim\output
+%PYTHON_PATH%\python.exe ActivitySim\simulation.py  -c ActivitySim\configs_test -c ActivitySim\configs -d ActivitySim\data -o ActivitySim\output
 
+echo Iteration=%ITER%
+:: Output ActivitySim Matrices
+for /L %%I IN (1, 1, 11) DO (
+    SET TOD=%%I
+    
+    IF %%I EQU 1 (SET PER=AM1)
+    IF %%I EQU 2 (SET PER=AM2)
+    IF %%I EQU 3 (SET PER=AM3)
+    IF %%I EQU 4 (SET PER=AM4)  
+    IF %%I EQU 5 (SET PER=MD)
+    IF %%I EQU 6 (SET PER=PM1)
+    IF %%I EQU 7 (SET PER=PM2)
+    IF %%I EQU 8 (SET PER=PM3)
+    IF %%I EQU 9 (SET PER=PM4)
+    IF %%I EQU 10 (SET PER=EV)
+    IF %%I EQU 11 (SET PER=ON)
+    
+	runtpp %SCRIPT_PATH%\ASPIL00A.S
+	%check_cube_errors%
+)
+
+echo Iteration=%ITER%
+
+::Convert Transit Trip Tables
+for /L %%I IN (1, 1, 2) DO (    
+    IF %%I EQU 1 (SET TPER=PK)
+    IF %%I EQU 2 (SET TPER=OP)
+	runtpp %SCRIPT_PATH%\ASPIL00B.S
+	%check_cube_errors%
+	)
+echo Iteration=%ITER%
 
 
 :: ----------------------------------------------------------------------------
@@ -281,6 +312,7 @@ runtpp %SCRIPT_PATH%\EEMAT00A.s
 runtpp %SCRIPT_PATH%\EEMAT00B.s
 %check_cube_errors%
 
+echo Iteration=%ITER%
 :: Loop through time periods, sum trips from each time period
 for /L %%I IN (1, 1, 11) DO (
     SET TOD=%%I
@@ -300,10 +332,13 @@ for /L %%I IN (1, 1, 11) DO (
     runtpp %SCRIPT_PATH%\EEMAT00D.s
     %check_cube_errors%
 )
+
+echo Iteration=%ITER%
 :: Split trips by TOD
 runtpp %SCRIPT_PATH%\EEMAT00E.s
 %check_cube_errors%
 ::endComment
+
 
 ::%beginComment%
 :: SPECIAL GENERATORS
@@ -376,6 +411,8 @@ for /L %%I IN (1, 1, 11) DO (
     %check_cube_errors%
 )
 ::endComment
+
+echo Iteration=%ITER%
 
 ::%beginComment%
 :: ----------------------------------------------------------------------------
@@ -451,6 +488,8 @@ runtpp %SCRIPT_PATH%\HAPIL00B.s
 %check_cube_errors% 
 :endComment
 
+echo Iteration=%ITER%
+
 :: HWY Assignment Post-Processor
 :: Combine convergence assignment networks
 runtpp %SCRIPT_PATH%\CANET00A.s
@@ -464,7 +503,7 @@ runtpp %SCRIPT_PATH%\CAMAT00A.s
 ::endComment
 
 :: TRANSIT skimming
-
+echo Iteration=%ITER%
 
 ::%beginComment%
 ::now
@@ -497,9 +536,9 @@ FOR /L %%I IN (1,1,2) DO (
         SET PER=MD
     ) 
     :: Copy temp files to non-transit leg files
-    COPY %SCENARIO_DIR%\XIT_WKACC_NTL_%ITER%_!TPER!.tmp+%LOOKUP_DIR%\WalkOverrides.txt %SCENARIO_DIR%\XIT_WKACC_NTL_%ITER%_!TPER!.ntl
-    COPY %SCENARIO_DIR%\XIT_XFER_NTL_%ITER%_!TPER!.tmp + %LOOKUP_DIR%\TransferOverrides.txt %SCENARIO_DIR%\XIT_XFER_NTL_%ITER%_!TPER!.ntl
-    COPY %SCENARIO_DIR%\XIT_DRACC_NTL_%ITER%_!TPER!.tmp + %LOOKUP_DIR%\DriveOverrides.txt %SCENARIO_DIR%\XIT_DRACC_NTL_%ITER%_!TPER!.ntl
+    COPY %SCENARIO_DIR%\XIT_WKACC_NTL_%ITER%_%TPER%.tmp+%LOOKUP_DIR%\WalkOverrides.txt %SCENARIO_DIR%\XIT_WKACC_NTL_%ITER%_%TPER%.ntl
+    COPY %SCENARIO_DIR%\XIT_XFER_NTL_%ITER%_%TPER%.tmp + %LOOKUP_DIR%\TransferOverrides.txt %SCENARIO_DIR%\XIT_XFER_NTL_%ITER%_%TPER%.ntl
+    COPY %SCENARIO_DIR%\XIT_DRACC_NTL_%ITER%_%TPER%.tmp + %LOOKUP_DIR%\DriveOverrides.txt %SCENARIO_DIR%\XIT_DRACC_NTL_%ITER%_%TPER%.ntl
     )
 
     :: Walk transit skim step 1
