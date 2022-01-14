@@ -3,7 +3,7 @@
 "BASE_SCENARIO_NAME","Survey "
 "BUILD_SCENARIO_NAME","Model "
 "BASE_SAMPLE_RATE","1.0 "
-"BUILD_SAMPLE_RATE","0.065 "
+"BUILD_SAMPLE_RATE","1.0 "
 "MAX_ITER","1 "
 "R_LIBRARY","F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/activitysim/survey_data_processing/RPKG "
 "FULL_HTML_NAME","MetCouncil_visualizer "

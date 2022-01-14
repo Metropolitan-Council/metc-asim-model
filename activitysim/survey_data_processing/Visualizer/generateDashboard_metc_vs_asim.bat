@@ -18,12 +18,12 @@ SET WORKING_DIR="F:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model\survey
 :: Set up dependencies
 :: ###################
 SET R_SCRIPT="C:\Program Files\R\R-4.0.3\bin\Rscript"
-SET R_LIBRARY="F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/survey_data_processing/RPKG"
+SET R_LIBRARY="F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/activitysim/survey_data_processing/RPKG"
 :: Set PANDOC path
-SET RSTUDIO_PANDOC="C:\Users\andrew.rohne\pandoc-2.14.2"
+SET RSTUDIO_PANDOC="F:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model\survey_data_processing\pandoc-2.14.2"
 :: Parameters file
-SET PARAMETERS_FILE="F:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model\survey_data_processing\Visualizer\runtime\parameters.csv"
-SET SETTINGS_FILE="F:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model\survey_data_processing\metc_inputs.yml"
+SET PARAMETERS_FILE="F:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model\activitysim\survey_data_processing\Visualizer\runtime\parameters.csv"
+SET SETTINGS_FILE="F:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model\activitysim\survey_data_processing\metc_inputs.yml"
 SET FULL_HTML_NAME=MetCouncil_visualizer
 
 SET BASE_SCENARIO_NAME=Survey
@@ -32,7 +32,7 @@ SET BUILD_SCENARIO_NAME=Model
 SET IS_BASE_SURVEY=Yes
 SET MAX_ITER=1
 SET BASE_SAMPLE_RATE=1.0
-SET BUILD_SAMPLE_RATE=0.065
+SET BUILD_SAMPLE_RATE=1.0
 SET CT_ZERO_AUTO_FILE_NAME=ct_zero_auto.shp
 
 :: Set paths
