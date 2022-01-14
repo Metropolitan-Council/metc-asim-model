@@ -55,8 +55,8 @@ SEGMENT_IDS:
   gradeschool: 1
 
 # model adds these tables (informational - not added if commented out)
-#SHADOW_PRICE_TABLE: school_shadow_prices
-#MODELED_SIZE_TABLE: school_modeled_size
+SHADOW_PRICE_TABLE: school_shadow_prices
+MODELED_SIZE_TABLE: school_modeled_size
 
 # not loaded if commented out
-#SAVED_SHADOW_PRICE_TABLE_NAME: final_school_shadow_prices.csv
+SAVED_SHADOW_PRICE_TABLE_NAME: final_school_shadow_prices.csv

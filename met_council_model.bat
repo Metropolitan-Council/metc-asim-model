@@ -215,7 +215,7 @@ runtpp %SCRIPT_PATH%\TSMAT00M.s
 
 ECHO CREATE EXOGENOUS VARIABLES
 ::%beginComment%
-COPY %SCENARIO_DIR%\zones.dbf %SCENARIO_DIR%\zones_%PREV_ITER%.dbf
+IF %ITER% EQU 1 (COPY %SCENARIO_DIR%\zones.dbf %SCENARIO_DIR%\zones_%PREV_ITER%.dbf)
 ::%check_cube_errors%
 :: Highway Accessibility
 ::runtpp %SCRIPT_PATH%\EVMAT00A.s
@@ -536,9 +536,9 @@ FOR /L %%I IN (1,1,2) DO (
         SET PER=MD
     ) 
     :: Copy temp files to non-transit leg files
-    COPY %SCENARIO_DIR%\XIT_WKACC_NTL_%ITER%_%TPER%.tmp+%LOOKUP_DIR%\WalkOverrides.txt %SCENARIO_DIR%\XIT_WKACC_NTL_%ITER%_%TPER%.ntl
-    COPY %SCENARIO_DIR%\XIT_XFER_NTL_%ITER%_%TPER%.tmp + %LOOKUP_DIR%\TransferOverrides.txt %SCENARIO_DIR%\XIT_XFER_NTL_%ITER%_%TPER%.ntl
-    COPY %SCENARIO_DIR%\XIT_DRACC_NTL_%ITER%_%TPER%.tmp + %LOOKUP_DIR%\DriveOverrides.txt %SCENARIO_DIR%\XIT_DRACC_NTL_%ITER%_%TPER%.ntl
+    COPY %SCENARIO_DIR%\XIT_WKACC_NTL_%ITER%_%TPER%.tmp+%TRANSIT_FOLDER%\WalkOverrides.txt %SCENARIO_DIR%\XIT_WKACC_NTL_%ITER%_%TPER%.ntl
+    COPY %SCENARIO_DIR%\XIT_XFER_NTL_%ITER%_%TPER%.tmp + %TRANSIT_FOLDER%\TransferOverrides.txt %SCENARIO_DIR%\XIT_XFER_NTL_%ITER%_%TPER%.ntl
+    COPY %SCENARIO_DIR%\XIT_DRACC_NTL_%ITER%_%TPER%.tmp + %TRANSIT_FOLDER%\DriveOverrides.txt %SCENARIO_DIR%\XIT_DRACC_NTL_%ITER%_%TPER%.ntl
     )
 
     :: Walk transit skim step 1
@@ -817,6 +817,8 @@ IF ERRORLEVEL EQU 2 (
     ECHO RUN FAILED IN CUBE SCRIPTS
 )
 
+:postProcess
+cd activitysim\survey_data_processing\Visualizer
+generateDashboard_metc_vs_asim.bat
 
-
-pause
+cd ..\..\..
