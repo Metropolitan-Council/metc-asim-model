@@ -1,101 +1,101 @@
 "COUNTY","HHVEH","freq"
-"Anoka",0,778
-"Anoka",1,2992
-"Anoka",2,3905
-"Anoka",3,811
-"Anoka",4,580
-"Carver",0,134
-"Carver",1,695
-"Carver",2,1211
-"Carver",3,257
-"Carver",4,171
-"Chisago",0,86
-"Chisago",1,296
-"Chisago",2,718
-"Chisago",3,178
-"Chisago",4,113
-"Dakota",0,1008
-"Dakota",1,4134
-"Dakota",2,4603
-"Dakota",3,818
-"Dakota",4,597
-"Goodhue",0,83
-"Goodhue",1,299
-"Goodhue",2,678
-"Goodhue",3,181
-"Goodhue",4,119
-"Hennepin",0,6629
-"Hennepin",1,15523
-"Hennepin",2,10501
-"Hennepin",3,1392
-"Hennepin",4,1142
-"Isanti",0,53
-"Isanti",1,216
-"Isanti",2,469
-"Isanti",3,126
-"Isanti",4,88
-"Le Sueur",0,55
-"Le Sueur",1,178
-"Le Sueur",2,351
-"Le Sueur",3,121
-"Le Sueur",4,71
-"McLeod",0,46
-"McLeod",1,295
-"McLeod",2,469
-"McLeod",3,122
-"McLeod",4,68
-"Pierce",0,69
-"Pierce",1,278
-"Pierce",2,568
-"Pierce",3,145
-"Pierce",4,90
-"Polk",0,71
-"Polk",1,249
-"Polk",2,644
-"Polk",3,182
-"Polk",4,131
-"Ramsey",0,2902
-"Ramsey",1,6621
-"Ramsey",2,4134
-"Ramsey",3,541
-"Ramsey",4,472
-"Rice",0,68
-"Rice",1,438
-"Rice",2,753
-"Rice",3,187
-"Rice",4,120
-"Scott",0,167
-"Scott",1,980
-"Scott",2,1642
-"Scott",3,327
-"Scott",4,227
-"Sherburne",0,109
-"Sherburne",1,444
-"Sherburne",2,1115
-"Sherburne",3,365
-"Sherburne",4,213
-"Sibley",0,20
-"Sibley",1,89
-"Sibley",2,177
-"Sibley",3,61
-"Sibley",4,43
-"St. Croix",0,132
-"St. Croix",1,539
-"St. Croix",2,1175
-"St. Croix",3,261
-"St. Croix",4,160
-"Washington",0,383
-"Washington",1,2164
-"Washington",2,2994
-"Washington",3,557
-"Washington",4,411
-"Wright",0,167
-"Wright",1,744
-"Wright",2,1627
-"Wright",3,380
-"Wright",4,304
-"Total",0,12960
-"Total",1,37174
-"Total",2,37734
-"Total",3,7012
-"Total",4,5120
+"Anoka",0,10481
+"Anoka",1,41236
+"Anoka",2,54408
+"Anoka",3,10819
+"Anoka",4,8078
+"Carver",0,1802
+"Carver",1,9661
+"Carver",2,17090
+"Carver",3,3523
+"Carver",4,2717
+"Chisago",0,1313
+"Chisago",1,4348
+"Chisago",2,9772
+"Chisago",3,2490
+"Chisago",4,1795
+"Dakota",0,14184
+"Dakota",1,58534
+"Dakota",2,64521
+"Dakota",3,11091
+"Dakota",4,8321
+"Goodhue",0,1305
+"Goodhue",1,4538
+"Goodhue",2,9135
+"Goodhue",3,2476
+"Goodhue",4,1510
+"Hennepin",0,91079
+"Hennepin",1,220233
+"Hennepin",2,145743
+"Hennepin",3,19940
+"Hennepin",4,15835
+"Isanti",0,890
+"Isanti",1,3124
+"Isanti",2,7037
+"Isanti",3,1890
+"Isanti",4,1304
+"Le Sueur",0,740
+"Le Sueur",1,2127
+"Le Sueur",2,5299
+"Le Sueur",3,1653
+"Le Sueur",4,1025
+"McLeod",0,721
+"McLeod",1,3869
+"McLeod",2,7322
+"McLeod",3,1674
+"McLeod",4,999
+"Pierce",0,837
+"Pierce",1,3587
+"Pierce",2,7705
+"Pierce",3,1900
+"Pierce",4,1200
+"Polk",0,951
+"Polk",1,3472
+"Polk",2,8748
+"Polk",3,2795
+"Polk",4,1703
+"Ramsey",0,39389
+"Ramsey",1,93869
+"Ramsey",2,59404
+"Ramsey",3,7616
+"Ramsey",4,6487
+"Rice",0,1173
+"Rice",1,6191
+"Rice",2,11107
+"Rice",3,2506
+"Rice",4,1787
+"Scott",0,2337
+"Scott",1,13441
+"Scott",2,23523
+"Scott",3,4569
+"Scott",4,3446
+"Sherburne",0,1507
+"Sherburne",1,6176
+"Sherburne",2,15827
+"Sherburne",3,4494
+"Sherburne",4,3073
+"Sibley",0,382
+"Sibley",1,1207
+"Sibley",2,2884
+"Sibley",3,908
+"Sibley",4,591
+"St. Croix",0,1826
+"St. Croix",1,7786
+"St. Croix",2,17107
+"St. Croix",3,3640
+"St. Croix",4,2201
+"Washington",0,5900
+"Washington",1,29968
+"Washington",2,41832
+"Washington",3,8118
+"Washington",4,5699
+"Wright",0,2192
+"Wright",1,10703
+"Wright",2,23593
+"Wright",3,5667
+"Wright",4,4058
+"Total",0,179009
+"Total",1,524070
+"Total",2,532057
+"Total",3,97769
+"Total",4,71829
