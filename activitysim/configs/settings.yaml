@@ -71,7 +71,7 @@ household_median_value_of_time:
 
 #trace_od: [5, 11]
 # to resume after last successful checkpoint, specify resume_after: _
-#resume_after: write_data_dictionary
+resume_after: joint_tour_scheduling
 models:
   ### mp_initialize step
   - initialize_landuse
