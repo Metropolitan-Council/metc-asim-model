@@ -1,10 +1,10 @@
-# Metropolitan Council ActivitySim Model
+# Metropolitan Council Travel Demand Model
 
 ## Overview
 
-This is a model that simulates choices made by people throughout their day - if and when they go to work, school, out to eat, shopping, etc. This is used to forecast the effects of transportation investments.
+This is a model that simulates choices made by people throughout their day - if and when they go to work, school, out to eat, shopping, etc. This is used to forecast the mobility effects of transportation investments.
 
-This model is built in a mixture of Python 3 (ActivitySim) and Cube Voyager (Skimming and Assignment).
+This model is built in a mixture of Python 3 (ActivitySim) and Cube Voyager (Auxiliary Models, Skimming and Assignment). The main model batch file was built by WSP, and modified by RSG to remove TourCast and implement ActivitySim.
 
 **Currently in Development**
 
@@ -16,33 +16,14 @@ Anaconda 3 64 bit is required to create the environment and run Activitysim. Thi
 
 1. Create an Anaconda environment: `conda env create -f environment.yml`
 
-2. Create a data subfolder and copy the input data to it
+2. Create a data subfolder and copy the input data to it. For various reasons, this data is not 
 
-3. Run ActivitySim with the batch file `runAsim.bat`
+3. Run the model with the batch file `runAsim.bat`
 
-(expect this to change as the model is developed)
+## More Information
 
-### Settings
+Contact Dennis Farmer at the Metropolitan Council for questions regarding the overall model.
 
-The settings.yml should be adjusted based on the size of the model. 
+Cube Voyager can be purchased from [Bentley](https://www.bentley.com/en/products/product-line/mobility-simulation-and-analytics/cube-voyager)
 
-**Small Sample** 
-
-For a small sample of 500 households, set the following:
-```
-multiprocess: False
-num_processes: 1
-chunk_training_mode: disabled
-```
-
-**Large Sample**
-
-For a large sample (greater than 5,000 households), set the following:
-
-```
-multiprocess: True
-num_processes - set to the number of processes to use, should be less than or equal to the number of physical cores 
-chunk_size - set to a decent amount (500_000_000 has been used in development, indicating 500,000,000 / 500 MB RAM; this should probably be considered a minimum)
-```
-
-(note that the above portion related to the entire model may change)
+More information about ActivitySim can be found at the [ActivitySim Website](https://activitysim.github.io/).
