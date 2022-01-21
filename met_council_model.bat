@@ -12,6 +12,8 @@ CALL .\set_parameters.bat
 
 COPY .\set_parameters.bat %SCENARIO_DIR%\set_parameters.txt
 
+goto Visualizer
+
 ::goto now
 :: ----------------------------------------------------------------------------
 ::
@@ -251,6 +253,7 @@ runtpp %SCRIPT_PATH%\EVMAT00G.s
 
 :: Run ActivitySim
 %PYTHON_PATH%\python.exe ActivitySim\simulation.py  -c ActivitySim\configs_test -c ActivitySim\configs -d ActivitySim\data -o ActivitySim\output
+%check_python_errors%
 
 echo Iteration=%ITER%
 :: Output ActivitySim Matrices
@@ -805,20 +808,22 @@ COPY *.prn %SCENARIO_DIR%\abm_logs\*.prn
 :: Delete all the temporary TP+ printouts and cluster files
 DEL *.prn
 
+:Visualizer
+cd Visualizer
+generateDashboard_metc_vs_asim.bat
+
 :endOfFile
 @ECHO OFF
-IF ERRORLEVEL EQU 0 (
+IF ERRORLEVEL 0 (
     ECHO RUN SUCCEEDED
 )
-IF ERRORLEVEL EQU 1 (
-    ECHO RUN FAILED IN TOURCAST
+IF ERRORLEVEL 1 (
+    ECHO RUN FAILED IN ActivitySim
 )
-IF ERRORLEVEL EQU 2 (
+IF ERRORLEVEL 2 (
     ECHO RUN FAILED IN CUBE SCRIPTS
 )
 
-:postProcess
-cd activitysim\survey_data_processing\Visualizer
-generateDashboard_metc_vs_asim.bat
+
 
 cd ..\..\..
