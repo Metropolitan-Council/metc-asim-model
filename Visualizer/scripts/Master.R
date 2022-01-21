@@ -125,10 +125,13 @@ build_csv_names <- unlist(lapply(build_csv, function (x) {gsub(".csv", "", x)}))
 
 ### Read SHP files
 setwd(SYSTEM_SHP_PATH)
+print(SYSTEM_SHP_PATH)
+print(SHP_FILE_NAME)
 zone_shp <- shapefile(SHP_FILE_NAME)
 zone_shp <- spTransform(zone_shp, CRS("+proj=longlat +ellps=GRS80"))
 
 setwd(ABM_SUMMARY_DIR)
+print(CT_ZERO_AUTO_FILE_NAME)
 ct_zero_auto_shp <- shapefile(CT_ZERO_AUTO_FILE_NAME)
 ct_zero_auto_shp <- spTransform(ct_zero_auto_shp, CRS("+proj=longlat +ellps=GRS80"))
 
@@ -142,9 +145,5 @@ template.html <- readLines(file.path(RUNTIME_PATH, "template.html"))
 idx <- which(template.html == "window.FlexDashboardComponents = [];")[1]
 template.html <- append(template.html, "L_PREFER_CANVAS = true;", after = idx)
 writeLines(template.html, file.path(OUTPUT_PATH, paste(OUTPUT_HTML_NAME, ".html", sep = "")))
-
-
-
-
 
 # finish
