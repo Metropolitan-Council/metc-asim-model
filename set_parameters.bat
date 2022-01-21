@@ -1,7 +1,7 @@
 :: Set user parameters for Met Council Model
-
+@ECHO OFF
 :: Section 1: Set up new scenario
-SET MAIN_DIRECTORY=F:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model
+SET MAIN_DIRECTORY=E:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model
 SET MODEL_YEAR=2015
 SET SCENARIO_NAME=Base_2015
 
@@ -235,4 +235,40 @@ SET "returnToHead=goto :head"
 SET "exitRun=goto :endOfFile"
 SET "check_cube_errors=IF ERRORLEVEL 2 %exitRun%"
 SET "check_python_errors=IF ERRORLEVEL 1 %exitRun%"
+
+::
+:: Visualizer Inputs
+::
+SET VIS_FOLDER=%MAIN_DIRECTORY%\Visualizer
+::
+:: This is the base condition, either a survey or a different run. This data is only read
+SET VIS_BASE_DATA_FOLDER=%VIS_FOLDER%\data\base
+SET BASE_SCENARIO_NAME=Survey
+SET BASE_SAMPLE_RATE=1.0
+:: for survey base legend names are different [Yes/No]
+SET IS_BASE_SURVEY=Yes
+
+::
+:: This is the build condition
+:: NOTE: ACTIVITYSIM SUMMARIZED OUTPUT WILL GO HERE
+SET VIS_MODEL_DATA_FOLDER=%VIS_FOLDER%\data\calibration_runs\summarized
+SET BUILD_SCENARIO_NAME=Model
+SET BUILD_SAMPLE_RATE=1.0
+
+:: Common data
+SET VIS_ZONE_DIR=%VIS_FOLDER%/data/SHP
+SET VIS_ZONE_FILE=TAZ2010.shp
+SET CT_ZERO_AUTO_FILE_NAME=ct_zero_auto.shp
+
+:: Executable and library paths
+SET R_SCRIPT="C:\Program Files\R\R-4.0.3\bin\Rscript"
+SET R_LIBRARY=%VIS_FOLDER%\contrib\RPKG
+:: Set PANDOC path
+SET RSTUDIO_PANDOC=%VIS_FOLDER%\contrib\pandoc-2.14.2
+
+:: In general, these shouldn't be changed
+::#TODO: Check and see where that MAX_ITER is used, it seems odd
+SET PARAMETERS_FILE=%VIS_FOLDER%\runtime\parameters.csv
+SET FULL_HTML_NAME=MetCouncil_visualizer
+SET MAX_ITER=1
 
