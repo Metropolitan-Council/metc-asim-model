@@ -106,7 +106,6 @@ dependencies:
   - nbformat=5.0.8=py_0
   - nest-asyncio=1.4.1=py_0
   - notebook=6.1.4=py37_0
-  - numba=0.54.1=py37_0
   - numexpr=2.6.8=py37h9ef55f4_0
   - numpy=1.19.2=py37hadc3359_0
   - numpy-base=1.19.2=py37ha3acd2a_0
@@ -164,6 +163,7 @@ dependencies:
   - sphinxcontrib-qthelp=1.0.3=py_0
   - sphinxcontrib-serializinghtml=1.1.4=py_0
   - sqlite=3.33.0=h2a8f88b_0
+  - tbb=2021.5.0=h59b6b97_0
   - terminado=0.9.1=py37_0
   - testpath=0.4.4=py_0
   - tk=8.6.10=he774522_0
@@ -188,9 +188,15 @@ dependencies:
   - zlib=1.2.11=h62dcd97_4
   - zstd=1.4.5=h04227a9_0
   - pip:
+    - activitysim==1.0.4
+    - llvmlite==0.38.0
+    - numba==0.55.0
     - openmatrix==0.3.5.0
+    - orca==1.6
+    - pyarrow==6.0.1
+    - simpledbf==0.2.6
     - tables==3.5.1
     - xlrd==1.2.0
     - zbox==1.2.0
-    - activitysim==1.0.4
-    - simpledbf==0.2.6
+prefix: C:\Users\andrew.rohne\.conda\envs\metcouncil
+
