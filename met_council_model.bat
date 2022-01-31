@@ -1,6 +1,6 @@
 ::~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 @ECHO ON
-SetLocal EnableDelayedExpansion
+::SetLocal EnableDelayedExpansion
 :: ----------------------------------------------------------------------------
 ::
 :: Step 1:  Set the necessary path variables 
@@ -12,9 +12,6 @@ CALL .\set_parameters.bat
 
 COPY .\set_parameters.bat %SCENARIO_DIR%\set_parameters.txt
 
-goto Visualizer
-
-::goto now
 :: ----------------------------------------------------------------------------
 ::
 :: Step 2:  Networks and initial skims 
@@ -72,9 +69,8 @@ runtpp %SCRIPT_PATH%\NMMAT00A.s
 ::??%check_cube_errors%
 :: Set drive link speeds capacities, alpha/beta parameters
 
-ECHO Initial Skims
-
 :initialSkim
+ECHO Initial Skims
 runtpp %SCRIPT_PATH%\HNNET00B.s
 %check_cube_errors%
 :: Set managed lanes (comments cannot go inside for loops)
@@ -94,8 +90,6 @@ FOR /L %%I IN (1, 1, 6) DO (
 )
 
 IF %FREE_FLOW%==1 (goto initialSkim) else (goto copySkims)
-
-:initialSkim
 
 ::: Skim free flow network
 runtpp %SCRIPT_PATH%\FFHWY00A.s
@@ -248,9 +242,16 @@ runtpp %SCRIPT_PATH%\EVMAT00G.s
 
 
 :: Prepare sedata for ActivitySim
-%PYTHON_PATH%\python.exe %SCRIPT_PATH%\EVMAT00H.py "%SCENARIO_DIR%\set_parameters.txt"
-%check_cube_errors%
+ECHO Prep
+ECHO Python Path: %PYTHON_PATH%
+ECHO Script Path: %SCRIPT_PATH%
+ECHO Scenario Dir: %SCENARIO_DIR%
 
+ECHO ON
+
+"%PYTHON_PATH%\python.exe" "%SCRIPT_PATH%\EVMAT00H.py" "%SCENARIO_DIR%\set_parameters.txt"
+%check_cube_errors%
+ECHO afterprep
 :: Run ActivitySim
 %PYTHON_PATH%\python.exe ActivitySim\simulation.py  -c ActivitySim\configs_test -c ActivitySim\configs -d ActivitySim\data -o ActivitySim\output
 %check_python_errors%
@@ -826,4 +827,4 @@ IF ERRORLEVEL 2 (
 
 
 
-cd ..\..\..
+::cd ..\..\..

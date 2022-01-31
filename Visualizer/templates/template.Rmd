@@ -638,13 +638,12 @@ if(IS_BASE_SURVEY=="Yes"){
   #cat("Census source: ", AO_CENSUS_LONG)
   # [3/31/2020] DH No census data used for SEMCOG
   base_df <- base_data[[which(base_csv_names=="autoOwnershipCensus")]]
-  #base_df <- base_data[[which(base_csv_names=="autoOwnership")]]
-
 }else{
   base_df <- base_data[[which(base_csv_names=="autoOwnership")]]
 }
 
 build_df <- build_data[[which(build_csv_names=="autoOwnershipCY")]]
+
 build_df$X = NULL
 base_df$X = NULL
 #colnames(build_df) <- colnames(census_df)

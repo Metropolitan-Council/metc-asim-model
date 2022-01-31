@@ -13,6 +13,9 @@
 :: All environment variables should be set by set_parameters.bat
 
 @ECHO off
+
+IF NOT DEFINED CENSUS_DATA_PATH CALL ..\set_parameters.bat
+
 SET WORKING_DIR=%VIS_FOLDER%
 
 ECHO Key,Value > %PARAMETERS_FILE%
@@ -33,16 +36,17 @@ ECHO VIS_ZONE_DIR,%VIS_ZONE_DIR% >> %PARAMETERS_FILE%
 ECHO VIS_BASE_DATA_FOLDER,%VIS_BASE_DATA_FOLDER% >> %PARAMETERS_FILE%
 ECHO VIS_ZONE_FILE,%VIS_ZONE_FILE% >> %PARAMETERS_FILE%
 ECHO VIS_FOLDER,%VIS_FOLDER% >> %PARAMETERS_FILE%
+ECHO CENSUS_DATA_PATH,%CENSUS_DATA_PATH% >> %PARAMETERS_FILE%
 
-::%R_SCRIPT% scripts\settings_to_parameters_csv.R %PARAMETERS_FILE%
+ECHO Summarizing ActivitySim Outputs...
+%R_SCRIPT% scripts\Summarize_ActivitySim_metc.R %PARAMETERS_FILE%
 
-ECHO %startTime%%Time%: Summarizing ActivitySim Outputs...
-::%R_SCRIPT% scripts\Summarize_ActivitySim_metc.R %PARAMETERS_FILE%
-
+::#FIXME: The next script has an error
+::%R_SCRIPT% scripts\AutoOwnership_Census_MetC.R %PARAMETERS_FILE%
 
 :: Call the master R script to generate full visualizer
 :: #####################################################
-ECHO %startTime%%Time%: Running R script to generate visualizer...
+ECHO Running R script to generate visualizer...
 SET SWITCH=FULL
 %R_SCRIPT% scripts\Master.R %PARAMETERS_FILE% %SWITCH%
 IF %ERRORLEVEL% EQU 11 (
@@ -52,7 +56,7 @@ IF %ERRORLEVEL% EQU 11 (
 IF %ERRORLEVEL% NEQ 0 GOTO MODEL_ERROR
 
 
-ECHO %startTime%%Time%: Dashboard creation complete...
+ECHO Dashboard creation complete...
 GOTO END
 
 :MODEL_ERROR

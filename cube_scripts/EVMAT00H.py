@@ -18,6 +18,7 @@ if len(sys.argv) < 2:
     print("Incorrect number of arguments")
     sys.exit(2)
     
+print("Preparing data for ActivitySim...")
 cfg = read_config(sys.argv[1])
 
 INPUT_FOLDER = cfg['MAIN_DIRECTORY'] + cfg['SE'].strip('%MAIN_DIRECTORY%') + os.sep
