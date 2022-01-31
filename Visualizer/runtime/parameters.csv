@@ -16,3 +16,4 @@ VIS_ZONE_DIR,E:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model\Visualizer
 VIS_BASE_DATA_FOLDER,E:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model\Visualizer\data\base 
 VIS_ZONE_FILE,TAZ2010.shp 
 VIS_FOLDER,E:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model\Visualizer 
+CENSUS_DATA_PATH,E:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model\Visualizer/data/census 

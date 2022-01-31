@@ -2,14 +2,14 @@
 @ECHO OFF
 :: Section 1: Set up new scenario
 SET MAIN_DIRECTORY=E:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model
-SET MODEL_YEAR=2015
-SET SCENARIO_NAME=Base_2015
+SET MODEL_YEAR=2018
+SET SCENARIO_NAME=Base_2018
 
 
 :: Section 2: Set up socioeconomic and land use data
-SET POP_NAME=population2014_Dec20.dbf
-SET HH_NAME=households2014_Dec20.dbf
-SET ZONE_NAME=zones_2014_Dec20.dbf
+SET POP_NAME=population2018_Dec20.dbf
+SET HH_NAME=households2018_Dec20.dbf
+SET ZONE_NAME=zones_2018_Dec20.dbf
 SET SCHOOL_TAZ=schoolTAZs.csv
 SET TAZ_COUNTY=TAZ_County.dbf
 
@@ -35,24 +35,6 @@ SET xit_WK_PKskims_name=PK_XIT_WK.skm
 SET xit_WK_OPskims_name=OP_XIT_WK.skm
 SET xit_DR_PKskims_name=PK_XIT_DR.skm
 SET xit_DR_OPskims_name=OP_XIT_DR.skm
-
-:: Section 6: Set TOURCAST modules
-:: if running, set to 1; if not running, set to 0
-::SET TC_vehavail=1
-::SET TC_schLocation=1
-::SET TC_workLocation=1
-::SET TC_pass=1
-::SET TC_DAP=1
-::SET TC_mandTourDest=1
-::SET TC_mandTourTOD=1
-::SET TC_schEscort=1
-::SET TC_FJ=1
-::SET TC_INM=1
-::SET TC_stopGen=1
-::SET TC_tourMC=1
-::SET TC_WB=1
-::SET TC_stopDestTOD=1
-::SET TC_tripMC=1
 
 :: Section 7: Catalog Run Parameters
 :: Initialize the model run to an unconverged state
@@ -138,7 +120,7 @@ SET TCOEFF_DA=-0.0263
 SET FARECOST=-0.134 
 SET C_TR=-0.677
 
-:: Section 14: Set file paths
+:: Section 15: Set file paths
 ::Socioeconomic file path (population, households, zonal data)
 SET SE=%MAIN_DIRECTORY%\Input\socioeconomic
 :: Set highway network file path
@@ -168,7 +150,7 @@ SET INPUT_DIR=%MAIN_DIRECTORY%\Input
 SET ASIM_DATA=%MAIN_DIRECTORY%\activitysim\data
 SET ASIM_OUT=%MAIN_DIRECTORY%\activitysim\output
 
-:: Section 15: set INPUT FILE paths
+:: Section 16: set INPUT FILE paths
 :: Set zones
 SET zone_attribs=%SE%\%ZONE_NAME%
 :: Set link and node paths for complete network
@@ -212,7 +194,7 @@ SET xit_WK_OPskims=%MAIN_DIRECTORY%\Input\skims\%xit_WK_OPskims_name%
 SET xit_DR_PKskims=%MAIN_DIRECTORY%\Input\skims\%xit_DR_PKskims_name%
 SET xit_DR_OPskims=%MAIN_DIRECTORY%\Input\skims\%xit_DR_OPskims_name%
 
-:: Section 15: PATH variables
+:: Section 17: PATH variables
 :: !!WARNING!!
 :: Do not change unless program installations are non-standard
 :: !! WARNING!!
@@ -221,13 +203,15 @@ SET xit_DR_OPskims=%MAIN_DIRECTORY%\Input\skims\%xit_DR_OPskims_name%
 SET TPP_PATH=C:\Program Files\Citilabs\CubeVoyager;C:\Program Files (x86)\Citilabs\CubeVoyager
 
 :: The location of python
-SET PYTHON_PATH=C:\Users\andrew.rohne\.conda\envs\metc_asim
+SET PYTHON_PATH=C:\Users\%username%\.conda\envs\metcouncil
 ::C:\Python27\ArcGIS10.7
 ::SET PYTHON_PATH=C:\Python27\ArcGIS10.5
 
 :: Add these variables to the PATH environment variable, moving the current path to the back
+
 SET OLD_PATH=%PATH%
-SET PATH=%TPP_PATH%;%PYTHON_PATH%;%OLD_PATH%
+SET PATH=%TPP_PATH%;%OLD_PATH%
+::%PYTHON_PATH%;C:\Users\%username%\.conda\envs\metcouncil\Scripts;C:\Users\%username%\.conda\envs\metcouncil\Library\mingw-w64\bin\;C:\Users\%username%\.conda\envs\metcouncil\Library;C:\Users\%username%\.conda\envs\metcouncil\Library\bin;
 
 :: Set shortcut keys
 SET "beginComment=goto :endComment"
@@ -237,7 +221,7 @@ SET "check_cube_errors=IF ERRORLEVEL 2 %exitRun%"
 SET "check_python_errors=IF ERRORLEVEL 1 %exitRun%"
 
 ::
-:: Visualizer Inputs
+:: Section 18: Visualizer Inputs
 ::
 SET VIS_FOLDER=%MAIN_DIRECTORY%\Visualizer
 ::
@@ -259,7 +243,7 @@ SET BUILD_SAMPLE_RATE=1.0
 SET VIS_ZONE_DIR=%VIS_FOLDER%/data/SHP
 SET VIS_ZONE_FILE=TAZ2010.shp
 SET CT_ZERO_AUTO_FILE_NAME=ct_zero_auto.shp
-
+SET CENSUS_DATA_PATH=%VIS_FOLDER%/data/census
 :: Executable and library paths
 SET R_SCRIPT="C:\Program Files\R\R-4.0.3\bin\Rscript"
 SET R_LIBRARY=%VIS_FOLDER%\contrib\RPKG
@@ -271,4 +255,5 @@ SET RSTUDIO_PANDOC=%VIS_FOLDER%\contrib\pandoc-2.14.2
 SET PARAMETERS_FILE=%VIS_FOLDER%\runtime\parameters.csv
 SET FULL_HTML_NAME=MetCouncil_visualizer
 SET MAX_ITER=1
+SET PROJ_LIB=%R_LIBRARY%\rgdal\proj
 
