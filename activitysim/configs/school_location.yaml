@@ -8,6 +8,7 @@ SIMULATE_CHOOSER_COLUMNS:
   - age_0_to_5
   - age_6_to_12
   - pemploy
+  - STATEFP
 
 # model-specific logsum-related settings
 CHOOSER_ORIG_COL_NAME: home_zone_id
