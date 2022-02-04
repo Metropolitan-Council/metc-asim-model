@@ -1,5 +1,5 @@
 ::~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-@ECHO ON
+@ECHO OFF
 ::SetLocal EnableDelayedExpansion
 :: ----------------------------------------------------------------------------
 ::
@@ -247,11 +247,9 @@ ECHO Python Path: %PYTHON_PATH%
 ECHO Script Path: %SCRIPT_PATH%
 ECHO Scenario Dir: %SCENARIO_DIR%
 
-ECHO ON
-
 "%PYTHON_PATH%\python.exe" "%SCRIPT_PATH%\EVMAT00H.py" "%SCENARIO_DIR%\set_parameters.txt"
 %check_cube_errors%
-ECHO afterprep
+
 :: Run ActivitySim
 %PYTHON_PATH%\python.exe ActivitySim\simulation.py  -c ActivitySim\configs_test -c ActivitySim\configs -d ActivitySim\data -o ActivitySim\output
 %check_python_errors%
