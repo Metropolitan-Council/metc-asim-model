@@ -76,35 +76,35 @@ models:
   - initialize_households
   ### mp_households step
   - school_location
-  # - workplace_location
-  # - transit_pass_ownership
-  # - toll_pass_ownership
-  # - work_from_home
-  # - auto_ownership_simulate
-  # - free_parking
-  # - telecommute_frequency
-  # - cdap_simulate
-  # - mandatory_tour_frequency
-  # - mandatory_tour_scheduling
-  # - joint_tour_frequency
-  # - joint_tour_composition
-  # - joint_tour_participation
-  # - joint_tour_destination
-  # - joint_tour_scheduling
-  # - non_mandatory_tour_frequency
-  # - non_mandatory_tour_destination
-  # - non_mandatory_tour_scheduling
-  # - tour_mode_choice_simulate
-  # - atwork_subtour_frequency
-  # - atwork_subtour_destination
-  # - atwork_subtour_scheduling
-  # - atwork_subtour_mode_choice
-  # - stop_frequency
-  # - trip_purpose
-  # - trip_destination
-  # - trip_purpose_and_destination
-  # - trip_scheduling
-  # - trip_mode_choice
+  - workplace_location
+  - transit_pass_ownership
+  - toll_pass_ownership
+  - work_from_home
+  - auto_ownership_simulate
+  - free_parking
+  - telecommute_frequency
+  - cdap_simulate
+  - mandatory_tour_frequency
+  - mandatory_tour_scheduling
+  - joint_tour_frequency
+  - joint_tour_composition
+  - joint_tour_participation
+  - joint_tour_destination
+  - joint_tour_scheduling
+  - non_mandatory_tour_frequency
+  - non_mandatory_tour_destination
+  - non_mandatory_tour_scheduling
+  - tour_mode_choice_simulate
+  - atwork_subtour_frequency
+  - atwork_subtour_destination
+  - atwork_subtour_scheduling
+  - atwork_subtour_mode_choice
+  - stop_frequency
+  - trip_purpose
+  - trip_destination
+  - trip_purpose_and_destination
+  - trip_scheduling
+  - trip_mode_choice
   ### mp_summarize step
   - write_data_dictionary
   - write_tables
