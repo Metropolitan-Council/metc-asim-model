@@ -256,3 +256,5 @@ ECHO Scenario Dir: %SCENARIO_DIR%
 
 ECHO Assuming there are no errors on the screen above, chunk training was completed successfully and the chunk setup file
 ECHO is where it needs to be. Go ahead and run met_council_model.bat!
+
+:endOfFile
