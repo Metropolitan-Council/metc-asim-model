@@ -251,7 +251,7 @@ ECHO Scenario Dir: %SCENARIO_DIR%
 %check_cube_errors%
 
 :: Run ActivitySim
-%PYTHON_PATH%\python.exe ActivitySim\simulation.py  -c ActivitySim\configs_test -c ActivitySim\configs -d ActivitySim\data -o ActivitySim\output
+%PYTHON_PATH%\python.exe ActivitySim\simulation.py -c ActivitySim\configs -d ActivitySim\data -o ActivitySim\output
 %check_python_errors%
 
 echo Iteration=%ITER%
