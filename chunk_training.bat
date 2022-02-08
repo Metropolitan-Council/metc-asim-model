@@ -8,7 +8,7 @@
 :: ----------------------------------------------------------------------------
 :: Parameters are found in set_parameters.bat
 :: Future work could move this to a folder and name parameter files after model run
-CALL .\set_parameters.bat
+CALL set_parameters.bat
 
 COPY .\set_parameters.bat %SCENARIO_DIR%\set_parameters.txt
 
