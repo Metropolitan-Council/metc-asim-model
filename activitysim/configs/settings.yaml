@@ -8,10 +8,10 @@ strict: False
 mem_tick: 30
 use_shadow_pricing: True
 ## - example sample
-#households_sample_size: 100000
+households_sample_size: 100000
 chunk_training_mode: production
 chunk_size: 100_000_000_000
-num_processes: 10
+num_processes: 16
 default_initial_rows_per_chunk: 10000
 #trace_hh_id: 1090401
 #trace_od: [5, 11]

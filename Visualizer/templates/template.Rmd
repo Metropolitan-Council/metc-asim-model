@@ -662,10 +662,18 @@ bscols(widths=c(3,9),
 
 ```
 
-### {data-height=140}
-```{r Gauge_WFH1}
+### Telecommute Frequency{data-height=250}
+```{r Telecommute Frequency}
 
+base_df <- base_data[[which(base_csv_names=="telecommuteFrequency")]]
 
+build_df <- build_data[[which(build_csv_names=="telecommuteFrequency")]]
+
+colnames(build_df) <- colnames(base_df)
+
+std_DF <- get_standardDF(data_df1 = base_df, data_df2 = build_df, x = "telecommute_frequency", y = c("freq"))
+p <- plotly_bar_plotter(data = std_DF, xlabel = "Telecommute Frequency", ylabel = "Percent", ynames = c(BASE_SCENARIO_NAME, BUILD_SCENARIO_NAME), percent = T, height = 225, tickangle = -30, bottom_offset = 50)
+p
 ```
 
 ### Percentage Working From Home{data-height=250}
@@ -676,7 +684,7 @@ build_df <- build_data[[which(build_csv_names=="wfh_summary")]]
 build_df$share <- build_df$WFH/build_df$Workers
 std_DF <- cbind(base_df[,c("District", "share")], build_df[,c("share")])
 colnames(std_DF) <- c("xvar", "prop1", "prop2")
-p <- plotly_bar_plotter(data = std_DF, xlabel = "District", ylabel = "Percent WFH", ynames = c(BASE_SCENARIO_NAME, BUILD_SCENARIO_NAME), percent = T, height = 275, tickangle = -320, bottom_offset = 25)
+p <- plotly_bar_plotter(data = std_DF, xlabel = "District", ylabel = "Percent WFH", ynames = c("Census ACS", BUILD_SCENARIO_NAME), percent = T, height = 275, tickangle = -320, bottom_offset = 25)
 p
 
 ```
@@ -812,10 +820,10 @@ Chart Column 2
 ```{r Table2_CountyFlows, eval = TRUE}
 
 
-# build_pos <- which(build_csv_names=="countyFlows")
-# build_df <- build_data[[build_pos]]
+build_pos <- which(build_csv_names=="countyFlows")
+build_df <- build_data[[build_pos]]
 
-build_df <- base_data[[which(base_csv_names=="countyFlowsCensus")]]
+#build_df <- base_data[[which(base_csv_names=="countyFlowsCensus")]]
 build_df[,!colnames(build_df) %in% c("X")] <- build_df[,!colnames(build_df) %in% c("X")]/BUILD_SAMPLE_RATE
 # t2 <- kable(build_df, format = 'html', caption = BUILD_SCENARIO_NAME, digits = 0, row.names = F, align = 'r', format.args = list(big.mark = ',')) %>%
 #   kable_styling('striped', font_size = 10)
@@ -828,7 +836,9 @@ if('X' %in% colnames(build_df)) {
 build_df2 = build_df[1:(nrow(build_df) - 1), 1:(ncol(build_df) - 1)]
 
 nworkers = formatC(sum(build_df2), format="f", big.mark=",", digits=0)
-cat("County - County Flow of Workers - ACS:", nworkers, 'workers in region')
+#cat("County - County Flow of Workers - ACS:", nworkers, 'workers in region')
+cat("County - County Flow of Workers - Model:", nworkers, 'workers in region')
+
 
 diag2 = chorddiag(as.matrix(build_df2), palette = 'Spectral')
 
@@ -1009,8 +1019,7 @@ Summary
 #  Names in that script won't match names shown here.
 #  For example, ct_zero_auto_shp@data$Diff_ZeroAuto ->  ct_zero_auto_shp@data$Dff_ZrA
 labels <- sprintf(
-  "<strong>%s</strong><br/><strong>%s %.2f %s</strong><br/> %s", ct_zero_auto_shp@data$TRACTCE, ct_zero_auto_shp@data$txtCmm2, ct_zero_auto_shp@data$Dff_ZrA, "%", ct_zero_auto_shp@data$txtCmm1) %>% lapply(htmltools::HTML)
-
+  "<strong>%s</strong><br/><strong>%s %.2f %s</strong><br/> %s<br/>Census 0A: %s%s, Model 0A: %s%s", ct_zero_auto_shp@data$TRACTCE, ct_zero_auto_shp@data$txtCmm2, ct_zero_auto_shp@data$Dff_ZrA, "%", ct_zero_auto_shp@data$txtCmm1, round(ct_zero_auto_shp@data$Cns_A0P, 2), "%", round(ct_zero_auto_shp@data$Mdl_A0P, 2), "%") %>% lapply(htmltools::HTML)
 
 bins <- c(-Inf, -100, -75, -50, -25, -5, 5, 25, 50, 75, 100, Inf)
 pal <- colorBin("PiYG", domain = ct_zero_auto_shp@data$Dff_ZrA, na.color="transparent", bins = bins)
@@ -1257,7 +1266,7 @@ base_df <- base_data[[which(base_csv_names=="jtf")]]
 build_df <- build_data[[which(build_csv_names=="jtf")]]
 # remove no joint tours option
 base_df <- base_df[-1,]
-build_df <- build_df[-1,]
+build_df <- build_df[-1,colnames(base_df)]
 colnames(build_df) <- colnames(base_df)
 
 std_DF <- get_standardDF(data_df1 = base_df, data_df2 = build_df, x = "alt_name", y = c("freq"))
