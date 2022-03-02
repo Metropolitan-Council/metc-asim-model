@@ -4,8 +4,9 @@ util_pt_worker,Part-time worker alternative-specific constants,ptype == 2,0,coef
 util_univ,University student alternative-specific constants,ptype == 3,coef_univ_work1_asc,coef_univ_work2_asc,0,coef_univ_school2_asc,coef_univ_work_and_school_asc
 util_non_working_adult,Non-working adult alternative-specific constants,ptype == 4,,,,,
 util_retired,Retired alternative-specific constants,ptype == 5,,,,,
-util_driving_age_child,Driving-age child alternative-specific constants,ptype == 6,,,0,coef_driving_age_child_school2_asc,coef_driving_age_child_work_and_school_asc
+util_driving_age_child,Driving-age child alternative-specific constants,ptype == 6,coef_driving_age_child_work1_asc,,0,coef_driving_age_child_school2_asc,coef_driving_age_child_work_and_school_asc
 util_pre_driving_age_child,Pre-driving age child who is in school alternative-specific constants,ptype == 7,,,0,coef_pre_driving_age_child_school2_asc,
+util_preschool_child,Preschool child asc,ptype == 8,,,0,coef_preschool_school2_asc,
 util_female_ft_worker,Female - Full-time worker interaction,(ptype == 1) & female,0,coef_female_work2,coef_female_school1,,coef_female_work_and_school
 util_female_pt_worker,Female - Part-time worker interaction,(ptype == 2) & female,0,coef_female_work2,coef_female_school1,,coef_female_work_and_school
 util_female_univ,Female - University student interaction,(ptype == 3) & female,coef_female_work1,coef_female_work2,coef_female_school1,coef_female_school2,coef_female_work_and_school
@@ -96,7 +97,7 @@ util_availability_non_working_adult,Unavailable: Non-working adult,ptype == 4,,,
 util_availability_retired,Unavailable: Retired,ptype == 5,,,,coef_unavailable,coef_unavailable
 util_availability_driving_age_child,Unavailable: Driving-age child,ptype == 6,,coef_unavailable,,,
 util_availability_pre_driving_age_student,Unavailable: Pre-driving age child who is in school,ptype == 7,,coef_unavailable,,,coef_unavailable
-util_availability_pre_driving_age_not_in_school,Unavailable: Pre-driving age child who is not in school,ptype == 8,coef_unavailable,coef_unavailable,,coef_unavailable,coef_unavailable
+util_availability_pre_driving_age_not_in_school,Unavailable: Pre-driving age child who is not in school,ptype == 8,coef_unavailable,coef_unavailable,,,coef_unavailable
 util_availability_work_tours_no_usual_work_location,Unavailable: Work tours for those with no usual work location,~(workplace_zone_id > -1),coef_unavailable,coef_unavailable,,,coef_unavailable
 util_availability_school_tours_no_usual_school_location,Unavailable: School tours for those with no usual school location,~(school_zone_id > -1),,,coef_unavailable,coef_unavailable,coef_unavailable
 #util_univ_worker_non_family,working university student in non-family housing,(ptype == 3) & (is_worker) & (hht >= 4),coef_univ_worker_non_family_work1,coef_univ_worker_non_family_work2,0,coef_univ_worker_non_family_school2,coef_univ_worker_non_family_work_and_school

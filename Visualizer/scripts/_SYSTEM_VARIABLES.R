@@ -135,7 +135,7 @@ facility_types        <- c('Interstate', 'Principal Arterial', 'Minor Arterial',
 facility_codes        <- c(1, 3, 4, 5, 6, 7, 30)
 facility_df           <- data.frame(code = facility_codes, type = facility_types)
 timePeriods           <- c("EA","AM","MD","PM","EV")
-timePeriodBreaks      <- c(0,2,5,10,15,18)
+timePeriodBreaks      <- c(0, 5, 13, 23, 31, 48)
 timePeriodOrder       <- c("EA","AM","MD","PM","EV")
 occp_type_codes       <- c("occ1", "occ2", "occ3", "occ4", "occ5", "occ6", "Total")
 occp_type_names       <- c("Management", "Professional", "Services", "Retail", "Manual", "Military", "Total")

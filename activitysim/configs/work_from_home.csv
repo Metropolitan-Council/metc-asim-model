@@ -14,3 +14,22 @@ util_age_55_to_65,Age Group - 55 yrs to 65 yrs,"@df.AGE==9",coef_age_55_to_65,0
 util_age_65_plus,Age Group - Older than 65yrs,@df.AGE > 9,coef_age_65_plus,0
 util_calibration,ABM2 calibration - work from home,1,coef_calibration,0
 util_calibration_temp,Phase2 calibration temp,1,coef_calibration_p2,0
+util_anoka,Anoka County,"@df.COUNTY == 'Anoka'",coef_Anoka,0
+util_carver,Carver County,"@df.COUNTY == 'Carver'",coef_Carver,0
+util_Chisago,,"@df.COUNTY == 'Chisago'",coef_Chisago,0
+until_Dakota,,"@df.COUNTY == 'Dakota'",coef_Dakota,0
+util_Goodhue,,"@df.COUNTY == 'Goodhue'",coef_Goodhue,0
+util_Hennepin,,"@df.COUNTY == 'Hennepin'",coef_Hennepin,0
+util_Isanti,,"@df.COUNTY == 'Isanti'",coef_Isanti,0
+util_LeSueur,,"@df.COUNTY == 'Le Sueur'",coef_LeSueur,0
+util_McLeod,,"@df.COUNTY == 'McLeod'",coef_McLeod,0
+util_Pierce,,"@df.COUNTY == 'Pierce'",coef_Pierce,0
+util_Polk,,"@df.COUNTY == 'Polk'",coef_Polk,0
+util_Ramsey,,"@df.COUNTY == 'Ramsey'",coef_Ramsey,0
+util_Rice,,"@df.COUNTY == 'Rice'",coef_Rice,0
+util_Scott,,"@df.COUNTY == 'Scott'",coef_Scott,0
+util_Sherburne,,"@df.COUNTY == 'Sherburne'",coef_Sherburne,0
+util_Sibley,,"@df.COUNTY == 'Sibley'",coef_Sibley,0
+util_StCroix,,"@df.COUNTY == 'St. Croix'",coef_StCroix,0
+util_Washington,,"@df.COUNTY == 'Washington'",coef_Washington,0
+util_Wright,,"@df.COUNTY == 'Wright'",coef_Wright,0
