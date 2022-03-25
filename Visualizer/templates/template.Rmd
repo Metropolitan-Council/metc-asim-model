@@ -13,6 +13,8 @@ runtime: shiny
 ```{r Setup}
 opts_knit$set(root.dir = SYSTEM_APP_PATH)
 knit_hooks$set(optipng = hook_optipng)
+
+TILE_PROVIDER = providers$Esri.WorldImagery
 ```
 
 ```{r setpar}
@@ -392,7 +394,7 @@ Summary {data-width=600}
 
 m <- leaflet(data = zone_shp)%>%
  addTiles() %>%
- addProviderTiles(providers$OpenStreetMap, group = "Background Map") %>%
+ addProviderTiles(TILE_PROVIDER, group = "Background Map") %>%
  addLayersControl(
    overlayGroups = "Background Map", options = layersControlOptions(collapsed = FALSE)
  ) %>%
@@ -401,7 +403,7 @@ m
 
 # m <- leaflet(data = zone_shp)%>%
 #  addTiles() %>%
-#  addProviderTiles(providers$OpenStreetMap, group = "Background Map") %>%
+#  addProviderTiles(TILE_PROVIDER, group = "Background Map") %>%
 #  addLayersControl(
 #    overlayGroups = "Background Map", options = layersControlOptions(collapsed = FALSE)
 #  )
@@ -1026,7 +1028,7 @@ pal <- colorBin("PiYG", domain = ct_zero_auto_shp@data$Dff_ZrA, na.color="transp
 
 m <- leaflet(data = ct_zero_auto_shp)%>%
   addTiles() %>%
-  addProviderTiles(providers$OpenStreetMap, group = "Background Map") %>%
+  addProviderTiles(TILE_PROVIDER, group = "Background Map") %>%
   addLayersControl(
     overlayGroups = "Background Map", options = layersControlOptions(collapsed = FALSE)
   ) %>%
@@ -1933,41 +1935,26 @@ Chart Column 2{.tabset}
 
 ### Count vs Volume - All Links{data-height=575}
 ```{r count_vol2}
+ggplot(hnet[hnet$DY_CNT > 0,], aes(x = DY_CNT, y = DY_ASN)) + geom_point() +
+	geom_abline(slope = 1, intercept = 0, color = "red") +
+	scale_x_continuous("Daily Count", labels = comma) +
+	scale_y_continuous("Daily Assignment", labels = comma)
 
+```
+
+### RMSE Statistics{data-height=575}
+```{r rmse_vol1}
+
+ggplot(vgsum, aes(x = vgidx, y = prmse_DAILY, color = "Model")) + geom_line(stat = "identity", size = 1.2) +
+  geom_line(aes(y = limit/100, color = "Limit"), stat = "identity", size = 1.2) +
+  scale_y_continuous("Percent RMSE", labels = percent) +
+  scale_x_continuous("Volume Group", labels = function(x){return(vgsum[x + 1,"vg"])}, breaks = 0:nrow(vgsum)) + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 ```
 
 ### Gap Statistics{data-height=575}
 ```{r count_vol3}
-
-
-```
-
-Count vs Volume: EA{data-navmenu="Assignment"}
-============================================
-
-Description {.sidebar data-width=175}
---------------------------------------------
-
-********
-
-**Link level count comparison**
-
-Results of auto assignment.
-
-Comparison of observed counts and assigned volumes on each link with a counted volume, by assignment time period.
-
-
-Chart Column 2{.tabset}
---------------------------------------------
-
-### EA Count vs Volume - All Links{data-height=575}
-```{r count_vol4}
-
-```
-
-### EA Gap Statistics{data-height=575}
-```{r count_vol5}
 
 
 ```
@@ -1992,6 +1979,20 @@ Chart Column 2{.tabset}
 
 ### AM Count vs Volume - All Links{data-height=575}
 ```{r count_vol6}
+ggplot(hnet[hnet$AM_CNT > 0,], aes(x = AM_CNT, y = AM_ASN)) + geom_point() +
+	geom_abline(slope = 1, intercept = 0, color = "red") +
+	scale_x_continuous("AM Count", labels = comma) +
+	scale_y_continuous("AM Assignment", labels = comma)
+```
+
+### RMSE Statistics{data-height=575}
+```{r rmse_vol2}
+
+ggplot(vgsum, aes(x = vgidx, y = prmse_AM, color = "Model")) + geom_line(stat = "identity", size = 1.2) +
+  geom_line(aes(y = limit/100, color = "Limit"), stat = "identity", size = 1.2) +
+  scale_y_continuous("Percent RMSE", labels = percent) +
+  scale_x_continuous("Volume Group", labels = function(x){return(vgsum[x + 1,"vg"])}, breaks = 0:nrow(vgsum)) + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 ```
 
@@ -2021,6 +2022,20 @@ Chart Column 2{.tabset}
 
 ### MD Count vs Volume - All Links{data-height=575}
 ```{r count_vol8}
+ggplot(hnet[hnet$MD_CNT > 0,], aes(x = MD_CNT, y = MD_ASN)) + geom_point() +
+	geom_abline(slope = 1, intercept = 0, color = "red") +
+	scale_x_continuous("Midday Count", labels = comma) +
+	scale_y_continuous("Midday Assignment", labels = comma)
+```
+
+### RMSE Statistics{data-height=575}
+```{r rmse_vol3}
+
+ggplot(vgsum, aes(x = vgidx, y = prmse_MD, color = "Model")) + geom_line(stat = "identity", size = 1.2) +
+  geom_line(aes(y = limit/100, color = "Limit"), stat = "identity", size = 1.2) +
+  scale_y_continuous("Percent RMSE", labels = percent) +
+  scale_x_continuous("Volume Group", labels = function(x){return(vgsum[x + 1,"vg"])}, breaks = 0:nrow(vgsum)) + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 ```
 
@@ -2050,6 +2065,20 @@ Chart Column 2{.tabset}
 
 ### PM Count vs Volume - All Links{data-height=575}
 ```{r count_vol10}
+ggplot(hnet[hnet$PM_CNT > 0,], aes(x = PM_CNT, y = PM_ASN)) + geom_point() +
+	geom_abline(slope = 1, intercept = 0, color = "red") +
+	scale_x_continuous("PM Count", labels = comma) +
+	scale_y_continuous("PM Assignment", labels = comma)
+```
+
+### RMSE Statistics{data-height=575}
+```{r rmse_vol4}
+
+ggplot(vgsum, aes(x = vgidx, y = prmse_PM, color = "Model")) + geom_line(stat = "identity", size = 1.2) +
+  geom_line(aes(y = limit/100, color = "Limit"), stat = "identity", size = 1.2) +
+  scale_y_continuous("Percent RMSE", labels = percent) +
+  scale_x_continuous("Volume Group", labels = function(x){return(vgsum[x + 1,"vg"])}, breaks = 0:nrow(vgsum)) + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 ```
 
@@ -2059,7 +2088,7 @@ Chart Column 2{.tabset}
 
 ```
 
-Count vs Volume: EV{data-navmenu="Assignment"}
+Count vs Volume: NT{data-navmenu="Assignment"}
 ============================================
 
 Description {.sidebar data-width=175}
@@ -2077,18 +2106,32 @@ Comparison of observed counts and assigned volumes on each link with a counted v
 Chart Column 2{.tabset}
 --------------------------------------------
 
-### EV Count vs Volume - All Links{data-height=575}
+### NT Count vs Volume - All Links{data-height=575}
 ```{r count_vol12}
+ggplot(hnet[hnet$NT_CNT > 0,], aes(x = NT_CNT, y = NT_ASN)) + geom_point() +
+	geom_abline(slope = 1, intercept = 0, color = "red") +
+	scale_x_continuous("Nighttime Count", labels = comma) +
+	scale_y_continuous("Nighttime Assignment", labels = comma)
+```
+
+### RMSE Statistics{data-height=575}
+```{r rmse_vol5}
+
+ggplot(vgsum, aes(x = vgidx, y = prmse_NT, color = "Model")) + geom_line(stat = "identity", size = 1.2) +
+  geom_line(aes(y = limit/100, color = "Limit"), stat = "identity", size = 1.2) +
+  scale_y_continuous("Percent RMSE", labels = percent) +
+  scale_x_continuous("Volume Group", labels = function(x){return(vgsum[x + 1,"vg"])}, breaks = 0:nrow(vgsum)) + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 ```
 
-### EV Gap Statistics{data-height=575}
+### NT Gap Statistics{data-height=575}
 ```{r count_vol13}
 
 
 ```
 
-MTC vs MARIN {data-navmenu="Assignment"}
+Total Assignment Summaries{data-navmenu="Assignment"}
 ============================================
 
 Description {.sidebar data-width=175}
@@ -2100,74 +2143,34 @@ Description {.sidebar data-width=175}
 
 Results of auto assignment.
 
-Comparison of observed counts and assigned volumes on each link with a counted volume, by assignment time period.
-
-
 Chart Column 2{.tabset}
 --------------------------------------------
 
-### Volume Comparison - Daily{data-height=575}
-```{r count_vol14}
+### Vehicle Miles of Travel{data-height=5750}
+```{r asn_vmt}
 
-#knitr::include_graphics(file.path(SYSTEM_JPEG_PATH, "assign_summary_Daily.jpeg"))
-```
+build_df <- vmtsum[vmtsum$Period == "DAILY" & vmtsum$COUNTY != 10,]
 
-### Volume Comparison - EA{data-height=575}
-```{r count_vol15}
+build_df$CNAME = assign_county[build_df$COUNTY]
 
-#knitr::include_graphics(file.path(SYSTEM_JPEG_PATH, "assign_summary_EA.jpeg"))
-```
+base_df = build_df
+base_df$vmt = 0
 
-### Volume Comparison - AM{data-height=575}
-```{r count_vol16}
+#FTYPE,COUNTY,Period,nLinks,vmt
 
-#knitr::include_graphics(file.path(SYSTEM_JPEG_PATH, "assign_summary_AM.jpeg"))
-```
+sd.asnvmt <- get_standardDF(data_df1 = base_df, data_df2 = build_df, x = "FTYPE", y = c("vmt"), grp = c("CNAME"), shared = TRUE)
 
-### Volume Comparison - MD{data-height=575}
-```{r count_vol17}
+p <- plotly_bar_plotter(data = sd.asnvmt, xlabel = "Facility Type", ylabel = "VMT", percent = T, height = 225, ynames = c(BASE_SCENARIO_NAME, BUILD_SCENARIO_NAME))
 
-#knitr::include_graphics(file.path(SYSTEM_JPEG_PATH, "assign_summary_MD.jpeg"))
-```
+bscols(widths=c(3,9),
+  list(
+    filter_select("asnvmt_cname", "Select County", sd.asnvmt, ~grp_var, multiple=F)),
+    p
+)
 
-### Volume Comparison - PM{data-height=575}
-```{r count_vol18}
-
-#knitr::include_graphics(file.path(SYSTEM_JPEG_PATH, "assign_summary_PM.jpeg"))
-```
-
-### Volume Comparison - EV{data-height=575}
-```{r count_vol19}
-
-#knitr::include_graphics(file.path(SYSTEM_JPEG_PATH, "assign_summary_EV.jpeg"))
-```
-
-
-Non-Mandatory Trip Flows{data-navmenu="District Summaries"}
-=========================================================
-
-Description {.sidebar data-width=175}
---------------------------------------------
-
-********
-
-**District level flow comparison**
-
-Results of district summaries.
-
-Comparison of non-mandatory district flow summaries.
-
-Chart Column 2{.tabset}
---------------------------------------------
-
-### TLFD by District{data-height=575}
-```{r DFLOW_dis1}
 
 
 ```
 
-### TLFD by District{data-height=575}
-```{r DFLOW_dis2}
 
 
-```

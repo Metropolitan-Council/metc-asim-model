@@ -40,6 +40,7 @@ CT_ZERO_AUTO_FILE_NAME       <- trimws(paste(parameters$Value[parameters$Key=="C
 IS_BASE_SURVEY      <- trimws(paste(parameters$Value[parameters$Key=="IS_BASE_SURVEY"]))
 BUILD_SUMMARY_DIR      <- trimws(paste(parameters$Value[parameters$Key=="VIS_ABM_SUMMARIES_DIR"]))
 SYSTEM_SHP_PATH     <- trimws(paste(parameters$Value[parameters$Key=="VIS_ZONE_DIR"]))
+ASSIGNED     <- trimws(paste(parameters$Value[parameters$Key=="ASSIGNED"]))
 # BUILD_SUMMARY_DIR   <- ifelse(Run_switch=="SN",
 #                               file.path(CALIBRATION_DIR, "ABM_Summaries_subset"),
 #                               file.path(CALIBRATION_DIR, "ABM_Summaries"))
@@ -107,7 +108,7 @@ summaryFileList_build <- as.list(summaryFileList_build$summaryFile)
 jpeg_list <- list.files(BUILD_SUMMARY_DIR, "*.jpeg")
 jpeg_copy_retval <- file.copy(jpeg_list, SYSTEM_JPEG_PATH, overwrite = TRUE)
 
-### Read Target and Output SUmmary files
+### Read Target and Output Summary files
 currDir <- getwd()
 
 setwd(BASE_SUMMARY_DIR)
@@ -134,6 +135,16 @@ setwd(ABM_SUMMARY_DIR)
 print(CT_ZERO_AUTO_FILE_NAME)
 ct_zero_auto_shp <- shapefile(CT_ZERO_AUTO_FILE_NAME)
 ct_zero_auto_shp <- spTransform(ct_zero_auto_shp, CRS("+proj=longlat +ellps=GRS80"))
+if(ASSIGNED==1){
+	vgsum = read.csv("hassign_vgsum.csv")
+	hnet = read.csv("hnetcnt.csv")
+	vmtsum = read.csv("asnvmt.csv")
+}else{
+	vgsum = data.frame()
+	hnet = data.frame()
+	vmtsum = data.frame()
+}
+
 
 setwd(currDir)
 print("Read specified csv files, now loading visualizer.")

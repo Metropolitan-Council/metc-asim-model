@@ -141,6 +141,15 @@ occp_type_codes       <- c("occ1", "occ2", "occ3", "occ4", "occ5", "occ6", "Tota
 occp_type_names       <- c("Management", "Professional", "Services", "Retail", "Manual", "Military", "Total")
 occp_type_df          <- data.frame(code = occp_type_codes, name = occp_type_names)
 
+hnet_at = c("1" = "Rural", "2" = "Developing", "3" = "Developed", "4" = "Residential Core", "5" = "Business Core", "6" = "Other Business Core")
+
+hnet_ft = c("1" = "Freeway", "2" = "Freeway",  "3" = "Expressway","4" = "Arterial", "5" = "Arterial",  "6" = "Arterial", "7" = "Arterial", 
+	"8" = "Arterial", "9" = "Arterial", "10" = "Collector", "11" = "Arterial", "12" = "Collector", "13" = "Ramp", "14" = "Ramp", "15" = "Collector")
+	
+assign_county = c("1" = "Anoka", "2" = "Carver", "3" = "Dakota", "4" = "Hennepin", "5" = "Ramsey", "6" = "Scott", "7" = "Washington",
+	"11" = "Chisago", "12" = "Goodhue", "13" = "Isanti", "14" = "Le Sueur", "15" = "McLeod", "16" = "Pierce", "17" = "Polk", "18" = "Rice",
+	"19" = "Sherburne", "20" = "Sibley", "21" = "St. Croix", "22" = "Wright", "Total" = "Total")
+
 
 
 ### Functions
