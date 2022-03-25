@@ -105,15 +105,12 @@ util_Shared_ride_2_ASC_Auto_sufficient,Shared ride 2 ASC - Auto Sufficient,@(df.
 util_Shared_ride_3+_Zero_auto,Shared ride 3+ - Zero auto,@(df.is_indiv & (df.auto_ownership == 0)),,,sr3p_ASC_no_auto,,,,,,,,
 util_Shared_ride_3+_Auto_deficient,Shared ride 3+ - Auto deficient,@(df.is_indiv & (df.auto_ownership < df.num_workers) & (df.auto_ownership > 0)),,,sr3p_ASC_auto_deficient,,,,,,,,
 util_Shared_ride_3+_Auto_sufficient,Shared ride 3+ - Auto Sufficient,@(df.is_indiv & (df.auto_ownership >= df.num_workers) & (df.auto_ownership > 0)),,,sr3p_ASC_auto_sufficient,,,,,,,,
-util_WALK_to_Transit_Zero_auto,Walk to Transit - Zero auto,@(df.is_indiv & (df.auto_ownership == 0)),,,,,,walk_transit_ASC_no_auto,walk_transit_ASC_no_auto,,,,
-util_WALK_to_Transit_Auto_deficient,Walk to Transit - Auto deficient,@(df.is_indiv & (df.auto_ownership < df.num_workers) & (df.auto_ownership > 0)),,,,,,walk_transit_ASC_auto_deficient,walk_transit_ASC_auto_deficient,,,,
-util_WALK_to_Transit_Auto_sufficient,Walk to Transit - Auto Sufficient,@(df.is_indiv & (df.auto_ownership >= df.num_workers) & (df.auto_ownership > 0)),,,,,,walk_transit_ASC_auto_sufficient,walk_transit_ASC_auto_sufficient,,,,
+util_WALK_to_Transit_Zero_auto,Walk to Transit - Zero auto,@(df.is_indiv & (df.auto_ownership == 0)),,,,,,walk_transit_ASC_no_auto,,,,,
+util_WALK_to_Transit_Auto_deficient,Walk to Transit - Auto deficient,@(df.is_indiv & (df.auto_ownership < df.num_workers) & (df.auto_ownership > 0)),,,,,,walk_transit_ASC_auto_deficient,,,,,
+util_WALK_to_Transit_Auto_sufficient,Walk to Transit - Auto Sufficient,@(df.is_indiv & (df.auto_ownership >= df.num_workers) & (df.auto_ownership > 0)),,,,,,walk_transit_ASC_auto_sufficient,,,,,
 util_DRIVE_to_Transit_Zero_auto,PNR to Transit - Zero auto,@(df.is_indiv & (df.auto_ownership == 0)),,,,,,,pnr_transit_ASC_no_auto,,,,
 util_DRIVE_to_Transit_Auto_deficient,PNR to Transit - Auto deficient,@(df.is_indiv & (df.auto_ownership < df.num_workers) & (df.auto_ownership > 0)),,,,,,,pnr_transit_ASC_auto_deficient,,,,
 util_DRIVE_to_Transit_Auto_sufficient,PNR to Transit - Auto Sufficient,@(df.is_indiv & (df.auto_ownership >= df.num_workers) & (df.auto_ownership > 0)),,,,,,,pnr_transit_ASC_auto_sufficient,,,,
-util_ridehail_Zero_auto,ridehail - Zero auto,@(df.is_indiv & (df.auto_ownership == 0)),,,,,,,,,ridehail_ASC_no_auto,ridehail_ASC_no_auto,ridehail_ASC_no_auto
-util_ridehail_Auto_deficient,ridehail - Auto deficient,@(df.is_indiv & (df.auto_ownership < df.num_workers) & (df.auto_ownership > 0)),,,,,,,,,ridehail_ASC_auto_deficient,ridehail_ASC_auto_deficient,ridehail_ASC_auto_deficient
-util_ridehail_Auto_sufficient,ridehail - Auto sufficient,@(df.is_indiv & (df.auto_ownership >= df.num_workers) & (df.auto_ownership > 0)),,,,,,,,,ridehail_ASC_auto_sufficient,ridehail_ASC_auto_sufficient,ridehail_ASC_auto_sufficient
 util_Taxi_Zero_auto,Taxi - Zero auto,@(df.is_indiv & (df.auto_ownership == 0)),,,,,,,,,taxi_ASC_no_auto,,
 util_Taxi_Auto_deficient,Taxi - Auto deficient,@(df.is_indiv & (df.auto_ownership < df.num_workers) & (df.auto_ownership > 0)),,,,,,,,,taxi_ASC_auto_deficient,,
 util_Taxi_Auto_sufficient,Taxi - Auto sufficient,@(df.is_indiv & (df.auto_ownership >= df.num_workers) & (df.auto_ownership > 0)),,,,,,,,,taxi_ASC_auto_sufficient,,
@@ -136,15 +133,12 @@ util_Joint_Shared_ride_2_ASC_Auto_sufficient,Joint - Shared ride 2 ASC - Auto Su
 util_Joint_Shared_ride_3+_Zero_auto,Joint - Shared ride 3+ - Zero auto,@(df.is_joint & (df.auto_ownership == 0)),,,joint_sr3p_ASC_no_auto,,,,,,,,
 util_Joint_Shared_ride_3+_Auto_deficient,Joint - Shared ride 3+ - Auto deficient,@(df.is_joint & (df.auto_ownership < df.num_workers) & (df.auto_ownership > 0)),,,joint_sr3p_ASC_auto_deficient,,,,,,,,
 util_Joint_Shared_ride_3+_Auto_sufficient,Joint - Shared ride 3+ - Auto Sufficient,@(df.is_joint & (df.auto_ownership >= df.num_workers) & (df.auto_ownership > 0)),,,joint_sr3p_ASC_auto_sufficient,,,,,,,,
-util_Joint_WALK_to_Transit_Zero_auto,Joint - Walk to Transit - Zero auto,@(df.is_joint & (df.auto_ownership == 0)),,,,,,joint_walk_transit_ASC_no_auto,joint_walk_transit_ASC_no_auto,,,,
-util_Joint_WALK_to_Transit_Auto_deficient,Joint - Walk to Transit - Auto deficient,@(df.is_joint & (df.auto_ownership < df.num_workers) & (df.auto_ownership > 0)),,,,,,joint_walk_transit_ASC_auto_deficient,joint_walk_transit_ASC_auto_deficient,,,,
-util_Joint_WALK_to_Transit_Auto_sufficient,Joint - Walk to Transit - Auto Sufficient,@(df.is_joint & (df.auto_ownership >= df.num_workers) & (df.auto_ownership > 0)),,,,,,joint_walk_transit_ASC_auto_sufficient,joint_walk_transit_ASC_auto_sufficient,,,,
-util_Joint_DRIVE_to_Transit_Zero_auto,Joint - PNR to Transit - Zero auto,@(df.is_joint & (df.auto_ownership == 0)),,,,,,,joint_drive_transit_ASC_no_auto,,,,
-util_Joint_DRIVE_to_Transit_Auto_deficient,Joint - PNR to Transit - Auto deficient,@(df.is_joint & (df.auto_ownership < df.num_workers) & (df.auto_ownership > 0)),,,,,,joint_drive_transit_ASC_auto_deficient,,,,,
-util_Joint_DRIVE_to_Transit_Auto_sufficient,Joint - PNR to Transit - Auto Sufficient,@(df.is_joint & (df.auto_ownership >= df.num_workers) & (df.auto_ownership > 0)),,,,,,,joint_drive_transit_ASC_auto_sufficient,,,,
-util_Joint_ridehail_Zero_auto,Joint - ridehail - Zero auto,@(df.is_joint & (df.auto_ownership == 0)),,,,,,,,,joint_ridehail_ASC_no_auto,joint_ridehail_ASC_no_auto,joint_ridehail_ASC_no_auto
-util_Joint_ridehail_Auto_deficient,Joint - ridehail - Auto deficient,@(df.is_joint & (df.auto_ownership < df.num_workers) & (df.auto_ownership > 0)),,,,,,,,,joint_ridehail_ASC_auto_deficient,joint_ridehail_ASC_auto_deficient,joint_ridehail_ASC_auto_deficient
-util_Joint_ridehail_Auto_sufficient,Joint - ridehail - Auto sufficient,@(df.is_joint & (df.auto_ownership >= df.num_workers) & (df.auto_ownership > 0)),,,,,,,,,joint_ridehail_ASC_auto_sufficient,joint_ridehail_ASC_auto_sufficient,joint_ridehail_ASC_auto_sufficient
+util_Joint_WALK_to_Transit_Zero_auto,Joint - Walk to Transit - Zero auto,@(df.is_joint & (df.auto_ownership == 0)),,,,,,joint_walk_transit_ASC_no_auto,,,,,
+util_Joint_WALK_to_Transit_Auto_deficient,Joint - Walk to Transit - Auto deficient,@(df.is_joint & (df.auto_ownership < df.num_workers) & (df.auto_ownership > 0)),,,,,,joint_walk_transit_ASC_auto_deficient,,,,,
+util_Joint_WALK_to_Transit_Auto_sufficient,Joint - Walk to Transit - Auto Sufficient,@(df.is_joint & (df.auto_ownership >= df.num_workers) & (df.auto_ownership > 0)),,,,,,joint_walk_transit_ASC_auto_sufficient,,,,,
+util_Joint_DRIVE_to_Transit_Zero_auto,Joint - PNR to Transit - Zero auto,@(df.is_joint & (df.auto_ownership == 0)),,,,,,,joint_pnr_transit_ASC_no_auto,,,,
+util_Joint_DRIVE_to_Transit_Auto_deficient,Joint - PNR to Transit - Auto deficient,@(df.is_joint & (df.auto_ownership < df.num_workers) & (df.auto_ownership > 0)),,,,,,,joint_pnr_transit_ASC_auto_deficient,,,,
+util_Joint_DRIVE_to_Transit_Auto_sufficient,Joint - PNR to Transit - Auto Sufficient,@(df.is_joint & (df.auto_ownership >= df.num_workers) & (df.auto_ownership > 0)),,,,,,,joint_pnr_transit_ASC_auto_sufficient,,,,
 util_Joint_Taxi_Zero_auto,Joint - Taxi - Zero auto,@(df.is_joint & (df.auto_ownership == 0)),,,,,,,,,joint_taxi_ASC_no_auto,,
 util_Joint_Taxi_Auto_deficient,Joint - Taxi - Auto deficient,@(df.is_joint & (df.auto_ownership < df.num_workers) & (df.auto_ownership > 0)),,,,,,,,,joint_taxi_ASC_auto_deficient,,
 util_Joint_Taxi_Auto_sufficient,Joint - Taxi - Auto sufficient,@(df.is_joint & (df.auto_ownership >= df.num_workers) & (df.auto_ownership > 0)),,,,,,,,,joint_taxi_ASC_auto_sufficient,,
@@ -154,11 +148,8 @@ util_Joint_TNC_Single_Auto_sufficient,Joint - TNC Single - Auto sufficient,@(df.
 util_Joint_TNC_Shared_Zero_auto,Joint - TNC Shared - Zero auto,@(df.is_joint & (df.auto_ownership == 0)),,,,,,,,,,,joint_tnc_shared_ASC_no_auto
 util_Joint_TNC_Shared_Auto_deficient,Joint - TNC Shared - Auto deficient,@(df.is_joint & (df.auto_ownership < df.num_workers) & (df.auto_ownership > 0)),,,,,,,,,,,joint_tnc_shared_ASC_auto_deficient
 util_Joint_TNC_Shared_Auto_sufficient,Joint - TNC Shared - Auto sufficient,@(df.is_joint & (df.auto_ownership >= df.num_workers) & (df.auto_ownership > 0)),,,,,,,,,,,joint_tnc_shared_ASC_auto_sufficient
-util_local_asc,Local ASC,1,,,,,,local_ASC,,,,,
-util_premium_asc,Premium ASC,1,,,,,,,premium_ASC,,,,
-util_mix_asc,Mix ASC,1,,,,,,,,,,,
 util_WALK_to_Transit_dest_CBD,Walk to Transit dest CBD,@df.destination_in_cbd,,,,,,walk_transit_CBD_ASC,,,,,
-Drive_to_Transit_dest_CBD,Drive to Transit dest CBD,@df.destination_in_cbd,,,,,,,drive_transit_CBD_ASC,,,,
+Drive_to_Transit_dest_CBD,Drive to Transit dest CBD,@df.destination_in_cbd,,,,,,,pnr_transit_CBD_ASC,,,,
 Drive_to_Transit_distance_penalty,Drive to Transit - distance penalty,@drvtrn_distpen_0_multiplier * (1-od_skims['DIST']/drvtrn_distpen_max).clip(lower=0),,,,,,,coef_ivt,,,,
 #_FIXME_skims_aren't_symmetrical,# FIXME - skims aren't symmetrical, so we have to make sure they can get back,,,,,,,,,,,
 util_WALK_not_available_for_long_distances,Walk not available for long distances,@(od_skims['DISTWALK'] + od_skims.reverse('DISTWALK')) > 3,,,,-999,,,,,,,
