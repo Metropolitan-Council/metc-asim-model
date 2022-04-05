@@ -2,7 +2,7 @@ Key,Value
 BASE_SCENARIO_NAME,Survey 
 BUILD_SCENARIO_NAME,Model 
 BASE_SAMPLE_RATE,1.0 
-BUILD_SAMPLE_RATE,0.0655 
+BUILD_SAMPLE_RATE,0.327 
 MAX_ITER,1 
 R_LIBRARY,E:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model\Visualizer\contrib\RPKG 
 FULL_HTML_NAME,MetCouncil_visualizer 
