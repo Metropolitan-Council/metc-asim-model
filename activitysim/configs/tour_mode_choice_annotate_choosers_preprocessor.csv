@@ -27,7 +27,7 @@ local,_DF_IS_TOUR,'tour_type' in df.columns
 ,_walk_transit_origin,"(odt_skims['WLK_TRN_IVT']>0)" 
 ,_walk_transit_destination,"(dot_skims['WLK_TRN_IVT']>0)"
 ,walk_transit_available,_walk_transit_origin & _walk_transit_destination
-,drive_transit_available,"odt_skims['DRV_TRN_IVT']>0"
+#,drive_transit_available,"odt_skims['DRV_TRN_IVT']>0"
 #,pnr_transit_available,_walk_transit_destination & (df.auto_ownership > 0)
 #,knr_transit_available,_walk_transit_origin & _walk_transit_destination
 #,origin_walk_time,shortWalk*60/walkSpeed
@@ -72,6 +72,7 @@ local,_DF_IS_TOUR,'tour_type' in df.columns
 ,hov2_available,"(odt_skims['HOV2_N_TIME'] + dot_skims['HOV2_N_TIME'])>0"
 ,hov3_available,"(odt_skims['HOV3_N_TIME']>0) & (dot_skims['HOV3_N_TIME']>0)"
 ,walk_local_available,"walk_transit_available & (odt_skims['WLK_TRN_IVT']>0) & (dot_skims['WLK_TRN_IVT']>0)"
+,drive_transit_available,(odt_skims['DRV_TRN_IVT']>0) & (dot_skims['DRV_TRN_IVT']>0)
 #,walk_premium_available,"walk_transit_available & (odt_skims['WLK_TRN_IVT']>0) & (dot_skims['WLK_TRN_IVT']>0)"
 #,walk_mix_available,"walk_transit_available & (odt_skims['WLK_TRN_IVT']>0) & (dot_skims['WLK_TRN_IVT']>0)"
 #,pnr_local_available,"pnr_transit_available & (odt_skims['DRV_TRN_IVT']>0) & (dot_skims['DRV_TRN_IVT']>0)"
