@@ -45,9 +45,9 @@ CONSTANTS:
   walkThresh: 1.00
   shortWalk: 0.333
   longWalk: 0.667
-  walkSpeed: 3.00
+  walkSpeed: 2.5
   bikeThresh: 6.00
-  bikeSpeed: 12.00
+  bikeSpeed: 10.00
   I_MODE_MAP:
     DRIVEALONE: 1
     SHARED2: 2
@@ -135,7 +135,7 @@ CONSTANTS:
   xfers_drv_multiplier: 15
   dacc_ratio_multiplier: 0
   density_index_multiplier: -5
-  origin_density_index_multiplier: -15
+  #origin_density_index_multiplier: -15
   origin_density_index_max: -15
   ivt_com_multiplier: 0.80
   ivt_exp_multiplier: -0.0175
