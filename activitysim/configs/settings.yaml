@@ -15,7 +15,7 @@ num_processes: 16
 default_initial_rows_per_chunk: 10000
 #trace_hh_id: 1090401
 #trace_od: [5, 11]
-#resume_after: 
+resume_after: non_mandatory_tour_scheduling
 
 # input tables
 input_table_list:
