@@ -70,8 +70,8 @@ util_TRNDRIVEACCESS_outbound_number_of_transfers,PNR_LOC outbound - number of tr
 util_TRNDRIVEACCESS_outbound_Drive_time,PNR_LOC outbound - Drive time,@df.outbound * coef_dtim_multiplier * odt_skims['DRV_TRN_DRACC'],,,,,,,coef_ivt
 util_TRNDRIVEACCESS_outbound_Walk_egress_time,PNR_LOC outbound - Walk egress time,@df.outbound * coef_wegr_multiplier * odt_skims['WLK_TRN_WLKEGR'],,,,,,,coef_ivt
 util_TRNDRIVEACCESS_outbound_Walk_other_time,PNR_LOC outbound - Walk other time,@df.outbound * coef_waux_multiplier * odt_skims['DRV_TRN_WLKXFER'],,,,,,,coef_ivt
-util_TRNDRIVEACCESS_outbound_Fare_and_operating_cost,PNR_LOC outbound - Fare and operating cost,@df.outbound * ivt_cost_multiplier * df.ivot * ((odt_skims['DRV_TRN_FARE'])),,,,,,,coef_ivt
-#util_TRNDRIVEACCESS_outbound_Ratio_of_drive_access_distance_to_OD_distance,PNR_LOC outbound - Ratio of drive access distance to OD distance,@df.outbound * dacc_ratio_multiplier * (odt_skims['PNR_LOC_DDIST'])/ (odt_skims['SOV_DIST']),,,,,,,coef_ivt
+util_TRNDRIVEACCESS_outbound_Fare_and_operating_cost,PNR_LOC outbound - Fare and operating cost,@df.outbound * ivt_cost_multiplier * df.ivot * (odt_skims['DRV_TRN_FARE'] + costPerMile * odt_skims['DRV_TRN_DRACCDIST']),,,,,,,coef_ivt
+util_TRNDRIVEACCESS_outbound_Ratio_of_drive_access_distance_to_OD_distance,PNR_LOC outbound - Ratio of drive access distance to OD distance,@df.outbound * dacc_ratio_multiplier * (odt_skims['DRV_TRN_DRACCDIST'])/ (odt_skims['SOV_DIST']),,,,,,,coef_ivt
 util_TRNDRIVEACCESS_inbound_Unavailable,PNR_LOC inbound - Unavailable,@df.inbound & ~df.drive_transit_available_inbound,,,,,,,-999.0
 util_TRNDRIVEACCESS_inbound_In-vehicle_time,PNR_LOC inbound - In-vehicle time,@df.inbound * odt_skims['DRV_TRN_IVT'],,,,,,,coef_ivt
 util_TRNDRIVEACCESS_inbound_Short_iwait_time,PNR_LOC inbound - Short iwait time,@df.inbound * coef_short_iwait_multiplier * (odt_skims['DRV_TRN_IWAIT']).clip(upper=waitThresh),,,,,,,coef_ivt
@@ -81,8 +81,8 @@ util_TRNDRIVEACCESS_inbound_number_of_transfers,PNR_LOC inbound - number of tran
 util_TRNDRIVEACCESS_inbound_Drive_time,PNR_LOC inbound - Drive time,@df.inbound * coef_dtim_multiplier * odt_skims['DRV_TRN_DRACC'],,,,,,,coef_ivt
 util_TRNDRIVEACCESS_inbound_Walk_access_time,PNR_LOC inbound - Walk access time,@df.inbound * coef_wacc_multiplier * odt_skims['WLK_TRN_WLKEGR'],,,,,,,coef_ivt
 util_TRNDRIVEACCESS_inbound_Walk_other_time,PNR_LOC inbound - Walk other time,@df.inbound * coef_waux_multiplier * odt_skims['DRV_TRN_WLKXFER'],,,,,,,coef_ivt
-util_TRNDRIVEACCESS_inbound_Fare_and_operating_cost,PNR_LOC inbound - Fare and operating cost,@df.inbound * ivt_cost_multiplier * df.ivot  * ((odt_skims['DRV_TRN_FARE'])),,,,,,,coef_ivt
-#util_TRNDRIVEACCESS_inbound_Ratio_of_drive_access_distance_to_OD_distance,PNR_LOC inbound - Ratio of drive access distance to OD distance,@df.inbound * dacc_ratio_multiplier * (odt_skims['DRV_TRN_DDIST'])/ (od_skims['DIST']),,,,,,,coef_ivt
+util_TRNDRIVEACCESS_inbound_Fare_and_operating_cost,PNR_LOC inbound - Fare and operating cost,@df.inbound * ivt_cost_multiplier * df.ivot  * (odt_skims['DRV_TRN_FARE'] + costPerMile * odt_skims['DRV_TRN_DRACCDIST']),,,,,,,coef_ivt
+util_TRNDRIVEACCESS_inbound_Ratio_of_drive_access_distance_to_OD_distance,PNR_LOC inbound - Ratio of drive access distance to OD distance,@df.inbound * dacc_ratio_multiplier * (odt_skims['DRV_TRN_DRACCDIST'])/ (od_skims['DIST']),,,,,,,coef_ivt
 #School_Bus
 util_School_Bus_Unavailable_if_primary_purpose_NOT_school,School Bus Unavailable if primary purpose NOT school,~is_school,,,,,,,,-999.0
 util_School_Bus_Unavailable_Tour_Mode_=_SOV,School Bus Unavailable - Tour Mode = SOV,tour_mode_is_SOV,,,,,,,,-999.0
