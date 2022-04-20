@@ -142,7 +142,6 @@ FOR /L %%I IN (1, 1, 2) DO (
     %check_cube_errors%
 )
 
-
 goto ancillary
 
 :copySkims
@@ -509,56 +508,62 @@ echo Iteration=%ITER%
 
 ::%beginComment%
 ::now
-    :: Calculate transit speeds for period
-    runtpp %SCRIPT_PATH%\TSNET00F_loop.s
-    %check_cube_errors%
+:: Calculate transit speeds for period
+runtpp %SCRIPT_PATH%\TSNET00F_loop.s
+%check_cube_errors%
 
-    :: Build period walk access connectors
-    runtpp %SCRIPT_PATH%\TSPTR00N_loop.s
+:: Build period walk access connectors
+runtpp %SCRIPT_PATH%\TSPTR00N_loop.s
 
-    %check_cube_errors%
-    :: Build period transfer access connectors
-    runtpp %SCRIPT_PATH%\TSPTR00S_loop.s
-    %check_cube_errors%
+%check_cube_errors%
+:: Build period transfer access connectors
+runtpp %SCRIPT_PATH%\TSPTR00S_loop.s
+%check_cube_errors%
 
-    :: Build period drive access connectors
-    runtpp %SCRIPT_PATH%\TSPTR00U_loop.s
-    %check_cube_errors%
+:: Build period drive access connectors
+runtpp %SCRIPT_PATH%\TSPTR00U_loop.s
+%check_cube_errors%
+	
+SET I=1
+:trnntlloop
 
-FOR /L %%I IN (1,1,2) DO (
-    SET TOD=%%I
-    IF %%I EQU 1 (
-       SET TPER=PK
-       SET ASSIGNNAME=Peak Period
-       SET PER=AM
-    )
-    IF %%I EQU 2 (
-        SET TPER=OP
-        SET ASSIGNNAME=OffPeak Period
-        SET PER=MD
-    ) 
-    :: Copy temp files to non-transit leg files
-    COPY %SCENARIO_DIR%\XIT_WKACC_NTL_%ITER%_%TPER%.tmp+%TRANSIT_FOLDER%\WalkOverrides.txt %SCENARIO_DIR%\XIT_WKACC_NTL_%ITER%_%TPER%.ntl
-    COPY %SCENARIO_DIR%\XIT_XFER_NTL_%ITER%_%TPER%.tmp + %TRANSIT_FOLDER%\TransferOverrides.txt %SCENARIO_DIR%\XIT_XFER_NTL_%ITER%_%TPER%.ntl
-    COPY %SCENARIO_DIR%\XIT_DRACC_NTL_%ITER%_%TPER%.tmp + %TRANSIT_FOLDER%\DriveOverrides.txt %SCENARIO_DIR%\XIT_DRACC_NTL_%ITER%_%TPER%.ntl
-    )
+SET TOD=%I%
+IF %I% EQU 1 (
+   SET TPER=PK
+   SET ASSIGNNAME=Peak Period
+   SET PER=AM
+)
+IF %I% EQU 2 (
+	SET TPER=OP
+	SET ASSIGNNAME=OffPeak Period
+	SET PER=MD
+) 
 
-    :: Walk transit skim step 1
-    runtpp %SCRIPT_PATH%\TSPTR00J_loop.s
-    %check_cube_errors%
+@ECHO I=%I% %%I TPER=%TPER% 
+:: ^^ DEBUGGING REMOVE BEFORE FLIGHT
+:: Copy temp files to non-transit leg files
+COPY %SCENARIO_DIR%\XIT_WKACC_NTL_%ITER%_%TPER%.tmp+%TRANSIT_FOLDER%\WalkOverrides.txt %SCENARIO_DIR%\XIT_WKACC_NTL_%ITER%_%TPER%.ntl
+COPY %SCENARIO_DIR%\XIT_XFER_NTL_%ITER%_%TPER%.tmp+%TRANSIT_FOLDER%\TransferOverrides.txt %SCENARIO_DIR%\XIT_XFER_NTL_%ITER%_%TPER%.ntl
+COPY %SCENARIO_DIR%\XIT_DRACC_NTL_%ITER%_%TPER%.tmp+%TRANSIT_FOLDER%\DriveOverrides.txt %SCENARIO_DIR%\XIT_DRACC_NTL_%ITER%_%TPER%.ntl
 
-    :: Drive transit skim step 1
-    runtpp %SCRIPT_PATH%\TSPTR00L_loop.s
-    %check_cube_errors%
+IF %I% EQU 1 (SET I=2 & GOTO trnntlloop)
 
-    :: Walk transit skim step 2
-    runtpp %SCRIPT_PATH%\TSMAT00E_loop.s
-    %check_cube_errors%
+:: Walk transit skim step 1
+runtpp %SCRIPT_PATH%\TSPTR00J_loop.s
+%check_cube_errors%
 
-    :: Drive transit skim step 2
-    runtpp %SCRIPT_PATH%\TSMAT00G_loop.s
-    %check_cube_errors%
+:: Drive transit skim step 1
+runtpp %SCRIPT_PATH%\TSPTR00L_loop.s
+%check_cube_errors%
 
+:: Walk transit skim step 2
+runtpp %SCRIPT_PATH%\TSMAT00E_loop.s
+%check_cube_errors%
+
+:: Drive transit skim step 2
+runtpp %SCRIPT_PATH%\TSMAT00G_loop.s
+%check_cube_errors%
+@ECHO OFF
 ::now
 
 ::runtpp %SCRIPT_PATH%\TSPIL00E.S
