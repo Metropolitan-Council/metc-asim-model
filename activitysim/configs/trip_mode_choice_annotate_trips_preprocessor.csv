@@ -2,7 +2,7 @@ Description,Target,Expression
 ,is_joint,(df.number_of_participants > 1)
 ,is_indiv,(df.number_of_participants == 1)
 ,is_atwork_subtour,~df.parent_tour_id.isnull()
-,is_school,"(df.primary_purpose=='school') & (df.purpose.isin(['school', 'Home']))"
+,is_school,"(df.primary_purpose=='school') & (df.purpose.isin(['school', 'home']))"
 ,c_cost,(0.60 * coef_ivt) / df.value_of_time
 ,ivot,1.0/ df.value_of_time
 #,,
@@ -21,8 +21,6 @@ Description,Target,Expression
 ,tour_mode_is_walk_transit,i_tour_mode.isin(I_WALK_TRANSIT_MODES)
 ,tour_mode_is_drive_transit,i_tour_mode.isin(I_DRIVE_TRANSIT_MODES)
 ,tour_mode_not_drive_transit,~tour_mode_is_drive_transit
-#,tour_mode_is_drive_transit,i_tour_mode.isin(I_PNR_TRANSIT_MODES)
-#,tour_mode_is_knr_transit,i_tour_mode.isin(I_KNR_TRANSIT_MODES)
 ,tour_mode_is_school_bus,i_tour_mode.isin(I_SCHOOLBUS_MODE)
 ,tour_mode_is_ride_hail,i_tour_mode.isin(I_RIDE_HAIL_MODES)
 #,,
@@ -48,7 +46,7 @@ dest terminal time not counted at home,_dest_terminal_time,"np.where(inbound & l
 # FIXME no transit subzones so all zones short walk to transit,,
 ,_walk_transit_origin,True
 ,_walk_transit_destination,True
-,walk_transit_available,_walk_transit_origin & _walk_transit_destination & (tour_mode_not_drive_transit)
+,walk_transit_available,_walk_transit_origin & _walk_transit_destination
 ,drive_transit_available,tour_mode_is_drive_transit
 #,knr_transit_available,tour_mode_is_knr_transit
 ,origin_walk_time,shortWalk*60/walkSpeed
@@ -67,9 +65,9 @@ dest terminal time not counted at home,_dest_terminal_time,"np.where(inbound & l
 ,origin_zone_sharedTNC_wait_time_sd,"origin_density.map({k: v for k, v in TNC_shared_waitTime_sd.items()})"
 ,origSharedTNCWaitTime,"rng.lognormal_for_df(df, mu=origin_zone_sharedTNC_wait_time_mean, sigma=origin_zone_sharedTNC_wait_time_sd, broadcast=True, scale=True).clip(min_waitTime, max_waitTime)"
 #,,
-,sov_available,(odt_skims['SOV_N_TIME']>0) & tour_mode_not_drive_transit
-,hov2_available,(odt_skims['HOV2_N_TIME']>0) & tour_mode_not_drive_transit
-,hov3_available,(odt_skims['HOV3_N_TIME']>0) & tour_mode_not_drive_transit
+,sov_available,(odt_skims['SOV_N_TIME']>0) #& tour_mode_not_drive_transit
+,hov2_available,(odt_skims['HOV2_N_TIME']>0) #& tour_mode_not_drive_transit
+,hov3_available,(odt_skims['HOV3_N_TIME']>0) #& tour_mode_not_drive_transit
 ,walk_local_available,walk_transit_available & (odt_skims['WLK_TRN_IVT']>0)
 ,walk_premium_available,walk_transit_available & (odt_skims['WLK_TRN_IVT']>0)
 ,walk_mix_available,walk_transit_available & (odt_skims['WLK_TRN_IVT']>0)

@@ -9,6 +9,12 @@ output:
     source_code: embed
 runtime: shiny
 ---
+<style>
+.container-fluid.crosstalk-bscols{
+	margin-left: 0px !important;
+	margin-right: 0px !important;
+}
+</style>
 
 ```{r Setup}
 opts_knit$set(root.dir = SYSTEM_APP_PATH)
@@ -897,14 +903,14 @@ bscols(widths=c(6,6),
 base_df <- build_data[[which(build_csv_names=="employees_per_co")]]
 build_df <- build_data[[which(build_csv_names=="workers_per_co")]]
 
-#base_df$WDISTRICT = levels(base_df$WDISTRICT)[base_df$WDISTRICT]
-#build_df$WDISTRICT = levels(build_df$WDISTRICT)[build_df$WDISTRICT]
+# base_df$WDISTRICT = levels(base_df$WDISTRICT)[base_df$WDISTRICT]
+# build_df$WDISTRICT = levels(build_df$WDISTRICT)[build_df$WDISTRICT]
 build_df = build_df[build_df$WDISTRICT %in% base_df$WDISTRICT,]
 base_df = base_df[base_df$WDISTRICT %in% build_df$WDISTRICT,]
 
 #colnames(base_df)[which(colnames(base_df) == "freq")] = BASE_SCENARIO_NAME
 #colnames(build_df)[which(colnames(build_df) == "freq")] = BUILD_SCENARIO_NAME
-
+# 
 df = base_df
 df$freq_build = build_df$freq[which(df$WDISTRICT == build_df$WDISTRICT)]/BUILD_SAMPLE_RATE
 

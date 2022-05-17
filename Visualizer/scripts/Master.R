@@ -10,14 +10,16 @@
 #
 #############################################################################################################################
 
-
+R_LIBRARY = Sys.getenv("R_LIBRARY")
+#R_LIBRARY = "C:\\projects\\metc-asim-model\\Visualizer\\contrib\\RPKG"
+.libPaths(c(R_LIBRARY, .libPaths()))
 	
 ### Read Command Line Arguments
 args = commandArgs(trailingOnly = TRUE)
 if(length(args) > 0){
   Parameters_File = args[1]
 }else{
-  Parameters_File = "F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/activitysim/survey_data_processing/Visualizer/runtime/parameters.csv"
+  Parameters_File = "C:/projects/metc-asim-model/Visualizer/runtime/parameters.csv"
 }
 
 ### Read parameters from Parameters_File
@@ -52,7 +54,7 @@ OUTPUT_PATH           <- paste(WORKING_DIR, "outputs", sep = "/")
 ### Initialization
 # Load global variables
 
-.libPaths(c(R_LIBRARY, .libPaths()))
+#.libPaths(c(R_LIBRARY, .libPaths()))
 ### Load required libraries
 SYSTEM_REPORT_PKGS <- c("DT", "flexdashboard", "leaflet", "geojsonio", "htmltools", "htmlwidgets", "kableExtra", "shiny",
                         "knitr", "mapview", "plotly", "RColorBrewer", "rgdal", "rgeos", "crosstalk","treemap", "htmlTable",
@@ -151,10 +153,10 @@ print("Read specified csv files, now loading visualizer.")
 ### Generate dashboard
 rmarkdown::render(file.path(SYSTEM_TEMPLATES_PATH, "template.Rmd"),
                   output_dir = RUNTIME_PATH,
-                  intermediates_dir = RUNTIME_PATH, quiet = TRUE)
+                  intermediates_dir = RUNTIME_PATH, quiet = F)
+
 template.html <- readLines(file.path(RUNTIME_PATH, "template.html"))
 idx <- which(template.html == "window.FlexDashboardComponents = [];")[1]
 template.html <- append(template.html, "L_PREFER_CANVAS = true;", after = idx)
 writeLines(template.html, file.path(OUTPUT_PATH, paste(OUTPUT_HTML_NAME, ".html", sep = "")))
-
 # finish
