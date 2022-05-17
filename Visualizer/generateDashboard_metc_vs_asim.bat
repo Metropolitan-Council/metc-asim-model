@@ -18,7 +18,8 @@ IF NOT DEFINED CENSUS_DATA_PATH CALL ..\set_parameters.bat
 
 SET WORKING_DIR=%VIS_FOLDER%
 
-SET BUILD_SAMPLE_RATE=0.327
+SET BUILD_SAMPLE_RATE=1.0 
+::0.327
 
 ECHO Key,Value > %PARAMETERS_FILE%
 ECHO BASE_SCENARIO_NAME,%BASE_SCENARIO_NAME% >> %PARAMETERS_FILE%
@@ -41,14 +42,13 @@ ECHO VIS_FOLDER,%VIS_FOLDER% >> %PARAMETERS_FILE%
 ECHO CENSUS_DATA_PATH,%CENSUS_DATA_PATH% >> %PARAMETERS_FILE%
 ECHO ASSIGNED,1  >> %PARAMETERS_FILE%
 
-::GOTO RunViz
+SET R_SCRIPT="C:\Program Files\R\R-4.0.3\bin\RScript.exe"
+::%PYTHON_PATH%\python.exe scripts\Summarize_model_HNET.py
 
-%PYTHON_PATH%\python.exe scripts\Summarize_model_HNET.py
-
-::ECHO Summarizing ActivitySim Outputs...
+ECHO Summarizing ActivitySim Outputs...
 %R_SCRIPT% scripts\Summarize_ActivitySim_metc.R %PARAMETERS_FILE%
 
-::#FIXME: The next script has an error
+ECHO Preparing Auto Ownership Comparisons...
 %R_SCRIPT% scripts\AutoOwnership_Census_MetC.R %PARAMETERS_FILE%
 
 :: Call the master R script to generate full visualizer
@@ -71,3 +71,5 @@ GOTO END
 ECHO Model Failed
 
 :END
+
+SET PATH=%OLDPATH%

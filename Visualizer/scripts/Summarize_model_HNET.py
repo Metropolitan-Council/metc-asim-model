@@ -17,8 +17,6 @@ import numpy as np
 
 model_path = os.environ['SCENARIO_DIR']
 vis_path = os.environ['VIS_MODEL_DATA_FOLDER']
-model_path = r'E:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model\Base_2015' #FIXME: Remove before flight
-vis_path = r'E:\Projects\Clients\MetCouncilASIM\tasks\metc-asim-model\Visualizer\data\calibration_runs\summarized'
 print(f"Reading Highway Loading Results from {model_path}")
 
 hnetfile = 'HWY_LDNET_4_DAILY.dbf'
