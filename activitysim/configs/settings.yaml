@@ -13,9 +13,9 @@ chunk_training_mode: production
 chunk_size: 200_000_000_000
 num_processes: 20
 default_initial_rows_per_chunk: 10000
-#trace_hh_id: 359
+#trace_hh_id: 2702
 #trace_od: [5, 11]
-#resume_after: trip_scheduling
+#resume_after: non_mandatory_tour_scheduling
 
 # input tables
 input_table_list:
@@ -108,7 +108,7 @@ models:
   ### mp_summarize step
   - write_data_dictionary
   - write_tables
-  #- write_trip_matrices
+  - write_trip_matrices
 
 multiprocess_steps:
   - name: mp_initialize

@@ -1755,15 +1755,15 @@ df <- data.frame(base_df, build_df[,-1])
 colnames(df) <- c("Tour_Purpose", BASE_SCENARIO_NAME, BUILD_SCENARIO_NAME)
 df$Tour_Purpose <- purpose_type_df$name[match(df$Tour_Purpose, purpose_type_df$code)]
 #
-#t1 <- kable(df, format = "html", digits = 2, row.names = F, align = 'c', format.args = list(big.mark = ',')) %>%
-#  kable_styling("striped", full_width = F)
+t1 <- kable(df, format = "html", digits = 2, row.names = F, align = 'c', format.args = list(big.mark = ',')) %>%
+  kable_styling("striped", full_width = F)
 
-t1 <- htmlTable(txtRound(df, 2),
-                align = "c|r",
-                rnames = F,
-                col.columns = c(rep("#E6E6F0", 1),
-                          rep("none", ncol(df) - 1)),
-                caption = "_______________________________________________________")
+#t1 <- htmlTable(txtRound(df, 2),
+#                align = "c|r",
+#                rnames = F,
+#                col.columns = c(rep("#E6E6F0", 1),
+#                          rep("none", ncol(df) - 1)),
+#                caption = "_______________________________________________________")
 
 t1
 ```
@@ -1959,9 +1959,15 @@ ggplot(vgsum, aes(x = vgidx, y = prmse_DAILY, color = "Model")) + geom_line(stat
 
 ```
 
-### Gap Statistics{data-height=575}
-```{r count_vol3}
+### Assigned VMT Statistics{data-height=575}
+```{r vmtcomp_dy}
+  df = rbind.data.frame(cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$asnvmt_DAILY, "source" = "Model"), cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$obsvmt_DAILY, "source" = "Observed"))
+df$VMT = as.numeric(df$VMT)
 
+  ggplot(df, aes(x = FTYPE, y = VMT, fill = source)) + geom_bar(stat = "identity", position = "dodge") +
+    scale_x_discrete("") +
+    scale_color_discrete("Source") +
+    scale_y_continuous("Vehicle Miles of Travel", labels = comma) 
 
 ```
 
@@ -2002,9 +2008,15 @@ ggplot(vgsum, aes(x = vgidx, y = prmse_AM, color = "Model")) + geom_line(stat = 
 
 ```
 
-### AM Gap Statistics{data-height=575}
-```{r count_vol7}
+### Assigned VMT Statistics{data-height=575}
+```{r vmtcomp_am}
+  df = rbind.data.frame(cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$asnvmt_AM, "source" = "Model"), cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$obsvmt_AM, "source" = "Observed"))
+df$VMT = as.numeric(df$VMT)
 
+  ggplot(df, aes(x = FTYPE, y = VMT, fill = source)) + geom_bar(stat = "identity", position = "dodge") +
+    scale_x_discrete("") +
+    scale_color_discrete("Source") +
+    scale_y_continuous("Vehicle Miles of Travel", labels = comma) 
 
 ```
 
@@ -2045,9 +2057,15 @@ ggplot(vgsum, aes(x = vgidx, y = prmse_MD, color = "Model")) + geom_line(stat = 
 
 ```
 
-### MD Gap Statistics{data-height=575}
-```{r count_vol9}
+### Assigned VMT Statistics{data-height=575}
+```{r vmtcomp_md}
+  df = rbind.data.frame(cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$asnvmt_MD, "source" = "Model"), cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$obsvmt_MD, "source" = "Observed"))
+df$VMT = as.numeric(df$VMT)
 
+  ggplot(df, aes(x = FTYPE, y = VMT, fill = source)) + geom_bar(stat = "identity", position = "dodge") +
+    scale_x_discrete("") +
+    scale_color_discrete("Source") +
+    scale_y_continuous("Vehicle Miles of Travel", labels = comma) 
 
 ```
 
@@ -2088,9 +2106,15 @@ ggplot(vgsum, aes(x = vgidx, y = prmse_PM, color = "Model")) + geom_line(stat = 
 
 ```
 
-### PM Gap Statistics{data-height=575}
-```{r count_vol11}
+### Assigned VMT Statistics{data-height=575}
+```{r vmtcomp_pm}
+  df = rbind.data.frame(cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$asnvmt_PM, "source" = "Model"), cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$obsvmt_PM, "source" = "Observed"))
+df$VMT = as.numeric(df$VMT)
 
+  ggplot(df, aes(x = FTYPE, y = VMT, fill = source)) + geom_bar(stat = "identity", position = "dodge") +
+    scale_x_discrete("") +
+    scale_color_discrete("Source") +
+    scale_y_continuous("Vehicle Miles of Travel", labels = comma) 
 
 ```
 
@@ -2131,9 +2155,15 @@ ggplot(vgsum, aes(x = vgidx, y = prmse_NT, color = "Model")) + geom_line(stat = 
 
 ```
 
-### NT Gap Statistics{data-height=575}
-```{r count_vol13}
+### Assigned VMT Statistics{data-height=575}
+```{r vmtcomp_nt}
+  df = rbind.data.frame(cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$asnvmt_NT, "source" = "Model"), cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$obsvmt_NT, "source" = "Observed"))
+df$VMT = as.numeric(df$VMT)
 
+  ggplot(df, aes(x = FTYPE, y = VMT, fill = source)) + geom_bar(stat = "identity", position = "dodge") +
+    scale_x_discrete("") +
+    scale_color_discrete("Source") +
+    scale_y_continuous("Vehicle Miles of Travel", labels = comma) 
 
 ```
 

@@ -1,7 +1,8 @@
 Description,Expression,M,N,H
 Full-time worker alternative-specific constants,ptype == 1,1.5728386529137752,1.1800950652084934,
 Part-time worker alternative-specific constants,ptype == 2,-0.6704403523219504,0.8279234684790613,
-Non-working adult alternative-specific constants,ptype == 4,-999.0,-0.5287993334671984,
+#Non-working adult alternative-specific constants,ptype == 4,-999.0,-0.5287993334671984,
+Non-working adult alternative-specific constants,ptype == 4,-999.0,0.164,
 Retired alternative-specific constants,ptype == 5,-999.0,0.8033720916190095,
 Univ Student alternative-specific constants,ptype == 3,1.304707960575958,1.290823005411461,
 Driving-age child who is in school alternative-specific constants,ptype == 6,2.330918685,-0.599119112,
