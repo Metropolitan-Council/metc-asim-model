@@ -216,8 +216,8 @@ util_joint_walk_ASC_taxi,desc,@(df.is_joint & df.i_tour_mode.isin([I_WALK_MODE])
 util_joint_walk_ASC_tnc_shared,desc,@(df.is_joint & df.i_tour_mode.isin([I_WALK_MODE])),,,,,,,,,,,joint_walk_ASC_tnc_shared
 util_joint_bike_ASC_taxi,desc,@(df.is_joint & df.i_tour_mode.isin([I_BIKE_MODE])),,,,,,,,,joint_bike_ASC_taxi,,
 util_joint_bike_ASC_tnc_shared,desc,@(df.is_joint & df.i_tour_mode.isin([I_BIKE_MODE])),,,,,,,,,,,joint_bike_ASC_tnc_shared
-util_joint_sr3p_ASC_taxi,desc,@(df.is_joint & df.i_tour_mode.isin([I_SR3P_MODES])),,,,,,,,,joint_sr3p_ASC_taxi,,
-util_joint_sr3p_ASC_tnc_shared,desc,@(df.is_joint & df.i_tour_mode.isin([I_SR3P_MODES])),,,,,,,,,,,joint_sr3p_ASC_tnc_shared
+util_joint_sr3p_ASC_taxi,desc,@(df.is_joint & df.i_tour_mode.isin(I_SR3P_MODES)),,,,,,,,,joint_sr3p_ASC_taxi,,
+util_joint_sr3p_ASC_tnc_shared,desc,@(df.is_joint & df.i_tour_mode.isin(I_SR3P_MODES)),,,,,,,,,,,joint_sr3p_ASC_tnc_shared
 util_Walk_not_available_for_long_distances,Walk not available for long distances,@(od_skims['DISTWALK'] > 4),,,,-999.0
 util_Bike_not_available_for_long_distances,Bike not available for long distances,@(od_skims['DISTBIKE'] > 6),,,,,-999.0
 util_Origin_density_index,Origin density index,@(origin_density_applied*df.origin_density_index).clip(origin_density_index_max) if origin_density_applied else 0,,,,,,coef_ivt,coef_ivt

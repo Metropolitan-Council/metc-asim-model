@@ -141,10 +141,12 @@ if(ASSIGNED==1){
 	vgsum = read.csv("hassign_vgsum.csv")
 	hnet = read.csv("hnetcnt.csv")
 	vmtsum = read.csv("asnvmt.csv")
+	vmtcomp = read.csv("hassign_vmtcomp.csv")
 }else{
 	vgsum = data.frame()
 	hnet = data.frame()
 	vmtsum = data.frame()
+	vmtcomp = data.frame()
 }
 
 
