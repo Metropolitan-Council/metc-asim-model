@@ -228,7 +228,7 @@ get_sharedData <- function(data_df1, data_df2, run1_name = 'base', run2_name = '
 # number of elements in names list determines the number of series to be added
 plotly_bar_plotter <- function(data, type = 'bar', xlabel = "", ylabel = "", percent = FALSE,
                                title = "", height = 0, width = 0, ynames = c(""), left_offset = 0,
-                               bottom_offset = 0, tickformat = "", hoverformat = "", tickangle = 0, index = 1, tickvals = c(), ticktext = c()){
+                               bottom_offset = 0, tickformat = ".2", hoverformat = "", tickangle = 0, index = 1, tickvals = c(), ticktext = c()){
   #initial setup
   start_pos <- 2*index - 1
   exp_tickvals <- ifelse(length(tickvals)>0, ', tickvals = tickvals', "")
@@ -247,7 +247,7 @@ plotly_bar_plotter <- function(data, type = 'bar', xlabel = "", ylabel = "", per
     hformat <- ifelse(hoverformat=="", '.1%', hoverformat)
     eval_expr <- paste("p <- plot_ly(data, x = ~xvar, y = ~prop", start_pos, ", type = type, name = ynames[[1]]) %>% ",
                        "add_trace(y = ~prop", start_pos+1, ", name = ynames[[2]]) %>% ",
-                       "layout(yaxis = list(hoverformat = hformat, title = ylab, tickformat = '%'), xaxis = list(title = xlabel, tickangle = tickangle", exp_tickvals, exp_ticktext,"), barmode = 'group')", sep = "")
+                       "layout(yaxis = list(hoverformat = hformat, title = ylab, tickformat = '.0%'), xaxis = list(title = xlabel, tickangle = tickangle", exp_tickvals, exp_ticktext,"), barmode = 'group')", sep = "")
     eval(parse(text = eval_expr))
   }
 
@@ -280,13 +280,13 @@ plotly_density_plotter <- function(data_df, index = "one", colors=c("orange", "s
     p <- switch(index,
                 "one" = plot_ly(data=data_df,x = ~xvar, y = ~prop1, colors=c("orange", "steelblue"), color = ~run, fill=fill) %>%
                   add_lines(name=~run,alpha=alpha, line = list(shape = shape)) %>%
-                  layout(title = "",xaxis = list(title=xlabel, tickvals = tickvals, ticktext = ticktext, tickangle = tickangle), yaxis = list(title=ylab, tickformat = "%"), showlegend = legend),
+                  layout(title = "",xaxis = list(title=xlabel, tickvals = tickvals, ticktext = ticktext, tickangle = tickangle), yaxis = list(title=ylab, tickformat = ".0%"), showlegend = legend),
                 "two" = plot_ly(data=data_df,x = ~xvar, y = ~prop2, colors=c("orange", "steelblue"), color = ~run, fill=fill) %>%
                   add_lines(name=~run,alpha=alpha, line = list(shape = shape)) %>%
-                  layout(title = "",xaxis = list(title=xlabel, tickvals = tickvals, ticktext = ticktext, tickangle = tickangle), yaxis = list(title=ylab, tickformat = "%"), showlegend = legend),
+                  layout(title = "",xaxis = list(title=xlabel, tickvals = tickvals, ticktext = ticktext, tickangle = tickangle), yaxis = list(title=ylab, tickformat = ".0%"), showlegend = legend),
                 "three" = plot_ly(data=data_df,x = ~xvar, y = ~prop3, colors=c("orange", "steelblue"), color = ~run, fill=fill) %>%
                   add_lines(name=~run,alpha=alpha, line = list(shape = shape)) %>%
-                  layout(title = "",xaxis = list(title=xlabel, tickvals = tickvals, ticktext = ticktext, tickangle = tickangle), yaxis = list(title=ylab, tickformat = "%"), showlegend = legend)
+                  layout(title = "",xaxis = list(title=xlabel, tickvals = tickvals, ticktext = ticktext, tickangle = tickangle), yaxis = list(title=ylab, tickformat = ".0%"), showlegend = legend)
                 )
 
   }else{
@@ -1145,7 +1145,7 @@ build_df <- build_df %>%
 colnames(build_df) <- colnames(base_df)
 
 std_DF <- get_standardDF(data_df1 = base_df, data_df2 = build_df, x = "HHSIZE", y = c("percent"))
-p <- plotly_bar_plotter(data = std_DF, xlabel = "HH Size", ylabel = "Percent of Households", ynames = c(BASE_SCENARIO_NAME, BUILD_SCENARIO_NAME), percent = F, tickformat = "%", hoverformat = ".1%")
+p <- plotly_bar_plotter(data = std_DF, xlabel = "HH Size", ylabel = "Percent of Households", ynames = c(BASE_SCENARIO_NAME, BUILD_SCENARIO_NAME), percent = F, tickformat = ".1%", hoverformat = ".1%")
 p
 
 ```
