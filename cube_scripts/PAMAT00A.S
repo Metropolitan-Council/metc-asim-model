@@ -9,8 +9,8 @@ FILEO MATO[1] = "%SCENARIO_DIR%\XIT_TRIP_%ITER%_%TPER%_CLEAN.trp",
 FILEI MATI[1] = "%SCENARIO_DIR%\XIT_TRIP_%ITER%_%TPER%.trp"
 
   zones = %zones%
-  mw[1] = MI.1.1 + MI.4.1; Walk to Transit
-  mw[2] = MI.1.2 + MI.4.2; Drive to Transit
+  mw[1] = MI.1.WalkToTransit + MI.4.WK; Walk to Transit
+  mw[2] = MI.1.DriveToTransit + MI.4.DR; Drive to Transit
   
   MW[3] = MI.2.1
   MW[4] = MI.3.1

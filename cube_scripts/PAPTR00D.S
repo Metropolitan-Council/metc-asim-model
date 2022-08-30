@@ -31,7 +31,7 @@ FILEI FAREMATI[1] = "%XIT_FAREMAT%"
             READNTLEGI=3             ; transfer link (mode=4)
     ENDPROCESS
     
- PARAMETERS TRIPSIJ[1] = MI.1.2         ; ASSIGN Drive TO Transit TRIPS
+ PARAMETERS TRIPSIJ[1] = MI.1.DriveToTransit         ; ASSIGN Drive TO Transit TRIPS
 
  REPORT LINES=T, SORT=MODE, LINEVOLS=T, STOPSONLY=T, SKIP0=T, XFERSUM=MODE
 
