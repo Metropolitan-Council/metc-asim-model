@@ -18,10 +18,10 @@ tppl.prj
 activitysim/data
 activitysim/data_s
 
-!trip_weights.rds
-!hh_weights.rds
-!person_weights.rds
-!day_weights.rds
+#!trip_weights.rds
+#!hh_weights.rds
+#!person_weights.rds
+#!day_weights.rds
 activitysim/survey_data_processing/RPKG
 !activitysim/survey_data_processing/obs_processing/output/tour_mode_choice/.
 !activitysim/survey_data_processing/obs_processing/output/trip_mode_choice/.
