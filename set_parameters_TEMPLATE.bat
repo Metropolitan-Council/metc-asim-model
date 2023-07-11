@@ -1,6 +1,6 @@
 :: Set user parameters for Met Council Model
 @ECHO OFF
-:: Section 1: Set up new scenario
+:: Section 1: Set up new scenario - do not use a space in the file path!
 SET MAIN_DIRECTORY=C:\projects\metc-asim-model
 SET MODEL_YEAR=2018
 SET SCENARIO_NAME=Base_2018
@@ -128,7 +128,7 @@ SET NETWORK_FOLDER=%MAIN_DIRECTORY%\Input\network
 :: Set transit network file path
 SET TRANSIT_FOLDER=%MAIN_DIRECTORY%\Input\transit
 :: Set script path
-SET SCRIPT_PATH=%MAIN_DIRECTORY%\cube_scripts
+SET SCRIPT_PATH=%MAIN_DIRECTORY%\source\cube_scripts
 :: Set freight path
 SET FREIGHT_DATA=%MAIN_DIRECTORY%\Input\freight
 ::SET EXTERNAL DATA PATH
@@ -147,8 +147,13 @@ SET LOOKUP_DIR=%MAIN_DIRECTORY%\Input
 SET INPUT_DIR=%MAIN_DIRECTORY%\Input
 ::SET TOURCAST_DIR=%MAIN_DIRECTORY%\TourCast
 
-SET ASIM_DATA=%MAIN_DIRECTORY%\activitysim\data
-SET ASIM_OUT=%MAIN_DIRECTORY%\activitysim\output
+::SET ASIM_DATA=%MAIN_DIRECTORY%\Input\activitysim\data
+SET ASIM_OUT=%SCENARIO_NAME%\activitysim\output
+MKDIR %SCENARIO_NAME%\activitysim\output
+MKDIR %SCENARIO_NAME%\activitysim\output\log
+MKDIR %SCENARIO_NAME%\activitysim\output\cache
+MKDIR %SCENARIO_NAME%\OMX
+COPY %MAIN_DIRECTORY%\source\activitysim\cache\chunk_cache.csv %SCENARIO_NAME%\activitysim\output\cache
 
 :: Section 16: set INPUT FILE paths
 :: Set zones
