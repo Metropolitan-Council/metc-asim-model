@@ -1,9 +1,0 @@
-; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
-
-;NEXTITER = ITER + 1
-;DISTRIBUTE INTRASTEP=T
-*Cluster Intrastep 1-%max_threads% START EXIT
-
-  
-
-
