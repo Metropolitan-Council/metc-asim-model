@@ -76,11 +76,14 @@ models:
   - initialize_households
   ### mp_households step
   - school_location
+  - work_from_home
   - workplace_location
+  - transit_pass_subsidy
   - transit_pass_ownership
   - toll_pass_ownership
-  - work_from_home
+  - av_ownership
   - auto_ownership_simulate
+  - vehicle_type_choice
   - free_parking
   - telecommute_frequency
   - cdap_simulate
@@ -94,6 +97,7 @@ models:
   - non_mandatory_tour_frequency
   - non_mandatory_tour_destination
   - non_mandatory_tour_scheduling
+  - vehicle_allocation
   - tour_mode_choice_simulate
   - atwork_subtour_frequency
   - atwork_subtour_destination

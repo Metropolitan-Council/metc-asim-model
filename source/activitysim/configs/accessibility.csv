@@ -4,9 +4,9 @@ Description,Target,Expression
 #,,
 #,, assume peak occurs in AM for outbound and PM for inbound
 peak round trip distance,_auPkTime,"skim_od[('SOV_N_TIME', 'AM')] + skim_do[('SOV_N_TIME', 'PM')]"
-decay function,_decay, exp(_auPkTime * dispersion_parameter_automobile)
-auto peak retail,auPkRetail,df.RET_EMP * _decay
-auto peak total,auPkTotal,df.TOT_EMP * _decay
+decay function,_decayauPk, exp(_auPkTime * dispersion_parameter_automobile)
+auto peak retail,auPkRetail,df.RET_EMP * _decayauPk
+auto peak total,auPkTotal,df.TOT_EMP * _decayauPk
 #,,
 #,, auto off-peak
 #,,
@@ -48,9 +48,10 @@ d-o peak transit ovt,_outOfVehicleTime,"skim_do[('WLK_TRN_IWAIT', 'PM')] + skim_
 d-o peak transit time,_trPkTime_do,(_inVehicleTime + out_of_vehicle_time_weight * _outOfVehicleTime)
 peak transit time,_trPkTime,_trPkTime_od + _trPkTime_do
 round trip path is available,_rt_available,(_trPkTime_od > 0) & (_trPkTime_do > 0)
-decay function,_decay,_rt_available * exp(_trPkTime * dispersion_parameter_transit)
-transit peak retail,trPkRetail,df.RET_EMP * _decay
-transit peak total,trPkTotal,df.TOT_EMP * _decay
+decay function,_decayTrPk,_rt_available * exp(_trPkTime * dispersion_parameter_transit)
+transit peak retail,trPkRetail,df.RET_EMP * _decayTrPk
+transit peak total,trPkTotal,df.TOT_EMP * _decayTrPk
+transit peak hhs,trPkHH,df.HOUSEHOLDS * _decayTrPk
 #,,
 #,, transit off-peak
 #,,
@@ -74,6 +75,11 @@ transit off-peak total,trOpTotal,df.TOT_EMP * _decay
 #,,
 non-motorized round trip distance,_nmDist,"skim_od['DIST'] + skim_do['DIST']" 
 round trip path is available,_rt_available,_nmDist <= maximum_walk_distance
-decay function,_decay,_rt_available * exp(_nmDist * dispersion_parameter_walk)
-retail accessibility,nmRetail,df.RET_EMP * _decay
-total accessibility,nmTotal,df.TOT_EMP * _decay
+decay function,_decaynm,_rt_available * exp(_nmDist * dispersion_parameter_walk)
+retail accessibility,nmRetail,df.RET_EMP * _decaynm
+total accessibility,nmTotal,df.TOT_EMP * _decaynm
+# Total Access,,
+auto share,auShare,0.817
+transit share,trShare,0.126
+non mot share,nmShare,0.057
+multimodal total accessibility,TotalAcc,(_decayauPk * auShare + _decayTrPk * trShare + _decaynm * nmShare) * df.TOT_EMP
