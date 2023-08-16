@@ -1,8 +1,8 @@
 Label,Description,Expression,no_pass,pass
-util_unav,unavailable if under 16,@df.AGE < 4,0,-999
-util_inc3,income 3,"@df.HHINC5S == 4",0,coef_inc3_mnpass
-util_inc4,income 4,"@df.HHINC5S == 5",0,coef_inc4_mnpass
-util_inc5,income 5,"@df.HHINC5S == 5",0,coef_inc4_mnpass
+util_unav,unavailable if under 16,@df.age < 4,0,-999
+util_inc3,income 3,"@df.income_segment == 3",0,coef_inc3_mnpass
+util_inc4,income 4,"@df.income_segment == 4",0,coef_inc4_mnpass
+util_inc5,income 5,"@df.income_segment == 5",0,coef_inc4_mnpass
 utils_suburb3,suburb 3,@df.SUBURB3 == 1,0,coef_suburb3
 util_TEhwyacc10,Accessibility,@df.TEhwyacc10,0,coef_TEhwyacc10
 util_TETRacc15,Accessibility,@df.TETRacc15,0,coef_TETRacc15

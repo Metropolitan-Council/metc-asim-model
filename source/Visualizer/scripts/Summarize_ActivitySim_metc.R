@@ -1637,6 +1637,8 @@ colnames(temp) <- c("tripmode","tourmode","purpose","value","grp_var")
 
 write.csv(temp, file.path(WD, "tripModeProfile_vis.csv"), row.names = F)
 
+jtrips$numpart_wgt <- jtrips$finalweight*jtrips$num_participants
+
 # Total number of stops, trips & tours
 cat("\n Total number of stops : ", sum(stops$finalweight) + sum(jstops$nump_wgt))
 cat("\n Total number of trips : ", sum(trips$finalweight) + sum(jtrips$numpart_wgt))

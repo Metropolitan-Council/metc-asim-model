@@ -149,7 +149,7 @@ LOGSUM_CHOOSER_COLUMNS:
   - tour_type
   - hhsize
   - density_index
-  - AGE
+  - age
   - age_16_p
   - age_16_to_19
   - auto_ownership

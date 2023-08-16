@@ -2,8 +2,8 @@ Description,Target,Expression
 #,, annotate persons table after annotate_households
 #,, adults get full hh_value_of_time and children get 60%
 ,_hh_vot,"reindex(households.hh_value_of_time, persons.household_id)"
-,value_of_time,"_hh_vot.where(persons.AGE>=5, _hh_vot * 0.667)"
-,_hh_incomec,"reindex(households.HHINC5S, persons.household_id)"
+,value_of_time,"_hh_vot.where(persons.age>=5, _hh_vot * 0.667)"
+,_hh_incomec,"reindex(households.income_segment, persons.household_id)"
 ,_num_adults,"reindex(households.num_adults, persons.household_id)"
 ,_num_predrive_child,"reindex(households.num_predrive_child, persons.household_id)"
 ,_num_nonworker_adults,"reindex(households.num_nonworker_adults, persons.household_id)"
@@ -20,3 +20,8 @@ Presence of predrive child in HHs,is_pre_drive_child_in_HH,_num_predrive_child>0
 ,_has_children_6_to_12,"reindex(households.num_children_6_to_12, persons.household_id)"
 has_young_children,has_young_children,_has_young_children>0
 has_children_6_to_12,has_children_6_to_12,_has_children_6_to_12>0
+income,income,"reindex(households.income, persons.household_id)"
+income_in_thousands,income_in_thousands,(income / 1000).clip(lower=0)
+hh_child,hh_child,"reindex(households.num_children, persons.household_id)"
+home_state,home_state,"reindex(households.home_state, persons.household_id)"
+Home County,home_county,"reindex(households.home_county, persons.household_id).astype(str)"

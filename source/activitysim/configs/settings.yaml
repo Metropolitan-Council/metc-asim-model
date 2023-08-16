@@ -6,39 +6,47 @@ fail_fast: True
 multiprocess: True
 strict: False
 mem_tick: 30
-use_shadow_pricing: True
+use_shadow_pricing: False
 ## - example sample
-households_sample_size: 1000 # Set for development debugging, if this isn't 0 or commented CHANGE IT!
-chunk_training_mode: production
+households_sample_size: 10000 # Set for development debugging, if this isn't 0 or commented CHANGE IT!
+#chunk_training_mode: production
+chunk_training_mode: disabled
 chunk_size: 200_000_000_000
 num_processes: 20
 default_initial_rows_per_chunk: 10000
-#trace_hh_id: 2702
+trace_hh_id: #1209096
 #trace_od: [5, 11]
-#resume_after: non_mandatory_tour_scheduling
+resume_after: #mandatory_tour_scheduling
 
 # input tables
 input_table_list:
   #
   # persons (table index 'person_id')
+  # PUMA	TAZ	household_id	per_num	stud_stat	SEX	emp_type	AGEP
   #
   - tablename: persons
-    filename: persons.csv
+    filename: synthetic_persons.csv
     index_col: person_id
     rename_columns:
-      GENDER: sex
-      EmpStatus: ESR
+      #GENDER: sex
+      #EmpStatus: ESR
+      AGEP: age
+      per_num: pnum
       
   #
   # households (table index 'household_id')
+  # household_id	PUMA	TAZ	NP	HHINCADJ
   #
   - tablename: households
-    filename: households.csv
+    filename: synthetic_households.csv
     index_col: household_id
     rename_columns:
-      HHZON: home_zone_id
-      HCHILDREN: children
-      HHSIZE: hhsize
+      #HHZON: home_zone_id
+      #HCHILDREN: children
+      #HHSIZE: hhsize
+      NP: hhsize
+      TAZ: home_zone_id
+      HHINCADJ: income
  
   #
   # land_use (table index 'zone_id')
@@ -70,25 +78,32 @@ household_median_value_of_time:
   5: 15.08
 
 models:
+  ### mp_init_persons
+  - initialize_persons
+  ### mp_init_proto_pop (single process)
+  - initialize_proto_population # Separate step so proto tables can be split for multiprocess.
+  ### mp_disaggregate_accessibility
+  - compute_disaggregate_accessibility
   ### mp_initialize step
   - initialize_landuse
   - compute_accessibility
   - initialize_households
   ### mp_households step
+  - av_ownership
+  - auto_ownership_simulate
   - school_location
   - work_from_home
   - workplace_location
   - transit_pass_subsidy
   - transit_pass_ownership
   - toll_pass_ownership
-  - av_ownership
-  - auto_ownership_simulate
   - vehicle_type_choice
   - free_parking
   - telecommute_frequency
   - cdap_simulate
   - mandatory_tour_frequency
   - mandatory_tour_scheduling
+  - school_escorting
   - joint_tour_frequency
   - joint_tour_composition
   - joint_tour_participation
@@ -115,10 +130,21 @@ models:
   - write_trip_matrices
 
 multiprocess_steps:
+  - name: mp_init_persons
+    begin: initialize_persons
+  - name: mp_init_proto_pop
+    begin: initialize_proto_population
+  - name: mp_disaggregate_accessibility
+    begin: compute_disaggregate_accessibility
+    slice:
+      tables:
+        - proto_households
+        - proto_persons
+        - proto_tours
   - name: mp_initialize
     begin: initialize_landuse
   - name: mp_households
-    begin: school_location
+    begin: av_ownership
     slice:
       tables:
         - households
@@ -139,5 +165,12 @@ output_tables:
     - joint_tour_participants
     - school_shadow_prices
     - workplace_shadow_prices
+    - disaggregate_accessibility
+    - proto_disaggregate_accessibility
+    - proto_persons
+    - proto_households
+    - persons_merged
+    - households_merged
+    
 
 

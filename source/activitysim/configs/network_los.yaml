@@ -8,7 +8,10 @@ write_skim_cache: True
 
 zone_system: 1
 
-taz_skims: allskims.omx
+taz_skims: 
+  - allskims.omx
+  - se_omx.omx
+
 
 # Index 0 = 3 AM
 # EA =  ..NT..      /  0- 5 / Off-Peak Transit

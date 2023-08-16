@@ -24,10 +24,6 @@ PERCENT_TOLERANCE: 5
 # max percentage of zones allowed to fail
 FAIL_THRESHOLD: 1
 
-# CTRAMP or daysim
-SHADOW_PRICE_METHOD: ctramp
-#SHADOW_PRICE_METHOD: daysim
-
 # ctramp-style shadow_pricing_method parameters
 DAMPING_FACTOR: 1
 
@@ -35,3 +31,21 @@ DAMPING_FACTOR: 1
 # FIXME should these be the same as PERCENT_TOLERANCE and FAIL_THRESHOLD above?
 DAYSIM_ABSOLUTE_TOLERANCE: 50
 DAYSIM_PERCENT_TOLERANCE: 10
+
+SHADOW_PRICE_METHOD: simulation
+
+# --- simulation method settings
+# apply different targets for each segment specified in destination_size_terms.csv
+school_segmentation_targets:
+  # format is segment: land_use_column
+  university: ENROLLED
+  highschool: G9_12
+  gradeschool: K_8
+
+# if target names are the same, they will be combined together
+workplace_segmentation_targets:
+  # using total employment scaled to remove external workers. see annotate_landuse.csv
+  work_low: TOT_EMP
+  work_med: TOT_EMP
+  work_high: TOT_EMP
+  work_veryhigh: TOT_EMP

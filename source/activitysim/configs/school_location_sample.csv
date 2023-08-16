@@ -1,5 +1,6 @@
 Label,Description,Expression,university,highschool,gradeschool
 local_dist,,_DIST@skims['DIST'],1,1,1
+local_state,,_STATE@skims['STATEFP'],1,1,1
 util_dist_0_1,"Distance, piecewise linear from 0 to 1 miles","@_DIST.clip(0,1)",coef_univ_dist_0_1,0,0
 util_dist_1_2,"Distance, piecewise linear from 1 to 2 miles","@(_DIST-1).clip(0,1)",coef_univ_dist_1_2,0,0
 util_dist_2_5,"Distance, piecewise linear from 2 to 5 miles","@(_DIST-2).clip(0,3)",coef_univ_dist_2_5,0,0
@@ -15,4 +16,4 @@ util_dist_logged,Distance logged,@(_DIST).apply(np.log1p),0,coef_dist_logged,coe
 util_dist_part_time,"Distance,part time",@(df['pemploy']==2) * _DIST,0,coef_dist_part_time,coef_dist_part_time
 util_dist_child_0_5,"Distance,child 0  to 5",@(df['age_0_to_5']==True) * _DIST,0,coef_dist_child_0_5,coef_dist_child_0_5
 util_dist_child_6_12,"Distance,child 6 to 12",@(df['age_6_to_12']==True) * _DIST,0,coef_dist_child_6_12,coef_dist_child_6_12
-#util_stay_in_state,"No crossing state boundaries","@reindex(land_use.STATEFP, df.alt_dest) != df['STATEFP']",,-999,-999
+util_stay_in_state,"No crossing state boundaries",@_STATE != df.home_state,,-999,-999
