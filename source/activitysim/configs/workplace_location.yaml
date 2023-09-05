@@ -5,6 +5,7 @@ SIMULATE_CHOOSER_COLUMNS:
   - home_zone_id
   - is_student
   - pemploy
+  - auto_ownership
 
 SAMPLE_SPEC: workplace_location_sample.csv
 SPEC: workplace_location.csv
@@ -52,7 +53,7 @@ MODEL_SELECTOR: workplace
 CHOOSER_SEGMENT_COLUMN_NAME: work_segment
 
 # boolean column to filter choosers (True means keep)
-CHOOSER_FILTER_COLUMN_NAME: is_worker
+CHOOSER_FILTER_COLUMN_NAME: is_out_of_home_worker
 
 # FIXME - these are assigned to persons in annotate_persons. we need a better way to manage this
 # FIXME - these are not needed for this model and should be re/factored out
@@ -70,8 +71,8 @@ CONSTANTS:
 
 
 # model adds these tables (informational - not added if commented out)
-SHADOW_PRICE_TABLE: workplace_shadow_prices
-MODELED_SIZE_TABLE: workplace_modeled_size
+#SHADOW_PRICE_TABLE: workplace_shadow_prices
+#MODELED_SIZE_TABLE: workplace_modeled_size
 
 # not loaded if commented out
-SAVED_SHADOW_PRICE_TABLE_NAME: final_workplace_shadow_prices.csv
+#SAVED_SHADOW_PRICE_TABLE_NAME: final_workplace_shadow_prices.csv
