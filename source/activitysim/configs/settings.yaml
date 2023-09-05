@@ -8,7 +8,7 @@ strict: False
 mem_tick: 30
 use_shadow_pricing: False
 ## - example sample
-households_sample_size: 10000 # Set for development debugging, if this isn't 0 or commented CHANGE IT!
+households_sample_size: 300000 # Set for development debugging, if this isn't 0 or commented CHANGE IT!
 #chunk_training_mode: production
 chunk_training_mode: disabled
 chunk_size: 200_000_000_000
@@ -16,7 +16,7 @@ num_processes: 20
 default_initial_rows_per_chunk: 10000
 trace_hh_id: #1209096
 #trace_od: [5, 11]
-resume_after: #mandatory_tour_scheduling
+resume_after: #compute_disaggregate_accessibility
 
 # input tables
 input_table_list:
@@ -91,39 +91,39 @@ models:
   ### mp_households step
   - av_ownership
   - auto_ownership_simulate
-  - school_location
   - work_from_home
   - workplace_location
-  - transit_pass_subsidy
-  - transit_pass_ownership
-  - toll_pass_ownership
-  - vehicle_type_choice
-  - free_parking
-  - telecommute_frequency
-  - cdap_simulate
-  - mandatory_tour_frequency
-  - mandatory_tour_scheduling
-  - school_escorting
-  - joint_tour_frequency
-  - joint_tour_composition
-  - joint_tour_participation
-  - joint_tour_destination
-  - joint_tour_scheduling
-  - non_mandatory_tour_frequency
-  - non_mandatory_tour_destination
-  - non_mandatory_tour_scheduling
-  - vehicle_allocation
-  - tour_mode_choice_simulate
-  - atwork_subtour_frequency
-  - atwork_subtour_destination
-  - atwork_subtour_scheduling
-  - atwork_subtour_mode_choice
-  - stop_frequency
-  - trip_purpose
-  - trip_destination
-  - trip_purpose_and_destination
-  - trip_scheduling
-  - trip_mode_choice
+  - school_location
+  # - transit_pass_subsidy
+  # - transit_pass_ownership
+  # - toll_pass_ownership
+  # - vehicle_type_choice
+  # - free_parking
+  # - telecommute_frequency
+  # - cdap_simulate
+  # - mandatory_tour_frequency
+  # - mandatory_tour_scheduling
+  # - school_escorting
+  # - joint_tour_frequency
+  # - joint_tour_composition
+  # - joint_tour_participation
+  # - joint_tour_destination
+  # - joint_tour_scheduling
+  # - non_mandatory_tour_frequency
+  # - non_mandatory_tour_destination
+  # - non_mandatory_tour_scheduling
+  # - vehicle_allocation
+  # - tour_mode_choice_simulate
+  # - atwork_subtour_frequency
+  # - atwork_subtour_destination
+  # - atwork_subtour_scheduling
+  # - atwork_subtour_mode_choice
+  # - stop_frequency
+  # - trip_purpose
+  # - trip_destination
+  # - trip_purpose_and_destination
+  # - trip_scheduling
+  # - trip_mode_choice
   ### mp_summarize step
   - write_data_dictionary
   - write_tables
@@ -163,14 +163,10 @@ output_tables:
     - tours
     - trips
     - joint_tour_participants
-    - school_shadow_prices
-    - workplace_shadow_prices
     - disaggregate_accessibility
     - proto_disaggregate_accessibility
     - proto_persons
     - proto_households
-    - persons_merged
-    - households_merged
     
 
 

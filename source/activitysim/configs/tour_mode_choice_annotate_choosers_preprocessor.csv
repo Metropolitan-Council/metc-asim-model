@@ -20,7 +20,7 @@ local,_DF_IS_TOUR,'tour_type' in df.columns
 #,c_cost,(0.60 * c_ivt) / df.value_of_time
 #,,
 ,ivot,1.0/df.value_of_time
-,dest_topology,1  #"reindex(land_use.TOPOLOGY, df[dest_col_name])"
+,dest_topology,"1"  #"reindex(land_use.TOPOLOGY, df[dest_col_name])"
 ,terminal_time,"reindex(land_use.TERM_TIME, df[dest_col_name])"
 ,dest_density_index,"reindex(land_use.density_index, df[dest_col_name])"
 # FIXME no transit subzones so all zones short walk to transit,,

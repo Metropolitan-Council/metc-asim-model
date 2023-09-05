@@ -17,9 +17,9 @@ age,age,persons.age
 #,schg,persons.SCHG.fillna(0)
 #,mil,persons.MIL.fillna(0)
 employment status type,pemploy,persons.emp_type
-,pemploy,"np.where(persons.age < 16, PEMPLOY_CHILD, PEMPLOY_PART)"
+#,pemploy,"np.where(persons.age < 16, PEMPLOY_CHILD, PEMPLOY_PART)"
 #,pemploy,"np.where((persons['age'] >= 16) & ((esr == 3) | (esr == 6)), PEMPLOY_NOT, pemploy)"
-,pemploy,"np.where((persons['age'] >= 16) & (pemploy == 1),PEMPLOY_FULL, pemploy)"
+#,pemploy,"np.where((persons['age'] >= 16) & (pemploy == 1),PEMPLOY_FULL, pemploy)"
 #,pemploy,"np.where((persons.age>=16)&((esr != 3)&(esr != 6))&(wkhp >= 35) & (wkw >= 1) & (wkw <= 4), PEMPLOY_FULL, pemploy)"
 #person type,ptype,persons.ptype 
 student category,pstudent,np.zeros(len(persons))

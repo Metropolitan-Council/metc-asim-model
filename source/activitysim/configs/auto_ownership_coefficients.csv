@@ -1,20 +1,4 @@
 coefficient_name,value,constrain
-coef_alternative_specific_constant_for_1_driver_household_0_CARS,-3.400614855,F
-coef_alternative_specific_constant_for_1_driver_household_2_CARS,-0.352797459,F
-coef_alternative_specific_constant_for_1_driver_household_3_CARS,-1.65228754,F
-coef_alternative_specific_constant_for_1_driver_household_4_CARS,-2.217521436,F
-coef_alternative_specific_constant_for_2_driver_household_0_CARS,-5.644614423,F
-coef_alternative_specific_constant_for_2_driver_household_1_CAR,-2.078124802,F
-coef_alternative_specific_constant_for_2_driver_household_3_CARS,-1.110305396,F
-coef_alternative_specific_constant_for_2_driver_household_4_CARS,-1.672613333,F
-coef_alternative_specific_constant_for_3_driver_household_0_CARS,-5.663986002,F
-coef_alternative_specific_constant_for_3_driver_household_1_CAR,-2.219196761,F
-coef_alternative_specific_constant_for_3_driver_household_2_CARS,-0.428191009,F
-coef_alternative_specific_constant_for_3_driver_household_4_CARS,-0.158614724,F
-coef_alternative_specific_constant_for_4_driver_household_0_CARS,-6.09109227,F
-coef_alternative_specific_constant_for_4_driver_household_1_CAR,-3.245812862,F
-coef_alternative_specific_constant_for_4_driver_household_2_CARS,-1.256377783,F
-coef_alternative_specific_constant_for_4_driver_household_3_CARS,-0.736107251,F
 coef_cars0_has_16_17,0,F
 coef_cars0_has_18_24,0.303347961,F
 coef_cars0_has_25_34,0,T
@@ -92,23 +76,32 @@ coef_cars2_av_ownership,0,T
 coef_cars3_av_ownership,0,T
 coef_unavailable,-999,T
 asc_GQ_0_autos,2.468181736,F
-# Calibration constants (2021 ACS Data),,
-asc_allhhs_0_autos,-0.205031923,F
-asc_allhhs_2_autos,0.103098218,F
-asc_allhs_3_autos,0.217732491,F
-asc_allhhs_4plus_autos,0.178545411,F
-# coef_cars0_hennepin,-0.5561333005694493,F
-# coef_cars1_hennepin,1.137014859344614,F
-# coef_cars2_hennepin,2.3886477405157254,F
-# coef_cars3_hennepin,2.473906740227503,F
-# coef_cars4_hennepin,1.4704658854364938,F
-# coef_cars0_ramsey,-0.32961270701904416,F
-# coef_cars1_ramsey,1.3864715764916282,F
-# coef_cars2_ramsey,2.4045922841988543,F
-# coef_cars3_ramsey,2.5244394148603684,F
-# coef_cars4_ramsey,1.5043281710105558,F
-# coef_cars0_calib,-0.5143844717227544,F
-# coef_cars1_calib,0.06212910738102557,F
-# coef_cars2_calib,0.1358931139145818,F
-# coef_cars3_calib,-0.10288564266603689,F
-# coef_cars4_calib,-0.0943170026948774,F
+# Alternative Specific Constants,,
+coef_alternative_specific_constant_for_1_driver_household_0_CARS,-2.716549551214166,F
+coef_alternative_specific_constant_for_1_driver_household_2_CARS,-1.2678998380204463,F
+coef_alternative_specific_constant_for_1_driver_household_3_CARS,-2.0486391307537737,F
+coef_alternative_specific_constant_for_1_driver_household_4_CARS,-1.8788965983332908,F
+coef_alternative_specific_constant_for_2_driver_household_0_CARS,-3.590553523936139,F
+coef_alternative_specific_constant_for_2_driver_household_1_CAR,-1.401322580564831,F
+coef_alternative_specific_constant_for_2_driver_household_3_CARS,-0.1763279417660364,F
+coef_alternative_specific_constant_for_2_driver_household_4_CARS,-0.4480061621187281,F
+coef_alternative_specific_constant_for_3_driver_household_0_CARS,-4.89506311782892,F
+coef_alternative_specific_constant_for_3_driver_household_1_CAR,-3.1957957795735425,F
+coef_alternative_specific_constant_for_3_driver_household_2_CARS,-1.825672284086021,F
+coef_alternative_specific_constant_for_3_driver_household_4_CARS,-0.7784682985413618,F
+coef_alternative_specific_constant_for_4_driver_household_0_CARS,-6.050514974864672,F
+coef_alternative_specific_constant_for_4_driver_household_1_CAR,-4.175222593568434,F
+coef_alternative_specific_constant_for_4_driver_household_2_CARS,-3.6473388471646007,F
+coef_alternative_specific_constant_for_4_driver_household_3_CARS,-2.1562865936454587,F
+# Calibration constants,,
+asc_allhhs_0_autos,0.21115946271084915,F
+asc_allhhs_2_autos,0.5870529329947843,F
+asc_allhs_3_autos,-0.7461276213346655,F
+asc_allhhs_4plus_autos,-1.37502638896748,F
+# County Calibration constants for zero auto hhs,,
+coef_cars0_chisago,0.6521228648513385,F
+coef_cars0_hennepin,0.1493254502623913,F
+coef_cars0_mcleod,-0.8126632716011599,F
+coef_cars0_polk,-0.3154379035720285,F
+coef_cars0_ramsey,0.1313178915057547,F
+coef_cars0_sibley,-0.3875630561919685,F

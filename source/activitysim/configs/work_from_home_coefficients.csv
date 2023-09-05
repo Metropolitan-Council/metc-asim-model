@@ -1,5 +1,4 @@
 coefficient_name,value,constrain
-coef_work_from_home_constant,0.438361,T
 coef_full_time_worker,-0.811935,F
 coef_female_worker,-0.347009,F
 coef_female_worker_preschool_child,0.572657,F
@@ -12,24 +11,45 @@ coef_age_35_to_45,0,F
 coef_age_45_to_55,0.21438,F
 coef_age_55_to_65,0.451657,F
 coef_age_65_plus,0.583518,F
-coef_calibration,-0.0162,T
-coef_calibration_p2,-0.6284,T
-coef_Anoka,-0.5105387882100187,F
-coef_Carver,-0.19991595670787432,F
-coef_Chisago,-0.44661655920987914,F
-coef_Dakota,-0.20433830286945112,F
-coef_Goodhue,-0.584088474368748,F
-coef_Hennepin,-0.05240422940113896,F
-coef_Isanti,-0.9978350223325628,F
-coef_LeSueur,-0.8330509744961868,F
-coef_McLeod,-0.9171688434586966,F
-coef_Pierce,-0.682471708821316,F
-coef_Polk,-0.9447710610187537,F
-coef_Ramsey,-0.06885499036107193,F
-coef_Rice,0.503648342741197,F
-coef_Scott,-0.28366870706786573,F
-coef_Sherburne,-0.6470228522935506,F
-coef_Sibley,-0.4309277577943896,F
-coef_StCroix,-0.44141450449731373,F
-coef_Washington,-0.2804821661770985,F
-coef_Wright,-0.6048011149125824,F
+#constants from transferred model
+#coef_work_from_home_constant,0.438361,T
+#coef_calibration,0.0102,T
+coef_work_from_home_constant,-1.1020208270176335,T
+# coef_Anoka,-0.5105387882100187,F
+# coef_Carver,-0.19991595670787432,F
+# coef_Chisago,-0.44661655920987914,F
+# coef_Dakota,-0.20433830286945112,F
+# coef_Goodhue,-0.584088474368748,F
+# coef_Hennepin,-0.05240422940113896,F
+# coef_Isanti,-0.9978350223325628,F
+# coef_LeSueur,-0.8330509744961868,F
+# coef_McLeod,-0.9171688434586966,F
+# coef_Pierce,-0.682471708821316,F
+# coef_Polk,-0.9447710610187537,F
+# coef_Ramsey,-0.06885499036107193,F
+# coef_Rice,0.503648342741197,F
+# coef_Scott,-0.28366870706786573,F
+# coef_Sherburne,-0.6470228522935506,F
+# coef_Sibley,-0.4309277577943896,F
+# coef_StCroix,-0.44141450449731373,F
+# coef_Washington,-0.2804821661770985,F
+# coef_Wright,-0.6048011149125824,F
+coef_Anoka,-0.11807591818884744,F
+coef_Carver,0.027582027301924557,F
+coef_Chisago,-0.23761542217796772,F
+coef_Dakota,-0.02790041162670335,F
+coef_Goodhue,-0.3667679608035071,F
+coef_Hennepin,0.12063446124720678,F
+coef_Isanti,-0.3923539833335141,F
+coef_LeSueur,-0.45062968872165565,F
+coef_McLeod,-0.626914474401486,F
+coef_Pierce,-0.3470797547824488,F
+coef_Polk,-0.37765016384697614,F
+coef_Ramsey,0.1319412926051281,F
+coef_Rice,0.6213242431213803,F
+coef_Scott,0.013743323889097575,F
+coef_Sherburne,-0.2728902302003844,F
+coef_Sibley,-0.11979218466160181,F
+coef_StCroix,-0.10362100049619119,F
+coef_Washington,-0.07887916166641584,F
+coef_Wright,-0.24546988565805272,F

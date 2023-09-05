@@ -1,8 +1,8 @@
 # Sampling size. 0 = no limit
 # can be whole integer value or a sample rate (percent of zones)
 # zero or missing defaults to full sample!
-DESTINATION_SAMPLE_SIZE: 100
-ORIGIN_SAMPLE_SIZE: 1500
+DESTINATION_SAMPLE_SIZE: 0
+ORIGIN_SAMPLE_SIZE: 0
 
 # select origin zones weighted by population (or another landuse variable)
 ORIGIN_WEIGHTING_COLUMN: POPULATION
@@ -60,11 +60,12 @@ CREATE_TABLES:
         VARIABLES:
             pnum: [1, 2]                # Person number
             military: 4                 # Not military
-            pstudent: 3                 # Not attending school
+            pstudent: 1                 # Not attending school
             educ: 13                    # Bachelor's
             grade: 0                    # Not attending
             timeFactorWork: 1           # mean
             timeFactorNonWork: 1        # mean
+            is_out_of_home_worker: True
             #emp_type: [1, 3]
             #stud_stat: [0, 1]
         mapped_fields:
