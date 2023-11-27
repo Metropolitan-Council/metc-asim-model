@@ -16,7 +16,7 @@ args = commandArgs(trailingOnly = TRUE)
 if(length(args) > 0){
   settings_file = args[1]
 } else {
-  settings_file = 'F:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/activitysim/survey_data_processing/metc_inputs.yml'
+  settings_file = 'E:/Met_Council/metc-asim-model/source/survey_data_processing/metc_inputs.yml'
 }
 
 if (!"data.table" %in% installed.packages()) install.packages("data.table")
@@ -28,6 +28,7 @@ if (!"lubridate" %in% installed.packages()) install.packages("lubridate")
 if (!"yaml" %in% installed.packages()) install.packages("yaml")
 if (!"stringr" %in% installed.packages()) install.packages("stringr")
 if (!"geosphere" %in% installed.packages()) install.packages("geosphere")
+if (!"bit64" %in% installed.packages()) install.packages("bit64")
 
 library(dplyr)
 library(data.table)
@@ -38,6 +39,7 @@ library(sf)
 library(geosphere)
 library(yaml)
 library(stringr)
+library(bit64)
 
 settings = yaml.load_file(settings_file)
 
@@ -69,10 +71,6 @@ get_distance_meters =
     return(distance_meters)
   }
 
-
-
-
-
 data_dir = settings$data_dir
 output_dir = file.path(settings$proj_dir, 'SPA_Inputs')
 
@@ -82,70 +80,97 @@ dir.create( file.path(settings$proj_dir, 'SPA_Processed'), showWarnings = FALSE)
 hh_raw = fread(file.path(data_dir, 'household.csv'))
 per_raw = fread(file.path(data_dir,'person.csv'))
 trip_raw = fread(file.path(data_dir, 'trip.csv'))
-trip_raw = trip_raw[!(as.character(trip_raw$travel_date) %in% REMOVE_THESE_DATES),]
+# trip_raw = trip_raw[!(as.character(trip_raw$travel_date) %in% REMOVE_THESE_DATES),]
 day_raw = fread(file.path(data_dir, 'day.csv'))
 
-hh_raw = hh_raw[hh_raw$hh_id %in% trip_raw$hh_id,]
-per_raw = per_raw[per_raw$hh_id %in% trip_raw$hh_id,]
-day_raw = day_raw[day_raw$hh_id %in% trip_raw$hh_id,]
+# hh_raw = hh_raw[hh_raw$hh_id %in% trip_raw$hh_id,]
+# per_raw = per_raw[per_raw$hh_id %in% trip_raw$hh_id,]
+# day_raw = day_raw[day_raw$hh_id %in% trip_raw$hh_id,]
 
 # get TAZs from labeled data files
 hh_labeled = fread(file.path(settings$labeled_data_dir, 'TravelBehaviorInventory2019Household.csv'))
 per_labeled = fread(file.path(settings$labeled_data_dir, 'TravelBehaviorInventory2019Person.csv'))
 trip_labeled = fread(file.path(settings$labeled_data_dir, 'TravelBehaviorInventory2019Trip.csv'))
-trip_labeled = trip_labeled[!(format(trip_labeled$TRAVEL_DATE, "%Y-%m-%d") %in% REMOVE_THESE_DATES),]
+# trip_labeled = trip_labeled[!(format(trip_labeled$TRAVEL_DATE, "%Y-%m-%d") %in% REMOVE_THESE_DATES),]
 hh_labeled = hh_labeled[hh_labeled$HH_ID %in% trip_labeled$HH_ID,]
 per_labeled = per_labeled[per_labeled$HH_ID %in% trip_labeled$HH_ID,]
 
 
 # read updated weights
 wt_dir = settings$updated_weights_dir
-hh_weights = readRDS(file.path(wt_dir, 'hh_weights.rds'))
-person_weights = readRDS(file.path(wt_dir, 'person_weights.rds'))
-day_weights = readRDS(file.path(wt_dir, 'day_weights.rds'))
-trip_weights = readRDS(file.path(wt_dir, 'trip_weights.rds'))
+hh_weights = fread(file.path(wt_dir, 'hh_weights.csv'))
+person_weights = fread(file.path(wt_dir, 'person_weights.csv'))
+day_weights = fread(file.path(wt_dir, 'day_weights.csv'))
+trip_weights = fread(file.path(wt_dir, 'trip_weights.csv'))
 
+print(paste('Household updated weights:', sum(hh_weights$hh_weight)))
+print(paste('Person updated weights:', sum(person_weights$person_weight)))
 
 # Checking Value Counts
 #----------------------------
-print("Household size value counts: ")
-hh_raw[, .N, num_people][order(num_people)]
+# print("Household size value counts: ")
+# hh_raw[, .N, num_people][order(num_people)]
 
-print("Age value counts:")
-per_raw[, .N, age][order(age)]
+# print("Age value counts:")
+# per_raw[, .N, age][order(age)]
 
-print("Trip Purpose value counts:")
-trip_labeled[, .N, D_PURPOSE_IMPUTED][order(-N)]
-trip_labeled[, .N, D_PURPOSE_CATEGORY_IMPUTED][order(-N)]
+# print("Trip Purpose value counts:")
+# trip_labeled[, .N, D_PURPOSE_IMPUTED][order(-N)]
+# trip_labeled[, .N, D_PURPOSE_CATEGORY_IMPUTED][order(-N)]
 
 
 # Update weights
 #---------------------------
+# Note to those after me (Andrew):
+# Ids in the survey data are DIFFERENT than how we use them in ActivitySim
+# person_id (survey) includes the household id, same with trip_id (includes the hh id, person id and the trip id), 
+# and day_id (hh + person + day).
+# Therefore, one of the changes from Leah's initial version has been simplifying joins to singular fields since 
+# multifield joins are not necessary.
 
 hh_raw[, old_weight := hh_weight]
 per_raw[, old_weight := person_weight]
 day_raw[, old_weight := day_weight]
 trip_raw[, old_weight := trip_weight]
 
-hh_weights[, hh_id := as.integer(hh_id)]
+# ASR: Apparently data.table leaves fields alone in certain circumstances... 
+# Mini-experiment on resetting the fields to 0 before linking in the new weights:
+# Data   |  without    | with       | 
+# HH     |  1,444,939  |  1,387,823 |
+# Person |  3,364,575  |  3,230,562 |
+# Trip   | 14,706,869  | 14,150,587 |
+# Day    |  3,364,575  |  3,230,562 |
+hh_raw[, hh_weight := 0]
+per_raw[, person_weight := 0]
+trip_raw[, trip_weight := 0]
+day_raw[, day_weight := 0]
+
+day_raw[, day_id := as.integer64(paste0(person_id, '0', day_num))]
+trip_raw[, day_id := as.integer64(paste0(person_id, '0', day_num))]
+
+hh_weights[, hh_id := as.integer64(hh_id)]
 
 hh_raw[hh_weights, hh_weight := i.hh_weight, on = .(hh_id)]
 per_raw[person_weights, person_weight := i.person_weight, on = .(person_id)]
-day_raw[day_weights, day_weight := i.day_weight, on = .(person_id, day_num)]
 
+day_raw[day_weights, day_weight := i.day_weight, on = .(day_id)]
 # for kids, use the new day weight; for adults use the new trip weight
 trip_raw[per_raw, is_adult := ifelse(i.age >= 4, 1, 0), on = .(person_id)]
-trip_raw[trip_weights, trip_weight := ifelse(is_adult == 1, i.trip_weight, NA), on = .(person_id, trip_num)]
-trip_raw[day_weights, trip_weight := ifelse(is_adult == 0, i.day_weight, trip_weight), on = .(person_id, day_num)]
+trip_raw[trip_weights, trip_weight := ifelse(is_adult == 1, i.trip_weight, NA), on = .(trip_id)]
+trip_raw[day_weights, trip_weight := ifelse(is_adult == 0, i.day_weight, trip_weight), on = .(day_id)]
 
+print(paste('household weights - old:', sum(hh_raw$old_weight), ' new:',sum(hh_raw$hh_weight)))
 
+# REMOVE BEFORE FLIGHT
+# write.csv(hh_raw, "E:\\Met_Council\\survey_data\\Phase1\\weight_updates_oct2023_checks\\hh.csv")
+# write.csv(per_raw, "E:\\Met_Council\\survey_data\\Phase1\\weight_updates_oct2023_checks\\per.csv")
+# write.csv(trip_raw, "E:\\Met_Council\\survey_data\\Phase1\\weight_updates_oct2023_checks\\trip.csv")
+# write.csv(day_raw, "E:\\Met_Council\\survey_data\\Phase1\\weight_updates_oct2023_checks\\day.csv")
 
 # Processing HH
 #---------------------------
 
-# codebook[NAME == 'hhinc']
-income_broad
-
+# Income
 hh_raw[, HH_INC_CAT := income_broad] 
 
 
@@ -262,7 +287,7 @@ trip_raw[trip_labeled, `:=` (depart_time_hhmm = DEPART_TIME, depart_time_imputed
                               arrive_time_hhmm = ARRIVE_TIME), on = .(trip_id = TRIP_ID)]
 
 # fix times
-trip_raw[, .(depart_time, depart_time_hhmm)]
+# trip_raw[, .(depart_time, depart_time_hhmm)]
 
 trip_raw[hh_raw, participation_group := i.participation_group, on = .(hh_id)]
 trip_raw[, DEP_HR := as.numeric(str_sub(depart_time_imputed_hhmm, 0, 2))]
@@ -284,10 +309,10 @@ trip_raw = trip_raw[order(hh_id, person_id, DEP_HR, DEP_MIN, ARR_HR, ARR_MIN)]
 
 # Order trip data and identify last trip
 
-trip_raw[, trip_num_day := seq_len(.N), by = .(hh_id, person_num, day_num)]
+trip_raw[, trip_num_day := seq_len(.N), by = .(hh_id, person_num, day_id)]
 
 trip_raw = trip_raw %>%
-  group_by(hh_id, person_num, day_num, trip_num_day) %>%
+  group_by(hh_id, person_num, day_id, trip_num_day) %>%
   mutate(tripnum_max = max(trip_num_day)) %>%
   mutate(lasttrip = ifelse(trip_num_day==tripnum_max, 1, 0)) %>%
   ungroup() %>% setDT()
@@ -297,7 +322,6 @@ trip_raw[, tripno_orig := trip_num]
 trip_raw[, trip_num := seq_len(.N), .(hh_id, person_num)]
 
 firsttrip = trip_raw[trip_num_day == 1]
-
 
 # Add one place record for people who did not travel
 # add for each day
@@ -443,7 +467,7 @@ place_raw[, PURPOSE := fcase(PURPOSE_original == 1, 0, # home
 hist(place_raw[place_raw$PURPOSE_original == 3 & place_raw$WORK_DIST < 1.6,]$WORK_DIST, breaks = 100)
 
 place_raw[PURPOSE == -1, PURPOSE := -9]
-place_raw[PLACENO > 1, .N, PURPOSE][order(PURPOSE)]
+# place_raw[PLACENO > 1, .N, PURPOSE][order(PURPOSE)]
 
 # get trip weight from day weight for 0-trip days
 place_raw[day_raw, trip_weight := ifelse(PLACENO == 1, i.day_weight, trip_weight), on = .(hh_id, person_num, day_num)]
@@ -485,7 +509,7 @@ place_raw[, MODE := fcase( MODE_survey %in% c(8, 9) & (TRAVELERS_TOTAL == 1 | TR
                            default = OTHER)] # other
   
 
-place_raw[, .N, MODE][order(MODE)]
+# place_raw[, .N, MODE][order(MODE)]
 
 place_raw[hh_raw, HOME_DIST := get_distance_meters(c(XCORD, YCORD), c(home_lon, home_lat)) * 0.000621371, on = .(hh_id) ]
 
@@ -587,9 +611,9 @@ perday[is.na(perday)] = 0
 colnames(perday) = c("SAMPN", "PERNO", "Complete_1", "Complete_2", "Complete_3", "Complete_4", "Complete_5", "Complete_6", "Complete_7")
 PER = PER[perday, on = .(SAMPN, PERNO)]
 
-str(HH)
-str(PER)
-str(PLACE)
+# str(HH)
+# str(PER)
+# str(PLACE)
 
 # Checking to see if every person in PER file is in PLACE file:
 # -----------------

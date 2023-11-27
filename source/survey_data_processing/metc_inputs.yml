@@ -2,24 +2,25 @@
 
 R_LIBRARY: "E:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/Visualizer/contrib/RPKG"
 
-proj_dir: 'E:/Projects/Clients/MetCouncilASIM/tasks/survey_data_processing'
-data_dir: 'E:/Projects/Clients/MetCouncilASIM/data/survey_data/tbi_survey_unlabeled_raw'
-labeled_data_dir: 'E:/Projects/Clients/MetCouncilASIM/data/survey_data/tbi_survey_labeled'
-obs_dir: 'E:/Projects/Clients/MetCouncilASIM/data/survey_data/obs'
+proj_dir: 'E:/Met_Council/survey_data/Phase1'
+data_dir: 'E:/Met_Council/survey_data/Phase1/TBI_survey_unlabeled_raw'
+labeled_data_dir: 'E:/Met_Council/survey_data/Phase1/TBI_survey_labeled'
+obs_dir: 'E:/Met_Council/survey_data/Phase1/obs'
 
-updated_weights_dir: 'E:/Projects/Clients/MetCouncilASIM/data/updated_weights'
+updated_weights_dir: 'E:/Met_Council/survey_data/Phase1/weight_updates_oct2023'
 
-SPA_code_dir: "E:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/activitysim/survey_data_processing/SPA"
+SPA_code_dir: "E:/Met_Council/survey_data/Phase1/SPA"
 
+debug_output: "E:/Met_Council/survey_data/Phase1/debug_out"
 
-zone_dir: 'E:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/Visualizer/data/SHP'
+zone_dir: 'E:/Met_Council/metc-asim-model/Input/Visualizer/SHP'
 zone_shp_file: 'TAZ2010.shp'
 
-county_flows_csv: 'E:/Projects/Clients/MetCouncilASIM/tasks/survey_data_processing/Visualizer/acs_commute_flows_wi_mn.csv'
+county_flows_csv: 'E:/Met_Council/metc-asim-model/Input/Visualizer/census/acs_commute_flows_wi_mn.csv'
 
 
-visualizer_dir: 'E:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/Visualizer'
-visualizer_summaries: 'E:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/Visualizer/data/base'
+visualizer_dir: 'E:/Met_Council/metc-asim-model/source/Visualizer'
+visualizer_summaries: 'E:/Met_Council/metc-asim-model/Input/Visualizer/base2018'
 
-skims_dir: 'E:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/activitysim/data'
+skims_dir: 'E:/Met_Council/metc-asim-model/Base_2018/OMX'
 skims_filename: 'allskims.omx'

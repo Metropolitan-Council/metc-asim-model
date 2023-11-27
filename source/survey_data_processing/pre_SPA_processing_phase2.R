@@ -4,9 +4,12 @@
 #
 #
 # Ted Lin, August 2023
+# Modes and purposes updated Andrew Rohne, Sept 2023
 ##########################################################################################################################
 
 # load settings
+
+print("Sept 15, 2023 Version")
 
 R_LIBRARY = Sys.getenv("R_LIBRARY")
 .libPaths(c(R_LIBRARY, .libPaths()))
@@ -19,18 +22,18 @@ if(length(args) > 0){
   settings_file = 'E:/Met_Council/metc-asim-model/source/survey_data_processing/metc_inputs_phase2.yml'
 }
 
-if (!"data.table" %in% installed.packages()) install.packages("data.table")
+if (!"data.table" %in% installed.packages()) install.packages("data.table", repos = "https://cloud.r-project.org")
 #install.packages('bit64')
-if (!"readxl" %in% installed.packages()) install.packages("readxl")
-if (!"magrittr" %in% installed.packages()) install.packages("magrittr")
-if (!"sf" %in% installed.packages()) install.packages("sf")
-if (!"dplyr" %in% installed.packages()) install.packages("dplyr")
-if (!"lifecycle" %in% installed.packages()) install.packages("lifecycle")
-if (!"lubridate" %in% installed.packages()) install.packages("lubridate")
-if (!"yaml" %in% installed.packages()) install.packages("yaml")
-if (!"stringr" %in% installed.packages()) install.packages("stringr")
-if (!"geosphere" %in% installed.packages()) install.packages("geosphere")
-if (!"bit64" %in% installed.packages()) install.packages("bit64")
+if (!"readxl" %in% installed.packages()) install.packages("readxl", repos = "https://cloud.r-project.org")
+if (!"magrittr" %in% installed.packages()) install.packages("magrittr", repos = "https://cloud.r-project.org")
+if (!"sf" %in% installed.packages()) install.packages("sf", repos = "https://cloud.r-project.org")
+if (!"dplyr" %in% installed.packages()) install.packages("dplyr", repos = "https://cloud.r-project.org")
+if (!"lifecycle" %in% installed.packages()) install.packages("lifecycle", repos = "https://cloud.r-project.org")
+if (!"lubridate" %in% installed.packages()) install.packages("lubridate", repos = "https://cloud.r-project.org")
+if (!"yaml" %in% installed.packages()) install.packages("yaml", repos = "https://cloud.r-project.org")
+if (!"stringr" %in% installed.packages()) install.packages("stringr", repos = "https://cloud.r-project.org")
+if (!"geosphere" %in% installed.packages()) install.packages("geosphere", repos = "https://cloud.r-project.org")
+if (!"bit64" %in% installed.packages()) install.packages("bit64", repos = "https://cloud.r-project.org")
 
 library(dplyr)
 library(data.table)
@@ -44,25 +47,6 @@ library(stringr)
 library(bit64)
 
 settings = yaml.load_file(settings_file)
-
-## Not sure why Thanksgiving week and Christmas week are in this data... ARohne
-#REMOVE_THESE_DATES = c("2018-11-19", "2018-11-20", "2018-11-21", "2018-11-22",
-#                       "2018-12-24", "2018-12-25", "2018-12-26", "2018-12-27")
-#SUMMER_DATES = c(      "2019-06-01", "2019-06-02", "2019-06-03", "2019-06-04", "2019-06-05", "2019-06-06",
-#                       "2019-06-07", "2019-06-08", "2019-06-09", "2019-06-10", "2019-06-11", "2019-06-12", 
-#                       "2019-06-13", "2019-06-14", "2019-06-15", "2019-06-16", "2019-06-17", "2019-06-18", 
-#                       "2019-06-19", "2019-06-20", "2019-06-21", "2019-06-22", "2019-06-23", "2019-06-24", 
-#                       "2019-06-25", "2019-06-26", "2019-06-27", "2019-06-28", "2019-06-29", "2019-06-30", 
-#                       "2019-07-02", "2019-07-03", "2019-07-22", "2019-07-23", "2019-07-24", "2019-07-25", 
-#                       "2019-07-26", "2019-07-27", "2019-07-28", "2019-07-29", "2019-07-30", "2019-07-31", 
-#                       "2019-08-01", "2019-08-02", "2019-08-03", "2019-08-04", "2019-08-05", "2019-08-06", 
-#                       "2019-08-07", "2019-08-08", "2019-08-09", "2019-08-10", "2019-08-11", "2019-08-12", 
-#                       "2019-08-13", "2019-08-14", "2019-08-15", "2019-08-16", "2019-08-17", "2019-08-18", 
-#                       "2019-08-19", "2019-08-20", "2019-08-21", "2019-08-22", "2019-08-23", "2019-08-24", 
-#                       "2019-08-25", "2019-08-26", "2019-08-27", "2019-08-28", "2019-08-29", "2019-08-30", 
-#                       "2019-08-31", "2019-09-01", "2019-09-02")
-
-# Function for getting distance btw two points
 
 get_distance_meters =
   function(location_1, location_2) {
@@ -84,15 +68,10 @@ dir.create( file.path(settings$proj_dir, 'SPA_Processed'), showWarnings = FALSE)
 hh_raw = fread(file.path(data_dir, 'TBI21_HOUSEHOLD_RAW_202308281301.csv'))
 per_raw = fread(file.path(data_dir,'TBI21_PERSON_RAW_202308281334.csv'))
 trip_raw = fread(file.path(data_dir, 'TBI21_TRIP_RAW_202308281344.csv'))
-#trip_raw = trip_raw[!(as.character(trip_raw$travel_date) %in% REMOVE_THESE_DATES),]
 day_raw = fread(file.path(data_dir, 'TBI21_DAY_RAW_202308281257.csv'))
 
-hh_raw = hh_raw[hh_raw$hh_id %in% trip_raw$hh_id,]
-per_raw = per_raw[per_raw$hh_id %in% trip_raw$hh_id,]
-day_raw = day_raw[day_raw$hh_id %in% trip_raw$hh_id,]
-
 # get TAZs from labeled data files
-hh_labeled = fread(file.path(settings$labeled_data_dir, 'TBI21_HOUSEHOLD_202308281301.csv'))
+hh_labeled = fread(file.path(settings$labeled_data_dir, 'hh_labeled.csv'))
 per_labeled = fread(file.path(settings$labeled_data_dir, 'TBI21_PERSON_work_zone_202308281334.csv'))
 per_labeled_school_zone = fread(file.path(settings$labeled_data_dir, 'TBI21_PERSON_school_zone_202308281334.csv'))
 per_labeled[per_labeled_school_zone, SCHOOL_TAZ := i.SCHOOL_TAZ, on = .(person_id)]
@@ -102,29 +81,29 @@ trip_labeled = fread(file.path(settings$labeled_data_dir, 'TBI21_TRIP_d_zone_202
 trip_labeled_o_zone = fread(file.path(settings$labeled_data_dir, 'TBI21_TRIP_o_zone_202308281344.csv'))
 trip_labeled[trip_labeled_o_zone, TRIP_O_TAZ := i.TRIP_O_TAZ, on = .(trip_id)]
 #trip_labeled = trip_labeled[!(format(trip_labeled$TRAVEL_DATE, "%Y-%m-%d") %in% REMOVE_THESE_DATES),]
-hh_labeled = hh_labeled[hh_labeled$hh_id %in% trip_labeled$hh_id,]
-per_labeled = per_labeled[per_labeled$hh_id %in% trip_labeled$hh_id,]
+# hh_labeled = hh_labeled[hh_labeled$hh_id %in% trip_labeled$hh_id,]
+# per_labeled = per_labeled[per_labeled$hh_id %in% trip_labeled$hh_id,]
 
 
 # read updated weights
-#wt_dir = settings$updated_weights_dir
-#hh_weights = readRDS(file.path(wt_dir, 'hh_weights.rds'))
-#person_weights = readRDS(file.path(wt_dir, 'person_weights.rds'))
-#day_weights = readRDS(file.path(wt_dir, 'day_weights.rds'))
-#trip_weights = readRDS(file.path(wt_dir, 'trip_weights.rds'))
+wt_dir = settings$updated_weights_dir
+hh_weights = fread(file.path(wt_dir, 'hh_weights.csv'))
+person_weights = fread(file.path(wt_dir, 'person_weights.csv'))
+day_weights = fread(file.path(wt_dir, 'day_weights.csv'))
+trip_weights = fread(file.path(wt_dir, 'trip_weights.csv'))
 
 
 # Checking Value Counts
 #----------------------------
-print("Household size value counts: ")
-hh_raw[, .N, num_people][order(num_people)]
+# print("Household size value counts: ")
+# hh_raw[, .N, num_people][order(num_people)]
 
-print("Age value counts:")
-per_raw[, .N, age][order(age)]
+# print("Age value counts:")
+# per_raw[, .N, age][order(age)]
 
-print("Trip Purpose value counts:")
-trip_labeled[, .N, o_purpose_category][order(-N)]
-trip_labeled[, .N, d_purpose_category][order(-N)]
+# print("Trip Purpose value counts:")
+# trip_labeled[, .N, o_purpose_category][order(-N)]
+# trip_labeled[, .N, d_purpose_category][order(-N)]
 
 
 # Update weights
@@ -135,18 +114,26 @@ per_raw[, old_weight := person_weight]
 day_raw[, old_weight := day_weight]
 trip_raw[, old_weight := trip_weight]
 
-#hh_weights[, hh_id := as.integer(hh_id)]
+hh_raw[, hh_weight := 0]
+per_raw[, person_weight := 0]
+trip_raw[, trip_weight := 0]
+day_raw[, day_weight := 0]
 
-#hh_raw[hh_weights, hh_weight := i.hh_weight, on = .(hh_id)]
-#per_raw[person_weights, person_weight := i.person_weight, on = .(person_id)]
-#day_raw[day_weights, day_weight := i.day_weight, on = .(person_id, day_num)]
+day_raw[, day_id := as.integer64(paste0(person_id, '0', day_num))]
+trip_raw[, day_id := as.integer64(paste0(person_id, '0', day_num))]
 
-## for kids, use the new day weight; for adults use the new trip weight #TODO
-#trip_raw[per_raw, is_adult := ifelse(i.age >= 4, 1, 0), on = .(person_id)]
-#trip_raw[trip_weights, trip_weight := ifelse(is_adult == 1, i.trip_weight, NA), on = .(person_id, trip_num)]
-#trip_raw[day_weights, trip_weight := ifelse(is_adult == 0, i.day_weight, trip_weight), on = .(person_id, day_num)]
+hh_weights[, hh_id := as.integer64(hh_id)]
 
+hh_raw[hh_weights, hh_weight := i.hh_weight, on = .(hh_id)]
+per_raw[person_weights, person_weight := i.person_weight, on = .(person_id)]
 
+day_raw[day_weights, day_weight := i.day_weight, on = .(day_id)]
+# for kids, use the new day weight; for adults use the new trip weight
+trip_raw[per_raw, is_adult := ifelse(i.age >= 4, 1, 0), on = .(person_id)]
+trip_raw[trip_weights, trip_weight := ifelse(is_adult == 1, i.trip_weight, NA), on = .(trip_id)]
+trip_raw[day_weights, trip_weight := ifelse(is_adult == 0, i.day_weight, trip_weight), on = .(day_id)]
+
+print(paste('household weights - old:', sum(hh_raw$old_weight), ' new:',sum(hh_raw$hh_weight)))
 
 # Processing HH
 #---------------------------
@@ -165,7 +152,7 @@ hh_raw[per_raw[employment_status %in% c(1:3), .N, .(hh_id)],  HH_WORKERS := i.N,
 hh_raw[, HH_DRIVERS := 0]
 hh_raw[per_raw[can_drive == 1, .N, .(hh_id)],  HH_DRIVERS := i.N, on = .(hh_id)]
 
-hh_raw[hh_labeled, HH_ZONE_ID := i.HOME_TAZ, on = .(hh_id)]
+hh_raw[hh_labeled, HH_ZONE_ID := i.home_zone_id, on = .(hh_id)]
 
 HH = hh_raw[, .(SAMPN = hh_id,
                 # HH_DOW = travday,
@@ -184,7 +171,7 @@ HH = hh_raw[, .(SAMPN = hh_id,
                 AREA = 0)]
   
 
-
+print("Processing Persons...")
 # Processing PER
 #---------------------------
 
@@ -196,7 +183,7 @@ per_raw[, AGE_CAT := age]
                        
 
 per_raw[, SCHOL := fcase(school_type %in% 1, 1, # nanny/babysitter, 
-                         school_type == c(2, 3), 2, # nursery/preschool
+                         school_type %in% c(2, 3), 2, # nursery/preschool
                          school_type %in% c(5, 6), 3, # k-8 if missing school but age 6-12
                          school_type == 4 & age < 3, 3, # k-8 if homeschool and age < 15 (approximation)
                          school_type == 4 & age %in% c(3, 4), 4, # 9-12 homeschool and age 16-24 (approximation)
@@ -256,8 +243,9 @@ PER = PER[order(SAMPN, PERNO)]
 
 PER[is.na(PER)] = 0
 
+print(paste("end of person processing, there are", sum(PER$PEREXPFAC), "weighted people"))
 
-
+print("Processing Place...")
 # Processing PLACE
 #---------------------------
 
@@ -276,10 +264,6 @@ trip_raw[hh_raw, participation_group := i.participation_group, on = .(hh_id)]
 trip_raw[, DEP_HR := depart_hour]
 trip_raw[, ARR_HR := arrive_hour]
 
-# Patch incorrect time zone conversion #TODO confirm with Andrew
-#trip_raw[, DEP_HR := ifelse(participation_group %in% c(2,3,5,6,8,9), DEP_HR, DEP_HR + 1)]
-#trip_raw[, ARR_HR := ifelse(participation_group %in% c(2,3,5,6,8,9), ARR_HR, ARR_HR + 1)]
-
 trip_raw[, DEP_MIN := depart_minute]
 trip_raw[, ARR_MIN := arrive_minute]
 
@@ -292,10 +276,10 @@ trip_raw = trip_raw[order(hh_id, person_id, DEP_HR, DEP_MIN, ARR_HR, ARR_MIN)]
 
 # Order trip data and identify last trip
 
-trip_raw[, trip_num_day := seq_len(.N), by = .(hh_id, person_num, day_num)]
+trip_raw[, trip_num_day := seq_len(.N), by = .(hh_id, person_num, travel_dow)]
 
 trip_raw = trip_raw %>%
-  group_by(hh_id, person_num, day_num, trip_num_day) %>%
+  group_by(hh_id, person_num, travel_dow, trip_num_day) %>%
   mutate(tripnum_max = max(trip_num_day)) %>%
   mutate(lasttrip = ifelse(trip_num_day==tripnum_max, 1, 0)) %>%
   ungroup() %>% setDT()
@@ -310,23 +294,22 @@ firsttrip = trip_raw[trip_num_day == 1]
 # Add one place record for people who did not travel
 # add for each day
 
-
 per_without_trips = data.table()
 per_raw[hh_raw, participation_group := i.participation_group, on = .(hh_id)]
-for(day_num_i in 1:7){
-  dt = per_raw[!trip_raw[day_num == day_num_i], on = .(person_num, hh_id)][, .(person_num, hh_id, 
+for(day_num_i in 1:5){
+  dt = per_raw[!trip_raw[travel_dow == day_num_i], on = .(person_num, hh_id)][, .(person_num, hh_id, 
                                                                               trip_num_day = 1,
-                                                                              day_num = day_num_i,
+                                                                              travel_dow = day_num_i,
                                                                         trip_weight = person_weight, 
-                                                                        participation_group)][day_raw[,.(person_num, hh_id, day_num, day_complete)], on = .(person_num, hh_id, day_num), day_complete := i.day_complete]
-                                                                        
-  
+                                                                        participation_group)][day_raw[,.(person_num, hh_id, travel_dow, day_complete, travel_date)], 
+                                                                        on = .(person_num, hh_id, travel_dow), day_complete := i.day_complete]
+
   if(day_num_i != 1) {
     dt = dt[participation_group != 2 & day_complete == 1]
  } 
   
-  dt[hh_raw, travel_date := (day_num - 1) + i.first_travel_date, on = .(hh_id)]
-  dt[day_complete == 1, travel_dow := wday(travel_date, week_start = 1)]
+  #dt[hh_raw, travel_date := (travel_dow - 1) + i.first_travel_date, on = .(hh_id)]
+  #dt[day_complete == 1, travel_dow := wday(travel_date, week_start = 1)]
   per_without_trips = rbindlist(list(per_without_trips, dt), use.names = TRUE, fill = TRUE)
 }
 
@@ -337,22 +320,27 @@ per_without_trips[hh_raw, `:=` (o_lat = home_lat,
                                 d_lat = home_lat,
                                 d_lon = home_lon), on = .(hh_id)]
 
+#NOTE: this is kludgy
+per_without_trips$travel_date = as.Date(as.POSIXct(per_without_trips$travel_date, tz = ""))
+firsttrip$travel_date = as.Date(as.POSIXct(firsttrip$travel_date, tz = ""))
 
 firsttrip = rbindlist(list(firsttrip, per_without_trips), use.names = TRUE, fill = TRUE)
 
 
+# print(firsttrip[firsttrip$hh_id == 21001309,])
 
+print("Create Initial Place file...")
 # Create initial PLACE file as a copy of TRIP data
 
 place_raw = trip_raw %>%
   
   mutate(trip_num_day = trip_num_day + 1) %>%
   bind_rows(firsttrip) %>%
-  arrange(hh_id, person_num,day_num, trip_num_day) %>%
+  arrange(hh_id, person_num, travel_dow, trip_num_day) %>%
   rename(PLACENO = trip_num_day) %>%
   
   # identify last trip for each person
-  group_by(hh_id, person_num, day_num) %>%
+  group_by(hh_id, person_num, travel_dow) %>%
   mutate(place_id_max = max(PLACENO)) %>%
   mutate(lasttrip = ifelse(PLACENO==place_id_max, 1, 0)) %>%
   ungroup() %>%
@@ -410,7 +398,6 @@ place_raw = trip_raw %>%
          HH_MEMBER8, HH_MEMBER9, HH_MEMBER10, HH_MEMBER11, DISTANCE, trip_weight) %>%
   setDT()
 
-
 place_raw[PLACENO == 1 & is.na(DEP_HR), `:=` (DEP_HR = 2, DEP_MIN = 59)]
 
 place_raw[per_raw, SCHOL := i.SCHOL, on = .(hh_id, person_num)]
@@ -426,13 +413,17 @@ place_raw[per_raw, WRK_TAZ := i.PER_WK_ZONE_ID, on = .(hh_id, person_num)]
 place_raw[per_raw, WORK_DIST := get_distance_meters(c(XCORD, YCORD), c(work_lon, work_lat)) * 0.000621371, on = .(hh_id, person_num) ]
 place_raw[per_raw, work_hours := i.work_hours, on = .(hh_id, person_num)]
 
+# Updated by Andrew based on data dictionary (only cvhange is school lines - added 5 / school-related)
+# note that PURPOSE_original is [o,d]_purpose_category
 place_raw[, PURPOSE := fcase(PURPOSE_original == 1, 0, # home 
                                       PURPOSE_original == 2 , 1, # work (fixed)
-                                      PURPOSE_original == 4 & SCHOL %in% c(11:13), 2, # university
-                                      PURPOSE_original == 4 & SCHOL == -9 & age == 4, 2, # university
-                                      PURPOSE_original == 4 & SCHOL %in% c(5:7), 3, # school if k=12 student
-                                      PURPOSE_original == 4 & SCHOL == -9 & age <4, 3, # school if young age
-                                      PURPOSE_original == 4 & SCHOL == -9 & age >4, 6, # other maint if adult not student
+                                      PURPOSE_original %in% c(4, 5) & SCHOL %in% c(6:8), 2, # university
+                                      PURPOSE_original %in% c(4, 5) & SCHOL == 5 & age >=4, 2, # technical school
+                                      PURPOSE_original %in% c(4, 5) & SCHOL == 5 & age <4, 3, # vocational school
+                                      PURPOSE_original %in% c(4, 5)  & SCHOL == -9 & age == 4, 2, # university
+                                      PURPOSE_original %in% c(4, 5) & SCHOL %in% c(3:4), 3, # school if k=12 student
+                                      PURPOSE_original %in% c(4, 5)  & SCHOL == -9 & age <4, 3, # school if young age
+                                      PURPOSE_original %in% c(4, 5)  & SCHOL == -9 & age >4, 6, # other maint if adult not student
                                       PURPOSE_original == 6, 4, # escort
                                       PURPOSE_original == 7, 5, # shop
                                       PURPOSE_DETAILED_original == 61, 5, # Other shopping or errand
@@ -440,8 +431,8 @@ place_raw[, PURPOSE := fcase(PURPOSE_original == 1, 0, # home
                                       PURPOSE_original == 8, 7, # eat out
                                       PURPOSE_original == 9, 8, # social
                                       PURPOSE_DETAILED_original %in% c(51, 53:55, 62), 9, # other disc
-                                      PURPOSE_original == 3 & (work_hours <= 4 & (TAZ == WRK_TAZ | is.na(WRK_TAZ) | WRK_TAZ == 0 | WORK_DIST < 400)), 1, # These appear to be mis-coded 
-                                      PURPOSE_original == 3 & (TAZ != WRK_TAZ & !is.na(WRK_TAZ) & WRK_TAZ > 0), 6, # work related --> other maint 
+                                      PURPOSE_original == 3 & (work_hours <= 4 & (TAZ == WRK_TAZ | is.na(WRK_TAZ) | WRK_TAZ == 0 | WORK_DIST < 100)), 1, # These appear to be mis-coded 
+                                      PURPOSE_original == 3 & (TAZ != WRK_TAZ & !is.na(WRK_TAZ) & WRK_TAZ > 0), 10, # work related --> other maint 
                                       PURPOSE_original == 10, 6, # errand/other --> other maint
                                       PURPOSE_original == 11, 12, # change mode
                                       PURPOSE_original == 12, 6, # other maint
@@ -451,18 +442,18 @@ place_raw[, PURPOSE := fcase(PURPOSE_original == 1, 0, # home
                              default = -9 
                                      )]
 
+#hist(place_raw[place_raw$PURPOSE_original == 3 & place_raw$WORK_DIST < 1.6,]$WORK_DIST, breaks = 100)
 
 
-hist(place_raw[place_raw$PURPOSE_original == 3 & place_raw$WORK_DIST < 1.6,]$WORK_DIST, breaks = 100)
 
 place_raw[PURPOSE == -1, PURPOSE := -9]
-place_raw[PLACENO > 1, .N, PURPOSE][order(PURPOSE)]
+#place_raw[PLACENO > 1, .N, PURPOSE][order(PURPOSE)]
 
 # get trip weight from day weight for 0-trip days
-place_raw[day_raw, trip_weight := ifelse(PLACENO == 1, i.day_weight, trip_weight), on = .(hh_id, person_num, day_num)]
+place_raw[day_raw, trip_weight := ifelse(PLACENO == 1, i.day_weight, trip_weight), on = .(hh_id, person_num, travel_dow)]
 place_raw[PLACENO == 1 & PURPOSE <0 & trip_weight >0,  PURPOSE := 0] # at home for 0-trip days with no prev purpose
 
-place_raw = place_raw[PURPOSE >= 0] #Added ASR to remove trips that did not have a purpose
+# place_raw = place_raw[PURPOSE >= 0] #Added ASR to remove trips that did not have a purpose
 # Assign SPA mode value to each column
 
 # model modes:
@@ -471,6 +462,7 @@ HOV2	= 2L
 HOV3	= 3L
 WALK =	4L
 BIKE	= 5L
+TRANSIT	= 6L
 TRANSIT_LOC	= 6L
 TRANSIT_PREMIUM	= 7L
 TAXI	= 8L
@@ -480,28 +472,32 @@ SCHOOLBUS =	11L
 OTHER = 12L
 
 ## check change mode/lack thereof
-
+  
+# Updated by Andrew using latest data dictionary from Ashley A.
 place_raw[, MODE := fcase( MODE_survey %in% c(8, 9) & (TRAVELERS_TOTAL == 1 | TRAVELERS_TOTAL < 0), SOV, # sov if party is 1 or unknown
                            MODE_survey %in% c(8, 9) & (TRAVELERS_TOTAL == 2), HOV2,
                            MODE_survey %in% c(8, 9) & TRAVELERS_TOTAL >= 3, HOV3, # hov3
                            MODE_survey %in% c(8, 9) & license %in% c(0, 995) & TRAVELERS_TOTAL == 1, HOV2, # hov2 if one-party passenger not licensed
                            MODE_survey == 12, WALK, 
-                           MODE_survey == 10, BIKE,
-                           MODE_survey == 7, TAXI,
-                           MODE_survey == 6 & (mode_type_detailed == 19), TNC_SINGLE,
-                           MODE_survey == 6 & (mode_type_detailed == 18), TNC_POOL,
+                           MODE_survey == 10, BIKE, # and micromobility
+                           mode_type_detailed == 36, TAXI,
+                           mode_type_detailed %in% c(49, 59), TNC_SINGLE,
+                           mode_type_detailed == 76, TNC_POOL,
                            MODE_survey == 2, SCHOOLBUS,
-                           MODE_survey == 3, TRANSIT_LOC,
-                           MODE_survey == 1, TRANSIT_PREMIUM,
-                           MODE_survey == 4, TRANSIT_PREMIUM,
+                           MODE_survey %in% c(1, 3, 4), TRANSIT, 
+                           #MODE_survey == 1, TRANSIT_PREMIUM, # no premim transit designation in model
+                           #MODE_survey == 4, TRANSIT_PREMIUM,
                            MODE_survey < 0, -9L, # missing/drop from dataset
                            default = OTHER)] # other
-  
+                           # NOTE: dropping 5 (long dist pax)
 
-place_raw[, .N, MODE][order(MODE)]
 
+# place_raw[, .N, MODE][order(MODE)]
 place_raw[hh_raw, HOME_DIST := get_distance_meters(c(XCORD, YCORD), c(home_lon, home_lat)) * 0.000621371, on = .(hh_id) ]
-
+print("* * * * QC 1 * * * *")
+# print(colnames(day_raw))
+# print(day_raw[day_raw$hh_id == 21001309, c("hh_id", "person_id", "person_num", "day_id", "day_num", "day_weight", "travel_date")])
+print(place_raw[place_raw$hh_id == 21001309, c("hh_id", "person_num", "day_num", "PLACENO", "trip_num", "travel_dow", "trip_weight")])
 
 # tottr - next 
 
@@ -509,9 +505,7 @@ place_raw[, TOTTR_NEXT := shift(TRAVELERS_TOTAL, n = 1L, type = 'lead'), by = .(
 
 place_raw[is.na(TOTTR_NEXT), TOTTR_NEXT := 0]
 
-
-
-PLACE = place_raw[(MODE != -9 | PLACENO == 1) & trip_weight > 0 & travel_dow %in% c(1:4), .(SAMPN = hh_id,
+PLACE = place_raw[(MODE != -9 | PLACENO == 1) & travel_dow %in% c(1:4) & PURPOSE >= 0, .(SAMPN = hh_id,
                       PLANO = PLACENO,
                       PERNO = person_num,
                       DOW = travel_dow,
@@ -548,48 +542,15 @@ PLACE = place_raw[(MODE != -9 | PLACENO == 1) & trip_weight > 0 & travel_dow %in
                       TRIP_WEIGHT = trip_weight
 )]
 
-# Process per1 to perN like SEMCOG to see if that helps joint tours
-
-
-PLACE_backup = copy(PLACE)
-# 
-# for(i in 1:11) {
-#   colname = paste0('PER', i)
-# 
-#   PLACE[, paste0(colname, '_orig') := get(colname)]
-#   PLACE[, paste0(colname, '') := 0]
-# }
-# 
-# for(i in 1:9) {
-#   colname = paste0('PER', i)
-#   prev_colname = paste0('PER', i-1)
-#   if(prev_colname == 'PER0') {prev_colname = 'PER1'}
-#   
-# 
-#   PLACE[, paste0(colname, '') := fcase(HHMEM <= i, 0,
-#                       PER1_orig == 1 & get(prev_colname)!= 1 & PERNO != 1, 1,
-#                       PER2_orig == 1 & get(prev_colname) != 2 & PERNO != 2 , 2,
-#                       PER3_orig == 1 & get(prev_colname) != 3 & PERNO != 3 , 3,
-#                       PER4_orig == 1 & get(prev_colname) != 2 & PERNO != 2, 4,
-#                       PER5_orig == 1 & get(prev_colname) != 5 & PERNO != 5, 5,
-#                       PER6_orig == 1 & get(prev_colname) != 6 & PERNO != 6, 6,
-#                       PER7_orig == 1 & get(prev_colname) != 7 & PERNO != 7, 7,
-#                       PER8_orig == 1 & get(prev_colname) != 8 & PERNO != 8, 8,
-#                       PER9_orig == 1 & get(prev_colname) != 9 & PERNO != 9, 9,
-#                       PER10_orig == 1 & get(prev_colname) != 10 & PERNO != 10, 10,
-#                       PER11_orig == 1 & get(prev_colname) != 11 & PERNO != 11, 11,
-#                       default = 0
-#                     )]
-# }
+print("* * * * * * * * * * * * * * * * QC 2 * * * * * * * * * * * * * * * * ")
+print(PLACE[PLACE$SAMPN == 21001309 & PLACE$PERNO == 1, ]) #c("SAMPN", "PERNO", "DOW", "PLACENO", "trip_num", "MODE")])
 
 PLACE[HHMEM == 995, HHMEM := -1]
-
-
+print(paste("before spa inputs, there are", sum(PER$PEREXPFAC), "weighted people"))
+print("Create SPA inputs...")
 #=========================================================================================================================
 # CREATE INPUTS FOR Python SPA
 #=========================================================================================================================
-
-
 
 HH[is.na(HH)] = -9
 PER[is.na(PER)] = -9
@@ -598,11 +559,13 @@ PLACE[is.na(PLACE)] = -9
 perday = dcast(day_raw[,.(PERNO = person_num, SAMPN = hh_id, travel_dow, day_complete)], SAMPN + PERNO ~ travel_dow, value.var = "day_complete", fun.aggregate = mean)
 perday[is.na(perday)] = 0
 colnames(perday) = c("SAMPN", "PERNO", "Complete_1", "Complete_2", "Complete_3", "Complete_4", "Complete_5", "Complete_6", "Complete_7")
-PER = PER[perday, on = .(SAMPN, PERNO)]
 
-str(HH)
-str(PER)
-str(PLACE)
+print(paste("before perday join, there are", sum(PER$PEREXPFAC), "weighted people"))
+#PER = PER[perday, on = .(SAMPN, PERNO)]
+print(paste("after perday join, there are", sum(PER$PEREXPFAC), "weighted people"))
+# str(HH)
+# str(PER)
+# str(PLACE)
 
 # Checking to see if every person in PER file is in PLACE file:
 # -----------------
@@ -611,6 +574,7 @@ paste0("Distinct people in PER file: ", num_persons_in_per)
 num_persons_in_PLACE = nrow(unique(PLACE[, .(SAMPN, PERNO)]))
 paste0("Distict people in PLACE file: ", num_persons_in_PLACE)
 
+print(paste("There are", sum(HH$HHEXPFAC), "households and", sum(PER$PEREXPFAC), "persons being output from pre-SPA processing"))
 
 # Writing Output
 # -----------------
@@ -618,7 +582,7 @@ paste0("Distict people in PLACE file: ", num_persons_in_PLACE)
 write.csv(HH, file.path(output_dir, "HH_SPA_INPUT.csv"), row.names = F)
 write.csv(PER, file.path(output_dir, "PER_SPA_INPUT.csv"), row.names = F)
 
-for (i in 2:4) {
+for (i in 1:4) {
   write.csv(PLACE[DOW==i,], file.path(output_dir, paste0('place_', as.character(i), ".csv")), row.names = F)
 }
 
