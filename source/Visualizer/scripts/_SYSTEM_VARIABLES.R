@@ -1,14 +1,14 @@
 ### Paths
-SYSTEM_APP_PATH       <- WORKING_DIR
-SYSTEM_DATA_PATH      <- file.path(SYSTEM_APP_PATH, "data")
-SYSTEM_SHP_PATH       <- file.path(SYSTEM_DATA_PATH, "SHP")
-SYSTEM_JPEG_PATH      <- file.path(SYSTEM_DATA_PATH, "JPEG")
-SYSTEM_TEMPLATES_PATH <- file.path(SYSTEM_APP_PATH, "templates")
-SYSTEM_SCRIPTS_PATH   <- file.path(SYSTEM_APP_PATH, "scripts")
-OUTPUT_PATH           <- file.path(SYSTEM_APP_PATH, "outputs")
-RUNTIME_PATH          <- file.path(SYSTEM_APP_PATH, "runtime")
-BASE_DATA_PATH        <- file.path(SYSTEM_DATA_PATH, "base")
-BUILD_DATA_PATH       <- file.path(SYSTEM_DATA_PATH, "calibration_runs\\summarized")
+#SYSTEM_APP_PATH       <- WORKING_DIR
+#SYSTEM_DATA_PATH      <- file.path(SYSTEM_APP_PATH, "data")
+#SYSTEM_SHP_PATH       <- file.path(SYSTEM_DATA_PATH, "SHP")
+#SYSTEM_JPEG_PATH      <- file.path(SYSTEM_DATA_PATH, "JPEG")
+#SYSTEM_TEMPLATES_PATH <- file.path(SYSTEM_APP_PATH, "templates")
+#SYSTEM_SCRIPTS_PATH   <- file.path(SYSTEM_APP_PATH, "scripts")
+#OUTPUT_PATH           <- file.path(SYSTEM_APP_PATH, "outputs")
+#RUNTIME_PATH          <- file.path(SYSTEM_APP_PATH, "runtime")
+#BASE_DATA_PATH        <- file.path(SYSTEM_DATA_PATH, "base")
+#BUILD_DATA_PATH       <- file.path(SYSTEM_DATA_PATH, "calibration_runs\\summarized")
 
 ### Names
 if(IS_BASE_SURVEY=="Yes"){

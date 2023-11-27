@@ -278,13 +278,13 @@ plotly_density_plotter <- function(data_df, index = "one", colors=c("orange", "s
     ylab <- ifelse(ylabel=="", "Percent", ylabel)
 
     p <- switch(index,
-                "one" = plot_ly(data=data_df,x = ~xvar, y = ~prop1, colors=c("orange", "steelblue"), color = ~run, fill=fill) %>%
+                "one" = plot_ly(data=data_df,x = ~xvar, y = ~prop1, colors=c("steelblue", "orange"), color = ~run, fill=fill) %>%
                   add_lines(name=~run,alpha=alpha, line = list(shape = shape)) %>%
                   layout(title = "",xaxis = list(title=xlabel, tickvals = tickvals, ticktext = ticktext, tickangle = tickangle), yaxis = list(title=ylab, tickformat = ".0%"), showlegend = legend),
-                "two" = plot_ly(data=data_df,x = ~xvar, y = ~prop2, colors=c("orange", "steelblue"), color = ~run, fill=fill) %>%
+                "two" = plot_ly(data=data_df,x = ~xvar, y = ~prop2, colors=c("steelblue", "orange"), color = ~run, fill=fill) %>%
                   add_lines(name=~run,alpha=alpha, line = list(shape = shape)) %>%
                   layout(title = "",xaxis = list(title=xlabel, tickvals = tickvals, ticktext = ticktext, tickangle = tickangle), yaxis = list(title=ylab, tickformat = ".0%"), showlegend = legend),
-                "three" = plot_ly(data=data_df,x = ~xvar, y = ~prop3, colors=c("orange", "steelblue"), color = ~run, fill=fill) %>%
+                "three" = plot_ly(data=data_df,x = ~xvar, y = ~prop3, colors=c("steelblue", "orange"), color = ~run, fill=fill) %>%
                   add_lines(name=~run,alpha=alpha, line = list(shape = shape)) %>%
                   layout(title = "",xaxis = list(title=xlabel, tickvals = tickvals, ticktext = ticktext, tickangle = tickangle), yaxis = list(title=ylab, tickformat = ".0%"), showlegend = legend)
                 )
@@ -642,32 +642,35 @@ Chart Column 1 {data-width=200}
 --------------------------------------------
 ### Auto Ownership{data-height=265}
 ```{r Chart_Auto_Ownership}
-if(IS_BASE_SURVEY=="Yes"){
-  #cat("Census source: ", AO_CENSUS_LONG)
-  # [3/31/2020] DH No census data used for SEMCOG
-  base_df <- base_data[[which(base_csv_names=="autoOwnershipCensus")]]
-}else{
+# if(IS_BASE_SURVEY=="Yes"){
+#   #cat("Census source: ", AO_CENSUS_LONG)
+#   # [3/31/2020] DH No census data used for SEMCOG
+#   base_df <- base_data[[which(base_csv_names=="autoOwnershipCensus")]]
+# }else{
   base_df <- base_data[[which(base_csv_names=="autoOwnership")]]
-}
+# }
 
-build_df <- build_data[[which(build_csv_names=="autoOwnershipCY")]]
+build_df <- build_data[[which(build_csv_names=="autoOwnership")]]
 
 build_df$X = NULL
 base_df$X = NULL
+
+sd.autoown <- get_standardDF(data_df1 = base_df, data_df2 = build_df, x = "HHVEH", y = c("freq"))
 #colnames(build_df) <- colnames(census_df)
 #colnames(base_df) <- colnames(census_df)
 
-sd.autoown <- get_standardDF(data_df1 = base_df, data_df2 = build_df, x = "HHVEH", y = c("freq"), grp = "COUNTY", shared = TRUE)
+#sd.autoown <- get_standardDF(data_df1 = base_df, data_df2 = build_df, x = "HHVEH", y = c("freq"), grp = "COUNTY", shared = TRUE)
 
-p <- plotly_bar_plotter(data = sd.autoown, xlabel = "Number of Vehicles", ylabel = "Percent", ynames = c(AO_CENSUS_LONG, BUILD_SCENARIO_NAME), percent = T, height = 225)
-
-bscols(widths=c(3,9),
-  list(
-    filter_select("ao_cname", "Select County", sd.autoown, ~grp_var, multiple=F)),
-    p
-  )
+p <- plotly_bar_plotter(data = sd.autoown, xlabel = "Number of Vehicles", ylabel = "Percent", ynames = c(BASE_SCENARIO_NAME, BUILD_SCENARIO_NAME), percent = T, height = 225)
 
 
+# bscols(widths=c(3,9),
+  # list(
+    # filter_select("ao_cname", "Select County", sd.autoown, ~grp_var, multiple=F)),
+    # p
+  # )
+
+p
 ```
 
 ### Telecommute Frequency{data-height=250}
@@ -690,9 +693,10 @@ base_df <- base_data[[which(base_csv_names=="wfh_summary")]]
 base_df$share <- base_df$WFH/base_df$Workers
 build_df <- build_data[[which(build_csv_names=="wfh_summary")]]
 build_df$share <- build_df$WFH/build_df$Workers
+
 std_DF <- cbind(base_df[,c("District", "share")], build_df[,c("share")])
 colnames(std_DF) <- c("xvar", "prop1", "prop2")
-p <- plotly_bar_plotter(data = std_DF, xlabel = "District", ylabel = "Percent WFH", ynames = c("Census ACS", BUILD_SCENARIO_NAME), percent = T, height = 275, tickangle = -320, bottom_offset = 25)
+p <- plotly_bar_plotter(data = std_DF, xlabel = "District", ylabel = "Percent WFH", ynames = c(BASE_SCENARIO_NAME, BUILD_SCENARIO_NAME), percent = T, height = 275, tickangle = -320, bottom_offset = 25)
 p
 
 ```
@@ -729,7 +733,11 @@ build_df2 <- melt(build_df2, id = c("distbin"))
 build_df3 <- build_data[[which(build_csv_names=="schlTLFD")]]
 build_df3 <- melt(build_df3, id = c("distbin"))
 
-build_df <- cbind(build_df1, build_df2$value, build_df3$value)
+df_list = list(build_df1, build_df2, build_df3)
+build_df = Reduce(function(x, y) merge(x, y, all=TRUE, by = c('distbin', 'variable')), df_list)
+build_df[is.na(build_df)] = 0
+
+# build_df <- cbind(build_df1, build_df2$value, build_df3$value)
 colnames(build_df) <- c("distbin","variable","value1","value2","value3")
 
 sd.purpose <- get_sharedData(data_df1 = build_df, data_df2 = base_df, run1_name = BUILD_SCENARIO_NAME,
@@ -856,17 +864,17 @@ diag2
 
 ### {data-height=350}
 ```{r Table2_MandTripLengths}
-cat("Average Mandatory Tour Lengths")
+# cat("Average Mandatory Tour Lengths")
 
-build_df <- build_data[[which(build_csv_names=="mandTourLengths")]]
-df <- build_df
-colnames(df) <- c("Home District", "Work","University","School")
+# build_df <- build_data[[which(build_csv_names=="mandTourLengths")]]
+# df <- build_df
+# colnames(df) <- c("Home District", "Work","University","School")
 
-eval_expr <- paste("t2 <- kable(df, format = 'html', digits = 2, row.names = F, align = 'r', format.args = list(big.mark = ',')) %>%
-  kable_styling('striped', font_size = 10, full_width=F, position='center') %>%
-  add_header_above(c(' ' = 1, '", BUILD_SCENARIO_NAME, "' = 3))", sep = "")
-eval(parse(text = eval_expr))
-t2
+# eval_expr <- paste("t2 <- kable(df, format = 'html', digits = 2, row.names = F, align = 'r', format.args = list(big.mark = ',')) %>%
+  # kable_styling('striped', font_size = 10, full_width=F, position='center') %>%
+  # add_header_above(c(' ' = 1, '", BUILD_SCENARIO_NAME, "' = 3))", sep = "")
+# eval(parse(text = eval_expr))
+# t2
 ```
 
 Employment vs Workers{data-navmenu="Long Term"}
@@ -900,59 +908,59 @@ bscols(widths=c(6,6),
 # knitr::include_graphics(file.path(SYSTEM_JPEG_PATH, "workersByTAZ.jpeg"))
 ``` -->
 ```{r job_wrk1a}
-base_df <- build_data[[which(build_csv_names=="employees_per_co")]]
-build_df <- build_data[[which(build_csv_names=="workers_per_co")]]
+# base_df <- build_data[[which(build_csv_names=="employees_per_co")]]
+# build_df <- build_data[[which(build_csv_names=="workers_per_co")]]
 
-# base_df$WDISTRICT = levels(base_df$WDISTRICT)[base_df$WDISTRICT]
-# build_df$WDISTRICT = levels(build_df$WDISTRICT)[build_df$WDISTRICT]
-build_df = build_df[build_df$WDISTRICT %in% base_df$WDISTRICT,]
-base_df = base_df[base_df$WDISTRICT %in% build_df$WDISTRICT,]
+## base_df$WDISTRICT = levels(base_df$WDISTRICT)[base_df$WDISTRICT]
+## build_df$WDISTRICT = levels(build_df$WDISTRICT)[build_df$WDISTRICT]
+# build_df = build_df[build_df$WDISTRICT %in% base_df$WDISTRICT,]
+# base_df = base_df[base_df$WDISTRICT %in% build_df$WDISTRICT,]
 
-#colnames(base_df)[which(colnames(base_df) == "freq")] = BASE_SCENARIO_NAME
-#colnames(build_df)[which(colnames(build_df) == "freq")] = BUILD_SCENARIO_NAME
+##colnames(base_df)[which(colnames(base_df) == "freq")] = BASE_SCENARIO_NAME
+##colnames(build_df)[which(colnames(build_df) == "freq")] = BUILD_SCENARIO_NAME
 # 
-df = base_df
-df$freq_build = build_df$freq[which(df$WDISTRICT == build_df$WDISTRICT)]/BUILD_SAMPLE_RATE
+# df = base_df
+# df$freq_build = build_df$freq[which(df$WDISTRICT == build_df$WDISTRICT)]/BUILD_SAMPLE_RATE
 
-co_cor = cor(df$freq, df$freq_build)^2
-co_lm = lm(freq_build ~ freq, df)
+# co_cor = cor(df$freq, df$freq_build)^2
+# co_lm = lm(freq_build ~ freq, df)
 
-text1 = paste("r2 =", round(co_cor, 4))
-text2 = paste("y = ", round(co_lm$coefficients[['freq']], 4), "x  + ", round(co_lm$coefficients[['(Intercept)']], 2), sep = "")
+# text1 = paste("r2 =", round(co_cor, 4))
+# text2 = paste("y = ", round(co_lm$coefficients[['freq']], 4), "x  + ", round(co_lm$coefficients[['(Intercept)']], 2), sep = "")
 
-ggplot(df, aes(x = freq, y = freq_build, label = WDISTRICT)) + geom_point() +
-  geom_abline(slope = 1, intercept = 0, color = "red") +
-  geom_text(vjust = 0, nudge_y = 0.1, check_overlap = TRUE) +
-  scale_x_log10("SEDATA Input", labels = comma, limits = c(10000, max(df$freq, df$build_freq))) +
-  scale_y_log10("ActivitySim", labels = comma, limits = c(10000, max(df$freq, df$build_freq))) +
-  annotate("text", x=500000, y=c(20000, 15000), label= c(text1, text2))
+# ggplot(df, aes(x = freq, y = freq_build, label = WDISTRICT)) + geom_point() +
+  # geom_abline(slope = 1, intercept = 0, color = "red") +
+  # geom_text(vjust = 0, nudge_y = 0.1, check_overlap = TRUE) +
+  # scale_x_log10("SEDATA Input", labels = comma, limits = c(10000, max(df$freq, df$build_freq))) +
+  # scale_y_log10("ActivitySim", labels = comma, limits = c(10000, max(df$freq, df$build_freq))) +
+  # annotate("text", x=500000, y=c(20000, 15000), label= c(text1, text2))
 ```
 
 ### By TAZ{data-height=575}
 ```{r job_wrk_taz}
-base_df <- build_data[[which(build_csv_names=="employees_per_taz")]]
-build_df <- build_data[[which(build_csv_names=="workers_per_taz")]]
+# base_df <- build_data[[which(build_csv_names=="employees_per_taz")]]
+# build_df <- build_data[[which(build_csv_names=="workers_per_taz")]]
 
 
-df = data.frame(taz = 1:3632) %>%
-  dplyr::left_join(base_df, by = "taz") %>%
-  dplyr::left_join(build_df, by = c("taz" = "worktaz")) %>%
-  rename(base = freq.x) %>%
-  mutate(build = freq.y/BUILD_SAMPLE_RATE) %>%
-  mutate(build = ifelse(is.na(build), 0, build),
-         base = ifelse(is.na(base), 0, base))
+# df = data.frame(taz = 1:3632) %>%
+  # dplyr::left_join(base_df, by = "taz") %>%
+  # dplyr::left_join(build_df, by = c("taz" = "worktaz")) %>%
+  # rename(base = freq.x) %>%
+  # mutate(build = freq.y/BUILD_SAMPLE_RATE) %>%
+  # mutate(build = ifelse(is.na(build), 0, build),
+         # base = ifelse(is.na(base), 0, base))
 
-co_cor = cor(df$base, df$build)^2
-co_lm = lm(build ~ base, df)
+# co_cor = cor(df$base, df$build)^2
+# co_lm = lm(build ~ base, df)
 
-text1 = paste("r2 =", round(co_cor, 4))
-text2 = paste("y = ", round(co_lm$coefficients[['base']], 4), "x  + ", round(co_lm$coefficients[['(Intercept)']], 2), sep = "")
+# text1 = paste("r2 =", round(co_cor, 4))
+# text2 = paste("y = ", round(co_lm$coefficients[['base']], 4), "x  + ", round(co_lm$coefficients[['(Intercept)']], 2), sep = "")
 
-ggplot(df, aes(x = base, y = build)) + geom_point(alpha = 0.3) +
-  geom_abline(slope = 1, intercept = 0, color = "red") +
-  scale_x_continuous("SEDATA Input", labels = comma, limits = c(0, max(df$freq, df$build_freq))) +
-  scale_y_continuous("ActivitySim", labels = comma, limits = c(0, max(df$freq, df$build_freq))) +
-  annotate("text", x=60000, y=c(4000, 1500), label= c(text1, text2))
+# ggplot(df, aes(x = base, y = build)) + geom_point(alpha = 0.3) +
+  # geom_abline(slope = 1, intercept = 0, color = "red") +
+  # scale_x_continuous("SEDATA Input", labels = comma, limits = c(0, max(df$freq, df$build_freq))) +
+  # scale_y_continuous("ActivitySim", labels = comma, limits = c(0, max(df$freq, df$build_freq))) +
+  # annotate("text", x=60000, y=c(4000, 1500), label= c(text1, text2))
 ```
 
 ### Low Income{data-height=575}
@@ -1231,7 +1239,161 @@ bscols(widths=c(3,9),
 
 ```
 
+School Escorting {data-navmenu="Tour Level"}
+============================================
 
+
+Chart Column 1 {data-width=380}
+--------------------------------------------
+
+### Escortee{data-height=400}
+```{r schesc7}
+
+base_df <- base_data[[which(base_csv_names=="esctype_by_childtype")]]
+build_df <- build_data[[which(build_csv_names=="esctype_by_childtype")]]
+
+base_df$grp <- BASE_SCENARIO_ALT
+build_df$grp <- BUILD_SCENARIO_NAME
+
+colnames(build_df) <- colnames(base_df)
+
+sd.pertype <- get_standardDF(data_df1=base_df, data_df2=build_df, x="esc_type", y = c("freq_out", "freq_inb"), grp = "child_type", shared = T)
+
+p1 <- plotly_pie_chart(data = sd.pertype, label_var = "xvar", value_var = "yvar1", height = 260, title = BASE_SCENARIO_ALT, shared = T, top_offset = 80)
+p2 <- plotly_pie_chart(data = sd.pertype, label_var = "xvar", value_var = "yvar2", height = 260, title = BUILD_SCENARIO_NAME, shared = T, top_offset = 80)
+p3 <- plotly_pie_chart(data = sd.pertype, label_var = "xvar", value_var = "yvar3", height = 260, title = BASE_SCENARIO_ALT, shared = T, top_offset = 80)
+p4 <- plotly_pie_chart(data = sd.pertype, label_var = "xvar", value_var = "yvar4", height = 260, title = BUILD_SCENARIO_NAME, shared = T, top_offset = 80)
+
+bscols(widths=c(12),filter_select("Child_type", "Select Child Type", sd.pertype, ~grp_var,multiple=F))
+
+```
+
+_Tour Level_ : Half tour leg of a school tour
+
+Distribution of outbound and inbound legs of school tours by escort type for each student.
+
+_Rideshare_:  The student is dropped off or picked up by a driver on their way to work or school or way back home. 
+
+_PureEscort_: The student is dropped off or picked up by a driver who is traveling specifically for purposes of escorting the child, though the driver may make other non-escort stops.
+
+
+### Chauffeur{data-height=300}
+```{r schesc8}
+
+base_df <- base_data[[which(base_csv_names=="esctype_by_chauffeurtype")]]
+build_df <- build_data[[which(build_csv_names=="esctype_by_chauffeurtype")]]
+
+base_df$grp <- BASE_SCENARIO_ALT
+build_df$grp <- BUILD_SCENARIO_NAME
+colnames(build_df) <- colnames(base_df)
+
+sd.pertype <- get_standardDF(data_df1=base_df, data_df2=build_df, x="esc_type", y = c("freq_out", "freq_inb"), grp = "chauffeur", shared = T)
+p5 <- plotly_bar_plotter(data = sd.pertype, height = 200, xlabel = "School Escort Type", ylabel = "Percent", ynames = c(BASE_SCENARIO_ALT, BUILD_SCENARIO_NAME), percent = T)
+
+p6 <- plotly_bar_plotter(data = sd.pertype, height = 200, xlabel = "School Escort Type", ylabel = "Percent", ynames = c(BASE_SCENARIO_ALT, BUILD_SCENARIO_NAME), percent = T, index = 2)
+
+bscols(widths=c(12),
+  
+    filter_select("Chauffeur_type", "Select Chauffeur Type", sd.pertype, ~grp_var,multiple=F)
+    
+  )
+
+```
+
+_Tour Level_ : Half tour leg of a school tour
+
+Distribution of outbound and inbound legs of school tours by escort type for each chauffeur.
+
+
+### {data-height=300}
+
+_Person Level_ : FT/PT Workers
+
+Counts of workers who performed at least one _Rideshare_ or _PureEscort_ drop off or pick up. Only eligible workers (who go to work with children who go to school) are counted in the _None_ category.
+
+
+Chart Column 1 {data-width=750}
+--------------------------------------------
+
+### Student school half-tours by escort type - Outbound{data-height=400}
+```{r schesc1}
+
+
+bscols(widths=c(6,6),
+  p1, p2
+  )
+
+```
+
+### Chauffeured school half-tours by escort type - Outbound{data-height=300}
+```{r schesc2}
+
+bscols(widths=c(12),
+  
+    p5
+  )
+
+```
+
+### {data-height=300, data-width=750}
+```{r schesc3}
+base_df <- base_data[[which(base_csv_names=="worker_school_escorting")]]
+nums <- vapply(base_df, is.numeric, FUN.VALUE = logical(1))
+base_df[,nums] <- base_df[,nums]/BASE_SAMPLE_RATE
+base_df[,nums] <- round(base_df[,nums])
+
+#t1 <- datatable(base_df, options = list(pageLength = 4), height = 100, caption = "Workers with School Drops Offs and Pickups - #OHAS_Oregon")
+#t1
+
+#t1 <- kable(base_df, format = 'html', caption = paste("Workers with School Drops Offs and Pickups -", BASE_SCENARIO_ALT), digits = 0, row.names = F, align = 'r', format.args = list(big.mark = ','), td.attr = "padding='3px'")
+
+
+t1 <- kable(base_df, format = "html", caption = paste("Workers with School Drops Offs and Pickups -", BASE_SCENARIO_ALT), digits = 0, row.names = F, align = 'r', format.args = list(big.mark = ','), col.names = c("Drop Off", "Rideshare", "Pure Escort", "No Escort", "Total")) %>%
+  kable_styling("striped", full_width = F)
+
+t1
+```
+
+
+Chart Column 1 {data-width=750}
+--------------------------------------------
+
+### Student school half-tours by escort type - Inbound{data-height=400}
+```{r schesc4}
+
+bscols(widths=c(6,6),
+  p3, p4
+  )
+
+```
+
+### Chauffeured school half-tours by escort type - Inbound{data-height=300}
+```{r schesc5}
+p6
+
+```
+
+
+
+### {data-height=300}
+```{r schesc6}
+build_df <- build_data[[which(build_csv_names=="worker_school_escorting")]]
+nums <- vapply(build_df, is.numeric, FUN.VALUE = logical(1))
+build_df[,nums] <- build_df[,nums]/BUILD_SAMPLE_RATE
+build_df[,nums] <- round(build_df[,nums])
+
+
+#t2 <- datatable(build_df, options = list(pageLength = 4), height = 100, caption = paste("Workers with School Drops Offs and Pickups - ", #BUILD_SCENARIO_NAME, sep = ""))
+#t2
+
+#t2 <- kable(build_df, caption = paste("Workers with School Drops Offs and Pickups -", BUILD_SCENARIO_NAME), digits = 0, row.names = F, align = 'r', format.args = list(big.mark = ','))
+
+t2 <- kable(build_df[,c("DropOff", "Ride.Share", "Pure.Escort", "No.Escort", "Total")], format = "html", caption = paste("Workers with School Drops Offs and Pickups -", BUILD_SCENARIO_NAME), digits = 0, row.names = F, align = 'r', format.args = list(big.mark = ','), col.names = c("Drop Off", "Rideshare", "Pure Escort", "No Escort", "Total")) %>%
+  kable_styling("striped", full_width = F)
+  
+t2
+
+```
 
 Joint Tours{data-navmenu="Tour Level"}
 ============================================
@@ -1403,7 +1565,7 @@ bscols(widths=c(2,10),
 ### Average Non-Mandatory Tour Lengths (Miles){data-height=250}
 ```{r Table1_nonMandTripLength}
 base_df <- base_data[[which(base_csv_names=="nonMandTripLengths")]]
-build_df <- build_data[[which(build_csv_names=="nonMandTourLengths")]]
+build_df <- build_data[[which(build_csv_names=="nonMandTripLengths")]]
 df <- data.frame(base_df, build_df[,-1])
 colnames(df) <- c("Purpose", BASE_SCENARIO_NAME, BUILD_SCENARIO_NAME)
 df$Purpose <- purpose_type_df$name[match(df$Purpose, purpose_type_df$code)]
@@ -1539,18 +1701,18 @@ Chart Column 1{data-width=150}
 ```{r tourMode}
  # [3/31/2020] DH
 # base_df <- base_data[[which(base_csv_names=="tmodeProfile_vis_CHTS_OBS")]]
-if(IS_BASE_SURVEY=="Yes"){
+# if(IS_BASE_SURVEY=="Yes"){
   base_df <- base_data[[which(base_csv_names=="tmodeProfile_vis_HTS")]]
-}else{
-  base_df <- base_data[[which(base_csv_names=="tmodeProfile_vis")]]
-}
+# }else{
+  # base_df <- base_data[[which(base_csv_names=="tmodeProfile_vis")]]
+# }
 base_df$purpose <- as.character(base_df$purpose)
 base_df$purpose <- purpose_type_df$name[match(base_df$purpose, purpose_type_df$code)]
-if(BASE_SCENARIO_NAME == "SEMCOG_HTS") {
-  build_df <- build_data[[which(build_csv_names=="tmodeProfile_vis")]]
-} else {
-  build_df <- build_data[[which(build_csv_names=="tmodeProfile_vis")]]
-}
+# if(BASE_SCENARIO_NAME == "SEMCOG_HTS") {
+  build_df <- build_data[[which(build_csv_names=="tmodeProfile_vis_HTS")]]
+# } else {
+  # build_df <- build_data[[which(build_csv_names=="tmodeProfile_vis")]]
+# }
 
 
 # build_df <- build_data[[which(build_csv_names=="tmodeProfile_vis_CHTS")]]
@@ -1882,15 +2044,10 @@ Distribution of trips by trip mode and tour mode, which constrains the availabil
 if(IS_BASE_SURVEY=="Yes"){
   base_df <- base_data[[which(base_csv_names=="tripModeProfile_vis_HTS")]]
 }else{
-  base_df <- base_data[[which(base_csv_names=="tripModeProfile_vis_HTS")]]
+  base_df <- base_data[[which(base_csv_names=="tripModeProfile_vis")]]
 }
-if(BUILD_SCENARIO_NAME == 'SEMCOG_HTS') {
-  build_df <- build_data[[which(build_csv_names=="tripModeProfile_vis")]]
-} else {
-  build_df <- build_data[[which(build_csv_names=="tripModeProfile_vis")]]
-
-}
-
+# build_df <- build_data[[which(build_csv_names=="tripModeProfile_vis")]]
+build_df <- build_data[[which(build_csv_names=="tripModeProfile_vis_HTS")]]
 
 colnames(build_df) <- colnames(base_df)
 
@@ -1909,6 +2066,7 @@ bscols(widths=c(12),
   list(filter_select("tripMode1", "Select Tour Purpose", sd.purpose, ~purpose,multiple=F),
        filter_select("tripMode1", "Select Tour Mode", sd.purpose, ~tourmode,multiple=F))
   )
+
 ```
 
 Chart Column 2 {data-width=800}
@@ -1941,33 +2099,33 @@ Chart Column 2{.tabset}
 
 ### Count vs Volume - All Links{data-height=575}
 ```{r count_vol2}
-ggplot(hnet[hnet$DY_CNT > 0,], aes(x = DY_CNT, y = DY_ASN)) + geom_point() +
-	geom_abline(slope = 1, intercept = 0, color = "red") +
-	scale_x_continuous("Daily Count", labels = comma) +
-	scale_y_continuous("Daily Assignment", labels = comma)
+# ggplot(hnet[hnet$DY_CNT > 0,], aes(x = DY_CNT, y = DY_ASN)) + geom_point() +
+	# geom_abline(slope = 1, intercept = 0, color = "red") +
+	# scale_x_continuous("Daily Count", labels = comma) +
+	# scale_y_continuous("Daily Assignment", labels = comma)
 
 ```
 
 ### RMSE Statistics{data-height=575}
 ```{r rmse_vol1}
 
-ggplot(vgsum, aes(x = vgidx, y = prmse_DAILY, color = "Model")) + geom_line(stat = "identity", size = 1.2) +
-  geom_line(aes(y = limit/100, color = "Limit"), stat = "identity", size = 1.2) +
-  scale_y_continuous("Percent RMSE", labels = percent) +
-  scale_x_continuous("Volume Group", labels = function(x){return(vgsum[x + 1,"vg"])}, breaks = 0:nrow(vgsum)) + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+# ggplot(vgsum, aes(x = vgidx, y = prmse_DAILY, color = "Model")) + geom_line(stat = "identity", size = 1.2) +
+  # geom_line(aes(y = limit/100, color = "Limit"), stat = "identity", size = 1.2) +
+  # scale_y_continuous("Percent RMSE", labels = percent) +
+  # scale_x_continuous("Volume Group", labels = function(x){return(vgsum[x + 1,"vg"])}, breaks = 0:nrow(vgsum)) + 
+  # theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 ```
 
 ### Assigned VMT Statistics{data-height=575}
 ```{r vmtcomp_dy}
-  df = rbind.data.frame(cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$asnvmt_DAILY, "source" = "Model"), cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$obsvmt_DAILY, "source" = "Observed"))
-df$VMT = as.numeric(df$VMT)
+  # df = rbind.data.frame(cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$asnvmt_DAILY, "source" = "Model"), cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$obsvmt_DAILY, "source" = "Observed"))
+# df$VMT = as.numeric(df$VMT)
 
-  ggplot(df, aes(x = FTYPE, y = VMT, fill = source)) + geom_bar(stat = "identity", position = "dodge") +
-    scale_x_discrete("") +
-    scale_color_discrete("Source") +
-    scale_y_continuous("Vehicle Miles of Travel", labels = comma) 
+  # ggplot(df, aes(x = FTYPE, y = VMT, fill = source)) + geom_bar(stat = "identity", position = "dodge") +
+    # scale_x_discrete("") +
+    # scale_color_discrete("Source") +
+    # scale_y_continuous("Vehicle Miles of Travel", labels = comma) 
 
 ```
 
@@ -1991,32 +2149,32 @@ Chart Column 2{.tabset}
 
 ### AM Count vs Volume - All Links{data-height=575}
 ```{r count_vol6}
-ggplot(hnet[hnet$AM_CNT > 0,], aes(x = AM_CNT, y = AM_ASN)) + geom_point() +
-	geom_abline(slope = 1, intercept = 0, color = "red") +
-	scale_x_continuous("AM Count", labels = comma) +
-	scale_y_continuous("AM Assignment", labels = comma)
+# ggplot(hnet[hnet$AM_CNT > 0,], aes(x = AM_CNT, y = AM_ASN)) + geom_point() +
+	# geom_abline(slope = 1, intercept = 0, color = "red") +
+	# scale_x_continuous("AM Count", labels = comma) +
+	# scale_y_continuous("AM Assignment", labels = comma)
 ```
 
 ### RMSE Statistics{data-height=575}
 ```{r rmse_vol2}
 
-ggplot(vgsum, aes(x = vgidx, y = prmse_AM, color = "Model")) + geom_line(stat = "identity", size = 1.2) +
-  geom_line(aes(y = limit/100, color = "Limit"), stat = "identity", size = 1.2) +
-  scale_y_continuous("Percent RMSE", labels = percent) +
-  scale_x_continuous("Volume Group", labels = function(x){return(vgsum[x + 1,"vg"])}, breaks = 0:nrow(vgsum)) + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+# ggplot(vgsum, aes(x = vgidx, y = prmse_AM, color = "Model")) + geom_line(stat = "identity", size = 1.2) +
+  # geom_line(aes(y = limit/100, color = "Limit"), stat = "identity", size = 1.2) +
+  # scale_y_continuous("Percent RMSE", labels = percent) +
+  # scale_x_continuous("Volume Group", labels = function(x){return(vgsum[x + 1,"vg"])}, breaks = 0:nrow(vgsum)) + 
+  # theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 ```
 
 ### Assigned VMT Statistics{data-height=575}
 ```{r vmtcomp_am}
-  df = rbind.data.frame(cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$asnvmt_AM, "source" = "Model"), cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$obsvmt_AM, "source" = "Observed"))
-df$VMT = as.numeric(df$VMT)
+  # df = rbind.data.frame(cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$asnvmt_AM, "source" = "Model"), cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$obsvmt_AM, "source" = "Observed"))
+# df$VMT = as.numeric(df$VMT)
 
-  ggplot(df, aes(x = FTYPE, y = VMT, fill = source)) + geom_bar(stat = "identity", position = "dodge") +
-    scale_x_discrete("") +
-    scale_color_discrete("Source") +
-    scale_y_continuous("Vehicle Miles of Travel", labels = comma) 
+  # ggplot(df, aes(x = FTYPE, y = VMT, fill = source)) + geom_bar(stat = "identity", position = "dodge") +
+    # scale_x_discrete("") +
+    # scale_color_discrete("Source") +
+    # scale_y_continuous("Vehicle Miles of Travel", labels = comma) 
 
 ```
 
@@ -2040,32 +2198,32 @@ Chart Column 2{.tabset}
 
 ### MD Count vs Volume - All Links{data-height=575}
 ```{r count_vol8}
-ggplot(hnet[hnet$MD_CNT > 0,], aes(x = MD_CNT, y = MD_ASN)) + geom_point() +
-	geom_abline(slope = 1, intercept = 0, color = "red") +
-	scale_x_continuous("Midday Count", labels = comma) +
-	scale_y_continuous("Midday Assignment", labels = comma)
+# ggplot(hnet[hnet$MD_CNT > 0,], aes(x = MD_CNT, y = MD_ASN)) + geom_point() +
+	# geom_abline(slope = 1, intercept = 0, color = "red") +
+	# scale_x_continuous("Midday Count", labels = comma) +
+	# scale_y_continuous("Midday Assignment", labels = comma)
 ```
 
 ### RMSE Statistics{data-height=575}
 ```{r rmse_vol3}
 
-ggplot(vgsum, aes(x = vgidx, y = prmse_MD, color = "Model")) + geom_line(stat = "identity", size = 1.2) +
-  geom_line(aes(y = limit/100, color = "Limit"), stat = "identity", size = 1.2) +
-  scale_y_continuous("Percent RMSE", labels = percent) +
-  scale_x_continuous("Volume Group", labels = function(x){return(vgsum[x + 1,"vg"])}, breaks = 0:nrow(vgsum)) + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+# ggplot(vgsum, aes(x = vgidx, y = prmse_MD, color = "Model")) + geom_line(stat = "identity", size = 1.2) +
+  # geom_line(aes(y = limit/100, color = "Limit"), stat = "identity", size = 1.2) +
+  # scale_y_continuous("Percent RMSE", labels = percent) +
+  # scale_x_continuous("Volume Group", labels = function(x){return(vgsum[x + 1,"vg"])}, breaks = 0:nrow(vgsum)) + 
+  # theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 ```
 
 ### Assigned VMT Statistics{data-height=575}
 ```{r vmtcomp_md}
-  df = rbind.data.frame(cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$asnvmt_MD, "source" = "Model"), cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$obsvmt_MD, "source" = "Observed"))
-df$VMT = as.numeric(df$VMT)
+  # df = rbind.data.frame(cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$asnvmt_MD, "source" = "Model"), cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$obsvmt_MD, "source" = "Observed"))
+# df$VMT = as.numeric(df$VMT)
 
-  ggplot(df, aes(x = FTYPE, y = VMT, fill = source)) + geom_bar(stat = "identity", position = "dodge") +
-    scale_x_discrete("") +
-    scale_color_discrete("Source") +
-    scale_y_continuous("Vehicle Miles of Travel", labels = comma) 
+  # ggplot(df, aes(x = FTYPE, y = VMT, fill = source)) + geom_bar(stat = "identity", position = "dodge") +
+    # scale_x_discrete("") +
+    # scale_color_discrete("Source") +
+    # scale_y_continuous("Vehicle Miles of Travel", labels = comma) 
 
 ```
 
@@ -2089,32 +2247,32 @@ Chart Column 2{.tabset}
 
 ### PM Count vs Volume - All Links{data-height=575}
 ```{r count_vol10}
-ggplot(hnet[hnet$PM_CNT > 0,], aes(x = PM_CNT, y = PM_ASN)) + geom_point() +
-	geom_abline(slope = 1, intercept = 0, color = "red") +
-	scale_x_continuous("PM Count", labels = comma) +
-	scale_y_continuous("PM Assignment", labels = comma)
+# ggplot(hnet[hnet$PM_CNT > 0,], aes(x = PM_CNT, y = PM_ASN)) + geom_point() +
+	# geom_abline(slope = 1, intercept = 0, color = "red") +
+	# scale_x_continuous("PM Count", labels = comma) +
+	# scale_y_continuous("PM Assignment", labels = comma)
 ```
 
 ### RMSE Statistics{data-height=575}
 ```{r rmse_vol4}
 
-ggplot(vgsum, aes(x = vgidx, y = prmse_PM, color = "Model")) + geom_line(stat = "identity", size = 1.2) +
-  geom_line(aes(y = limit/100, color = "Limit"), stat = "identity", size = 1.2) +
-  scale_y_continuous("Percent RMSE", labels = percent) +
-  scale_x_continuous("Volume Group", labels = function(x){return(vgsum[x + 1,"vg"])}, breaks = 0:nrow(vgsum)) + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+# ggplot(vgsum, aes(x = vgidx, y = prmse_PM, color = "Model")) + geom_line(stat = "identity", size = 1.2) +
+  # geom_line(aes(y = limit/100, color = "Limit"), stat = "identity", size = 1.2) +
+  # scale_y_continuous("Percent RMSE", labels = percent) +
+  # scale_x_continuous("Volume Group", labels = function(x){return(vgsum[x + 1,"vg"])}, breaks = 0:nrow(vgsum)) + 
+  # theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 ```
 
 ### Assigned VMT Statistics{data-height=575}
 ```{r vmtcomp_pm}
-  df = rbind.data.frame(cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$asnvmt_PM, "source" = "Model"), cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$obsvmt_PM, "source" = "Observed"))
-df$VMT = as.numeric(df$VMT)
+  # df = rbind.data.frame(cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$asnvmt_PM, "source" = "Model"), cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$obsvmt_PM, "source" = "Observed"))
+# df$VMT = as.numeric(df$VMT)
 
-  ggplot(df, aes(x = FTYPE, y = VMT, fill = source)) + geom_bar(stat = "identity", position = "dodge") +
-    scale_x_discrete("") +
-    scale_color_discrete("Source") +
-    scale_y_continuous("Vehicle Miles of Travel", labels = comma) 
+  # ggplot(df, aes(x = FTYPE, y = VMT, fill = source)) + geom_bar(stat = "identity", position = "dodge") +
+    # scale_x_discrete("") +
+    # scale_color_discrete("Source") +
+    # scale_y_continuous("Vehicle Miles of Travel", labels = comma) 
 
 ```
 
@@ -2138,32 +2296,32 @@ Chart Column 2{.tabset}
 
 ### NT Count vs Volume - All Links{data-height=575}
 ```{r count_vol12}
-ggplot(hnet[hnet$NT_CNT > 0,], aes(x = NT_CNT, y = NT_ASN)) + geom_point() +
-	geom_abline(slope = 1, intercept = 0, color = "red") +
-	scale_x_continuous("Nighttime Count", labels = comma) +
-	scale_y_continuous("Nighttime Assignment", labels = comma)
+# ggplot(hnet[hnet$NT_CNT > 0,], aes(x = NT_CNT, y = NT_ASN)) + geom_point() +
+	# geom_abline(slope = 1, intercept = 0, color = "red") +
+	# scale_x_continuous("Nighttime Count", labels = comma) +
+	# scale_y_continuous("Nighttime Assignment", labels = comma)
 ```
 
 ### RMSE Statistics{data-height=575}
 ```{r rmse_vol5}
 
-ggplot(vgsum, aes(x = vgidx, y = prmse_NT, color = "Model")) + geom_line(stat = "identity", size = 1.2) +
-  geom_line(aes(y = limit/100, color = "Limit"), stat = "identity", size = 1.2) +
-  scale_y_continuous("Percent RMSE", labels = percent) +
-  scale_x_continuous("Volume Group", labels = function(x){return(vgsum[x + 1,"vg"])}, breaks = 0:nrow(vgsum)) + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+# ggplot(vgsum, aes(x = vgidx, y = prmse_NT, color = "Model")) + geom_line(stat = "identity", size = 1.2) +
+  # geom_line(aes(y = limit/100, color = "Limit"), stat = "identity", size = 1.2) +
+  # scale_y_continuous("Percent RMSE", labels = percent) +
+  # scale_x_continuous("Volume Group", labels = function(x){return(vgsum[x + 1,"vg"])}, breaks = 0:nrow(vgsum)) + 
+  # theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 ```
 
 ### Assigned VMT Statistics{data-height=575}
 ```{r vmtcomp_nt}
-  df = rbind.data.frame(cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$asnvmt_NT, "source" = "Model"), cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$obsvmt_NT, "source" = "Observed"))
-df$VMT = as.numeric(df$VMT)
+  # df = rbind.data.frame(cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$asnvmt_NT, "source" = "Model"), cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$obsvmt_NT, "source" = "Observed"))
+# df$VMT = as.numeric(df$VMT)
 
-  ggplot(df, aes(x = FTYPE, y = VMT, fill = source)) + geom_bar(stat = "identity", position = "dodge") +
-    scale_x_discrete("") +
-    scale_color_discrete("Source") +
-    scale_y_continuous("Vehicle Miles of Travel", labels = comma) 
+  # ggplot(df, aes(x = FTYPE, y = VMT, fill = source)) + geom_bar(stat = "identity", position = "dodge") +
+    # scale_x_discrete("") +
+    # scale_color_discrete("Source") +
+    # scale_y_continuous("Vehicle Miles of Travel", labels = comma) 
 
 ```
 
@@ -2185,24 +2343,24 @@ Chart Column 2{.tabset}
 ### Vehicle Miles of Travel{data-height=5750}
 ```{r asn_vmt}
 
-build_df <- vmtsum[vmtsum$Period == "DAILY" & vmtsum$COUNTY != 10,]
+# build_df <- vmtsum[vmtsum$Period == "DAILY" & vmtsum$COUNTY != 10,]
 
-build_df$CNAME = assign_county[build_df$COUNTY]
+# build_df$CNAME = assign_county[build_df$COUNTY]
 
-base_df = build_df
-base_df$vmt = 0
+# base_df = build_df
+# base_df$vmt = 0
 
-#FTYPE,COUNTY,Period,nLinks,vmt
+##FTYPE,COUNTY,Period,nLinks,vmt
 
-sd.asnvmt <- get_standardDF(data_df1 = base_df, data_df2 = build_df, x = "FTYPE", y = c("vmt"), grp = c("CNAME"), shared = TRUE)
+# sd.asnvmt <- get_standardDF(data_df1 = base_df, data_df2 = build_df, x = "FTYPE", y = c("vmt"), grp = c("CNAME"), shared = TRUE)
 
-p <- plotly_bar_plotter(data = sd.asnvmt, xlabel = "Facility Type", ylabel = "VMT", percent = T, height = 225, ynames = c(BASE_SCENARIO_NAME, BUILD_SCENARIO_NAME))
+# p <- plotly_bar_plotter(data = sd.asnvmt, xlabel = "Facility Type", ylabel = "VMT", percent = T, height = 225, ynames = c(BASE_SCENARIO_NAME, BUILD_SCENARIO_NAME))
 
-bscols(widths=c(3,9),
-  list(
-    filter_select("asnvmt_cname", "Select County", sd.asnvmt, ~grp_var, multiple=F)),
-    p
-)
+# bscols(widths=c(3,9),
+  # list(
+    # filter_select("asnvmt_cname", "Select County", sd.asnvmt, ~grp_var, multiple=F)),
+    # p
+# )
 
 
 
