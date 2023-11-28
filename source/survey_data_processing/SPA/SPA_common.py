@@ -706,10 +706,6 @@ def print_in_same_files(hh_list, out_dir):
         hh.print_unique_joint_trips(unique_jtrip_file)
         hh.print_unique_joint_tours(unique_jtour_file)
         for psn in hh.persons:
-            #FIXME: Remove before flight
-            if hh.hh_id == 21001309:
-                print(f'HH_ID {hh.hh_id}, processing person {psn}')
-            # End Remove
             count_persons = count_persons+1
             psn.print_vals(per_file)
             if psn.error_flag==True:
