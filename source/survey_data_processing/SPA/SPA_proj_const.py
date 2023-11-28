@@ -59,6 +59,7 @@ SurveyTpurp2Purp = {  #map TPURP from TSM surveys to the corresponding PURP code
     11: 11,
     12: 12,
     13: 13,
+    -9: -9
     }
 
 # BMP - updated to represent modes in TSM surveys

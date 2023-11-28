@@ -43,7 +43,7 @@ if __name__ == "__main__":
     #BMP[09/08/17] - survey data processed separately for each survey day  
     #
 
-    for dayno in range(1,5):
+    for dayno in range(1,8):
         
         print("PROCESSING DAY : "+str(dayno))
 
@@ -76,7 +76,6 @@ if __name__ == "__main__":
             
             #loop through each person
             for (hhid, pid), df_psn_places in df_persons.groupby(['SAMPN', 'PERNO']):
-                
                 #locate the corresponding person in PERSON table
                 df_cur_per = df_per[(df_per['SAMPN']==hhid) & (df_per['PERNO']==pid)]
                 
@@ -84,7 +83,8 @@ if __name__ == "__main__":
                 psn = Person(hh, pid, df_cur_per)
 
                 num_places_for_person = len(df_psn_places)            
-                #print("No. of place entries for person "+str(pid)+" of household "+str(hhid)+": "+str(num_places_for_person))
+                
+                print("No. of place entries for person "+str(pid)+" of household "+str(hhid)+": "+str(num_places_for_person))
 
                 #first make sure that the place entries are ordered by place number since they will be processed sequentially later
                 df_psn_places = df_psn_places.sort_values(by='PLANO')
@@ -157,9 +157,8 @@ if __name__ == "__main__":
 
                     #update row pointer 
                     cur_row = cur_row+1
-                    
 
-                if num_places_for_person<=1:     #each traveling person would have more than 1 PLACE entry
+                if num_places_for_person <= 1:     #each traveling person would have more than 1 PLACE entry
                     psn.log_warning("Did not travel")
 
                 #end - processing PLACE records for the person

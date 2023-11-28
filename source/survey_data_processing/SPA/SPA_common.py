@@ -71,7 +71,7 @@ NewTourMode = {
     'TNC-SHARED': 16,
     'TAXI': 17,
     'SCHOOLBUS': 18,
-    'OTHER': 19
+    'OTHER': 22,
 }
 
 # NewTourMode = {   #map new mode name to mode code
@@ -100,7 +100,7 @@ NewPurp = {     #map new purpose name to purpose code
     'WORK-RELATED': 10,
     'LOOP':         11,
     'CHANGE MODE':  12,
-    'OTHER':        13
+    'OTHER':        -9
     }
 
 NewPartialTour = {  #map partial tour types to numeric code
@@ -706,6 +706,10 @@ def print_in_same_files(hh_list, out_dir):
         hh.print_unique_joint_trips(unique_jtrip_file)
         hh.print_unique_joint_tours(unique_jtour_file)
         for psn in hh.persons:
+            #FIXME: Remove before flight
+            if hh.hh_id == 21001309:
+                print(f'HH_ID {hh.hh_id}, processing person {psn}')
+            # End Remove
             count_persons = count_persons+1
             psn.print_vals(per_file)
             if psn.error_flag==True:
@@ -905,7 +909,7 @@ class Household:
 
                 # Attempt to resolve inconsistency in reported travel party
                 # Assuming that reported departure times and number of participants are accurate
-                if _error_travel_party & (not _error_number_hh):
+                if _error_travel_party and (not _error_number_hh):
 
                     """
                     ##remove the lines below before uncommenting
@@ -942,7 +946,7 @@ class Household:
 
                 # Attempt to resolve inconsistency in reported number of participants
                 # Assuming that reported departure times and travel participants are accurate
-                if _error_number_hh & (not _error_travel_party):
+                if _error_number_hh and (not _error_travel_party):
                     """
                     msg = "Joint trips departing at {}:{} reported inconsistent number of participants".format(_dep_time//60,_dep_time%60)
                     for _jt in _jt_list:
@@ -956,9 +960,9 @@ class Household:
 
 
                 #inconsistencies found in both reported number of participants and reported travel participants
-                if _error_number_hh & _error_travel_party:
+                if _error_number_hh and _error_travel_party:
                     # log as an error and break from loop, for now
-                    msg = "Joint trips departing at {}:{} reported inconsistent info about participants & travel group sizes".format(_dep_time//60,_dep_time%60)
+                    msg = "Joint trips departing at {}:{} reported inconsistent info about participants and travel group sizes".format(_dep_time//60,_dep_time%60)
                     #self.log_error(msg)
                     for _jt in _jt_list:
                         _jt.log_error(msg)
@@ -996,7 +1000,7 @@ class Household:
                     #joint ultrip id
                     _jt_list[_i].set_joint_ultrip_id(_joint_ultrip_id)
                     #chauffuer id
-                    if (_driver_ix!=None) & (_i!=_driver_ix):  #skip the driver him/her-self
+                    if (_driver_ix!=None) and (_i!=_driver_ix):  #skip the driver him/her-self
                         _jt_list[_i].set_chauffuer(_jt_list[_driver_ix].driver)
                     #travel group composition
                     _jt_list[_i].set_composition(_composition)
@@ -1049,14 +1053,14 @@ class Household:
             #necessary condition for a joint episode group to be the start of a joint tour:
             #(1) trip_id the same and equal to 1 for all participants
             #(2) length of corresponding tour is the same for all participants
-            if (len(set(_trip_ids))==1) & (_trip_ids[0]==1) & (len(set(_tour_lens))==1):
+            if (len(set(_trip_ids))==1) and (_trip_ids[0]==1) and (len(set(_tour_lens))==1):
                 _start_jtour = _jt_group_idx
                 _num_seq_jtrips = 1
             #necessary condition for a joint episode group to be part of the same joint tour as the previous joint episode:
             #(1)count of sequential number of joint episode is greater than 0
             #(2)identical set of person id and tour id as the previous joint episode
             #(3)trip_id the same for all participants and all equal to the previous trip's id plus 1
-            elif (_num_seq_jtrips>0) & ((_pids, _tour_ids)==_prev_jt) & (len(set(_trip_ids))==1) & (_trip_ids[0]==_num_seq_jtrips+1):
+            elif (_num_seq_jtrips>0) and ((_pids, _tour_ids)==_prev_jt) and (len(set(_trip_ids))==1) and (_trip_ids[0]==_num_seq_jtrips+1):
                 _num_seq_jtrips = _num_seq_jtrips + 1
                 if _num_seq_jtrips==_tour_lens[0]:
                     #this is the last episode in the joint tour
@@ -1102,7 +1106,7 @@ class Household:
             _escorted_pers = set()      #ID of hh members who are escorted
             _escorting_jt = set()       #Joint_ultrip objects of hh members who are not the driver but also escorting
 
-            if (_num_driver==1) & (_driver_id>0):   #TODO: prevent driver id==nan
+            if (_num_driver==1) and (_driver_id>0):   #TODO: prevent driver id==nan
                 #there is exactly one driver on this unlinked joint trip
                 #locate the driver's joint trip to see if joint trip was associated with a drop-off or pick-up activity
                 _drop_off = False
@@ -1212,11 +1216,11 @@ class Person:
 
     def _calc_emp_cat(self, age, emply):
         _emp = np.NAN
-        if (age>=3) & (emply==1):
+        if (age>=3) and (emply==1):
             _emp = NewEmpCategory['FULLTIME']
-        elif (age>=3) & (emply==2):
+        elif (age>=3) and (emply==2):
             _emp = NewEmpCategory['PARTTIME']
-        elif (age>=3) & (emply>2):
+        elif (age>=3) and (emply>2):
             _emp = NewEmpCategory['UNEMPLOYED']
         elif age<3:
             _emp = NewEmpCategory['NON-WORKER']
@@ -1233,11 +1237,11 @@ class Person:
 
     def _calc_emp_cat_no_recode(self, age, emply):
         _emp = np.NAN
-        if (age>=3) & (emply==1):
+        if (age>=3) and (emply==1):
             _emp = NewEmpCategory['FULLTIME']
-        elif (age>=3) & (emply==2):
+        elif (age>=3) and (emply==2):
             _emp = NewEmpCategory['PARTTIME']
-        elif (age>=3) & (emply>2):
+        elif (age>=3) and (emply>2):
             _emp = NewEmpCategory['UNEMPLOYED']
         elif age<3:
             _emp = NewEmpCategory['NON-WORKER']
@@ -1279,29 +1283,29 @@ class Person:
 
         return _stu
 
-    def _calc_stu_cat_no_recode(self, age, stude, schol, emp_cat):
-        _stu = np.NAN
-        if (stude <= 0 | ((emp_cat == 1) | (schol < 1))):
-            if (age < 3):
-                _stu = NewStuCategory['SCHOOL']
-            else:
-                _stu = NewStuCategory['NON-STUDENT']
-        elif (schol >= 5):
-            if (age < 3):
-                _stu = NewStuCategory['SCHOOL']
-            else:
-                _stu = NewStuCategory['UNIVERSITY']
-        else:
-            if (age > 4):
-                _stu = NewStuCategory['UNIVERSITY']
-            else:
-                _stu = NewStuCategory['SCHOOL']
+    # def _calc_stu_cat_no_recode(self, age, stude, schol, emp_cat):
+    #     _stu = np.NAN
+    #     if (stude <= 0 | ((emp_cat == 1) | (schol < 1))):
+    #         if (age < 3):
+    #             _stu = NewStuCategory['SCHOOL']
+    #         else:
+    #             _stu = NewStuCategory['NON-STUDENT']
+    #     elif (schol >= 5):
+    #         if (age < 3):
+    #             _stu = NewStuCategory['SCHOOL']
+    #         else:
+    #             _stu = NewStuCategory['UNIVERSITY']
+    #     else:
+    #         if (age > 4):
+    #             _stu = NewStuCategory['UNIVERSITY']
+    #         else:
+    #             _stu = NewStuCategory['SCHOOL']
 
-        self.fields['STUDE'] = stude
-        self.fields['SCHOL'] = schol
-        self.fields['STU_CAT'] = _stu
+    #     self.fields['STUDE'] = stude
+    #     self.fields['SCHOL'] = schol
+    #     self.fields['STU_CAT'] = _stu
 
-        return _stu
+    #     return _stu
 
     def _calc_per_type(self, df_per):
         _type = np.NAN
@@ -1316,37 +1320,37 @@ class Person:
         _emp_cat = self._calc_emp_cat(_age, _emply)
         _stu_cat = self._calc_stu_cat(_age, _stude, _schol, _emp_cat)
 
-        if (_age>=3) & (_emp_cat==NewEmpCategory['FULLTIME']):
+        if (_age>=3) and (_emp_cat==NewEmpCategory['FULLTIME']):
             #Full-time worker
             _type = NewPerType['FW']
 
-        elif (_age>=3) & (_emp_cat==NewEmpCategory['PARTTIME']) & (_stu_cat==NewStuCategory['NON-STUDENT']):
+        elif (_age>=3) and (_emp_cat==NewEmpCategory['PARTTIME']) and (_stu_cat==NewStuCategory['NON-STUDENT']):
             #Part-time worker
             _type = NewPerType['PW']
 
-        elif (_age>=3) & (_emp_cat in [NewEmpCategory['PARTTIME'],NewEmpCategory['UNEMPLOYED']]) & (_stu_cat==NewStuCategory['UNIVERSITY']):
+        elif (_age>=3) and (_emp_cat in [NewEmpCategory['PARTTIME'],NewEmpCategory['UNEMPLOYED']]) and (_stu_cat==NewStuCategory['UNIVERSITY']):
             #University Student
             _type = NewPerType['US']
 
-        elif (_age>=3) & (_age<=7) & (_emp_cat==NewEmpCategory['UNEMPLOYED']) & (_stu_cat==NewStuCategory['NON-STUDENT']):
+        elif (_age>=3) and (_age<=7) and (_emp_cat==NewEmpCategory['UNEMPLOYED']) and (_stu_cat==NewStuCategory['NON-STUDENT']):
             #Non-worker
             _type = NewPerType['NW']
 
-        elif (_age>=8) & (_emp_cat==NewEmpCategory['UNEMPLOYED']) & (_stu_cat==NewStuCategory['NON-STUDENT']):
+        elif (_age>=8) and (_emp_cat==NewEmpCategory['UNEMPLOYED']) and (_stu_cat==NewStuCategory['NON-STUDENT']):
             #Retired (non-working) adult
             _type = NewPerType['RE']
 
-        #elif (_age>=16) & (_age<=19) & (_emp_cat in [2,3]) & (_stu_cat==1):
+        #elif (_age>=16) and (_age<=19) and (_emp_cat in [2,3]) and (_stu_cat==1):
         # note -- inclusive up to age 24 given categories
-        elif (_age>=3) & (_age<=7) & (_stu_cat==NewStuCategory['SCHOOL']):
+        elif (_age in[3,4])  and (_stu_cat == NewStuCategory['SCHOOL']):
             #Driving Age Student
             _type = NewPerType['DS']
 
-        elif (_age==2) & (_emp_cat==NewEmpCategory['NON-WORKER']) & (_stu_cat==NewStuCategory['SCHOOL']):
+        elif (_age==2) and (_emp_cat==NewEmpCategory['NON-WORKER']) and (_stu_cat==NewStuCategory['SCHOOL']):
             #Non-driving student
             _type = NewPerType['ND']
 
-        elif (_age==2) & (_emp_cat==NewEmpCategory['NON-WORKER']) & (_stu_cat==NewStuCategory['NON-STUDENT']):    #recode none students as students; see email exchange with JF on 6/5/2014
+        elif (_age==2) and (_emp_cat==NewEmpCategory['NON-WORKER']) and (_stu_cat==NewStuCategory['NON-STUDENT']):    #recode none students as students; see email exchange with JF on 6/5/2014
             #Non-driving student
             _type = NewPerType['ND']
             self.recode_student_category(NewStuCategory['SCHOOL'], "6~15 year old not attending school; reset STU_CAT to SCHOOL and assign PERTYPE to ND")
@@ -1360,64 +1364,63 @@ class Person:
 
         return _type
 
-    def _calc_per_type_no_recode(self, df_per):
-        _type = np.NAN
+    # def _calc_per_type_no_recode(self, df_per):
+    #     _type = np.NAN
 
-        if len(df_per) != 1:
-            self.log_error("person record not found")
+    #     if len(df_per) != 1:
+    #         self.log_error("person record not found")
 
-        _age = df_per['AGE_CAT'].iloc[0]
-        _emply = df_per['EMPLY'].iloc[0]
-        _stude = df_per['STUDE'].iloc[0]
-        _schol = df_per['SCHOL'].iloc[0]
-        _emp_cat = self._calc_emp_cat(_age, _emply)
-        _stu_cat = self._calc_stu_cat(_age, _stude, _schol, _emp_cat)
+    #     _age = df_per['AGE_CAT'].iloc[0]
+    #     _emply = df_per['EMPLY'].iloc[0]
+    #     _stude = df_per['STUDE'].iloc[0]
+    #     _schol = df_per['SCHOL'].iloc[0]
+    #     _emp_cat = self._calc_emp_cat(_age, _emply)
+    #     _stu_cat = self._calc_stu_cat(_age, _stude, _schol, _emp_cat)
 
-        if (_age>=3) & (_emp_cat==NewEmpCategory['FULLTIME']):
-            #Full-time worker
-            _type = NewPerType['FW']
+    #     if (_age>=3) & (_emp_cat==NewEmpCategory['FULLTIME']):
+    #         #Full-time worker
+    #         _type = NewPerType['FW']
 
-        elif (_age>=3) & (_emp_cat==NewEmpCategory['PARTTIME']) & (_stu_cat==NewStuCategory['NON-STUDENT']):
-            #Part-time worker
-            _type = NewPerType['PW']
+    #     elif (_age>=3) & (_emp_cat==NewEmpCategory['PARTTIME']) & (_stu_cat==NewStuCategory['NON-STUDENT']):
+    #         #Part-time worker
+    #         _type = NewPerType['PW']
 
-        elif (_age>=3) & (_emp_cat in [NewEmpCategory['PARTTIME'],NewEmpCategory['UNEMPLOYED']]) & (_stu_cat==NewStuCategory['UNIVERSITY']):
-            #University Student
-            _type = NewPerType['US']
+    #     elif (_age>=3) & (_emp_cat in [NewEmpCategory['PARTTIME'],NewEmpCategory['UNEMPLOYED']]) & (_stu_cat==NewStuCategory['UNIVERSITY']):
+    #         #University Student
+    #         _type = NewPerType['US']
 
-        elif (_age>=3) & (_age<=6) & (_emp_cat==NewEmpCategory['UNEMPLOYED']) & (_stu_cat==NewStuCategory['NON-STUDENT']):
-            #Non-worker
-            _type = NewPerType['NW']
+    #     elif (_age>=3) & (_age<=6) & (_emp_cat==NewEmpCategory['UNEMPLOYED']) & (_stu_cat==NewStuCategory['NON-STUDENT']):
+    #         #Non-worker
+    #         _type = NewPerType['NW']
 
-        elif (_age>=7) & (_emp_cat==NewEmpCategory['UNEMPLOYED']) & (_stu_cat==NewStuCategory['NON-STUDENT']):
-            #Retired (non-working) adult
-            _type = NewPerType['RE']
+    #     elif (_age>=7) & (_emp_cat==NewEmpCategory['UNEMPLOYED']) & (_stu_cat==NewStuCategory['NON-STUDENT']):
+    #         #Retired (non-working) adult
+    #         _type = NewPerType['RE']
 
-        elif (_age>=3) & (_age<=17) & (_stu_cat==NewStuCategory['SCHOOL']):
-            #Driving Age Student
-            _type = NewPerType['DS']
+    #     elif (_age>=3) & (_age<=17) & (_stu_cat==NewStuCategory['SCHOOL']):
+    #         #Driving Age Student
+    #         _type = NewPerType['DS']
 
-        elif (_age==3) & (_stu_cat==NewStuCategory['UNIVERSITY']):    #recode 16-year olds going to university as going to school
-            #Driving Age Student
-            _type = NewPerType['DS']
+    #     elif (_age==3) & (_stu_cat==NewStuCategory['UNIVERSITY']):    #recode 16-year olds going to university as going to school
+    #         #Driving Age Student
+    #         _type = NewPerType['DS']
 
-        elif (_age==2) & (_emp_cat==NewEmpCategory['NON-WORKER']) & (_stu_cat==NewStuCategory['SCHOOL']):
-            #Non-driving student
-            _type = NewPerType['ND']
+    #     elif (_age==2) & (_emp_cat==NewEmpCategory['NON-WORKER']) & (_stu_cat==NewStuCategory['SCHOOL']):
+    #         #Non-driving student
+    #         _type = NewPerType['ND']
 
-        elif (_age==2) & (_emp_cat==NewEmpCategory['NON-WORKER']) & (_stu_cat==NewStuCategory['NON-STUDENT']):    #recode none students as students; see email exchange with JF on 6/5/2014
-            #Non-driving student
-            _type = NewPerType['ND']
+    #     elif (_age==2) & (_emp_cat==NewEmpCategory['NON-WORKER']) & (_stu_cat==NewStuCategory['NON-STUDENT']):    #recode none students as students; see email exchange with JF on 6/5/2014
+    #         #Non-driving student
+    #         _type = NewPerType['ND']
 
-        elif (_age==1): #see email exchange with Joel 6/5/2014
-            #Preschool
-            _type = NewPerType['PS']
+    #     elif (_age==1): #see email exchange with Joel 6/5/2014
+    #         #Preschool
+    #         _type = NewPerType['PS']
 
-        else:
-            self.log_error("per_type not found")
+    #     else:
+    #         self.log_error("per_type not found")
 
-        return _type
-
+    #     return _type
 
     def add_tour(self, tour):
         self.tours.append(tour)
@@ -1543,7 +1546,7 @@ class Joint_tour:
         joint_purp = None
         for tour in self.person_tours:
             purp = tour.get_purp()
-            if (not purp==NewPurp['ESCORTING']) & (not purp in purp_list):
+            if (not purp==NewPurp['ESCORTING']) and (not purp in purp_list):
                 purp_list.append(purp)
         #in theory, there should be only 1 purpose
         if len(purp_list)==0:
@@ -1728,17 +1731,17 @@ class Tour:
             _mode = NewTourMode['WALK-PREMIUM']
         elif NewTripMode['WALK-LOCAL'] in _modes_used:
             _mode = NewTourMode['WALK-LOCAL']
-        elif NewTourMode['HOV3'] in _modes_used:
+        elif NewTripMode['HOV3'] in _modes_used:
             _mode = NewTourMode['HOV3']
-        elif NewTourMode['HOV2'] in _modes_used:
+        elif NewTripMode['HOV2'] in _modes_used:
             _mode = NewTourMode['HOV2']
-        elif NewTourMode['SOV'] in _modes_used:
+        elif NewTripMode['SOV'] in _modes_used:
             _mode = NewTourMode['SOV']
-        elif NewTourMode['TNC-SHARED'] in _modes_used:
+        elif NewTripMode['TNC-SHARED'] in _modes_used:
             _mode = NewTourMode['TNC-SHARED']
-        elif NewTourMode['TNC-SINGLE'] in _modes_used:
+        elif NewTripMode['TNC-SINGLE'] in _modes_used:
             _mode = NewTourMode['TNC-SINGLE']
-        elif NewTourMode['TAXI'] in _modes_used:
+        elif NewTripMode['TAXI'] in _modes_used:
             _mode = NewTourMode['TAXI']
         elif NewTripMode['BIKE'] in _modes_used:
             _mode = NewTourMode['BIKE']
@@ -2071,7 +2074,7 @@ class Tour:
             status = NewJointTourStatus['INDEPENDENT']
         elif self.get_is_fully_joint():
             status = NewJointTourStatus['FULL_JOINT']
-        elif num_grouped_joint_trips>0 & num_problem_joint_trips==0:
+        elif num_grouped_joint_trips>0 and num_problem_joint_trips==0:
             status = NewJointTourStatus['PART_JOINT']
         else:
             status = NewJointTourStatus['PROB_JOINT']
@@ -2120,7 +2123,7 @@ class Tour:
                 _escorted = True
                 _chauffuer_set.add(_trip.get_chauffuer())
             #find chauffeur for outbound leg of the tour
-            if (_trip.fields['IS_INBOUND']==0) & (_trip.get_escorted()!=NewEscort['NEITHER']):
+            if (_trip.fields['IS_INBOUND']==0) and (_trip.get_escorted()!=NewEscort['NEITHER']):
                 _out_chauffuer = _trip.get_chauffuer()
                 _out_jtripID = _trip.get_jtripID()
                 #find tour purpose for chauffeur for outbound jtripID
@@ -2134,7 +2137,7 @@ class Tour:
                             _out_chauffer_purp = _ctour.get_purp()
                             _ctour.set_escortee_purp(_out_jtripID, _purpose)
             #find chauffeur for inbound leg of the tour
-            if (_trip.fields['IS_INBOUND']==1) & (_trip.get_escorted()!=NewEscort['NEITHER']):
+            if (_trip.fields['IS_INBOUND']==1) and (_trip.get_escorted()!=NewEscort['NEITHER']):
                 _inb_chauffuer = _trip.get_chauffuer()
                 _inb_jtripID = _trip.get_jtripID()
                 #find tour purpose for chauffeur for inbound jtripID
@@ -2149,25 +2152,25 @@ class Tour:
                             _ctour.set_escortee_purp(_inb_jtripID, _purpose)
         #code escort type on outbound and inbound leg of the tour
         if  not math.isnan(_out_chauffer_purp):
-            if ((_out_chauffer_purp>0) & (_out_chauffer_purp<=3)) | (_out_chauffer_purp==10):
+            if ((_out_chauffer_purp>0) and (_out_chauffer_purp<=3)) or (_out_chauffer_purp==10):
                 _out_escort_type = NewEscortType['RIDE_SHARING']
-            elif (_out_chauffer_purp>3) & (_out_chauffer_purp<10):
+            elif (_out_chauffer_purp>3) and (_out_chauffer_purp<10):
                 _out_escort_type = NewEscortType['PURE_ESCORT']
         elif (_out_chauffer_ptype==4) | (_out_chauffer_ptype==5):
             _out_escort_type = NewEscortType['PURE_ESCORT']
-        elif ((_out_chauffer_ptype > 0) & (_out_chauffer_ptype <=3)) | (_out_chauffer_ptype==6):
+        elif ((_out_chauffer_ptype > 0) and (_out_chauffer_ptype <=3)) or (_out_chauffer_ptype==6):
             _out_escort_type = NewEscortType['RIDE_SHARING']
         else:
             _out_escort_type = NewEscortType['NO_ESCORT']
 
         if not math.isnan(_inb_chauffer_purp):
-            if ((_inb_chauffer_purp>0) & (_inb_chauffer_purp<=3)) | (_inb_chauffer_purp==10):
+            if ((_inb_chauffer_purp>0) and (_inb_chauffer_purp<=3)) or (_inb_chauffer_purp==10):
                 _inb_escort_type = NewEscortType['RIDE_SHARING']
-            elif (_inb_chauffer_purp>3) & (_inb_chauffer_purp<10):
+            elif (_inb_chauffer_purp>3) and (_inb_chauffer_purp<10):
                 _inb_escort_type = NewEscortType['PURE_ESCORT']
         elif (_inb_chauffer_ptype==4) | (_inb_chauffer_ptype==5):
             _inb_escort_type = NewEscortType['PURE_ESCORT']
-        elif ((_inb_chauffer_ptype > 0) & (_inb_chauffer_ptype <=3)) | (_inb_chauffer_ptype==6):
+        elif ((_inb_chauffer_ptype > 0) and (_inb_chauffer_ptype <=3)) or (_inb_chauffer_ptype==6):
             _inb_escort_type = NewEscortType['RIDE_SHARING']
         else:
             _inb_escort_type = NewEscortType['NO_ESCORT']
@@ -2202,32 +2205,32 @@ class Tour:
             #number of escorting episodes in outbound/inbound direction
             #check if ESCORTING key exists, otherwise no escortin on this trip
             if 'ESCORTING' in _trip.fields:
-                if (_trip.fields['IS_INBOUND']==0) & (_trip.fields['ESCORTING']!=NewEscort['NEITHER']):
+                if (_trip.fields['IS_INBOUND']==0) and (_trip.fields['ESCORTING']!=NewEscort['NEITHER']):
                     _out_escorting = _out_escorting + 1
-                if (_trip.fields['IS_INBOUND']==1) & (_trip.fields['ESCORTING']!=NewEscort['NEITHER']):
+                if (_trip.fields['IS_INBOUND']==1) and (_trip.fields['ESCORTING']!=NewEscort['NEITHER']):
                     _inb_escorting = _inb_escorting + 1
 
         #code escorting type for outbound and inbound leg
-        if  (not math.isnan(_tour_purp)) & (_out_escorting>0):
-            if ((_tour_purp>0) & (_tour_purp<=3)) | (_tour_purp==10):
+        if  (not math.isnan(_tour_purp)) and (_out_escorting>0):
+            if ((_tour_purp>0) and (_tour_purp<=3)) | (_tour_purp==10):
                 _out_escort_type = NewEscortType['RIDE_SHARING']
-            elif (_tour_purp>3) & (_tour_purp<10):
+            elif (_tour_purp>3) and (_tour_purp<10):
                 _out_escort_type = NewEscortType['PURE_ESCORT']
-        elif ((_pertype==4) | (_pertype==5)) & (_out_escorting>0):
+        elif ((_pertype==4) or (_pertype==5)) and (_out_escorting>0):
             _out_escort_type = NewEscortType['PURE_ESCORT']
-        elif (((_pertype > 0) & (_pertype <=3)) | (_pertype==6)) & (_out_escorting>0):
+        elif (((_pertype > 0) and (_pertype <=3)) or (_pertype==6)) and (_out_escorting>0):
             _out_escort_type = NewEscortType['RIDE_SHARING']
         else:
             _out_escort_type = NewEscortType['NO_ESCORT']
 
-        if (not math.isnan(_tour_purp)) & (_inb_escorting>0):
-            if ((_tour_purp>0) & (_tour_purp<=3)) | (_tour_purp==10):
+        if (not math.isnan(_tour_purp)) and (_inb_escorting>0):
+            if ((_tour_purp>0) and (_tour_purp<=3)) or (_tour_purp==10):
                 _inb_escort_type = NewEscortType['RIDE_SHARING']
-            elif (_tour_purp>3) & (_tour_purp<10):
+            elif (_tour_purp>3) and (_tour_purp<10):
                 _inb_escort_type = NewEscortType['PURE_ESCORT']
-        elif ((_pertype==4) | (_pertype==5)) & (_inb_escorting>0):
+        elif ((_pertype==4) or (_pertype==5)) and (_inb_escorting>0):
             _inb_escort_type = NewEscortType['PURE_ESCORT']
-        elif (((_pertype > 0) & (_pertype <=3)) | (_pertype==6)) & (_inb_escorting>0):
+        elif (((_pertype > 0) and (_pertype <=3)) or (_pertype==6)) and (_inb_escorting>0):
             _inb_escort_type = NewEscortType['RIDE_SHARING']
         else:
             _inb_escort_type = NewEscortType['NO_ESCORT']
@@ -2934,7 +2937,7 @@ class Trip:
                 _new_purp = NewPurp['UNIVERSITY']
                 self.per_obj.recode_student_category(NewStuCategory['UNIVERSITY'],
                         "found school activity (PLANO={}, PNAME={}) for Pertype={}; reset STU_CAT to UNIVERSITY".format(old_place_no, old_place_name, _pertype))
-                if _pertype in [ NewPerType['PW'], NewPerType['NW'], NewPerType['RE'] ] : #person types PW,NW,RE by definition are not supposed to have school activities
+                if _pertype in [ NewPerType['FW'], NewPerType['PW'], NewPerType['NW'], NewPerType['RE'] ] : #person types PW,NW,RE by definition are not supposed to have school activities
                     self.per_obj.recode_per_type(NewPerType['US'],
                                 "found school activity (PLANO={}, PNAME={}) for Pertype={}; reset PERSONTYPE to US".format(old_place_no, old_place_name, _pertype))
 
@@ -3012,7 +3015,7 @@ class Trip:
 
         #check for loop trips, i.e. purposes at both ends are HOME
         #recode destination purpose as LOOP
-        if (self.fields['ORIG_PURP']==NewPurp['HOME']) & (self.fields['DEST_PURP']==NewPurp['HOME']):
+        if (self.fields['ORIG_PURP']==NewPurp['HOME']) and (self.fields['DEST_PURP']==NewPurp['HOME']):
             self.fields['DEST_PURP']=NewPurp['LOOP']
             self.log_warning("RECODE: Destination Purpose of HOME-HOME trip recoded as LOOP")
 
@@ -3036,8 +3039,8 @@ class Trip:
         _is_transit_local    = np.any((df['MODE'].iloc[1:]==SurveyMode['TRANSIT-LOCAL']))
         _is_transit_premium  = np.any((df['MODE'].iloc[1:]==SurveyMode['TRANSIT-PREMIUM']))
         _is_transit    = (_is_transit_local | _is_transit_premium)
-        _is_auto_dr    = 1 if ((_is_auto==1) & (_is_driver==1)) else 0    #if auto driver for any segment
-        _is_auto_ps    = 1 if ((_is_auto==1) & (_is_passenger==1)) else 0   #if auto passanger for any segment
+        _is_auto_dr    = 1 if ((_is_auto==1) and (_is_driver==1)) else 0    #if auto driver for any segment
+        _is_auto_ps    = 1 if ((_is_auto==1) and (_is_passenger==1)) else 0   #if auto passanger for any segment
         _is_sch_bus    = np.any(df['MODE'].iloc[1:]==SurveyMode['SCHOOLBUS'])      #if any segment of the trip used school bus
         _is_bike       = np.any(df['MODE'].iloc[1:]==SurveyMode['BIKE'])          #if any segment of the trip used bike
         _is_walk       = np.any(df['MODE'].iloc[1:]==SurveyMode['WALK'])          #if any segment of the trip used walk
@@ -3047,25 +3050,35 @@ class Trip:
         _auto_occ      = 0  # initialize to 0
         _output_mode   = 0
 
-        if _is_transit:
+        if _is_sch_bus:
+            _output_mode = NewTripMode['SCHOOLBUS']
+
+        elif _is_transit:
             #this is a transit trip
             # DH [02/04/20] Modified to match SEMCOG HTS and design doc
-            if ((_is_auto)&(_is_driver)):
-                if (_is_transit_local & _is_transit_premium):
+            if (_is_taxi | _is_tnc_reg | _is_tnc_pool):
+                if (_is_transit_local and _is_transit_premium):
+                    _output_mode = NewTripMode['KNR-MIXED']
+                elif _is_transit_premium:
+                    _output_mode = NewTripMode['KNR-PREMIUM']
+                else:
+                    _output_mode = NewTripMode['KNR-LOCAL']
+            elif ((_is_auto) and (_is_driver)):
+                if (_is_transit_local and _is_transit_premium):
                     _output_mode = NewTripMode['PNR-MIXED']
                 elif _is_transit_premium:
                     _output_mode = NewTripMode['PNR-PREMIUM']
                 else:
                     _output_mode = NewTripMode['PNR-LOCAL']
-            elif (((_is_auto)&(not _is_driver)) | (_is_bike)):
-                if (_is_transit_local & _is_transit_premium):
+            elif (((_is_auto) and (not _is_driver)) | (_is_bike)):
+                if (_is_transit_local and _is_transit_premium):
                     _output_mode = NewTripMode['KNR-MIXED']
                 elif _is_transit_premium:
                     _output_mode = NewTripMode['KNR-PREMIUM']
                 else:
                     _output_mode = NewTripMode['KNR-LOCAL']
             else:
-                if (_is_transit_local & _is_transit_premium):
+                if (_is_transit_local and _is_transit_premium):
                     _output_mode = NewTripMode['WALK-MIXED']
                 elif _is_transit_premium:
                     _output_mode = NewTripMode['WALK-PREMIUM']
@@ -3073,7 +3086,7 @@ class Trip:
                     _output_mode = NewTripMode['WALK-LOCAL']
 
         elif (_is_auto):
-            #This is an auto trip
+            # This is an auto trip
             # DH [02/04/20] No Toll information in SEMCOG
             if _is_hov3:
                 _output_mode = NewTripMode['HOV3']
@@ -3081,13 +3094,6 @@ class Trip:
                 _output_mode = NewTripMode['HOV2']
             else:
                 _output_mode = NewTripMode['SOV']
-
-        elif _is_sch_bus:
-            _output_mode = NewTripMode['SCHOOLBUS']
-        elif _is_bike:
-            _output_mode = NewTripMode['BIKE']
-        elif _is_walk:
-            _output_mode = NewTripMode['WALK']
 
         elif (_is_tnc_pool):
             _output_mode = NewTripMode['TNC-SHARED']
@@ -3097,6 +3103,11 @@ class Trip:
 
         elif _is_taxi:
            _output_mode = NewTripMode['TAXI']
+
+        elif _is_bike:
+            _output_mode = NewTripMode['BIKE']
+        elif _is_walk:
+            _output_mode = NewTripMode['WALK']
 
         else:
             _output_mode = NewTripMode['OTHER']
@@ -3142,11 +3153,11 @@ class Trip:
         _PU = 0
         _DO = 0
         for row_index in range(1,_last_row+1):
-            if (df['TPURP'].iloc[row_index]==SURVEY_DO_PU_PURP_CODE) & (df['TOTTR'].iloc[row_index]<df['TOTTR_NEXT'].iloc[row_index]):
+            if (df['TPURP'].iloc[row_index]==SURVEY_DO_PU_PURP_CODE) and (df['TOTTR'].iloc[row_index]<df['TOTTR_NEXT'].iloc[row_index]):
                 _PU = _PU+1
-            elif (df['TPURP'].iloc[row_index]==SURVEY_DO_PU_PURP_CODE) & (df['TOTTR'].iloc[row_index]>df['TOTTR_NEXT'].iloc[row_index]) & (df['TOTTR_NEXT'].iloc[row_index]>0):
+            elif (df['TPURP'].iloc[row_index]==SURVEY_DO_PU_PURP_CODE) and (df['TOTTR'].iloc[row_index]>df['TOTTR_NEXT'].iloc[row_index]) and (df['TOTTR_NEXT'].iloc[row_index]>0):
                 _DO = _DO+1
-        if (_PU>0) & (_DO>0) :
+        if (_PU>0) and (_DO>0) :
             self.fields['DEST_ESCORTING'] = NewEscort['BOTH_PUDO']  #TODO: this would be an error?
         elif _PU>0:
             self.fields['DEST_ESCORTING'] = NewEscort['PICK_UP']
