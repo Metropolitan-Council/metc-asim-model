@@ -45,6 +45,8 @@ ECHO HIGHWAY
 runtpp %SCRIPT_PATH%\BNNET00B.s
 %check_cube_errors%
 
+:: This does a GIS analysis to determine the nearest managed lane facility in to each zone
+python "%MAIN_DIRECTORY%\source\python\metc_nearestml.py" -l "%SCENARIO_DIR%\link.shp" -n "%SCENARIO_DIR%\node.shp" -z %zones% -o "%SCENARIO_DIR%\nearestml.csv"
 
 ECHO INITIAL NETWORKS AND INITIAL SKIMS
 :: NON-MOTORIZED
@@ -246,11 +248,11 @@ ECHO Python Path: %PYTHON_PATH%
 ECHO Script Path: %SCRIPT_PATH%
 ECHO Scenario Dir: %SCENARIO_DIR%
 
-"%PYTHON_PATH%\python.exe" "%SCRIPT_PATH%\EVMAT00H.py" "%SCENARIO_DIR%\set_parameters.txt"
+python.exe "%SCRIPT_PATH%\EVMAT00H.py" "%SCENARIO_DIR%\set_parameters.txt"
 %check_cube_errors%
 
 :: Run ActivitySim
-%PYTHON_PATH%\python.exe source\ActivitySim\simulation.py -c source\ActivitySim\configs -d %SE% -d %SCENARIO_DIR%\OMX -o %ASIM_OUT%
+python.exe source\ActivitySim\simulation.py -c source\ActivitySim\configs -d %SE% -d %SCENARIO_DIR%\OMX -o %ASIM_OUT%
 %check_python_errors%
 
 echo Iteration=%ITER%
