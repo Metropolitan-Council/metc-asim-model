@@ -1,7 +1,7 @@
 # read cached skims (using numpy memmap) from output directory (memmap is faster than omx )
-read_skim_cache: True
+read_skim_cache: False
 # write memmapped cached skims to output directory after reading from omx, for use in subsequent runs
-write_skim_cache: True
+write_skim_cache: False
 
 #alternate dir to read/write skim cache (defaults to output_dir)
 #cache_dir: data/cache
@@ -12,15 +12,15 @@ taz_skims:
   - allskims.omx
   - se_omx.omx
 
+#TODO: update the time periods to these:
+#EA     Early AM     3:00 AM - 4:59 AM -  0 -  3
+#AM     AM Peak      5:00 AM - 8:59 AM -  4 - 11
+#MD     Midday       9:00 AM - 1:59 PM - 12 - 21
+#PM     PM Peak      2:00 PM - 6:59 PM - 22 - 30
+#NT     Night        7:00 PM - 2:59 AM - 31 - 48
 
-# Index 0 = 3 AM
-# EA =  ..NT..      /  0- 5 / Off-Peak Transit
-# AM = 6 AM - 10 AM /  6-13 / Peak Transit
-# MD = 10 AM - 3 PM / 14-23 / Off-Peak Transit
-# PM = 3 PM - 7 PM  / 24-31 / Peak Transit
-# NT = 7 PM - 6 AM  / 32-48 / Off-Peak Transit
 skim_time_periods:
     time_window: 1440
     period_minutes: 30
-    periods: [0, 5, 13, 23, 31, 48]
+    periods: [0, 4, 12, 22, 31, 48]
     labels: ['EA', 'AM', 'MD', 'PM', 'NT']

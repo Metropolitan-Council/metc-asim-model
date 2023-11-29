@@ -33,3 +33,9 @@ work_zone_area_type,work_zone_area_type,"reindex(land_use.area_type, persons.wor
 ,work_auto_savings_ratio,"(work_auto_savings / 120.0).clip(-1.0, 1.0)"
 Work location parking cost,work_park_cost,0
 Work location parking cost,work_park_cost,"np.where(persons.workplace_zone_id>=0, reindex(land_use.PARK_COST, persons.workplace_zone_id),0)"
+# calculating toll and non-toll costs for transponder ownership model,,
+,non_toll_time_work,"np.where(df.workplace_zone_id >= 0, skim_dict.lookup(df.home_zone_id, df.workplace_zone_id, ('SOV_N_TIME', 'AM')), 0)"
+,toll_time_work,"np.where(df.workplace_zone_id >= 0, skim_dict.lookup(df.home_zone_id, df.workplace_zone_id, ('SOV_P_TIME', 'AM')), 0)"
+,toll_dist_work,"np.where(df.workplace_zone_id >= 0, skim_dict.lookup(df.home_zone_id, df.workplace_zone_id, ('SOV_DIST', 'AM')), 0)"
+,toll_cost_work,"np.where(df.workplace_zone_id >= 0, skim_dict.lookup(df.home_zone_id, df.workplace_zone_id, ('SOV_P_TOLL', 'AM')), 0)"
+,toll_travel_time_savings_work,non_toll_time_work - toll_time_work

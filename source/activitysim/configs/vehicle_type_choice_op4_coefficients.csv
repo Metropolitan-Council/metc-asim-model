@@ -187,3 +187,4 @@ coef_ohio_mc,0.140,F
 coef_ohio_hyb,-0.142,F
 coef_ohio_ev,-1.590,F
 coef_ohio_age,-0.008,F
+coef_unavail,-999.0,T

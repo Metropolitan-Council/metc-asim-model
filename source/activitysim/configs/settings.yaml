@@ -13,7 +13,7 @@ households_sample_size: 300000 # Set for development debugging, if this isn't 0 
 chunk_training_mode: disabled
 chunk_size: 200_000_000_000
 num_processes: 20
-default_initial_rows_per_chunk: 10000
+default_initial_rows_per_chunk: 1000
 trace_hh_id: #1209096
 #trace_od: [5, 11]
 resume_after: #compute_disaggregate_accessibility
@@ -94,10 +94,10 @@ models:
   - work_from_home
   - workplace_location
   - school_location
-  # - transit_pass_subsidy
-  # - transit_pass_ownership
-  # - toll_pass_ownership
-  # - vehicle_type_choice
+  - vehicle_type_choice
+  - transit_pass_subsidy
+  - transit_pass_ownership
+  - transponder_ownership
   # - free_parking
   # - telecommute_frequency
   # - cdap_simulate
@@ -128,6 +128,7 @@ models:
   - write_data_dictionary
   - write_tables
   - write_trip_matrices
+  - track_skim_usage
 
 multiprocess_steps:
   - name: mp_init_persons
@@ -163,10 +164,11 @@ output_tables:
     - tours
     - trips
     - joint_tour_participants
-    - disaggregate_accessibility
-    - proto_disaggregate_accessibility
-    - proto_persons
-    - proto_households
+    - vehicles
+    # - disaggregate_accessibility
+    # - proto_disaggregate_accessibility
+    # - proto_persons
+    # - proto_households
     
 
 
