@@ -49,3 +49,6 @@ workplace_segmentation_targets:
   work_med: TOT_EMP
   work_high: TOT_EMP
   work_veryhigh: TOT_EMP
+
+# ignore criteria for zones smaller than target_threshold (total employmnet or enrollment)
+TARGET_THRESHOLD: 20
