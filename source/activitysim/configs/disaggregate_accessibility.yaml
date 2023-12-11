@@ -159,6 +159,12 @@ annotate_proto_tables:
       DF: proto_persons
       TABLES:
         - proto_households
+        
+  - tablename: land_use
+    annotate:
+      SPEC: annotate_landuse
+      DF: land_use
+
 
 # specific annotation for proto_persons
   - tablename: proto_persons

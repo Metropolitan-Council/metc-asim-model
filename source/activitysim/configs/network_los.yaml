@@ -9,7 +9,10 @@ write_skim_cache: False
 zone_system: 1
 
 taz_skims: 
-  - allskims.omx
+  - allskims_L.omx
+  - allskims_M.omx
+  - allskims_H.omx
+  # - allskims.omx
   - se_omx.omx
 
 #TODO: update the time periods to these:

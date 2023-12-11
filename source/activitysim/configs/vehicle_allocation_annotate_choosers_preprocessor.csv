@@ -1,5 +1,5 @@
 Description,Target,Expression
-Round Trip Tour Distance,tot_tour_dist,"(odt_skims['SOV_DIST'] + dot_skims['SOV_DIST'])"
+Round Trip Tour Distance,tot_tour_dist,"(odt_skims['SOV_DIST_M'] + dot_skims['SOV_DIST_M'])"
 number of vehicles is greater than the number of drivers,hh_veh_gt_drivers,"np.where(df.auto_ownership > df.num_drivers, 1, 0)"
 number of vehicles is less than the number of drivers,hh_veh_lt_drivers,"np.where(df.auto_ownership < df.num_drivers, 1, 0)"
 Age of vehicle alternative 1,age_1,"df.veh_num1.astype(str).str.split('_').str[1].fillna(0).astype(int)"

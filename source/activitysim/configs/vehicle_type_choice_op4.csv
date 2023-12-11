@@ -54,12 +54,12 @@ util_den6_ev,4000-9999 HH / sq mi Electric,"((hh_per_mi < 10000) & (hh_per_mi >=
 util_den78_ev,10000+ HH / sq mi Electric,"(hh_per_mi >= 10000) & ((fuel_type=='PEV') | (fuel_type=='BEV'))",coef_den78_ev
 #,household drivers,,
 util_oneveh_age,Household owns only one vehicle * vehicle age,"(auto_ownership == 1) * age",coef_oneveh_age
-util_vhgtdr_van,Household vehicles gt drivers for Van,hh_veh_gt_drivers & (body_type == 'Van'),coef_vhgtdr_van
-util_vhgtdr_suv,Household vehicles gt drivers for SUV,hh_veh_gt_drivers & (body_type == 'SUV'),coef_vhgtdr_suv
-util_vhgtdr_pu,Household vehicles gt drivers for Pickup,hh_veh_gt_drivers & (body_type == 'Pickup'),coef_vhgtdr_pu
-util_vhgtdr_mc,Household vehicles gt drivers for Motorcycle,hh_veh_gt_drivers & (body_type == 'Motorcycle'),coef_vhgtdr_mc
-util_vhgtdr_hy,Household vehicles gt drivers for Hybrid,hh_veh_gt_drivers & (fuel_type == 'Hybrid'),coef_vhgtdr_hy
-util_vhgtdr_ev,Household vehicles gt drivers for EVs,hh_veh_gt_drivers & ((fuel_type=='PEV') | (fuel_type=='BEV')),coef_vhgtdr_ev
+util_vhgtdr_van,Household vehicles gt drivers for Van,hh_veh_gt_drivers * (body_type == 'Van'),coef_vhgtdr_van
+util_vhgtdr_suv,Household vehicles gt drivers for SUV,hh_veh_gt_drivers * (body_type == 'SUV'),coef_vhgtdr_suv
+util_vhgtdr_pu,Household vehicles gt drivers for Pickup,hh_veh_gt_drivers * (body_type == 'Pickup'),coef_vhgtdr_pu
+util_vhgtdr_mc,Household vehicles gt drivers for Motorcycle,hh_veh_gt_drivers * (body_type == 'Motorcycle'),coef_vhgtdr_mc
+util_vhgtdr_hy,Household vehicles gt drivers for Hybrid,hh_veh_gt_drivers * (fuel_type == 'Hybrid'),coef_vhgtdr_hy
+util_vhgtdr_ev,Household vehicles gt drivers for EVs,hh_veh_gt_drivers * ((fuel_type=='PEV') | (fuel_type=='BEV')),coef_vhgtdr_ev
 util_vhgtdr_age,Household vehicles gt drivers for age,hh_veh_gt_drivers * age,coef_vhgtdr_age
 #,interacting with number of children,,
 util_nchld_van,Number of children max 3 * Van,num_children.clip(upper=3) * (body_type == 'Van'),coef_nchld_van
