@@ -2,6 +2,7 @@
 RUN PGM=NETWORK MSG='Export Raw Network From GeoDatabase'
 FILEO NETO = "%SCENARIO_DIR%\ALL_NET.tmp"
 FILEI LINKI[1] = "%iHwyNet%"
-
+FILEO LINKO = "%SCENARIO_DIR%\link.shp" FORMAT=SHP
+FILEO NODEO = "%SCENARIO_DIR%\node.shp" FORMAT=SHP
 
 ENDRUN

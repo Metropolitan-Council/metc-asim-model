@@ -90,6 +90,12 @@ def runZones():
 	coTaz.set_index("zone_id", inplace = True)
 	coTaz.sort_index(inplace = True)
 	landUseDf = landUseDf.join(coTaz[['COUNTY', 'STATEFP']])
+	try:
+		mldist = pd.read_csv(os.path.join(cfg['MAIN_DIRECTORY'], cfg['SCENARIO_NAME'], 'nearestml.csv')).set_index('zone_id')
+	except FileNotFoundError:
+		print(f"The managed lanes distance file is not found")
+		return(2)
+	landUseDf = landUseDf.join(mldist)
 	landUseDf.to_csv(OUTPUT_FOLDER + "land_use.csv")
 	return(0)
 

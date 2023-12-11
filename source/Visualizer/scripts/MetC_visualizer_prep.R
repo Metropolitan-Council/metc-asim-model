@@ -35,6 +35,17 @@ R_LIBRARY = Sys.getenv("R_LIBRARY")
 # AtWork - [All Subtours], [All            ], [TOURPURP - (All)     ]    
 # Other  - [No Subtours ], [All            ], [TOURPURP - (11,12,13)] 
 
+# NOTES FROM THE MODEL DEVELOPMENT DEPARTMENT
+# In this script, "dow" is used incorrectly. It should be assumed to be the day id, NOT the
+# day of week. There is no filtering based on this (apparently it was designed to never
+# import weekends in the first place).
+#
+# Note that the processing was revised to use day id and use the day weights to ensure
+# that weekend days were not used, as such dow_num CAN hit 7.
+#
+# SCHOOL CHILD CDAP
+#
+# Due to significant data collection during summer months, the school ()
 
 ## Libraries
 ############
@@ -121,7 +132,7 @@ jtours = data.table()
 place = data.table()
 
 
-for(dow in c(1:4)){
+for(dow in c(1:7)){
   cat(dow)
   
   per_data = fread(file.path(Survey_Processed_Dir, paste0('day', as.character(dow)), "persons.csv"))
@@ -236,9 +247,9 @@ per[zones_dt, SCHOOL_COUNTY := i.CO_NAME, on = .(PER_SCHL_ZONE_ID = TAZ)]
 # Join weight
 
 hh$finalweight = hh$HHEXPFAC
-hh$tourDays = hhDays$dow[match(hh$SAMPN, hhDays$HH_ID)]
-hh$tourDays[is.na(hh$tourDays)] = 0
-hh = hh[!is.na(hh$tourDays)]
+# hh$tourDays = hhDays$dow[match(hh$SAMPN, hhDays$HH_ID)]
+# hh$tourDays[is.na(hh$tourDays)] = 0
+# hh = hh[!is.na(hh$tourDays)]
 hh$adjFinalWeight = hh$HHEXPFAC #/ hh$tourDays
 hh$adjFinalWeight[is.na(hh$adjFinalWeight)] = 0
 

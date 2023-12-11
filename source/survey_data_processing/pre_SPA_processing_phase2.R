@@ -119,8 +119,8 @@ per_raw[, person_weight := 0]
 trip_raw[, trip_weight := 0]
 day_raw[, day_weight := 0]
 
-day_raw[, day_id := as.integer64(paste0(person_id, '0', day_num))]
-trip_raw[, day_id := as.integer64(paste0(person_id, '0', day_num))]
+# day_raw[, day_id := as.integer64(paste0(person_id, '0', day_num))]
+# trip_raw[, day_id := as.integer64(paste0(person_id, '0', day_num))]
 
 hh_weights[, hh_id := as.integer64(hh_id)]
 
@@ -276,10 +276,10 @@ trip_raw = trip_raw[order(hh_id, person_id, DEP_HR, DEP_MIN, ARR_HR, ARR_MIN)]
 
 # Order trip data and identify last trip
 
-trip_raw[, trip_num_day := seq_len(.N), by = .(hh_id, person_num, travel_dow)]
+trip_raw[, trip_num_day := seq_len(.N), by = .(hh_id, person_num, day_num)]
 
 trip_raw = trip_raw %>%
-  group_by(hh_id, person_num, travel_dow, trip_num_day) %>%
+  group_by(hh_id, person_num, day_num, trip_num_day) %>%
   mutate(tripnum_max = max(trip_num_day)) %>%
   mutate(lasttrip = ifelse(trip_num_day==tripnum_max, 1, 0)) %>%
   ungroup() %>% setDT()
@@ -296,13 +296,13 @@ firsttrip = trip_raw[trip_num_day == 1]
 
 per_without_trips = data.table()
 per_raw[hh_raw, participation_group := i.participation_group, on = .(hh_id)]
-for(day_num_i in 1:5){
-  dt = per_raw[!trip_raw[travel_dow == day_num_i], on = .(person_num, hh_id)][, .(person_num, hh_id, 
+for(day_num_i in 1:8){
+  dt = per_raw[!trip_raw[day_num == day_num_i], on = .(person_num, hh_id)][, .(person_num, hh_id, 
                                                                               trip_num_day = 1,
-                                                                              travel_dow = day_num_i,
+                                                                              day_num = day_num_i,
                                                                         trip_weight = person_weight, 
-                                                                        participation_group)][day_raw[,.(person_num, hh_id, travel_dow, day_complete, travel_date)], 
-                                                                        on = .(person_num, hh_id, travel_dow), day_complete := i.day_complete]
+                                                                        participation_group)][day_raw[,.(person_num, hh_id, day_num, day_complete, travel_date)], 
+                                                                        on = .(person_num, hh_id, day_num), day_complete := i.day_complete]
 
   if(day_num_i != 1) {
     dt = dt[participation_group != 2 & day_complete == 1]
@@ -312,7 +312,7 @@ for(day_num_i in 1:5){
   #dt[day_complete == 1, travel_dow := wday(travel_date, week_start = 1)]
   per_without_trips = rbindlist(list(per_without_trips, dt), use.names = TRUE, fill = TRUE)
 }
-
+print("dbg_aft_for_days...")
 per_without_trips[hh_raw, TRIP_D_TAZ := HH_ZONE_ID, on = .(hh_id)]
 per_without_trips[hh_raw, TRIP_O_TAZ := HH_ZONE_ID, on = .(hh_id)]
 per_without_trips[hh_raw, `:=` (o_lat = home_lat,
@@ -336,11 +336,11 @@ place_raw = trip_raw %>%
   
   mutate(trip_num_day = trip_num_day + 1) %>%
   bind_rows(firsttrip) %>%
-  arrange(hh_id, person_num, travel_dow, trip_num_day) %>%
+  arrange(hh_id, person_num, day_num, trip_num_day) %>%
   rename(PLACENO = trip_num_day) %>%
   
   # identify last trip for each person
-  group_by(hh_id, person_num, travel_dow) %>%
+  group_by(hh_id, person_num, day_num) %>%
   mutate(place_id_max = max(PLACENO)) %>%
   mutate(lasttrip = ifelse(PLACENO==place_id_max, 1, 0)) %>%
   ungroup() %>%
@@ -450,7 +450,7 @@ place_raw[PURPOSE == -1, PURPOSE := -9]
 #place_raw[PLACENO > 1, .N, PURPOSE][order(PURPOSE)]
 
 # get trip weight from day weight for 0-trip days
-place_raw[day_raw, trip_weight := ifelse(PLACENO == 1, i.day_weight, trip_weight), on = .(hh_id, person_num, travel_dow)]
+place_raw[day_raw, trip_weight := ifelse(PLACENO == 1, i.day_weight, trip_weight), on = .(hh_id, person_num, day_num)]
 place_raw[PLACENO == 1 & PURPOSE <0 & trip_weight >0,  PURPOSE := 0] # at home for 0-trip days with no prev purpose
 
 # place_raw = place_raw[PURPOSE >= 0] #Added ASR to remove trips that did not have a purpose
@@ -497,7 +497,7 @@ place_raw[hh_raw, HOME_DIST := get_distance_meters(c(XCORD, YCORD), c(home_lon, 
 print("* * * * QC 1 * * * *")
 # print(colnames(day_raw))
 # print(day_raw[day_raw$hh_id == 21001309, c("hh_id", "person_id", "person_num", "day_id", "day_num", "day_weight", "travel_date")])
-print(place_raw[place_raw$hh_id == 21001309, c("hh_id", "person_num", "day_num", "PLACENO", "trip_num", "travel_dow", "trip_weight")])
+print(place_raw[place_raw$hh_id == 21001309, c("hh_id", "person_num", "day_num", "PLACENO", "trip_num", "day_num", "trip_weight")])
 
 # tottr - next 
 
@@ -505,9 +505,10 @@ place_raw[, TOTTR_NEXT := shift(TRAVELERS_TOTAL, n = 1L, type = 'lead'), by = .(
 
 place_raw[is.na(TOTTR_NEXT), TOTTR_NEXT := 0]
 
-PLACE = place_raw[(MODE != -9 | PLACENO == 1) & travel_dow %in% c(1:4) & PURPOSE >= 0, .(SAMPN = hh_id,
+PLACE = place_raw[(MODE != -9 | PLACENO == 1) & day_num %in% c(1:7) & PURPOSE >= 0, .(SAMPN = hh_id,
                       PLANO = PLACENO,
                       PERNO = person_num,
+                      DAY_NUM = day_num,
                       DOW = travel_dow,
                       TAZ,
                       DEP_HR,
@@ -556,7 +557,7 @@ HH[is.na(HH)] = -9
 PER[is.na(PER)] = -9
 PLACE[is.na(PLACE)] = -9
 
-perday = dcast(day_raw[,.(PERNO = person_num, SAMPN = hh_id, travel_dow, day_complete)], SAMPN + PERNO ~ travel_dow, value.var = "day_complete", fun.aggregate = mean)
+perday = dcast(day_raw[,.(PERNO = person_num, SAMPN = hh_id, day_num, day_complete)], SAMPN + PERNO ~ day_num, value.var = "day_complete", fun.aggregate = mean)
 perday[is.na(perday)] = 0
 colnames(perday) = c("SAMPN", "PERNO", "Complete_1", "Complete_2", "Complete_3", "Complete_4", "Complete_5", "Complete_6", "Complete_7")
 
@@ -582,7 +583,9 @@ print(paste("There are", sum(HH$HHEXPFAC), "households and", sum(PER$PEREXPFAC),
 write.csv(HH, file.path(output_dir, "HH_SPA_INPUT.csv"), row.names = F)
 write.csv(PER, file.path(output_dir, "PER_SPA_INPUT.csv"), row.names = F)
 
-for (i in 1:4) {
-  write.csv(PLACE[DOW==i,], file.path(output_dir, paste0('place_', as.character(i), ".csv")), row.names = F)
+print(colnames(PLACE))
+
+for (i in 1:7) {
+  write.csv(PLACE[DAY_NUM==i,], file.path(output_dir, paste0('place_', as.character(i), ".csv")), row.names = F)
 }
 

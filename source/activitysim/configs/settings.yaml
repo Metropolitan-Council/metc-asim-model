@@ -14,9 +14,9 @@ chunk_training_mode: disabled
 chunk_size: 200_000_000_000
 num_processes: 20
 default_initial_rows_per_chunk: 1000
-trace_hh_id: #1209096
+trace_hh_id: 50504
 #trace_od: [5, 11]
-resume_after: #compute_disaggregate_accessibility
+resume_after: #vehicle_allocation
 
 # input tables
 input_table_list:
@@ -75,11 +75,9 @@ household_median_value_of_time:
   2: 8.81
   3: 10.44
   4: 12.86
-  5: 15.08
+  5: 12.86
 
 models:
-  ### mp_init_persons
-  - initialize_persons
   ### mp_init_proto_pop (single process)
   - initialize_proto_population # Separate step so proto tables can be split for multiprocess.
   ### mp_disaggregate_accessibility
@@ -95,25 +93,24 @@ models:
   - workplace_location
   - school_location
   - vehicle_type_choice
-  - transit_pass_subsidy
   - transit_pass_ownership
   - transponder_ownership
-  # - free_parking
-  # - telecommute_frequency
-  # - cdap_simulate
-  # - mandatory_tour_frequency
-  # - mandatory_tour_scheduling
-  # - school_escorting
-  # - joint_tour_frequency
-  # - joint_tour_composition
-  # - joint_tour_participation
-  # - joint_tour_destination
-  # - joint_tour_scheduling
-  # - non_mandatory_tour_frequency
-  # - non_mandatory_tour_destination
-  # - non_mandatory_tour_scheduling
-  # - vehicle_allocation
-  # - tour_mode_choice_simulate
+  - free_parking
+  - telecommute_frequency
+  - cdap_simulate
+  - mandatory_tour_frequency
+  - mandatory_tour_scheduling
+  - school_escorting
+  - joint_tour_frequency
+  - joint_tour_composition
+  - joint_tour_participation
+  - joint_tour_destination
+  - joint_tour_scheduling
+  - non_mandatory_tour_frequency
+  - non_mandatory_tour_destination
+  - non_mandatory_tour_scheduling
+  - vehicle_allocation
+  - tour_mode_choice_simulate
   # - atwork_subtour_frequency
   # - atwork_subtour_destination
   # - atwork_subtour_scheduling
@@ -131,8 +128,6 @@ models:
   - track_skim_usage
 
 multiprocess_steps:
-  - name: mp_init_persons
-    begin: initialize_persons
   - name: mp_init_proto_pop
     begin: initialize_proto_population
   - name: mp_disaggregate_accessibility
@@ -165,6 +160,7 @@ output_tables:
     - trips
     - joint_tour_participants
     - vehicles
+    - shadow_prices
     # - disaggregate_accessibility
     # - proto_disaggregate_accessibility
     # - proto_persons
