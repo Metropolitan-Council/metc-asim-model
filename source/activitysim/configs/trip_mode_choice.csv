@@ -4,18 +4,18 @@ util_DRIVEALONE_Unavailable,DRIVEALONE - Unavailable,sov_available == False,-999
 util_DRIVEALONE_Unavailable_for_persons_less_than_16,DRIVEALONE - Unavailable for persons less than 16,@df.age < 16,-999.0
 util_DRIVEALONE_Unavailable_for_joint_tours,DRIVEALONE - Unavailable for joint tours,is_joint == True,-999.0
 #util_DRIVEALONE_Unavailable_if_didn't_drive_to_work,DRIVEALONE - Unavailable if didn't drive to work,is_atwork_subtour & ~work_tour_is_SOV,-999.0
-util_DRIVEALONE_In-vehicle_time,DRIVEALONE - In-vehicle time,@odt_skims['SOV_N_TIME'],coef_ivt
+util_DRIVEALONE_In-vehicle_time,DRIVEALONE - In-vehicle time,@da_time_skim,coef_ivt
 util_DRIVEALONE_Terminal_time,DRIVEALONE - Terminal time,@coef_walktimeshort_multiplier * df.total_terminal_time,coef_ivt
-util_DRIVEALONE_Operating_cost_,DRIVEALONE - Operating cost ,@ivt_cost_multiplier * df.ivot * costPerMile * odt_skims['SOV_DIST'],coef_ivt
-util_DRIVEALONE_Parking_cost_,DRIVEALONE - Parking cost ,@ivt_cost_multiplier * df.ivot * df.total_parking_cost,coef_ivt
+util_DRIVEALONE_Operating_cost_,DRIVEALONE - Operating cost ,@ivt_cost_multiplier * (costPerMile * da_dist_skim + da_cost_skim) / df.cost_sensitivity,coef_ivt
+util_DRIVEALONE_Parking_cost_,DRIVEALONE - Parking cost ,@ivt_cost_multiplier * df.total_parking_cost / df.cost_sensitivity,coef_ivt
 util_DRIVEALONE_Person_is_between_16_and_19_years_old,DRIVEALONE - Person is between 16 and 19 years old,"@(df.age.between(16, 19))",coef_age1619_da
 #Shared_ride_2
 util_SHARED2_Unavailable,SHARED2 - Unavailable,hov2_available == False,,-999.0
 util_SHARED2_Unavailable_based_on_party_size,SHARED2 - Unavailable based on party size,is_joint & (number_of_participants > 2),,-999.0
-util_SHARED2_In-vehicle_time,SHARED2 - In-vehicle time,@odt_skims['HOV2_N_TIME'],,coef_ivt
+util_SHARED2_In-vehicle_time,SHARED2 - In-vehicle time,@s2_time_skim,,coef_ivt
 util_SHARED2_Terminal_time,SHARED2 - Terminal time,@coef_walktimeshort_multiplier * df.total_terminal_time,,coef_ivt
-util_SHARED2_Operating_cost,SHARED2 - Operating cost,@ivt_cost_multiplier * df.ivot * costPerMile * odt_skims['HOV2_DIST'],,coef_ivt
-util_SHARED2_Parking_cost,SHARED2 - Parking cost,@ivt_cost_multiplier * df.ivot * df.total_parking_cost / costShareSr2,,coef_ivt
+util_SHARED2_Operating_cost,SHARED2 - Operating cost,@ivt_cost_multiplier * (costPerMile * s2_dist_skim + s2_cost_skim) / df.cost_sensitivity,,coef_ivt
+util_SHARED2_Parking_cost,SHARED2 - Parking cost,@ivt_cost_multiplier * df.total_parking_cost / costShareSr2 / df.cost_sensitivity,,coef_ivt
 util_SHARED2_One_person_household,SHARED2 - One person household,@(df.hhsize == 1),,coef_hhsize1_sr
 util_SHARED2_Two_person_household,SHARED2 - Two person household,@(df.hhsize == 2),,coef_hhsize2_sr
 util_SHARED2_Person_is_16_years_old_or_older,SHARED2 - Person is 16 years old or older,@(df.age >= 16),,coef_age16p_sr
@@ -23,10 +23,10 @@ util_SHARED2_Person_is_16_years_old_or_older,SHARED2 - Person is 16 years old or
 util_SHARED3_Unavailable,SHARED3 - Unavailable,hov3_available == False,,,-999.0
 util_SHARED3_Unavailable_based_joint_tour_mode,SHARED3 - Unavailable based joint tour mode,@df.is_joint & df.i_tour_mode.isin(I_SR2_MODES),,,-999.0
 util_SHARED3_Unavailable_if_tour_mode_is_shared_2,SHARED3 - Unavailable if tour mode is shared 2,@df.i_tour_mode.isin(I_SR2_MODES),,,-999.0
-util_SHARED3_In-vehicle_time,SHARED3 - In-vehicle time,@odt_skims['HOV3_N_TIME'],,,coef_ivt
+util_SHARED3_In-vehicle_time,SHARED3 - In-vehicle time,@s3_time_skims,,,coef_ivt
 util_SHARED3_Terminal_time,SHARED3 - Terminal time,@coef_walktimeshort_multiplier * df.total_terminal_time,,,coef_ivt
-util_SHARED3_Operating_cost,SHARED3 - Operating cost,@ivt_cost_multiplier * df.ivot * costPerMile * odt_skims['HOV3_DIST'],,,coef_ivt
-util_SHARED3_Parking_cost,SHARED3 - Parking cost,@ivt_cost_multiplier * df.ivot *  df.total_parking_cost / costShareSr3,,,coef_ivt
+util_SHARED3_Operating_cost,SHARED3 - Operating cost,@ivt_cost_multiplier * (costPerMile * s3_dist_skim + s3_cost_skims) / df.cost_sensitivity,,,coef_ivt
+util_SHARED3_Parking_cost,SHARED3 - Parking cost,@ivt_cost_multiplier *  df.total_parking_cost / costShareSr3 / df.cost_sensitivity,,,coef_ivt
 util_SHARED3_One_person_household,SHARED3 - One person household,@(df.hhsize == 1),,,coef_hhsize1_sr
 util_SHARED3_Two_person_household,SHARED3 - Two person household,@(df.hhsize == 2),,,coef_hhsize2_sr
 util_SHARED3_Person_is_16_years_old_or_older,SHARED3 - Person is 16 years old or older,@(df.age >= 16),,,coef_age16p_sr
@@ -43,68 +43,70 @@ util_BIKE_Destination_zone_densityIndex,BIKE - Destination zone densityIndex,@de
 util_BIKE_Topology,BIKE - Topology,@topology_bike_multiplier * df.trip_topology,,,,,coef_ivt
 #Walk_to_Local
 util_TRNWALKACCESS_Unavailable,WALK_LOC - Unavailable,walk_local_available == False,,,,,,-999.0
-util_TRNWALKACCESS_In-vehicle_time,WALK_LOC - In-vehicle time,@odt_skims['WLK_TRN_IVT'],,,,,,coef_ivt
-util_TRNWALKACCESS_Short_iwait_time,WALK_LOC - Short iwait time,@coef_short_iwait_multiplier * (odt_skims['WLK_TRN_IWAIT']).clip(upper=waitThresh),,,,,,coef_ivt
-util_TRNWALKACCESS_Long_iwait_time,WALK_LOC - Long iwait time,@coef_long_iwait_multiplier * (odt_skims['WLK_TRN_IWAIT']-waitThresh).clip(0),,,,,,coef_ivt
-util_TRNWALKACCESS_transfer_wait_time,WALK_LOC - transfer wait time,@coef_xwait_multiplier * odt_skims['WLK_TRN_XWAIT'],,,,,,coef_ivt
-util_TRNWALKACCESS_number_of_transfers,WALK_LOC - number of transfers,@xfers_wlk_multiplier * (odt_skims['WLK_TRN_XFERS']).clip(0),,,,,,coef_ivt
-util_TRNWALKACCESS_Walk_access_time,WALK_LOC - Walk access time,@coef_wacc_multiplier * odt_skims['WLK_TRN_ACC'],,,,,,coef_ivt
-util_TRNWALKACCESS_Walk_egress_time,WALK_LOC - Walk egress time,@coef_wegr_multiplier * odt_skims['WLK_TRN_WLKEGR'],,,,,,coef_ivt
-util_TRNWALKACCESS_Walk_other_time,WALK_LOC - Walk other time,@coef_waux_multiplier * odt_skims['WLK_TRN_WLKXFER'],,,,,,coef_ivt
-util_TRNWALKACCESS_Fare,WALK_LOC - Fare,@ivt_cost_multiplier * df.ivot * (odt_skims['WLK_TRN_FARE']),,,,,,coef_ivt
+util_TRNWALKACCESS_In-vehicle_time,WALK_LOC - In-vehicle time,walk_trn_ivt,,,,,,coef_ivt
+util_TRNWALKACCESS_Short_iwait_time,WALK_LOC - Short iwait time,@coef_short_iwait_multiplier * (df.walk_trn_wait).clip(upper=waitThresh),,,,,,coef_ivt
+util_TRNWALKACCESS_Long_iwait_time,WALK_LOC - Long iwait time,@coef_long_iwait_multiplier * (df.walk_trn_wait-waitThresh).clip(0),,,,,,coef_ivt
+util_TRNWALKACCESS_transfer_wait_time,WALK_LOC - transfer wait time,@coef_xwait_multiplier * df.walk_xfr_wait,,,,,,coef_ivt
+util_TRNWALKACCESS_number_of_transfers,WALK_LOC - number of transfers,@xfers_wlk_multiplier * (walk_xfrs).clip(0),,,,,,coef_ivt
+util_TRNWALKACCESS_Walk_access_time,WALK_LOC - Walk access time,@coef_wacc_multiplier * df.walk_access_time,,,,,,coef_ivt
+util_TRNWALKACCESS_Walk_egress_time,WALK_LOC - Walk egress time,@coef_wegr_multiplier * df.walk_egress_time,,,,,,coef_ivt
+util_TRNWALKACCESS_Walk_other_time,WALK_LOC - Walk other time,@coef_waux_multiplier * df.walk_xfr_walk_time,,,,,,coef_ivt
+util_TRNWALKACCESS_Fare,WALK_LOC - Fare,@ivt_cost_multiplier * df.walk_fare / df.cost_sensitivity,,,,,,coef_ivt
 util_TRNWALKACCESS_Destination_zone_densityIndex,WALK_LOC - Destination zone densityIndex,@density_index_multiplier * df.density_index,,,,,,coef_ivt
 util_TRNWALKACCESS_Topology,WALK_LOC - Topology,@topology_trn_multiplier * df.trip_topology,,,,,,coef_ivt
 util_TRNWALKACCESS_Person_is_less_than_10_years_old,WALK_LOC - Person is less than 10 years old,@(df.age < 10),,,,,,coef_age010_trn
 #PNR_to_Local
 util_TRNDRIVEACCESS_Unavailable_for_zero_auto_households,PNR_LOC - Unavailable for zero auto households,auto_ownership == 0,,,,,,,-999.0
 util_TRNDRIVEACCESS_Unavailable_for_persons_less_than_16,PNR_LOC - Unavailable for persons less than 16,@df.age < 16,,,,,,,-999.0
-util_TRNDRIVEACCESS_Destination_zone_densityIndex,PNR_LOC - Destination zone densityIndex,@density_index_multiplier * df.density_index,,,,,,,coef_ivt
+util_TRNDRIVEACCESS_Destination_zone_densityIndex,PNR_LOC - Destination zone densityIndex,@df.outbound & density_index_multiplier * df.density_index,,,,,,,coef_ivt
 util_TRNDRIVEACCESS_Topology,PNR_LOC - Topology,@topology_trn_multiplier * df.trip_topology,,,,,,,coef_ivt
 util_TRNDRIVEACCESS_Person_is_less_than_10_years_old,PNR_LOC - Person is less than 10 years old,@(df.age < 10),,,,,,,coef_age010_trn
-util_TRNDRIVEACCESS_outbound_Unavailable,PNR_LOC outbound - Unavailable,@df.outbound & ~df.drive_transit_available_outbound,,,,,,,-999.0
-util_TRNDRIVEACCESS_outbound_In-vehicle_time,PNR_LOC outbound - In-vehicle time,@df.outbound * odt_skims['DRV_TRN_IVT'],,,,,,,coef_ivt
-util_TRNDRIVEACCESS_outbound_Short_iwait_time,PNR_LOC outbound - Short iwait time,@df.outbound * coef_short_iwait_multiplier * (odt_skims['DRV_TRN_IWAIT']).clip(upper=waitThresh),,,,,,,coef_ivt
-util_TRNDRIVEACCESS_outbound_Long_iwait_time,PNR_LOC outbound - Long iwait time,@df.outbound * coef_long_iwait_multiplier * (odt_skims['DRV_TRN_IWAIT']-waitThresh).clip(0),,,,,,,coef_ivt
-util_TRNDRIVEACCESS_outbound_transfer_wait_time,PNR_LOC outbound - transfer wait time,@df.outbound * coef_xwait_multiplier * odt_skims['DRV_TRN_XWAIT'],,,,,,,coef_ivt
-util_TRNDRIVEACCESS_outbound_number_of_transfers,PNR_LOC outbound - number of transfers,@df.outbound * xfers_wlk_multiplier * (odt_skims['DRV_TRN_XFERS']).clip(0),,,,,,,coef_ivt
-util_TRNDRIVEACCESS_outbound_Drive_time,PNR_LOC outbound - Drive time,@df.outbound * coef_dtim_multiplier * odt_skims['DRV_TRN_DRACC'],,,,,,,coef_ivt
-util_TRNDRIVEACCESS_outbound_Walk_egress_time,PNR_LOC outbound - Walk egress time,@df.outbound * coef_wegr_multiplier * odt_skims['WLK_TRN_WLKEGR'],,,,,,,coef_ivt
-util_TRNDRIVEACCESS_outbound_Walk_other_time,PNR_LOC outbound - Walk other time,@df.outbound * coef_waux_multiplier * odt_skims['DRV_TRN_WLKXFER'],,,,,,,coef_ivt
-util_TRNDRIVEACCESS_outbound_Fare_and_operating_cost,PNR_LOC outbound - Fare and operating cost,@df.outbound * ivt_cost_multiplier * df.ivot * (odt_skims['DRV_TRN_FARE'] + costPerMile * odt_skims['DRV_TRN_DRACCDIST']),,,,,,,coef_ivt
-util_TRNDRIVEACCESS_outbound_Ratio_of_drive_access_distance_to_OD_distance,PNR_LOC outbound - Ratio of drive access distance to OD distance,@df.outbound * dacc_ratio_multiplier * (odt_skims['DRV_TRN_DRACCDIST'])/ (odt_skims['SOV_DIST']),,,,,,,coef_ivt
-util_TRNDRIVEACCESS_inbound_Unavailable,PNR_LOC inbound - Unavailable,@df.inbound & ~df.drive_transit_available_inbound,,,,,,,-999.0
-util_TRNDRIVEACCESS_inbound_In-vehicle_time,PNR_LOC inbound - In-vehicle time,@df.inbound * odt_skims['DRV_TRN_IVT'],,,,,,,coef_ivt
-util_TRNDRIVEACCESS_inbound_Short_iwait_time,PNR_LOC inbound - Short iwait time,@df.inbound * coef_short_iwait_multiplier * (odt_skims['DRV_TRN_IWAIT']).clip(upper=waitThresh),,,,,,,coef_ivt
-util_TRNDRIVEACCESS_inbound_Long_iwait_time,PNR_LOC inbound - Long iwait time,@df.inbound * coef_long_iwait_multiplier * (odt_skims['DRV_TRN_IWAIT']-waitThresh).clip(0),,,,,,,coef_ivt
-util_TRNDRIVEACCESS_inbound_transfer_wait_time,PNR_LOC inbound - transfer wait time,@df.inbound * coef_xwait_multiplier * odt_skims['DRV_TRN_XWAIT'],,,,,,,coef_ivt
-util_TRNDRIVEACCESS_inbound_number_of_transfers,PNR_LOC inbound - number of transfers,@df.inbound * xfers_wlk_multiplier * (odt_skims['DRV_TRN_XFERS']).clip(0),,,,,,,coef_ivt
-util_TRNDRIVEACCESS_inbound_Drive_time,PNR_LOC inbound - Drive time,@df.inbound * coef_dtim_multiplier * odt_skims['DRV_TRN_DRACC'],,,,,,,coef_ivt
-util_TRNDRIVEACCESS_inbound_Walk_access_time,PNR_LOC inbound - Walk access time,@df.inbound * coef_wacc_multiplier * odt_skims['WLK_TRN_WLKEGR'],,,,,,,coef_ivt
-util_TRNDRIVEACCESS_inbound_Walk_other_time,PNR_LOC inbound - Walk other time,@df.inbound * coef_waux_multiplier * odt_skims['DRV_TRN_WLKXFER'],,,,,,,coef_ivt
-util_TRNDRIVEACCESS_inbound_Fare_and_operating_cost,PNR_LOC inbound - Fare and operating cost,@df.inbound * ivt_cost_multiplier * df.ivot  * (odt_skims['DRV_TRN_FARE'] + costPerMile * odt_skims['DRV_TRN_DRACCDIST']),,,,,,,coef_ivt
-util_TRNDRIVEACCESS_inbound_Ratio_of_drive_access_distance_to_OD_distance,PNR_LOC inbound - Ratio of drive access distance to OD distance,@df.inbound * dacc_ratio_multiplier * (odt_skims['DRV_TRN_DRACCDIST'])/ (od_skims['DIST']),,,,,,,coef_ivt
+util_TRNDRIVEACCESS_outbound_Unavailable,PNR_LOC outbound - Unavailable,@df.outbound & ~df.drive_transit_available_out,,,,,,,-999.0
+util_TRNDRIVEACCESS_outbound_In-vehicle_time,PNR_LOC outbound - In-vehicle time,@df.outbound * df.drive_trn_ivt_out,,,,,,,coef_ivt
+util_TRNDRIVEACCESS_outbound_Short_iwait_time,PNR_LOC outbound - Short iwait time,@df.outbound * coef_short_iwait_multiplier * (df.drive_trn_wait_out).clip(upper=waitThresh),,,,,,,coef_ivt
+util_TRNDRIVEACCESS_outbound_Long_iwait_time,PNR_LOC outbound - Long iwait time,@df.outbound * coef_long_iwait_multiplier * (df.drive_trn_wait_out-waitThresh).clip(0),,,,,,,coef_ivt
+util_TRNDRIVEACCESS_outbound_transfer_wait_time,PNR_LOC outbound - transfer wait time,@df.outbound * coef_xwait_multiplier * df.drive_xfr_wait_out,,,,,,,coef_ivt
+util_TRNDRIVEACCESS_outbound_number_of_transfers,PNR_LOC outbound - number of transfers,@df.outbound * xfers_wlk_multiplier * (df.drive_xfrs_out).clip(0),,,,,,,coef_ivt
+util_TRNDRIVEACCESS_outbound_Drive_time,PNR_LOC outbound - Drive time,@df.outbound * coef_dtim_multiplier * df.drive_access_time_out,,,,,,,coef_ivt
+util_TRNDRIVEACCESS_outbound_Walk_egress_time,PNR_LOC outbound - Walk egress time,@df.outbound * coef_wegr_multiplier * df.drive_egress_time_out,,,,,,,coef_ivt
+util_TRNDRIVEACCESS_outbound_Walk_other_time,PNR_LOC outbound - Walk other time,@df.outbound * coef_waux_multiplier * df.drive_xfr_walk_time_out,,,,,,,coef_ivt
+util_TRNDRIVEACCESS_outbound_Fare_and_operating_cost,PNR_LOC outbound - Fare and operating cost,@df.outbound * ivt_cost_multiplier * (df.drive_fare_out + costPerMile * df.drive_access_dist_out) / df.cost_sensitivity,,,,,,,coef_ivt
+util_TRNDRIVEACCESS_outbound_Ratio_of_drive_access_distance_to_OD_distance,PNR_LOC outbound - Ratio of drive access distance to OD distance,@df.outbound * dacc_ratio_multiplier * (df.drive_access_dist_out)/ (df.da_dist_skim),,,,,,,coef_ivt
+#PNR to Local - PNR Egress
+# util_TRNDRIVEACCESS_Origin_zone_densityIndex,PNR_LOC - Origin zone densityIndex,@df.outbound & density_index_multiplier * df.origin_density_index,,,,,,,coef_ivt
+util_TRNDRIVEACCESS_inbound_Unavailable,PNR_LOC inbound - Unavailable,@df.inbound & ~df.drive_transit_available_in,,,,,,,-999.0
+util_TRNDRIVEACCESS_inbound_In-vehicle_time,PNR_LOC inbound - In-vehicle time,@df.inbound * df.drive_trn_ivt_in,,,,,,,coef_ivt
+util_TRNDRIVEACCESS_inbound_Short_iwait_time,PNR_LOC inbound - Short iwait time,@df.inbound * coef_short_iwait_multiplier * (df.drive_trn_wait_in).clip(upper=waitThresh),,,,,,,coef_ivt
+util_TRNDRIVEACCESS_inbound_Long_iwait_time,PNR_LOC inbound - Long iwait time,@df.inbound * coef_long_iwait_multiplier * (df.drive_trn_wait_in-waitThresh).clip(0),,,,,,,coef_ivt
+util_TRNDRIVEACCESS_inbound_transfer_wait_time,PNR_LOC inbound - transfer wait time,@df.inbound * coef_xwait_multiplier * df.drive_xfr_wait_in,,,,,,,coef_ivt
+util_TRNDRIVEACCESS_inbound_number_of_transfers,PNR_LOC inbound - number of transfers,@df.inbound * xfers_wlk_multiplier * (df.drive_xfrs_in).clip(0),,,,,,,coef_ivt
+util_TRNDRIVEACCESS_inbound_Drive_time,PNR_LOC inbound - Drive time,@df.inbound * coef_dtim_multiplier * df.drive_access_time_in,,,,,,,coef_ivt
+util_TRNDRIVEACCESS_inbound_Walk_access_time,PNR_LOC inbound - Walk access time,@df.inbound * coef_wacc_multiplier * df.drive_egress_time_in,,,,,,,coef_ivt
+util_TRNDRIVEACCESS_inbound_Walk_other_time,PNR_LOC inbound - Walk other time,@df.inbound * coef_waux_multiplier * df.drive_xfr_walk_time_in,,,,,,,coef_ivt
+util_TRNDRIVEACCESS_inbound_Fare_and_operating_cost,PNR_LOC inbound - Fare and operating cost,@df.inbound * ivt_cost_multiplier  * (df.drive_fare_in + costPerMile * df.drive_access_dist_in) / df.cost_sensitivity,,,,,,,coef_ivt
+util_TRNDRIVEACCESS_inbound_Ratio_of_drive_access_distance_to_OD_distance,PNR_LOC inbound - Ratio of drive access distance to OD distance,@df.inbound * dacc_ratio_multiplier * (df.drive_access_dist_in)/ (df.da_dist_skim),,,,,,,coef_ivt
 #School_Bus
 util_School_Bus_Unavailable_if_primary_purpose_NOT_school,School Bus Unavailable if primary purpose NOT school,~is_school,,,,,,,,-999.0
 util_School_Bus_Unavailable_Tour_Mode_=_SOV,School Bus Unavailable - Tour Mode = SOV,tour_mode_is_SOV,,,,,,,,-999.0
 util_School_Bus_Unavailable_Tour_Mode_=_Transit,School Bus Unavailable - Tour Mode = Transit,tour_mode_is_drive_transit,,,,,,,,-999.0
-util_School_Bus_In-vehicle_time_(20_miles_per_hour),School Bus - In-vehicle time (20 miles per hour),@odt_skims['HOV3_DIST']*3,,,,,,,,coef_ivt
+util_School_Bus_In-vehicle_time_(20_miles_per_hour),School Bus - In-vehicle time (20 miles per hour),s3_dist_skim * 3.0,,,,,,,,coef_ivt
 util_School_Bus_Walk_Time,School Bus - Walk Time,@coef_wacc_multiplier*10,,,,,,,,coef_ivt
 util_School_Bus_Wait_Time,School Bus - Wait Time,@coef_short_iwait_multiplier*10,,,,,,,,coef_ivt
 util_School_Bus_tour_mode_ASC_shared_ride_2,School Bus tour mode ASC -- shared ride 2,@df.i_tour_mode.isin(I_SCHOOLBUS_MODE),,schoolbus_ASC_sr2
 util_School_Bus_tour_mode_ASC_shared_ride_3+,School Bus tour mode ASC -- shared ride 3+,@df.i_tour_mode.isin(I_SCHOOLBUS_MODE),,,schoolbus_ASC_sr3p
 util_School_Bus_tour_mode_ASC_walk,School Bus tour mode ASC -- walk,@df.i_tour_mode.isin(I_SCHOOLBUS_MODE),,,,schoolbus_ASC_walk
 #Taxi
-util_Taxi_In-vehicle_time,Taxi - In-vehicle time,@odt_skims['HOV2_N_TIME'],,,,,,,,,coef_ivt
+util_Taxi_In-vehicle_time,Taxi - In-vehicle time,s2_time_skim,,,,,,,,,coef_ivt
 util_Taxi_Wait_time,Taxi - Wait time,@ridehail_wait_time_multiplier * df.origTaxiWaitTime,,,,,,,,,coef_ivt
-util_Taxi_Fare,Taxi - Fare,@ivt_cost_multiplier * df.ivot  * (Taxi_baseFare + odt_skims['HOV2_DIST'] * Taxi_costPerMile + odt_skims['HOV2_N_TIME'] * Taxi_costPerMinute)*100,,,,,,,,,coef_ivt
+util_Taxi_Fare,Taxi - Fare,@(ivt_cost_multiplier * (Taxi_baseFare + df.s2_dist_skim * Taxi_costPerMile + df.s2_time_skim * Taxi_costPerMinute)*100) / df.cost_sensitivity,,,,,,,,,coef_ivt
 # TNC-Single
-util_TNC_Single_In-vehicle_time,TNC Single - In-vehicle time,@odt_skims['HOV2_N_TIME'],,,,,,,,,,coef_ivt
+util_TNC_Single_In-vehicle_time,TNC Single - In-vehicle time,s2_time_skim,,,,,,,,,,coef_ivt
 util_TNC_Single_Wait_time,TNC Single - Wait time,@ridehail_wait_time_multiplier * df.origSingleTNCWaitTime,,,,,,,,,,coef_ivt
-util_TNC_Single_Cost,TNC Single - Cost,"@ivt_cost_multiplier * df.ivot  * np.maximum(TNC_single_baseFare + odt_skims['HOV2_DIST'] * TNC_single_costPerMile + odt_skims['HOV2_N_TIME'] * TNC_single_costPerMinute, TNC_single_costMinimum) * 100",,,,,,,,,,coef_ivt
+util_TNC_Single_Cost,TNC Single - Cost,"@(ivt_cost_multiplier * np.maximum(TNC_single_baseFare + df.s2_dist_skim * TNC_single_costPerMile + df.s2_time_skim * TNC_single_costPerMinute, TNC_single_costMinimum) * 100) / df.cost_sensitivity",,,,,,,,,,coef_ivt
 # TNC-Shared
-util_TNC_Shared_In-vehicle_time,TNC Shared - In-vehicle time,@odt_skims['HOV2_N_TIME'] * TNC_shared_IVTFactor,,,,,,,,,,,coef_ivt
+util_TNC_Shared_In-vehicle_time,TNC Shared - In-vehicle time,s2_time_skim * TNC_shared_IVTFactor,,,,,,,,,,,coef_ivt
 util_TNC_Shared_Wait_time,TNC Shared - Wait time,@ridehail_wait_time_multiplier * df.origSharedTNCWaitTime,,,,,,,,,,,coef_ivt
-util_TNC_Shared_Cost,TNC Shared - Cost,"@ivt_cost_multiplier * df.ivot  * np.maximum(TNC_shared_baseFare + odt_skims['HOV2_DIST'] * TNC_shared_costPerMile + odt_skims['HOV2_N_TIME']* TNC_shared_costPerMinute, TNC_shared_costMinimum) * 100",,,,,,,,,,,coef_ivt
+util_TNC_Shared_Cost,TNC Shared - Cost,"@(ivt_cost_multiplier * np.maximum(TNC_shared_baseFare + df.s2_dist_skim * TNC_shared_costPerMile + df.s2_time_skim * TNC_shared_costPerMinute, TNC_shared_costMinimum) * 100) / df.cost_sensitivity",,,,,,,,,,,coef_ivt
 # Mode Availabilities
 util_SOV_tour_mode_availability,SOV tour mode availability,tour_mode_is_SOV,,,,,-999.0,-999.0,-999.0,-999.0,,,
 util_sr2_tour_mode_availability,SR2 tour mode availability,tour_mode_is_sr2,,,,,-999.0,-999.0,-999.0,-999.0,,,
