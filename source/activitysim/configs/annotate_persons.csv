@@ -23,13 +23,13 @@ employment status type,pemploy,persons.emp_type
 #,pemploy,"np.where((persons.age>=16)&((esr != 3)&(esr != 6))&(wkhp >= 35) & (wkw >= 1) & (wkw <= 4), PEMPLOY_FULL, pemploy)"
 #person type,ptype,persons.ptype 
 student category,pstudent,np.zeros(len(persons))
-,pstudent,"np.where((persons.stud_stat == 2) & (persons.age > 18), PSTUDENT_NOT, pstudent)"
+,pstudent,"np.where((persons.stud_stat == 0) & (persons.age > 18), PSTUDENT_NOT, pstudent)"
 ,pstudent,"np.where((persons.stud_stat == 1) & (persons.age > 18), PSTUDENT_UNIVERSITY, pstudent)"
 #,pstudent,"np.where(ptype == 4, PSTUDENT_UNIVERSITY, pstudent)"
 #,pstudent,"np.where((pemploy == 1) & (persons.age < 4), PSTUDENT_GRADE_OR_HIGH, pstudent)"
 #,pstudent,"np.where((schg < 1) & (persons.age >= 4), PSTUDENT_NOT, pstudent)"
-,pstudent,"np.where((persons.stud_stat == 1) & (persons.age <= 4), PSTUDENT_GRADE_OR_HIGH, pstudent)"
-,pstudent,"np.where((persons.stud_stat == 1) & (persons.age > 4) & (pemploy != 1), PSTUDENT_UNIVERSITY, pstudent)"
+,pstudent,"np.where((persons.stud_stat == 1) & (persons.age <= 18), PSTUDENT_GRADE_OR_HIGH, pstudent)"
+,pstudent,"np.where((persons.stud_stat == 1) & (persons.age > 18) & (pemploy != 1), PSTUDENT_UNIVERSITY, pstudent)"
 #,pstudent,"np.where((schg >= 15) & (persons.age < 4) & (pemploy != 1), PSTUDENT_GRADE_OR_HIGH, pstudent)"
 #,pstudent,"np.where((persons.age <= 5) & (pemploy != 1) & (stud_stat ==1) & (schg<=14), PSTUDENT_GRADE_OR_HIGH, pstudent)"
 #,pstudent,"np.where((persons.age > 5) & (pemploy != 1) & (schg >=1) & (schg<=14),  PSTUDENT_UNIVERSITY, pstudent)"
