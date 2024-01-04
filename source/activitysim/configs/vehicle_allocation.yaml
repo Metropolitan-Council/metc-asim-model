@@ -21,8 +21,8 @@ OCCUPANCY_LEVELS:
   - 3.5
 
 #optional annotate tours
-# annotate_tours:
-#  SPEC: annotate_tours_vehicle_allocation
-#  DF: tours
-#  TABLES:
-#    - vehicles
+annotate_tours:
+  SPEC: annotate_tours_vehicle_allocation
+  DF: tours
+  TABLES:
+    - vehicles

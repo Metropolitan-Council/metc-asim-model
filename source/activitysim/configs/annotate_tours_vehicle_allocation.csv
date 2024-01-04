@@ -1,0 +1,4 @@
+Description,Target,Expression
+,vehicle_occ_1_op_cost,"np.array(vehicles.groupby(['household_id', 'vehicle_type'])['auto_operating_cost'].first().reindex(df[['household_id', 'vehicle_occup_1']]))"
+,vehicle_occ_2_op_cost,"np.array(vehicles.groupby(['household_id', 'vehicle_type'])['auto_operating_cost'].first().reindex(df[['household_id', 'vehicle_occup_2']]))"
+,vehicle_occ_3p_op_cost,"np.array(vehicles.groupby(['household_id', 'vehicle_type'])['auto_operating_cost'].first().reindex(tours[['household_id', 'vehicle_occup_3.5']]))"

@@ -89,12 +89,11 @@ preprocessor:
 #   TABLES:
 #     - vehicles
 #
-# annotate_households:
-#   SPEC: annotate_households_vehicle_type
-#   DF: households
-#   TABLES:
-#     - persons
-#     - vehicles
+#annotate_households:
+#  SPEC: annotate_households_vehicle_type
+#  DF: households
+#  TABLES:
+#    - vehicles
 #
 # annotate_vehicles:
 #   SPEC: annotate_households_vehicle_type

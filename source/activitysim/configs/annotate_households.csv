@@ -41,7 +41,8 @@ home_is_urban,home_is_urban,"reindex(land_use.RURAL, households.home_zone_id) ==
 #home_is_rural,home_is_rural,"reindex(land_use.AreaType, households.home_zone_id) > setting('rural_threshold')"
 home_is_rural,home_is_rural,"reindex(land_use.RURAL, households.home_zone_id) == 1"
 #,, default for work and school location logsums before auto_ownership model is run
-#,auto_ownership,households.auto_ownership
+#FIXME: This is not ideal
+,auto_ownership,num_workers
 TAZ column to match settings file,TAZ,households.home_zone_id
 number of pre-driving age children in the household,num_predrive_child,"_PERSON_COUNT('ptype == 6', persons, households)"
 number of non-working adult in the household,num_nonworker_adults,"_PERSON_COUNT('ptype == 4', persons, households)"

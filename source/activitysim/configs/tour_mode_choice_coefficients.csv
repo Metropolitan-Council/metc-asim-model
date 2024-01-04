@@ -133,7 +133,7 @@ sr2_ASC_no_auto_eatout,-0.15849136988132492,F
 sr2_ASC_no_auto_escort,-0.04855472223678427,F
 sr2_ASC_no_auto_othdiscr,-0.15849136988132492,F
 sr2_ASC_no_auto_othmaint,-0.04855472223678427,F
-sr2_ASC_no_auto_school,-999.0,T
+sr2_ASC_no_auto_school,-12.0,T
 sr2_ASC_no_auto_shopping,-0.04855472223678427,F
 sr2_ASC_no_auto_social,-0.15849136988132492,F
 sr2_ASC_no_auto_univ,-12.0,F
@@ -162,7 +162,7 @@ sr3p_ASC_no_auto_eatout,-1.4797599638076215,F
 sr3p_ASC_no_auto_escort,-0.608788401592834,F
 sr3p_ASC_no_auto_othdiscr,-1.4797599638076215,F
 sr3p_ASC_no_auto_othmaint,-0.608788401592834,F
-sr3p_ASC_no_auto_school,-999.0,T
+sr3p_ASC_no_auto_school,-12.0,T
 sr3p_ASC_no_auto_shopping,-0.608788401592834,F
 sr3p_ASC_no_auto_social,-1.4797599638076215,F
 sr3p_ASC_no_auto_univ,-999.0,T
@@ -172,7 +172,7 @@ sr3p_ASC_auto_deficient_eatout,0.2908035321343763,F
 sr3p_ASC_auto_deficient_escort,0.9794856270433024,F
 sr3p_ASC_auto_deficient_othdiscr,0.2908035321343763,F
 sr3p_ASC_auto_deficient_othmaint,0.9794856270433024,F
-sr3p_ASC_auto_deficient_school,-999.0,T
+sr3p_ASC_auto_deficient_school,-12.0,T
 sr3p_ASC_auto_deficient_shopping,0.9794856270433024,F
 sr3p_ASC_auto_deficient_social,0.2908035321343763,F
 sr3p_ASC_auto_deficient_univ,-10.0,F
