@@ -121,55 +121,55 @@ local,_DF_IS_TOUR,'tour_type' in df.columns
 ,sov_available,"(odt_skims['SOV_N_TIME_M']>0) & (dot_skims['SOV_N_TIME_M']>0) & (df.age>=minimumAgeDA) * np.where(is_joint,0,1)"
 ,hov2_available,"(odt_skims['HOV2_N_TIME_M'] + dot_skims['HOV2_N_TIME_M'])>0"
 ,hov3_available,"(odt_skims['HOV3_N_TIME_M']>0) & (dot_skims['HOV3_N_TIME_M']>0)"
-,_walk_trn_ivt_ob,(odt_skims['WLK_TRN_IVT_L'] * (_vot_bin_da == 1)) + (odt_skims['WLK_TRN_IVT_M'] * (_vot_bin_da == 2)) + (odt_skims['WLK_TRN_IVT_H'] * (_vot_bin_da == 3))
-,_walk_trn_ivt_ib,(dot_skims['WLK_TRN_IVT_L'] * (_vot_bin_da == 1)) + (dot_skims['WLK_TRN_IVT_M'] * (_vot_bin_da == 2)) + (dot_skims['WLK_TRN_IVT_H'] * (_vot_bin_da == 3))
+,_walk_trn_ivt_ob,odt_skims['WLK_TRN_IVT']
+,_walk_trn_ivt_ib,dot_skims['WLK_TRN_IVT']
 ,walk_trn_ivt,_walk_trn_ivt_ob + _walk_trn_ivt_ib
 ,walk_transit_available,(_walk_trn_ivt_ob>0) & (_walk_trn_ivt_ib>0)
-,walk_trn_wait_ob,(odt_skims['WLK_TRN_IWAIT_L'] * (_vot_bin_da == 1)) + (odt_skims['WLK_TRN_IWAIT_M'] * (_vot_bin_da == 2)) + (odt_skims['WLK_TRN_IWAIT_H'] * (_vot_bin_da == 3))
-,walk_trn_wait_ib,(dot_skims['WLK_TRN_IWAIT_L'] * (_vot_bin_da == 1)) + (dot_skims['WLK_TRN_IWAIT_M'] * (_vot_bin_da == 2)) + (dot_skims['WLK_TRN_IWAIT_H'] * (_vot_bin_da == 3))
-,_walk_xfr_wait_ob,(odt_skims['WLK_TRN_XWAIT_L'] * (_vot_bin_da == 1)) + (odt_skims['WLK_TRN_XWAIT_M'] * (_vot_bin_da == 2)) + (odt_skims['WLK_TRN_XWAIT_H'] * (_vot_bin_da == 3))
-,_walk_xfr_wait_ib,(dot_skims['WLK_TRN_XWAIT_L'] * (_vot_bin_da == 1)) + (dot_skims['WLK_TRN_XWAIT_M'] * (_vot_bin_da == 2)) + (dot_skims['WLK_TRN_XWAIT_H'] * (_vot_bin_da == 3))
+,walk_trn_wait_ob,odt_skims['WLK_TRN_IWAIT']
+,walk_trn_wait_ib,dot_skims['WLK_TRN_IWAIT']
+,_walk_xfr_wait_ob,odt_skims['WLK_TRN_XWAIT']
+,_walk_xfr_wait_ib,dot_skims['WLK_TRN_XWAIT']
 ,walk_xfr_wait,_walk_xfr_wait_ob+_walk_xfr_wait_ib
-,_walk_xfrs_ob,(odt_skims['WLK_TRN_XFERS_L'] * (_vot_bin_da == 1)) + (odt_skims['WLK_TRN_XFERS_M'] * (_vot_bin_da == 2)) + (odt_skims['WLK_TRN_XFERS_H'] * (_vot_bin_da == 3))
-,_walk_xfrs_ib,(dot_skims['WLK_TRN_XFERS_L'] * (_vot_bin_da == 1)) + (dot_skims['WLK_TRN_XFERS_M'] * (_vot_bin_da == 2)) + (dot_skims['WLK_TRN_XFERS_H'] * (_vot_bin_da == 3))
+,_walk_xfrs_ob,odt_skims['WLK_TRN_XFERS']
+,_walk_xfrs_ib,dot_skims['WLK_TRN_XFERS']
 ,walk_xfrs,_walk_xfrs_ob+_walk_xfrs_ib
-,_walk_access_time_ob,(odt_skims['WLK_TRN_ACC_L'] * (_vot_bin_da == 1)) + (odt_skims['WLK_TRN_ACC_M'] * (_vot_bin_da == 2)) + (odt_skims['WLK_TRN_ACC_H'] * (_vot_bin_da == 3))
-,_walk_access_time_ib,(dot_skims['WLK_TRN_ACC_L'] * (_vot_bin_da == 1)) + (dot_skims['WLK_TRN_ACC_M'] * (_vot_bin_da == 2)) + (dot_skims['WLK_TRN_ACC_H'] * (_vot_bin_da == 3))
+,_walk_access_time_ob,odt_skims['WLK_TRN_ACC']
+,_walk_access_time_ib,dot_skims['WLK_TRN_ACC']
 ,walk_access_time,_walk_access_time_ib+_walk_access_time_ob
-,_walk_egress_time_ob,(odt_skims['WLK_TRN_WLKEGR_L'] * (_vot_bin_da == 1)) + (odt_skims['WLK_TRN_WLKEGR_M'] * (_vot_bin_da == 2)) + (odt_skims['WLK_TRN_WLKEGR_H'] * (_vot_bin_da == 3))
-,_walk_egress_time_ib,(dot_skims['WLK_TRN_WLKEGR_L'] * (_vot_bin_da == 1)) + (dot_skims['WLK_TRN_WLKEGR_M'] * (_vot_bin_da == 2)) + (dot_skims['WLK_TRN_WLKEGR_H'] * (_vot_bin_da == 3))
+,_walk_egress_time_ob,odt_skims['WLK_TRN_WLKEGR']
+,_walk_egress_time_ib,dot_skims['WLK_TRN_WLKEGR']
 ,walk_egress_time,_walk_egress_time_ib+_walk_egress_time_ob
-,_walk_xfr_walk_time_ob,(odt_skims['WLK_TRN_WLKXFER_L'] * (_vot_bin_da == 1)) + (odt_skims['WLK_TRN_WLKXFER_M'] * (_vot_bin_da == 2)) + (odt_skims['WLK_TRN_WLKXFER_H'] * (_vot_bin_da == 3))
-,_walk_xfr_walk_time_ib,(dot_skims['WLK_TRN_WLKXFER_L'] * (_vot_bin_da == 1)) + (dot_skims['WLK_TRN_WLKXFER_M'] * (_vot_bin_da == 2)) + (dot_skims['WLK_TRN_WLKXFER_H'] * (_vot_bin_da == 3))
+,_walk_xfr_walk_time_ob,odt_skims['WLK_TRN_WLKXFER']
+,_walk_xfr_walk_time_ib,dot_skims['WLK_TRN_WLKXFER']
 ,walk_xfr_walk_time,_walk_xfr_walk_time_ob+_walk_xfr_walk_time_ib
-,_walk_fare_ob,(odt_skims['WLK_TRN_FARE_L'] * (_vot_bin_da == 1)) + (odt_skims['WLK_TRN_FARE_M'] * (_vot_bin_da == 2)) + (odt_skims['WLK_TRN_FARE_H'] * (_vot_bin_da == 3))
-,_walk_fare_ib,(dot_skims['WLK_TRN_FARE_L'] * (_vot_bin_da == 1)) + (dot_skims['WLK_TRN_FARE_M'] * (_vot_bin_da == 2)) + (dot_skims['WLK_TRN_FARE_H'] * (_vot_bin_da == 3))
+,_walk_fare_ob,odt_skims['WLK_TRN_FARE']
+,_walk_fare_ib,dot_skims['WLK_TRN_FARE']
 ,walk_fare,_walk_fare_ob+_walk_fare_ib
-,_drive_trn_ivt_ob,(odt_skims['DRV_TRN_IVT_L'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_IVT_M'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_IVT_H'] * (_vot_bin_da == 3))
-,_drive_trn_ivt_ib,(dot_skims['DRV_TRN_IVT_L'] * (_vot_bin_da == 1)) + (dot_skims['DRV_TRN_IVT_M'] * (_vot_bin_da == 2)) + (dot_skims['DRV_TRN_IVT_H'] * (_vot_bin_da == 3))
+,_drive_trn_ivt_ob,odt_skims['DRV_TRN_IVT']
+,_drive_trn_ivt_ib,dot_skims['DRV_TRN_IVT']
 ,drive_trn_ivt,_drive_trn_ivt_ob+_drive_trn_ivt_ib
 ,drive_transit_available,(_drive_trn_ivt_ob>0) & (_drive_trn_ivt_ib>0)
-,drive_trn_wait_ob,(odt_skims['DRV_TRN_IWAIT_L'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_IWAIT_M'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_IWAIT_H'] * (_vot_bin_da == 3))
-,drive_trn_wait_ib,(dot_skims['DRV_TRN_IWAIT_L'] * (_vot_bin_da == 1)) + (dot_skims['DRV_TRN_IWAIT_M'] * (_vot_bin_da == 2)) + (dot_skims['DRV_TRN_IWAIT_H'] * (_vot_bin_da == 3))
-,_drive_xfr_wait_ob,(odt_skims['DRV_TRN_XWAIT_L'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_XWAIT_M'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_XWAIT_H'] * (_vot_bin_da == 3))
-,_drive_xfr_wait_ib,(dot_skims['DRV_TRN_XWAIT_L'] * (_vot_bin_da == 1)) + (dot_skims['DRV_TRN_XWAIT_M'] * (_vot_bin_da == 2)) + (dot_skims['DRV_TRN_XWAIT_H'] * (_vot_bin_da == 3))
+,drive_trn_wait_ob,odt_skims['DRV_TRN_IWAIT']
+,drive_trn_wait_ib,dot_skims['DRV_TRN_IWAIT']
+,_drive_xfr_wait_ob,odt_skims['DRV_TRN_XWAIT']
+,_drive_xfr_wait_ib,dot_skims['DRV_TRN_XWAIT']
 ,drive_xfr_wait,_drive_xfr_wait_ob+_drive_xfr_wait_ib
-,_drive_xfrs_ob,(odt_skims['DRV_TRN_XFERS_L'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_XFERS_M'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_XFERS_H'] * (_vot_bin_da == 3))
-,_drive_xfrs_ib,(dot_skims['DRV_TRN_XFERS_L'] * (_vot_bin_da == 1)) + (dot_skims['DRV_TRN_XFERS_M'] * (_vot_bin_da == 2)) + (dot_skims['DRV_TRN_XFERS_H'] * (_vot_bin_da == 3))
+,_drive_xfrs_ob,odt_skims['DRV_TRN_XFERS']
+,_drive_xfrs_ib,dot_skims['DRV_TRN_XFERS']
 ,drive_xfrs,_drive_xfrs_ob+_drive_xfrs_ib
-,_drive_access_time_ib,(odt_skims['DRV_TRN_DRACC_L'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_DRACC_M'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_DRACC_H'] * (_vot_bin_da == 3))
-,_drive_access_time_ob,(dot_skims['DRV_TRN_DRACC_L'] * (_vot_bin_da == 1)) + (dot_skims['DRV_TRN_DRACC_M'] * (_vot_bin_da == 2)) + (dot_skims['DRV_TRN_DRACC_H'] * (_vot_bin_da == 3))
+,_drive_access_time_ib,odt_skims['DRV_TRN_DRACC']
+,_drive_access_time_ob,dot_skims['DRV_TRN_DRACC']
 ,drive_access_time,_walk_access_time_ib+_walk_access_time_ob
-,_drive_egress_time_ib,(odt_skims['DRV_TRN_WLKEGR_L'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_WLKEGR_M'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_WLKEGR_H'] * (_vot_bin_da == 3))
-,_drive_egress_time_ob,(dot_skims['DRV_TRN_WLKEGR_L'] * (_vot_bin_da == 1)) + (dot_skims['DRV_TRN_WLKEGR_M'] * (_vot_bin_da == 2)) + (dot_skims['DRV_TRN_WLKEGR_H'] * (_vot_bin_da == 3))
+,_drive_egress_time_ib,odt_skims['DRV_TRN_WLKEGR']
+,_drive_egress_time_ob,dot_skims['DRV_TRN_WLKEGR']
 ,drive_egress_time,_drive_egress_time_ib+_drive_egress_time_ob
-,_drive_xfr_walk_time_ob,(odt_skims['DRV_TRN_WLKXFER_L'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_WLKXFER_M'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_WLKXFER_H'] * (_vot_bin_da == 3))
-,_drive_xfr_walk_time_ib,(dot_skims['DRV_TRN_WLKXFER_L'] * (_vot_bin_da == 1)) + (dot_skims['DRV_TRN_WLKXFER_M'] * (_vot_bin_da == 2)) + (dot_skims['DRV_TRN_WLKXFER_H'] * (_vot_bin_da == 3))
+,_drive_xfr_walk_time_ob,odt_skims['DRV_TRN_WLKXFER']
+,_drive_xfr_walk_time_ib,dot_skims['DRV_TRN_WLKXFER']
 ,drive_xfr_walk_time,_drive_xfr_walk_time_ob+_drive_xfr_walk_time_ib
-,_drive_fare_ob,(odt_skims['DRV_TRN_FARE_L'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_FARE_M'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_FARE_H'] * (_vot_bin_da == 3))
-,_drive_fare_ib,(dot_skims['DRV_TRN_FARE_L'] * (_vot_bin_da == 1)) + (dot_skims['DRV_TRN_FARE_M'] * (_vot_bin_da == 2)) + (dot_skims['DRV_TRN_FARE_H'] * (_vot_bin_da == 3))
+,_drive_fare_ob,odt_skims['DRV_TRN_FARE']
+,_drive_fare_ib,dot_skims['DRV_TRN_FARE']
 ,drive_fare,_drive_fare_ob+_drive_fare_ib
-,drive_access_dist,(odt_skims['DRV_TRN_DRACCDIST_L'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_DRACCDIST_M'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_DRACCDIST_H'] * (_vot_bin_da == 3))
+,drive_access_dist,odt_skims['DRV_TRN_DRACCDIST']
 #,walk_premium_available,"walk_transit_available & (odt_skims['WLK_TRN_IVT']>0) & (dot_skims['WLK_TRN_IVT']>0)"
 #,walk_mix_available,"walk_transit_available & (odt_skims['WLK_TRN_IVT']>0) & (dot_skims['WLK_TRN_IVT']>0)"
 #,pnr_local_available,"pnr_transit_available & (odt_skims['DRV_TRN_IVT']>0) & (dot_skims['DRV_TRN_IVT']>0)"
