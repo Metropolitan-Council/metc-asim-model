@@ -1,6 +1,9 @@
 Description,Expression,M,N,H
-Full-time worker alternative-specific constants,ptype == 1,1.5728386529137752,1.1800950652084934,
-Part-time worker alternative-specific constants,ptype == 2,-0.6704403523219504,0.8279234684790613,
+# Full-time worker alternative-specific constants,ptype == 1,1.5728386529137752,1.1800950652084934,
+# Part-time worker alternative-specific constants,ptype == 2,-0.6704403523219504,0.8279234684790613,
+Full-time worker alternative-specific constants,ptype == 1,1.25,1.1800950652084934,
+Part-time worker alternative-specific constants,ptype == 2,-0.1704403523219504,0.8279234684790613,
+
 #Non-working adult alternative-specific constants,ptype == 4,-999.0,-0.5287993334671984,
 Non-working adult alternative-specific constants,ptype == 4,-999.0,0.164,
 Retired alternative-specific constants,ptype == 5,-999.0,0.8033720916190095,
@@ -24,12 +27,13 @@ Retired interaction with female,(ptype == 5) & (female),0.4769,,
 Non-working adult interaction with more cars than workers,(ptype == 4) & (auto_ownership > num_workers),0.6515,0.8168,
 Retired interaction with more cars than workers,(ptype == 5) & (auto_ownership > num_workers),2.992,1.056,
 Pre-driving-age child who is too young for school interaction with more cars than workers,(ptype == 8) & (auto_ownership > num_workers),,0.2991,
-Full-time worker interaction with fewer cars than workers,(ptype == 1) & (auto_ownership < num_workers),,,0.5039
-Non-working adult interaction with fewer cars than workers,(ptype == 4) & (auto_ownership < num_workers),,,0.8965
-Retired interaction with fewer cars than workers,(ptype == 5) & (auto_ownership < num_workers),,,0.5496
-Driving-age child who is in school interaction with fewer cars than workers,(ptype == 6) & (auto_ownership < num_workers),,,0.6475
-Pre-driving-age child who is in school interaction with fewer cars than workers,(ptype == 7) & (auto_ownership < num_workers),,,0.5862
-Pre-driving-age child who is too young for school interaction with fewer cars than workers,(ptype == 8) & (auto_ownership < num_workers),,,0.5061
+Full-time worker interaction with no autos,(ptype == 1) & (auto_ownership == 0),0.8,,
+Full-time worker interaction with fewer cars than workers,(ptype == 1) & (auto_ownership < num_workers) & (auto_ownership > 0),,,0.5039
+Non-working adult interaction with fewer cars than workers,(ptype == 4) & (auto_ownership < num_workers) & (auto_ownership > 0),,,0.8965
+Retired interaction with fewer cars than workers,(ptype == 5) & (auto_ownership < num_workers) & (auto_ownership > 0),,,0.5496
+Driving-age child who is in school interaction with fewer cars than workers,(ptype == 6) & (auto_ownership < num_workers) & (auto_ownership > 0),,,0.6475
+Pre-driving-age child who is in school interaction with fewer cars than workers,(ptype == 7) & (auto_ownership < num_workers) & (auto_ownership > 0),,,0.5862
+Pre-driving-age child who is too young for school interaction with fewer cars than workers,(ptype == 8) & (auto_ownership < num_workers) & (auto_ownership > 0),,,0.5061
 Full-time worker interaction with income less than $20k,(ptype == 1) & (income_segment == 1),,,0.5313
 Retired interaction with income less than $20k,(ptype == 5) & (income_segment == 1),,,0.533
 Part-time worker interaction with income less than $20k,(ptype == 2) & (income_segment == 1),,,0.3232

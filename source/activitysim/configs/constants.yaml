@@ -72,7 +72,11 @@ distributed_time_factor_max: 10
 # year after which a vehicle (therefore its household) must have transponder
 hhTR_Vehyear: 2035
 
-minimumAgeDA: 16
+# AV Factors
+minimumAgeDA: 16 # Minimum age to drive alone
+autoIVTFactor: 1.0 # IVT factor to account for the vehicle driving itself
+autoCPMFactor: 1.0 # Cost factor to account for connected vehicles/platooning or additional driving due to parking seeking
+autoTermTimeFactor: 1.0 # Factor to account for being dropped off at the door of the destination
 
 # Mode Choice Constants
 #valueOfTime: 8.00
@@ -89,7 +93,6 @@ bikeSpeed: 10.00 #reduced from 12, from survey: mean=7.687, median=7.69, 3q=10.2
 vot_threshold_low: 8.81
 vot_threshold_med: 18.00
 maxCbdAreaTypeThresh: 2
-AV_IVT_factor: 1.0 #FIXME: I think this is related to AV, needs to be fully implemented
 indivTour: 1.00000
 # RIDEHAIL Settings
 Taxi_baseFare: 2.20

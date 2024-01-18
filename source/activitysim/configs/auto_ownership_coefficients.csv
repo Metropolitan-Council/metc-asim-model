@@ -78,6 +78,7 @@ coef_cars2_av_ownership,0.0,T
 coef_cars3_av_ownership,0.0,T
 coef_unavailable,-999.0,T
 asc_GQ_0_autos,2.468181736,F
+coef_alt_wrk1_0auto,0.66,F
 # Alternative Specific Constants,,
 coef_alternative_specific_constant_for_1_driver_household_0_CARS,-2.716549551214166,F
 coef_alternative_specific_constant_for_1_driver_household_2_CARS,-1.2678998380204465,F
