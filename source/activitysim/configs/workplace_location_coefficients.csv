@@ -17,3 +17,5 @@ coef_old,0.0,F
 coef_young,-0.00566516645047,F
 coef_wi_to_mn,-0.242829205865,F
 coef_mn_to_wi,0.0836252802456,F
+coef_mn_to_mn,0.0,F
+coef_wi_to_wi,0.0,F
