@@ -158,6 +158,7 @@ biketimeshort_multiplier: 4
 biketimelong_multiplier: 20
 short_i_wait_multiplier: 2
 long_i_wait_multiplier: 1
+rideshare_i_wait_multiplier: 1.5
 wacc_multiplier: 2
 wegr_multiplier: 2
 waux_multiplier: 2
@@ -169,6 +170,7 @@ xfers_drv_multiplier: 20
 drvtrn_distpen_0_multiplier: 270
 drvtrn_distpen_max: 15
 density_index_multiplier: -0.2
+origin_density_index_max: 15
 #    joint_sr2_ASC_no_auto: 0
 #    joint_sr2_ASC_auto_deficient: 0
 #    joint_sr2_ASC_auto_sufficient: 0
