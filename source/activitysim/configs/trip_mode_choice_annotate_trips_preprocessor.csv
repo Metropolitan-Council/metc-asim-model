@@ -3,8 +3,12 @@ Description,Target,Expression
 ,is_indiv,(df.number_of_participants == 1)
 ,is_atwork_subtour,~df.parent_tour_id.isnull()
 ,is_school,"(df.primary_purpose=='school') & (df.purpose.isin(['school', 'home']))"
-,is_work,"(df.primary_purpose=='work') & (df.purpose.isin(['work', 'home']))" ### FIXIT: I added it but not sure if it is needed
-,c_cost,(0.60 * coef_ivt * ivt_cost_multiplier) / df.value_of_time
+,is_work,"(df.primary_purpose=='work') & (df.purpose.isin(['work', 'home']))" 
+,time_factor,"np.where(is_work, df.time_factor_work, df.time_factor_nonwork)"
+,c_ivt,coef_ivt * time_factor
+,_income_exponent,"np.where(is_work, 0.6, 0.5)" 
+,cost_sensitivity,"np.maximum(df.income,1000).pow(_income_exponent)" 
+,c_cost,coef_income / cost_sensitivity
 ,ivot,1.0/ df.value_of_time
 #,,
 #Auto operating costs,,
@@ -19,7 +23,7 @@ Description,Target,Expression
 ,s3_auto_op_cost,"reindex(vehicles.groupby('vehicle_type')['auto_operating_cost'].mean(), pd.Series(sr3p_veh_option, df.index)) if 'vehicle_occup_3.5' in df.columns else np.nan"
 ,s3_auto_op_cost,"np.where(s3_auto_op_cost.isna() | (pd.Series(sr3p_veh_option, df.index) == 'non_hh_veh'), costPerMile, s3_auto_op_cost)"
 #,,,
-,vot_da,(coef_ivt * ivt_cost_multiplier) / c_cost * 0.6
+,vot_da,c_ivt / c_cost * 0.6
 ,vot_s2,vot_da / cost_share_s2
 ,vot_s3,vot_da / cost_share_s3
 ,_vot_bin_da,"np.where(vot_da < vot_threshold_low, 1, np.where(vot_da < vot_threshold_med, 2, 3))"
@@ -123,35 +127,32 @@ dest terminal time not counted at home,_dest_terminal_time,"np.where(inbound & l
 ,sov_available,"(odt_skims['SOV_N_TIME_M']>0) & (df.age>=minimumAgeDA) * np.where(is_joint,0,1)"
 ,hov2_available,"(odt_skims['HOV2_N_TIME_M'])>0"
 ,hov3_available,"(odt_skims['HOV3_N_TIME_M']>0)"
-,_income_exponent,"np.where(is_work, 0.6, 0.5)" ### FIXIT: Is this needed here?
-,cost_sensitivity,"np.maximum(df.income,1000).pow(_income_exponent)" ### FIXIT ### Is this needed here? 'income' is not available for this model.
-,walk_trn_ivt,(odt_skims['WLK_TRN_IVT'] * (_vot_bin_da == 1)) + (odt_skims['WLK_TRN_IVT'] * (_vot_bin_da == 2)) + (odt_skims['WLK_TRN_IVT'] * (_vot_bin_da == 3)) 
-#,walk_trn_ivt,odt_skims['WLK_TRN_IVT']  ### FIXIT: can above expression be simpler like this? If yes, update other trn skims below: *_TRN_*
+,walk_trn_ivt,odt_skims['WLK_TRN_IVT'] 
 ,walk_transit_available_out,(walk_trn_ivt>0)
-,walk_trn_wait,(odt_skims['WLK_TRN_IWAIT'] * (_vot_bin_da == 1)) + (odt_skims['WLK_TRN_IWAIT'] * (_vot_bin_da == 2)) + (odt_skims['WLK_TRN_IWAIT'] * (_vot_bin_da == 3))
-,walk_xfr_wait,(odt_skims['WLK_TRN_XWAIT'] * (_vot_bin_da == 1)) + (odt_skims['WLK_TRN_XWAIT'] * (_vot_bin_da == 2)) + (odt_skims['WLK_TRN_XWAIT'] * (_vot_bin_da == 3))
-,walk_xfrs,(odt_skims['WLK_TRN_XFERS'] * (_vot_bin_da == 1)) + (odt_skims['WLK_TRN_XFERS'] * (_vot_bin_da == 2)) + (odt_skims['WLK_TRN_XFERS'] * (_vot_bin_da == 3))
-,walk_access_time,(odt_skims['WLK_TRN_ACC'] * (_vot_bin_da == 1)) + (odt_skims['WLK_TRN_ACC'] * (_vot_bin_da == 2)) + (odt_skims['WLK_TRN_ACC'] * (_vot_bin_da == 3))
-,walk_egress_time,(odt_skims['WLK_TRN_WLKEGR'] * (_vot_bin_da == 1)) + (odt_skims['WLK_TRN_WLKEGR'] * (_vot_bin_da == 2)) + (odt_skims['WLK_TRN_WLKEGR'] * (_vot_bin_da == 3))
-,walk_xfr_walk_time,(odt_skims['WLK_TRN_WLKXFER'] * (_vot_bin_da == 1)) + (odt_skims['WLK_TRN_WLKXFER'] * (_vot_bin_da == 2)) + (odt_skims['WLK_TRN_WLKXFER'] * (_vot_bin_da == 3))
-,walk_fare,(odt_skims['WLK_TRN_FARE'] * (_vot_bin_da == 1)) + (odt_skims['WLK_TRN_FARE'] * (_vot_bin_da == 2)) + (odt_skims['WLK_TRN_FARE'] * (_vot_bin_da == 3))
-,drive_trn_ivt_out,(odt_skims['DRV_TRN_IVT'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_IVT'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_IVT'] * (_vot_bin_da == 3))
+,walk_trn_wait,odt_skims['WLK_TRN_IWAIT']
+,walk_xfr_wait,odt_skims['WLK_TRN_XWAIT'] 
+,walk_xfrs,odt_skims['WLK_TRN_XFERS'] 
+,walk_access_time,odt_skims['WLK_TRN_ACC'] 
+,walk_egress_time,odt_skims['WLK_TRN_WLKEGR'] 
+,walk_xfr_walk_time,odt_skims['WLK_TRN_WLKXFER'] 
+,walk_fare,odt_skims['WLK_TRN_FARE'] 
+,drive_trn_ivt_out,odt_skims['DRV_TRN_IVT'] 
 ,drive_transit_available_out,(drive_trn_ivt_out>0)
-,drive_trn_wait_out,(odt_skims['DRV_TRN_IWAIT'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_IWAIT'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_IWAIT'] * (_vot_bin_da == 3))
-,drive_xfr_wait_out,(odt_skims['DRV_TRN_XWAIT'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_XWAIT'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_XWAIT'] * (_vot_bin_da == 3))
-,drive_xfrs_out,(odt_skims['DRV_TRN_XFERS'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_XFERS'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_XFERS'] * (_vot_bin_da == 3))
-,drive_access_time_out,(odt_skims['DRV_TRN_DRACC'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_DRACC'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_DRACC'] * (_vot_bin_da == 3))
-,drive_egress_time_out,(odt_skims['DRV_TRN_WLKEGR'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_WLKEGR'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_WLKEGR'] * (_vot_bin_da == 3))
-,drive_xfr_walk_time_out,(odt_skims['DRV_TRN_WLKXFER'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_WLKXFER'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_WLKXFER'] * (_vot_bin_da == 3))
-,drive_fare_out,(odt_skims['DRV_TRN_FARE'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_FARE'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_FARE'] * (_vot_bin_da == 3))
-,drive_access_dist_out,(odt_skims['DRV_TRN_DRACCDIST'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_DRACCDIST'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_DRACCDIST'] * (_vot_bin_da == 3))
-,drive_trn_ivt_in,(odt_skims['DRV_TRN_IVT'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_IVT'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_IVT'] * (_vot_bin_da == 3))
+,drive_trn_wait_out,odt_skims['DRV_TRN_IWAIT'] 
+,drive_xfr_wait_out,odt_skims['DRV_TRN_XWAIT'] 
+,drive_xfrs_out,odt_skims['DRV_TRN_XFERS'] 
+,drive_access_time_out,odt_skims['DRV_TRN_DRACC'] 
+,drive_egress_time_out,odt_skims['DRV_TRN_WLKEGR'] 
+,drive_xfr_walk_time_out,odt_skims['DRV_TRN_WLKXFER'] 
+,drive_fare_out,odt_skims['DRV_TRN_FARE'] 
+,drive_access_dist_out,odt_skims['DRV_TRN_DRACCDIST'] 
+,drive_trn_ivt_in,odt_skims['DRV_TRN_IVT'] 
 ,drive_transit_available_in,(drive_trn_ivt_in>0)
-,drive_trn_wait_in,(odt_skims['DRV_TRN_IWAIT'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_IWAIT'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_IWAIT'] * (_vot_bin_da == 3))
-,drive_xfr_wait_in,(odt_skims['DRV_TRN_XWAIT'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_XWAIT'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_XWAIT'] * (_vot_bin_da == 3))
-,drive_xfrs_in,(odt_skims['DRV_TRN_XFERS'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_XFERS'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_XFERS'] * (_vot_bin_da == 3))
-,drive_access_time_in,(odt_skims['DRV_TRN_WLKEGR'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_WLKEGR'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_WLKEGR'] * (_vot_bin_da == 3))
-,drive_egress_time_in,(odt_skims['DRV_TRN_DRACC'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_DRACC'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_DRACC'] * (_vot_bin_da == 3))
-,drive_xfr_walk_time_in,(odt_skims['DRV_TRN_WLKXFER'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_WLKXFER'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_WLKXFER'] * (_vot_bin_da == 3))
-,drive_fare_in,(odt_skims['DRV_TRN_FARE'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_FARE'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_FARE'] * (_vot_bin_da == 3))
-,drive_access_dist_in,(odt_skims['DRV_TRN_DRACCDIST'] * (_vot_bin_da == 1)) + (odt_skims['DRV_TRN_DRACCDIST'] * (_vot_bin_da == 2)) + (odt_skims['DRV_TRN_DRACCDIST'] * (_vot_bin_da == 3))
+,drive_trn_wait_in,odt_skims['DRV_TRN_IWAIT'] 
+,drive_xfr_wait_in,odt_skims['DRV_TRN_XWAIT'] 
+,drive_xfrs_in,odt_skims['DRV_TRN_XFERS'] 
+,drive_access_time_in,odt_skims['DRV_TRN_WLKEGR'] 
+,drive_egress_time_in,odt_skims['DRV_TRN_DRACC'] 
+,drive_xfr_walk_time_in,odt_skims['DRV_TRN_WLKXFER'] 
+,drive_fare_in,odt_skims['DRV_TRN_FARE'] 
+,drive_access_dist_in,odt_skims['DRV_TRN_DRACCDIST'] 
