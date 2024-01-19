@@ -14,9 +14,6 @@ chunk_training_mode: disabled
 chunk_size: 200_000_000_000
 num_processes: 20
 default_initial_rows_per_chunk: 1000
-trace_hh_id: 50504
-#trace_od: [5, 11]
-resume_after: #vehicle_allocation
 
 # input tables
 input_table_list:
@@ -77,6 +74,10 @@ household_median_value_of_time:
   4: 12.86
   5: 12.86
 
+trace_hh_id: 1470792
+#trace_od: [5, 11]
+resume_after: #workplace_location
+
 models:
   ### mp_init_proto_pop (single process)
   - initialize_proto_population # Separate step so proto tables can be split for multiprocess.
@@ -100,7 +101,6 @@ models:
   - cdap_simulate
   - mandatory_tour_frequency
   - mandatory_tour_scheduling
-  - school_escorting
   - joint_tour_frequency
   - joint_tour_composition
   - joint_tour_participation
@@ -111,11 +111,11 @@ models:
   - non_mandatory_tour_scheduling
   - vehicle_allocation
   - tour_mode_choice_simulate
-  # - atwork_subtour_frequency
-  # - atwork_subtour_destination
-  # - atwork_subtour_scheduling
-  # - atwork_subtour_mode_choice
-  # - stop_frequency
+  - atwork_subtour_frequency
+  - atwork_subtour_destination
+  - atwork_subtour_scheduling
+  - atwork_subtour_mode_choice
+  - stop_frequency
   # - trip_purpose
   # - trip_destination
   # - trip_purpose_and_destination
@@ -124,7 +124,7 @@ models:
   ### mp_summarize step
   - write_data_dictionary
   - write_tables
-  - write_trip_matrices
+  # - write_trip_matrices
   - track_skim_usage
 
 multiprocess_steps:

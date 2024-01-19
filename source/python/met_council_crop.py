@@ -302,3 +302,4 @@ if os.path.exists(SUBZONE):
 crop_omx("allskims_L", taz.ZONEID, num_outfiles=(4 if segment_name == "full" else 1))
 crop_omx("allskims_M", taz.ZONEID, num_outfiles=(4 if segment_name == "full" else 1))
 crop_omx("allskims_H", taz.ZONEID, num_outfiles=(4 if segment_name == "full" else 1))
+crop_omx("se_omx", taz.ZONEID, num_outfiles=(4 if segment_name == "full" else 1))

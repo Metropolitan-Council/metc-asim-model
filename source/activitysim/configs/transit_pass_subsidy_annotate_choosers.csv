@@ -1,7 +1,0 @@
-Description,Target,Expression
-,_transit_ivt_home_to_work_walk_peak,"skim_dict.lookup(persons.home_zone_id, persons.workplace_zone_id, ('WLK_TRN_IVT', 'AM'))"
-,_transit_ivt_work_to_home_drive_peak,"skim_dict.lookup(persons.home_zone_id, persons.workplace_zone_id, ('DRV_TRN_IVT', 'AM'))"
-,_transit_ivt_work_to_home_drivecr_peak,0 #"skim_dict.lookup(persons.home_zone_id, persons.workplace_zone_id, ('DR_CR_WK_TOTIVT', 'AM'))"
-,_work_transit_available,(_transit_ivt_home_to_work_walk_peak > 0) | (_transit_ivt_work_to_home_drive_peak > 0) | (_transit_ivt_work_to_home_drivecr_peak > 0)
-,transit_subsidy_available,(_work_transit_available) & (persons.workplace_zone_id > 0)
-,trn_wk_access_hh,"np.where(persons.workplace_zone_id > 0, reindex(accessibility.trPkHH, persons.workplace_zone_id), 0)"

@@ -111,8 +111,8 @@ print('Reading input files...')
 ## Read Data
 hh                   = fread(file.path(Survey_Dir, "HH_SPA_INPUT.csv"))
 per                  = fread(file.path(Survey_Dir, "PER_SPA_INPUT.csv"))
-per_raw = fread(file.path(HTS_raw_Dir, "TBI21_PERSON_RAW_202308281334.csv"))
-# per_raw = fread(file.path(HTS_raw_Dir, "person.csv"))
+# per_raw = fread(file.path(HTS_raw_Dir, "TBI21_PERSON_RAW_202308281334.csv"))
+per_raw = fread(file.path(HTS_raw_Dir, "person.csv"))
 
 # tours                = fread(file.path(Survey_Processed_Dir, "tours.csv"))[!HH_ID %in% weekend_ids]
 # trips                = fread(file.path(Survey_Processed_Dir, "trips.csv"))[!HH_ID %in% weekend_ids]
@@ -131,8 +131,8 @@ jutrips = data.table()
 jtours = data.table()
 place = data.table()
 
-
-for(dow in c(1:7)){
+#for(dow in c(1:7)){
+for(dow in c(1:4)){
   cat(dow)
   
   per_data = fread(file.path(Survey_Processed_Dir, paste0('day', as.character(dow)), "persons.csv"))
@@ -1208,6 +1208,9 @@ perN = perDays[, .(.N), by = .(HH_ID*1000+PER_ID)]
 perDays$NDays = perN$N[match(perDays$HH_ID*1000+perDays$PER_ID, perN$HH_ID)]
 
 perDays$adjFinalWeight = perDays$finalweight / perDays$NDays
+
+# debugging - this is used by the CDAP by AS script
+# write.csv(perDays, "E:\\Met_Council\\survey_data\\Phase1\\SPA_Processed\\per_days.csv")
 
 dapSummary = plyr::count(perDays, c("PERTYPE", "DAP"), "adjFinalWeight")
 print(paste("dap weight", sum(dapSummary$adjFinalWeight)))

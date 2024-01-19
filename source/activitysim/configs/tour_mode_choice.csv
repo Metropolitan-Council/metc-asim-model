@@ -53,7 +53,8 @@ util_TRNWALKACCESS_Walk_access_time,WALK_LOC - Walk access time,@wacc_multiplier
 util_TRNWALKACCESS_Walk_egress_time,WALK_LOC - Walk egress time,@wegr_multiplier * df.walk_egress_time,,,,,,coef_ivt,,,,,
 util_TRNWALKACCESS_Walk_other_time,WALK_LOC - Walk other time,@waux_multiplier * df.walk_xfr_walk_time,,,,,,coef_ivt,,,,,
 util_TRNWALKACCESS_Fare,WALK_LOC - Fare,@ivt_cost_multiplier * df.walk_fare / df.cost_sensitivity,,,,,,coef_ivt,,,,,
-util_TRNWALKACCESS_Destination_zone_densityIndex,WALK_LOC - Destination zone densityIndex,@density_index_multiplier * df.dest_density_index,,,,,,coef_ivt,,,,,
+#TODO: next line add clip(upper = ...)
+util_TRNWALKACCESS_Destination_zone_densityIndex,WALK_LOC - Destination zone densityIndex,@density_index_multiplier * df.dest_density_index.clip(upper=origin_density_index_max),,,,,,coef_ivt,,,,,
 util_TRNWALKACCESS_Topology,WALK_LOC - Topology,@coef_topology_trn_multiplier * df.dest_topology,,,,,,coef_ivt,,,,,
 util_TRNWALKACCESS_Person_is_less_than_10_years_old,WALK_LOC - Person is less than 10 years old,@(df.age < 10),,,,,,coef_age010_trn_multiplier,,,,,
 #util_PNR_to_Local,#PNR to Local,,,,,,,,,,,,
@@ -69,20 +70,21 @@ util_TRNDRIVEACCESS_Walk_access_time,PNR_LOC - Walk access time,@wacc_multiplier
 util_TRNDRIVEACCESS_Walk_other_time,PNR_LOC - Walk other time,@waux_multiplier * df.walk_xfr_walk_time,,,,,,,coef_ivt,,,,
 util_TRNDRIVEACCESS_Fare,Drive_LOC - Fare,@ivt_cost_multiplier * df.drive_fare / df.cost_sensitivity,,,,,,,coef_ivt,,,,
 util_TRNDRIVEACCESS_Op_Cost,Drive_LOC - auto op cost,@ivt_cost_multiplier * costPerMile * 2 * df.drive_access_dist / df.cost_sensitivity,,,,,,,coef_ivt,,,,
-util_TRNDRIVEACCESS_Destination_zone_densityIndex,PNR_LOC - Destination zone densityIndex,@density_index_multiplier * df.dest_density_index,,,,,,,coef_ivt,,,,
+#TODO: next line add clip(upper = ...)
+util_TRNDRIVEACCESS_Destination_zone_densityIndex,PNR_LOC - Destination zone densityIndex,@density_index_multiplier * df.dest_density_index.clip(upper=origin_density_index_max),,,,,,,coef_ivt,,,,
 util_TRNDRIVEACCESS_Topology,PNR_LOC - Topology,@coef_topology_trn_multiplier * df.dest_topology,,,,,,,coef_ivt,,,,
 #,Taxi,,,,,,,,,,,,
 util_Taxi_In_vehicle_time,Taxi - In-vehicle time,@(odt_skims['HOV2_N_TIME_M'] + dot_skims['HOV2_N_TIME_M']),,,,,,,,,coef_ivt,,
 #, FIXME magic constant 1.5,,,,,,,,,,,,
-util_Taxi_Wait_time,Taxi - Wait time,@1.5 * df.totalWaitTaxi,,,,,,,,,coef_ivt,,
+util_Taxi_Wait_time,Taxi - Wait time,@rideshare_i_wait_multiplier * df.totalWaitTaxi,,,,,,,,,coef_ivt,,
 util_Taxi_Fare,Taxi - Fare,@ivt_cost_multiplier * ((Taxi_baseFare * 2 + (odt_skims['HOV2_DIST_M'] + dot_skims['HOV2_DIST_M']) * Taxi_costPerMile +(odt_skims['HOV2_N_TIME_M'] + dot_skims['HOV2_N_TIME_M']) * Taxi_costPerMinute)*100) / df.cost_sensitivity,,,,,,,,,coef_ivt,,
 #,TNC Single,,,,,,,,,,,,
 util_TNC_Single_In_vehicle_time,TNC Single - In-vehicle time,@(odt_skims['HOV2_N_TIME_M'] + dot_skims['HOV2_N_TIME_M']),,,,,,,,,,coef_ivt,
-util_TNC_Single_Wait_time,TNC Single - Wait time,@1.5 * df.totalWaitSingleTNC,,,,,,,,,,coef_ivt,
+util_TNC_Single_Wait_time,TNC Single - Wait time,@rideshare_i_wait_multiplier * df.totalWaitSingleTNC,,,,,,,,,,coef_ivt,
 util_TNC_Single_Cost,TNC Single - Cost,"@ivt_cost_multiplier * (np.maximum(TNC_single_baseFare * 2 + (odt_skims['HOV2_DIST_M'] + dot_skims['HOV2_DIST_M']) * TNC_single_costPerMile + (odt_skims['HOV2_N_TIME_M'] + dot_skims['HOV2_N_TIME_M']) * TNC_single_costPerMinute, TNC_single_costMinimum) * 100) / df.cost_sensitivity",,,,,,,,,,coef_ivt,
 #,TNC Shared,,,,,,,,,,,,
 util_TNC_Shared_In_vehicle_time,TNC Shared - In-vehicle time,@(odt_skims['HOV2_N_TIME_M'] + dot_skims['HOV2_N_TIME_M']) * TNC_shared_IVTFactor,,,,,,,,,,,coef_ivt
-util_TNC_Shared_Wait_time,TNC Shared - Wait time,@1.5 * df.totalWaitSharedTNC,,,,,,,,,,,coef_ivt
+util_TNC_Shared_Wait_time,TNC Shared - Wait time,@rideshare_i_wait_multiplier * df.totalWaitSharedTNC,,,,,,,,,,,coef_ivt
 util_TNC_Shared_Cost,TNC Shared - Cost,"@ivt_cost_multiplier * (np.maximum(TNC_shared_baseFare * 2 + (odt_skims['HOV2_DIST_M'] + dot_skims['HOV2_DIST_M']) * TNC_shared_costPerMile + (odt_skims['HOV2_N_TIME_M'] + dot_skims['HOV3_N_TIME_M']) * TNC_shared_costPerMinute, TNC_shared_costMinimum) * 100) / df.cost_sensitivity",,,,,,,,,,,coef_ivt
 #indiv_tour_ASCs,#indiv tour ASCs,,,,,,,,,,,,
 util_WALK_ASC_Zero_auto,Walk ASC - Zero auto,@(df.is_indiv & (df.auto_ownership == 0)),,,,walk_ASC_no_auto,,,,,,,
