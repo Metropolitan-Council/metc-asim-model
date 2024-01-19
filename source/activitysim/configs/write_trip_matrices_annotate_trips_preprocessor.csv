@@ -14,7 +14,7 @@ Description,Target,Expression
 ,is_pm3,"trips.depart.between(time_periods['PM3']['first_hour'], time_periods['PM3']['last_hour'])"
 ,is_pm4,"trips.depart.between(time_periods['PM4']['first_hour'], time_periods['PM4']['last_hour'])"
 ,is_ev,"trips.depart.between(time_periods['EV']['first_hour'], time_periods['EV']['last_hour'])"
-,has_xp,"reindex(hh.transponder_ownership, trips.household_id)"
+,has_xp,"reindex(households.transponder_ownership, trips.household_id)"
 ,inc1,"reindex(households.income_segment, trips.household_id) == 1"
 ,inc2,"reindex(households.income_segment, trips.household_id) == 2"
 ,inc3,"reindex(households.income_segment, trips.household_id) == 3"

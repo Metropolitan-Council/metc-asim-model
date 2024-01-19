@@ -13,6 +13,12 @@ coef_ivt_othmaint_social,-0.02,F
 coef_ivt_work,-0.02,F
 coef_ivt_univ_school,-0.03,F
 coef_ivt_escort_shopping_eatout_othdiscr_atwork,-0.03,F
+coef_income_work,-0.625,F
+coef_income_school_univ,-0.262,F
+coef_income_maint,-0.262,F
+coef_income_disc,-0.262,F
+coef_income_atwork,-0.262,F
+coef_income,-0.625,F
 coef_age1619_da,0.0,F
 coef_age010_trn,0.0,F
 coef_age16p_sr,0.0,F
