@@ -1217,6 +1217,17 @@ print(paste("dap weight", sum(dapSummary$adjFinalWeight)))
 print(paste("perDays weight", sum(perDays$finalweight)))
 print(paste("per weight", sum(per$finalweight)))
 
+### Hard-coding DAP pattern based on Fall/Winter data
+### School Driving Student
+dapSummary$freq[(dapSummary$PERTYPE==6)&(dapSummary$DAP=='M')] = 78
+dapSummary$freq[(dapSummary$PERTYPE==6)&(dapSummary$DAP=='N')] = 5.9
+dapSummary$freq[(dapSummary$PERTYPE==6)&(dapSummary$DAP=='H')] = 16.1
+
+### School Non-Driving Student
+dapSummary$freq[(dapSummary$PERTYPE==7)&(dapSummary$DAP=='M')] = 81.4
+dapSummary$freq[(dapSummary$PERTYPE==7)&(dapSummary$DAP=='N')] = 8
+dapSummary$freq[(dapSummary$PERTYPE==7)&(dapSummary$DAP=='H')] = 10.6
+
 write.csv(dapSummary, "dapSummary.csv", row.names = TRUE)
 
 # Prepare DAP summary for visualizer
