@@ -148,7 +148,7 @@ SET INPUT_DIR=%MAIN_DIRECTORY%\Input
 ::SET TOURCAST_DIR=%MAIN_DIRECTORY%\TourCast
 
 ::SET ASIM_DATA=%MAIN_DIRECTORY%\Input\activitysim\data
-SET ASIM_OUT=%SCENARIO_NAME%\activitysim\output
+SET ASIM_OUT=%MAIN_DIRECTORY%\%SCENARIO_NAME%\activitysim\output
 MKDIR %SCENARIO_NAME%\activitysim\output
 MKDIR %SCENARIO_NAME%\activitysim\output\log
 MKDIR %SCENARIO_NAME%\activitysim\output\cache
@@ -228,10 +228,11 @@ SET "check_python_errors=IF ERRORLEVEL 1 %exitRun%"
 ::
 :: Section 18: Visualizer Inputs
 ::
-SET VIS_FOLDER=%MAIN_DIRECTORY%\Visualizer
+SET VIS_FOLDER=%MAIN_DIRECTORY%\source\Visualizer
 ::
 :: This is the base condition, either a survey or a different run. This data is only read
-SET VIS_BASE_DATA_FOLDER=%VIS_FOLDER%\data\base
+SET VIS_BASE_DATA_FOLDER=%MAIN_DIRECTORY%\Input\Visualizer\base
+SET VIS_SKIMS=%MAIN_DIRECTORY%\%SCENARIO_NAME%\OMX
 SET BASE_SCENARIO_NAME=Survey
 SET BASE_SAMPLE_RATE=1.0
 :: for survey base legend names are different [Yes/No]
@@ -240,15 +241,16 @@ SET IS_BASE_SURVEY=Yes
 ::
 :: This is the build condition
 :: NOTE: ACTIVITYSIM SUMMARIZED OUTPUT WILL GO HERE
-SET VIS_MODEL_DATA_FOLDER=%VIS_FOLDER%\data\calibration_runs\summarized
+SET VIS_MODEL_DATA_FOLDER=%MAIN_DIRECTORY%\%SCENARIO_NAME%\viz_summarized
+IF NOT EXIST %MAIN_DIRECTORY%\%SCENARIO_NAME%\viz_summarized mkdir %MAIN_DIRECTORY%\%SCENARIO_NAME%\viz_summarized
 SET BUILD_SCENARIO_NAME=Model
 SET BUILD_SAMPLE_RATE=1.0
 
 :: Common data
-SET VIS_ZONE_DIR=%VIS_FOLDER%/data/SHP
+SET VIS_ZONE_DIR=%MAIN_DIRECTORY%\Input\Visualizer\SHP
 SET VIS_ZONE_FILE=TAZ2010.shp
 SET CT_ZERO_AUTO_FILE_NAME=ct_zero_auto.shp
-SET CENSUS_DATA_PATH=%VIS_FOLDER%/data/census
+SET CENSUS_DATA_PATH=%MAIN_DIRECTORY%\Input\Visualizer\census
 :: Executable and library paths
 SET R_SCRIPT="C:\projects\mwcog\Gen3_Model\source\visualizer\dependencies\R-4.1.2\bin\RScript"
 SET R_LIBRARY=%VIS_FOLDER%\contrib\RPKG
