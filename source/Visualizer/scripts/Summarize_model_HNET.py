@@ -74,6 +74,7 @@ asnvmt = []
 for k, v in periods_labels.items():
 	asnvmt.append(pd.concat([hnet.groupby('FTYPE').apply(lambda s: pd.Series({"COUNTY": "Total", "Period": k, "nLinks": s.shape[0], "vmt": np.sum(s[assign_fields[k]] * s[lengthColumn] * distMult)})).reset_index(),hnet.groupby(['FTYPE', 'COUNTY']).apply(lambda s: pd.Series({"Period": k, "nLinks": s.shape[0], "vmt": np.sum(s[assign_fields[k]] * s[lengthColumn] * distMult)})).reset_index(),hnet.groupby('COUNTY').apply(lambda s: pd.Series({"FTYPE": "Total", "Period": k, "nLinks": s.shape[0], "vmt": np.sum(s[assign_fields[k]] * s[lengthColumn] * distMult)})).reset_index()]))
 
+print(f'Saving summaries to {vis_path}')
 outasnvmt = pd.concat(asnvmt)
 outasnvmt.to_csv(os.path.join(vis_path, "asnvmt.csv"), index = False)
 

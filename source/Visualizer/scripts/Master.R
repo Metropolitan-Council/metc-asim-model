@@ -26,7 +26,7 @@ if(length(args) > 0){
 parameters          <- read.csv(Parameters_File, header = TRUE)
 WORKING_DIR         <- trimws(paste(parameters$Value[parameters$Key=="VIS_FOLDER"]))
 BASE_SUMMARY_DIR    <- trimws(paste(parameters$Value[parameters$Key=="VIS_BASE_DATA_FOLDER"]))
-CENSUS_SUMMARY_DIR  <- trimws(paste(parameters$Value[parameters$Key=="VIS_BASE_DATA_FOLDER"]))
+CENSUS_SUMMARY_DIR  <- trimws(paste(parameters$Value[parameters$Key=="CENSUS_DATA_PATH"]))
 ABM_SUMMARY_DIR     <- trimws(paste(parameters$Value[parameters$Key=="VIS_ABM_SUMMARIES_DIR"]))
 #CALIBRATION_DIR     <- trimws(paste(parameters$Value[parameters$Key=="CALIBRATION_DIR"]))
 BASE_SCENARIO_NAME  <- trimws(paste(parameters$Value[parameters$Key=="BASE_SCENARIO_NAME"]))
@@ -43,25 +43,24 @@ IS_BASE_SURVEY      <- trimws(paste(parameters$Value[parameters$Key=="IS_BASE_SU
 BUILD_SUMMARY_DIR      <- trimws(paste(parameters$Value[parameters$Key=="VIS_ABM_SUMMARIES_DIR"]))
 SYSTEM_SHP_PATH     <- trimws(paste(parameters$Value[parameters$Key=="VIS_ZONE_DIR"]))
 ASSIGNED     <- trimws(paste(parameters$Value[parameters$Key=="ASSIGNED"]))
-VIS_SOURCE <- trimws(paste(parameters$Value[parameters$Key=="VIS_SOURCE"]))
+VIS_SOURCE <- trimws(paste(parameters$Value[parameters$Key=="VIS_FOLDER"]))
 SYSTEM_APP_PATH <- VIS_SOURCE
+OUTPUT_PATH <- trimws(paste(parameters$Value[parameters$Key=="HTML_OUTPUT_PATH"]))
 # BUILD_SUMMARY_DIR   <- ifelse(Run_switch=="SN",
 #                               file.path(CALIBRATION_DIR, "ABM_Summaries_subset"),
 #                               file.path(CALIBRATION_DIR, "ABM_Summaries"))
 OUTPUT_HTML_NAME    <- FULL_HTML_NAME
 SYSTEM_TEMPLATES_PATH <- paste(VIS_SOURCE, "templates", sep = "/")
 RUNTIME_PATH          <- paste(VIS_SOURCE, "runtime", sep = "/")
-OUTPUT_PATH           <- paste(WORKING_DIR, "outputs", sep = "/")
 # all originally (stupidly) set in the system templates path.
 SYSTEM_DATA_PATH      <- WORKING_DIR #file.path(SYSTEM_APP_PATH, "data")
-SYSTEM_SHP_PATH       <- file.path(SYSTEM_DATA_PATH, "SHP")
+#SYSTEM_SHP_PATH       <- file.path(SYSTEM_DATA_PATH, "SHP")
 SYSTEM_JPEG_PATH      <- file.path(SYSTEM_DATA_PATH, "JPEG")
 SYSTEM_TEMPLATES_PATH <- file.path(SYSTEM_APP_PATH, "templates")
 SYSTEM_SCRIPTS_PATH   <- file.path(SYSTEM_APP_PATH, "scripts")
-OUTPUT_PATH           <- file.path(SYSTEM_APP_PATH, "outputs")
 RUNTIME_PATH          <- file.path(SYSTEM_APP_PATH, "runtime")
-BASE_DATA_PATH        <- file.path(SYSTEM_DATA_PATH, "base")
-BUILD_DATA_PATH       <- file.path(SYSTEM_DATA_PATH, "calibration_runs\\summarized")
+BASE_DATA_PATH        <- BASE_SUMMARY_DIR
+BUILD_DATA_PATH       <- ABM_SUMMARY_DIR
 
 
 ### Initialization
@@ -114,8 +113,8 @@ summaryFileList_census <- as.list(summaryFileList_census$summaryFile)
 # if(retVal) q(save = "no", status = 11)
 
 print("Reading build csvs...")
-#build_csv_list <- "summaryFilesNames_ActivitySim_MetC.csv"
-build_csv_list <- base_csv_list
+build_csv_list <- "summaryFilesNames_ActivitySim_MetC.csv"
+#build_csv_list <- base_csv_list
 summaryFileList_build <- read.csv(paste(SYSTEM_TEMPLATES_PATH, build_csv_list, sep = '/'), as.is = T)
 summaryFileList_build <- as.list(summaryFileList_build$summaryFile)
 #retVal <- copyFile(summaryFileList_build, sourceDir = BUILD_SUMMARY_DIR, targetDir = BUILD_DATA_PATH)
@@ -128,6 +127,7 @@ jpeg_copy_retval <- file.copy(jpeg_list, SYSTEM_JPEG_PATH, overwrite = TRUE)
 ### Read Target and Output Summary files
 currDir <- getwd()
 
+print(paste('BASE_SUMMARY_DIR:',BASE_SUMMARY_DIR))
 setwd(BASE_SUMMARY_DIR)
 base_csv = list.files(pattern="*.csv")
 
@@ -144,6 +144,13 @@ build_data <- lapply(build_csv, function(x){
 	read.csv(x, row.names = NULL)})
 build_csv_names <- unlist(lapply(build_csv, function (x) {gsub(".csv", "", x)}))
 
+setwd(CENSUS_SUMMARY_DIR)
+census_csv = list.files(pattern="*.csv")
+census_data <- lapply(census_csv, function(x){
+	print(paste("[Census] Reading ", x, "...", sep = ""))
+	read.csv(x, row.names = NULL)})
+census_csv_names <- unlist(lapply(census_csv, function (x) {gsub(".csv", "", x)}))
+
 ### Read SHP files
 print("Read Shapefiles...")
 setwd(SYSTEM_SHP_PATH)
@@ -156,6 +163,8 @@ zone_shp <- spTransform(zone_shp, CRS("+proj=longlat +ellps=GRS80"))
 print(CT_ZERO_AUTO_FILE_NAME)
 ct_zero_auto_shp <- shapefile(CT_ZERO_AUTO_FILE_NAME)
 ct_zero_auto_shp <- spTransform(ct_zero_auto_shp, CRS("+proj=longlat +ellps=GRS80"))
+
+setwd(BUILD_SUMMARY_DIR)
 if(ASSIGNED==1){
 	vgsum = read.csv("hassign_vgsum.csv")
 	hnet = read.csv("hnetcnt.csv")
@@ -179,7 +188,5 @@ rmarkdown::render(file.path(SYSTEM_TEMPLATES_PATH, "template.Rmd"),
 template.html <- readLines(file.path(RUNTIME_PATH, "template.html"))
 idx <- which(template.html == "window.FlexDashboardComponents = [];")[1]
 template.html <- append(template.html, "L_PREFER_CANVAS = true;", after = idx)
-OUTPUT_PATH = 'E:\\Met_Council\\survey_data\\Phase2'
-OUTPUT_HTML_NAME = 'Met_council_TBI_compare'
 writeLines(template.html, file.path(OUTPUT_PATH, paste(OUTPUT_HTML_NAME, ".html", sep = "")))
 # finish

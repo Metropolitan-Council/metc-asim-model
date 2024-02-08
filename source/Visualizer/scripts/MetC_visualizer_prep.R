@@ -111,8 +111,12 @@ print('Reading input files...')
 ## Read Data
 hh                   = fread(file.path(Survey_Dir, "HH_SPA_INPUT.csv"))
 per                  = fread(file.path(Survey_Dir, "PER_SPA_INPUT.csv"))
-# per_raw = fread(file.path(HTS_raw_Dir, "TBI21_PERSON_RAW_202308281334.csv"))
-per_raw = fread(file.path(HTS_raw_Dir, "person.csv"))
+if(file.exists(file.path(HTS_raw_Dir, "person.csv"))){
+	per_raw = fread(file.path(HTS_raw_Dir, "person.csv"))
+}else{
+	per_raw = fread(file.path(HTS_raw_Dir, "TBI21_PERSON_RAW_202308281334.csv"))
+}
+
 
 # tours                = fread(file.path(Survey_Processed_Dir, "tours.csv"))[!HH_ID %in% weekend_ids]
 # trips                = fread(file.path(Survey_Processed_Dir, "trips.csv"))[!HH_ID %in% weekend_ids]

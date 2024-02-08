@@ -35,6 +35,7 @@ ABM_SUMMARY_DIR     <- trimws(paste(parameters$Value[parameters$Key=="VIS_ABM_SU
 ABM_INPUTS          <- trimws(paste(parameters$Value[parameters$Key=="VIS_ABM_INPUTS"])) #settings$ABM_INPUTS
 SKIMS_DIR           <- trimws(paste(parameters$Value[parameters$Key=="VIS_SKIMS_DIR"])) #settings$skims_dir
 ZONES_DIR           <- trimws(paste(parameters$Value[parameters$Key=="VIS_ZONE_DIR"])) #settings$zone_dir
+ABM_LAND_USE_DIR    <- trimws(paste(parameters$Value[parameters$Key=="ABM_LAND_USE_DIR"]))
 
 print(paste("Using ABM Results in", ABM_DIR))
 
@@ -43,7 +44,7 @@ WD <- ABM_SUMMARY_DIR
 
 xwalk_file = file.path(ZONES_DIR, "TAZ2010.dbf")
 xwalk <- read.dbf(xwalk_file, as.is=FALSE)
-skim_file = file.path(SKIMS_DIR, "allskims.omx")
+skim_file = file.path(SKIMS_DIR, "nmskims.omx")
 
 hh                 <- read.csv(file.path(ABM_DIR, "final_households.csv"), header = TRUE)
 per                <- read.csv(file.path(ABM_DIR, "final_persons.csv"), header = TRUE)
@@ -136,7 +137,7 @@ hh$ADULTS <- hh$num_adults
 write.csv(xtabs(finalweight~HHVEH+WORKERS, data = hh), file.path(WD, "xtab_HHVEH_WORKERS.csv"), row.names = T)
 
 # Workers vs. employees by zone and county ####
-tazdat = read.csv(file.path(ABM_INPUTS, "land_use.csv"), header = TRUE)
+tazdat = read.csv(file.path(ABM_LAND_USE_DIR, "land_use.csv"), header = TRUE)
 
 tazdat$WDISTRICT = xwalk$COUNTY_NAME[match(tazdat$zone_id, xwalk$TAZ)]
 emp_co = plyr::count(tazdat, c("WDISTRICT"), "TOT_EMP")
