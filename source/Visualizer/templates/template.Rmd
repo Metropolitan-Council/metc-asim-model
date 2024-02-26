@@ -689,12 +689,15 @@ p
 
 ### Percentage Working From Home{data-height=250}
 ```{r Chart_WFH}
-base_df <- base_data[[which(base_csv_names=="wfh_summary")]]
-base_df$share <- base_df$WFH/base_df$Workers
+base_df <- census_data[[which(census_csv_names == "census_acs_2021_wfh")]]
+colnames(base_df) = c("District","tot_wrk","wfh","share")
+
+# base_df <- base_data[[which(base_csv_names=="wfh_summary")]]
+# base_df$share <- base_df$WFH/base_df$Workers
 build_df <- build_data[[which(build_csv_names=="wfh_summary")]]
 build_df$share <- build_df$WFH/build_df$Workers
 
-std_DF <- cbind(base_df[,c("District", "share")], build_df[,c("share")])
+std_DF <- cbind(base_df[1:19,c("District", "share")], build_df[1:19,c("share")])
 colnames(std_DF) <- c("xvar", "prop1", "prop2")
 p <- plotly_bar_plotter(data = std_DF, xlabel = "District", ylabel = "Percent WFH", ynames = c(BASE_SCENARIO_NAME, BUILD_SCENARIO_NAME), percent = T, height = 275, tickangle = -320, bottom_offset = 25)
 p
