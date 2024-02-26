@@ -10,18 +10,27 @@ def read_land_use(land_use_file, index_field_name, field_name, matrix_name, outp
     if land_use_file[-4:].lower() != ".csv":
         raise RuntimeError("Land use file needs to be a CSV")
     land_use = pd.read_csv(land_use_file)
-    if not field_name in land_use.columns:
+    if not field_name in land_use.columns and field_name != '_INTRAZONAL':
         raise RuntimeError("Field name is not in file")
     if not index_field_name in land_use.columns:
         raise RuntimeError("Index field name is not in file")
     if zone_override > 0:
         co_output = np.zeros([zone_override, zone_override])
-        f = np.tile(land_use[field_name], reps = (land_use.shape[0], 1))
-        co_output[:f.shape[0], :f.shape[1]] = f
+        if field_name == '_INTRAZONAL':
+            np.fill_diagonal(co_output, 1)
+        else:
+            f = np.tile(land_use[field_name], reps = (land_use.shape[0], 1))
+            co_output[:f.shape[0], :f.shape[1]] = f
         mapping = np.arange(1, zone_override + 1)
     else:
-        co_output = np.tile(land_use[field_name], reps = (land_use.shape[0], 1))
+        co_output = np.zeros([land_use.shape[0], land_use.shape[0]])
+        if field_name == '_INTRAZONAL':
+            np.fill_diagonal(co_output, 1)
+        else:
+            co_output = np.tile(land_use[field_name], reps = (land_use.shape[0], 1))
         mapping = np.array(land_use[index_field_name])
+
+        
     m = omx.open_file(output_file, 'w')
     m.create_mapping('taz', mapping)
     m[matrix_name] = np.array(co_output)
