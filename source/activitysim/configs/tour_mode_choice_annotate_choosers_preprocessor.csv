@@ -121,6 +121,9 @@ local,_DF_IS_TOUR,'tour_type' in df.columns
 ,sov_available,"(odt_skims['SOV_N_TIME_M']>0) & (dot_skims['SOV_N_TIME_M']>0) & (df.age>=minimumAgeDA) * np.where(is_joint,0,1)"
 ,hov2_available,"(odt_skims['HOV2_N_TIME_M'] + dot_skims['HOV2_N_TIME_M'])>0"
 ,hov3_available,"(odt_skims['HOV3_N_TIME_M']>0) & (dot_skims['HOV3_N_TIME_M']>0)"
+#
+# Transit Modes
+#
 ,_walk_trn_ivt_ob,odt_skims['WLK_TRN_IVT']
 ,_walk_trn_ivt_ib,dot_skims['WLK_TRN_IVT']
 ,walk_trn_ivt,_walk_trn_ivt_ob + _walk_trn_ivt_ib
@@ -170,6 +173,10 @@ local,_DF_IS_TOUR,'tour_type' in df.columns
 ,_drive_fare_ib,dot_skims['DRV_TRN_FARE']
 ,drive_fare,_drive_fare_ob+_drive_fare_ib
 ,drive_access_dist,odt_skims['DRV_TRN_DRACCDIST']
+,_has_persons,True if 'persons' in vars() or 'persons' in globals() else False
+,_transit_pass,"reindex(persons.transit_pass_ownership, df.person_id) if _has_persons.any() and 'transit_pass_ownership' in persons.columns else 0"
+# ,_transit_pass,0.0
+,transit_pass_mult,(1-_transit_pass)
 #,walk_premium_available,"walk_transit_available & (odt_skims['WLK_TRN_IVT']>0) & (dot_skims['WLK_TRN_IVT']>0)"
 #,walk_mix_available,"walk_transit_available & (odt_skims['WLK_TRN_IVT']>0) & (dot_skims['WLK_TRN_IVT']>0)"
 #,pnr_local_available,"pnr_transit_available & (odt_skims['DRV_TRN_IVT']>0) & (dot_skims['DRV_TRN_IVT']>0)"
@@ -179,6 +186,6 @@ local,_DF_IS_TOUR,'tour_type' in df.columns
 #,knr_premium_available,"pnr_transit_available & (odt_skims['DRV_TRN_IVT']>0) & (dot_skims['DRV_TRN_IVT']>0)"
 #,knr_mix_available,"pnr_transit_available & (odt_skims['DRV_TRN_IVT']>0) & (dot_skims['DRV_TRN_IVT']>0)"
 #,,
-destination in central business district,destination_in_cbd,"(reindex(land_use.CBD, df[dest_col_name]) == 1)"
+destination in central business district,destination_in_cbd,"(reindex(land_use.AREA_TYPE, df[dest_col_name]) == 1)"
 #,,FIXME diagnostic
 #,sov_dist_rt,(odt_skims['SOV_DIST'] + dot_skims['SOV_DIST'])

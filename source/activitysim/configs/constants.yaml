@@ -69,6 +69,34 @@ distributed_time_factor_nonwork_stddev: 0.6
 distributed_time_factor_min: 0.1
 distributed_time_factor_max: 10
 
+# Work Location adjustment for WFH and in-migration - note that the naming must
+# be consistent with the COUNTY field in the land use input file
+county_work_loc_adj:
+  Anoka: 0.704727732
+  Carver: 0.730756278
+  Chisago: 0.861319852
+  Dakota: 0.770437797
+  Goodhue: 0.976934244
+  Hennepin: 0.811513253
+  Isanti: 0.767350661
+  Le Sueur: 0.770597128
+  McLeod: 0.931515957
+  Pierce: 0.898573861
+  Polk: 0.824742268
+  Ramsey: 0.867163721
+  Rice: 0.914408764
+  Scott: 0.606232064
+  Sherburne: 0.615918824
+  Sibley: 1.257487091
+  St. Croix: 0.927639487
+  Washington: 0.702924835
+  Wright: 0.721086728
+
+
+# Covid-19 adjustments
+# This factor turns on increased WFH and decreased mandatory patterns
+POST_COVID: 1.0
+
 # year after which a vehicle (therefore its household) must have transponder
 hhTR_Vehyear: 2035
 

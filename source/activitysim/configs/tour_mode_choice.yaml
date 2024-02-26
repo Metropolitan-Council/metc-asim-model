@@ -44,6 +44,7 @@ preprocessor:
   TABLES:
     - land_use
     - tours
+    - persons
     #- vehicles
     - households
 
@@ -52,6 +53,7 @@ nontour_preprocessor:
   DF: choosers
   TABLES:
     - land_use
+    - persons
     
 annotate_tours:
   SPEC: annotate_tours_tour_mode_choice
@@ -76,5 +78,6 @@ LOGSUM_CHOOSER_COLUMNS:
   - income
   - time_factor_work
   - time_factor_nonwork
+  - transit_pass_ownership
 
 MODE_CHOICE_LOGSUM_COLUMN_NAME: mode_choice_logsum

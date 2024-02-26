@@ -114,6 +114,8 @@ dest terminal time not counted at home,_dest_terminal_time,"np.where(inbound & l
 #,max_dist_walk,od_skims.max('DISTWALK')
 #,dist_bike,od_skims['DISTBIKE']
 #,dist_only,od_skims['DIST']
+,_transit_pass,"reindex(persons.transit_pass_ownership, df.person_id)"
+,transit_pass_mult,(1-_transit_pass)
 ,ownsTransponder,df.transponder_ownership if 'transponder_ownership' in df else 0
 ,da_dist_skim,"(np.where(ownsTransponder==1, odt_skims['SOV_DIST_L'], odt_skims['SOV_DIST_L']) * (_vot_bin_da == 1)) + (np.where(ownsTransponder==1, odt_skims['SOV_DIST_M'], odt_skims['SOV_DIST_M']) * (_vot_bin_da == 2)) + (np.where(ownsTransponder==1, odt_skims['SOV_DIST_H'], odt_skims['SOV_DIST_H']) * (_vot_bin_da == 3))"
 ,da_cost_skim,"(np.where(ownsTransponder==1, odt_skims['SOV_P_TOLL_L'], odt_skims['SOV_N_TOLL_L']) * (_vot_bin_da == 1)) + (np.where(ownsTransponder==1, odt_skims['SOV_P_TOLL_M'], odt_skims['SOV_N_TOLL_M']) * (_vot_bin_da == 2)) + (np.where(ownsTransponder==1, odt_skims['SOV_P_TOLL_H'], odt_skims['SOV_N_TOLL_H']) * (_vot_bin_da == 3))"

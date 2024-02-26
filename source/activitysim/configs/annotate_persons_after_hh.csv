@@ -26,4 +26,5 @@ income_in_thousands,income_in_thousands,(income / 1000).clip(lower=0)
 hh_child,hh_child,"reindex(households.num_children, persons.household_id)"
 home_state,home_state,"reindex(households.home_state, persons.household_id)"
 Home County,home_county,"reindex(households.home_county, persons.household_id).astype(str)"
+Home district,home_dist,"reindex(households.home_dist, persons.household_id)"
 ,is_out_of_home_worker,True

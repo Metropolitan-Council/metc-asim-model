@@ -3,10 +3,12 @@ SAMPLE_SIZE: 30
 SIMULATE_CHOOSER_COLUMNS:
   - income_segment
   - home_zone_id
-  - home_state
+  # - home_state
   - is_student
   - pemploy
   - auto_ownership
+  - home_dist
+
 
 SAMPLE_SPEC: workplace_location_sample.csv
 SPEC: workplace_location.csv
@@ -72,8 +74,8 @@ CONSTANTS:
 
 
 # model adds these tables (informational - not added if commented out)
-#SHADOW_PRICE_TABLE: workplace_shadow_prices
-#MODELED_SIZE_TABLE: workplace_modeled_size
+SHADOW_PRICE_TABLE: workplace_shadow_prices
+MODELED_SIZE_TABLE: workplace_modeled_size
 
 # not loaded if commented out
-#SAVED_SHADOW_PRICE_TABLE_NAME: final_workplace_shadow_prices.csv
+SAVED_SHADOW_PRICE_TABLE_NAME: final_workplace_shadow_prices.csv

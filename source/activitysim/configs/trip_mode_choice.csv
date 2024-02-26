@@ -51,7 +51,7 @@ util_TRNWALKACCESS_number_of_transfers,WALK_LOC - number of transfers,@xfers_wlk
 util_TRNWALKACCESS_Walk_access_time,WALK_LOC - Walk access time,@coef_wacc_multiplier * df.walk_access_time,,,,,,coef_ivt 
 util_TRNWALKACCESS_Walk_egress_time,WALK_LOC - Walk egress time,@coef_wegr_multiplier * df.walk_egress_time,,,,,,coef_ivt
 util_TRNWALKACCESS_Walk_other_time,WALK_LOC - Walk other time,@coef_waux_multiplier * df.walk_xfr_walk_time,,,,,,coef_ivt
-util_TRNWALKACCESS_Fare,WALK_LOC - Fare,@ivt_cost_multiplier * df.walk_fare / df.cost_sensitivity,,,,,,coef_ivt
+util_TRNWALKACCESS_Fare,WALK_LOC - Fare,@ivt_cost_multiplier * df.transit_pass_mult * df.walk_fare / df.cost_sensitivity,,,,,,coef_ivt
 util_TRNWALKACCESS_Destination_zone_densityIndex,WALK_LOC - Destination zone densityIndex,@density_index_multiplier * df.density_index,,,,,,coef_ivt
 util_TRNWALKACCESS_Topology,WALK_LOC - Topology,@df.trip_topology,,,,,,coef_ivt 
 util_TRNWALKACCESS_Person_is_less_than_10_years_old,WALK_LOC - Person is less than 10 years old,@(df.age < 10),,,,,,coef_age010_trn
@@ -70,7 +70,7 @@ util_TRNDRIVEACCESS_outbound_number_of_transfers,PNR_LOC outbound - number of tr
 util_TRNDRIVEACCESS_outbound_Drive_time,PNR_LOC outbound - Drive time,@df.outbound * coef_dtim_multiplier * df.drive_access_time_out,,,,,,,coef_ivt
 util_TRNDRIVEACCESS_outbound_Walk_egress_time,PNR_LOC outbound - Walk egress time,@df.outbound * coef_wegr_multiplier * df.drive_egress_time_out,,,,,,,coef_ivt
 util_TRNDRIVEACCESS_outbound_Walk_other_time,PNR_LOC outbound - Walk other time,@df.outbound * coef_waux_multiplier * df.drive_xfr_walk_time_out,,,,,,,coef_ivt
-util_TRNDRIVEACCESS_outbound_Fare_and_operating_cost,PNR_LOC outbound - Fare and operating cost,@df.outbound * ivt_cost_multiplier * (df.drive_fare_out + costPerMile * df.drive_access_dist_out) / df.cost_sensitivity,,,,,,,coef_ivt
+util_TRNDRIVEACCESS_outbound_Fare_and_operating_cost,PNR_LOC outbound - Fare and operating cost,@df.outbound * ivt_cost_multiplier * (df.drive_fare_out * df.transit_pass_mult + costPerMile * df.drive_access_dist_out) / df.cost_sensitivity,,,,,,,coef_ivt
 util_TRNDRIVEACCESS_outbound_Ratio_of_drive_access_distance_to_OD_distance,PNR_LOC outbound - Ratio of drive access distance to OD distance,@df.outbound * dacc_ratio * (df.drive_access_dist_out)/ (df.da_dist_skim),,,,,,,coef_ivt 
 #PNR to Local - PNR Egress
 # util_TRNDRIVEACCESS_Origin_zone_densityIndex,PNR_LOC - Origin zone densityIndex,@df.outbound & density_index_multiplier * df.origin_density_index,,,,,,,coef_ivt
@@ -83,7 +83,7 @@ util_TRNDRIVEACCESS_inbound_number_of_transfers,PNR_LOC inbound - number of tran
 util_TRNDRIVEACCESS_inbound_Drive_time,PNR_LOC inbound - Drive time,@df.inbound * coef_dtim_multiplier * df.drive_access_time_in,,,,,,,coef_ivt
 util_TRNDRIVEACCESS_inbound_Walk_access_time,PNR_LOC inbound - Walk access time,@df.inbound * coef_wacc_multiplier * df.drive_egress_time_in,,,,,,,coef_ivt 
 util_TRNDRIVEACCESS_inbound_Walk_other_time,PNR_LOC inbound - Walk other time,@df.inbound * coef_waux_multiplier * df.drive_xfr_walk_time_in,,,,,,,coef_ivt
-util_TRNDRIVEACCESS_inbound_Fare_and_operating_cost,PNR_LOC inbound - Fare and operating cost,@df.inbound * ivt_cost_multiplier  * (df.drive_fare_in + costPerMile * df.drive_access_dist_in) / df.cost_sensitivity,,,,,,,coef_ivt
+util_TRNDRIVEACCESS_inbound_Fare_and_operating_cost,PNR_LOC inbound - Fare and operating cost,@df.inbound * ivt_cost_multiplier  * (df.drive_fare_in * df.transit_pass_mult + costPerMile * df.drive_access_dist_in) / df.cost_sensitivity,,,,,,,coef_ivt
 util_TRNDRIVEACCESS_inbound_Ratio_of_drive_access_distance_to_OD_distance,PNR_LOC inbound - Ratio of drive access distance to OD distance,@df.inbound * dacc_ratio * (df.drive_access_dist_in)/ (df.da_dist_skim),,,,,,,coef_ivt 
 #School_Bus
 util_School_Bus_Unavailable_if_primary_purpose_NOT_school,School Bus Unavailable if primary purpose NOT school,~is_school,,,,,,,,-999.0

@@ -52,7 +52,7 @@ util_TRNWALKACCESS_number_of_transfers,WALK_LOC - number of transfers,@xfers_wlk
 util_TRNWALKACCESS_Walk_access_time,WALK_LOC - Walk access time,@wacc_multiplier * df.walk_access_time,,,,,,coef_ivt,,,,,
 util_TRNWALKACCESS_Walk_egress_time,WALK_LOC - Walk egress time,@wegr_multiplier * df.walk_egress_time,,,,,,coef_ivt,,,,,
 util_TRNWALKACCESS_Walk_other_time,WALK_LOC - Walk other time,@waux_multiplier * df.walk_xfr_walk_time,,,,,,coef_ivt,,,,,
-util_TRNWALKACCESS_Fare,WALK_LOC - Fare,@ivt_cost_multiplier * df.walk_fare / df.cost_sensitivity,,,,,,coef_ivt,,,,,
+util_TRNWALKACCESS_Fare,WALK_LOC - Fare,@ivt_cost_multiplier * df.transit_pass_mult * df.walk_fare / df.cost_sensitivity,,,,,,coef_ivt,,,,,
 #TODO: next line add clip(upper = ...)
 util_TRNWALKACCESS_Destination_zone_densityIndex,WALK_LOC - Destination zone densityIndex,@density_index_multiplier * df.dest_density_index.clip(upper=origin_density_index_max),,,,,,coef_ivt,,,,,
 util_TRNWALKACCESS_Topology,WALK_LOC - Topology,@coef_topology_trn_multiplier * df.dest_topology,,,,,,coef_ivt,,,,,
@@ -68,7 +68,7 @@ util_TRNDRIVEACCESS_number_of_transfers,PNR_LOC - number of transfers,@xfers_wlk
 util_TRNDRIVEACCESS_PNR_time,PNR_LOC - PNR time,@dtim_multiplier * df.drive_access_time,,,,,,,coef_ivt,,,,
 util_TRNDRIVEACCESS_Walk_access_time,PNR_LOC - Walk access time,@wacc_multiplier * df.drive_egress_time,,,,,,,coef_ivt,,,,
 util_TRNDRIVEACCESS_Walk_other_time,PNR_LOC - Walk other time,@waux_multiplier * df.walk_xfr_walk_time,,,,,,,coef_ivt,,,,
-util_TRNDRIVEACCESS_Fare,Drive_LOC - Fare,@ivt_cost_multiplier * df.drive_fare / df.cost_sensitivity,,,,,,,coef_ivt,,,,
+util_TRNDRIVEACCESS_Fare,Drive_LOC - Fare,@ivt_cost_multiplier * df.transit_pass_mult * df.drive_fare / df.cost_sensitivity,,,,,,,coef_ivt,,,,
 util_TRNDRIVEACCESS_Op_Cost,Drive_LOC - auto op cost,@ivt_cost_multiplier * costPerMile * 2 * df.drive_access_dist / df.cost_sensitivity,,,,,,,coef_ivt,,,,
 #TODO: next line add clip(upper = ...)
 util_TRNDRIVEACCESS_Destination_zone_densityIndex,PNR_LOC - Destination zone densityIndex,@density_index_multiplier * df.dest_density_index.clip(upper=origin_density_index_max),,,,,,,coef_ivt,,,,

@@ -1,8 +1,8 @@
 # Sampling size. 0 = no limit
 # can be whole integer value or a sample rate (percent of zones)
 # zero or missing defaults to full sample!
-DESTINATION_SAMPLE_SIZE: 0
-ORIGIN_SAMPLE_SIZE: 0
+DESTINATION_SAMPLE_SIZE: 100
+ORIGIN_SAMPLE_SIZE: 100
 
 # select origin zones weighted by population (or another landuse variable)
 ORIGIN_WEIGHTING_COLUMN: POPULATION
@@ -29,7 +29,7 @@ CREATE_TABLES:
         rename_columns:
             zone_id: home_zone_id
         VARIABLES:
-            hinccat1: [1, 2, 3, 4, 5]          # Income categories
+            hinccat1: [1, 2, 3, 4]          # Income categories
             hworkers: 1                  # Household workers
             auto_ownership: [0, 1, 2]    # Household vehicles
             persons: 2                   # Two persons household
@@ -39,11 +39,10 @@ CREATE_TABLES:
         mapped_fields:
             hinccat1: # List new fields mapped to this field
               income: # Median income within each quartile
-                1: 12950
-                2: 30300
-                3: 54100
-                4: 84300
-                5: 146200
+                1: 25000
+                2: 75000
+                3: 125000
+                4: 175000
             persons:
               hhsize:
                 1: 1

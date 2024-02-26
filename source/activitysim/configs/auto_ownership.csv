@@ -35,3 +35,11 @@ util_cars0_mcleod,Zero auto constant for McLeod County,@df.home_county == 'McLeo
 util_cars0_ramsey,Zero auto constant for Ramsey County,@df.home_county == 'Ramsey',coef_cars0_ramsey,,,,
 util_cars0_sibley,Zero auto constant for Sibley County,@df.home_county == 'Sibley',coef_cars0_sibley,,,,
 util_cars0_polk,Zero auto constant for Polk County,@df.home_county == 'Polk',coef_cars0_polk,,,,
+util_cars0_stcroix,Zero auto constant for St. Croix County,@df.home_county == 'St. Croix',coef_cars0_stcroix,,,,
+util_cars0_lesueur,Zero auto constant for Le Sueur County,@df.home_county == 'Le Sueur',coef_cars0_lesueur,,,,
+util_cars0_washington,Zero auto constant for Washington County,@df.home_county == 'Washington',coef_cars0_washington,,,,
+util_cars0_rice,Zero auto constant for Rice County,@df.home_county == 'Rice',coef_cars0_rice
+util_cars0_scott,Zero auto constant for Scott County,@df.home_county == 'Scott',coef_cars0_scott
+util_cars0_wright,Zero auto constant for Wright County,@df.home_county == 'Wright',coef_cars0_wright
+util_cars0_dakota,Zero auto constant for Dakota County,@df.home_county == 'Dakota',coef_cars0_dakota
+util_cars0_goodhue,Zero auto constant for Goodhue County,@df.home_county == 'Goodhue',coef_cars0_goodhue

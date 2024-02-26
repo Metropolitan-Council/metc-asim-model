@@ -6,7 +6,8 @@ HHT Placeholder,HHT,1 #TODO: Fix
 #,,FIXME households.income can be negative  - so we clip?
 income,income,households.income.fillna(0)
 income_in_thousands,income_in_thousands,(income / 1000).clip(lower=0)
-income_segment,income_segment,"pd.cut(income_in_thousands, bins=[-np.inf, 20, 40, 70, 100, np.inf], labels=[1, 2, 3, 4, 5]).astype(int)"
+# income_segment,income_segment,"pd.cut(income_in_thousands, bins=[-np.inf, 20, 40, 70, 100, np.inf], labels=[1, 2, 3, 4, 5]).astype(int)"
+income_segment,income_segment,"pd.cut(income_in_thousands, bins=[-np.inf, 50, 100, 150, np.inf], labels=[1, 2, 3, 4]).astype(int)"
 hinccat1,hinccat1,income_segment
 work_segment, work_segment, income_segment.clip(upper = 4)
 #,,
@@ -35,11 +36,8 @@ num_college_age,num_college_age,"_PERSON_COUNT('18 <= age <= 24', persons, house
 num_young_adults,num_young_adults,"_PERSON_COUNT('25 <= age <= 34', persons, households)"
 non_family,non_family,HHT.isin(HHT_NONFAMILY) 
 family,family,HHT.isin(HHT_FAMILY) 
-#home_is_urban,home_is_urban,"reindex(land_use.AreaType, households.home_zone_id) < setting('urban_threshold')"
-home_is_urban,home_is_urban,"reindex(land_use.RURAL, households.home_zone_id).astype(int) == 0"
-#"(reindex(land_use.CBD, households.home_zone_id) == 1) | (reindex(land_use.SUBURB3, households.home_zone_id) == 1)"
-#home_is_rural,home_is_rural,"reindex(land_use.AreaType, households.home_zone_id) > setting('rural_threshold')"
-home_is_rural,home_is_rural,"reindex(land_use.RURAL, households.home_zone_id).astype(int) == 1"
+home_is_urban,home_is_urban,"reindex(land_use.AREA_TYPE, households.home_zone_id) < setting('urban_threshold')"
+home_is_rural,home_is_rural,"reindex(land_use.AREA_TYPE, households.home_zone_id) > setting('rural_threshold')"
 #,, default for work and school location logsums before auto_ownership model is run
 TAZ column to match settings file,TAZ,households.home_zone_id
 number of pre-driving age children in the household,num_predrive_child,"_PERSON_COUNT('ptype == 6', persons, households)"
@@ -51,3 +49,4 @@ Retired Adults Only Households,retired_adults_only_hh,(households.hhsize > 0) & 
 ,num_old_retirees,"_PERSON_COUNT('80 <= age', persons, households)"
 Home County,home_county,"reindex(land_use.COUNTY, households.home_zone_id).astype(str)"
 Home State FIPS,home_state,"reindex(land_use.STATEFP, households.home_zone_id)"
+Home district numbe,home_dist,"reindex(land_use.DISTRICT, households.home_zone_id)"

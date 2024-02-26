@@ -56,7 +56,10 @@ coef_0Autos_4day,0Autos,0,F
 coef_1Auto_4day,1Auto,0,F
 coef_3plusAutos_4day,3plusAutos,0,F
 coef_DistanceToWork_4day,DistanceToWork,0,F
-coef_Calib_no,Calib - no TC,-0.10010872294661484,F
+coef_Calib_no,Calib - no TC,-0.10010872294661484,T
 coef_Calib_1dpw,Calib TC 1 day per week,-3.5308768175500957,F
 coef_Calib_23dpw,Calib TC 2-3 days per week,-3.276295017243257,F
 coef_Calib_4pdpw,Calib TC 4+ days per week,-3.157597116616949,F
+coef_Calib_1dpw_pc,Calib TC 1 day per week - post-Covid,-0.560137575141382,F
+coef_Calib_23dpw_pc,Calib TC 2-3 days per week - post-Covid,0.7705965174365309,F
+coef_Calib_4pdpw_pc,Calib TC 4+ days per week - post-Covid,1.447858491918306,F

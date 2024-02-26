@@ -1,10 +1,6 @@
 Description,Expression,M,N,H
-# Full-time worker alternative-specific constants,ptype == 1,1.5728386529137752,1.1800950652084934,
-# Part-time worker alternative-specific constants,ptype == 2,-0.6704403523219504,0.8279234684790613,
 Full-time worker alternative-specific constants,ptype == 1,1.25,1.1800950652084934,
 Part-time worker alternative-specific constants,ptype == 2,-0.1704403523219504,0.8279234684790613,
-
-#Non-working adult alternative-specific constants,ptype == 4,-999.0,-0.5287993334671984,
 Non-working adult alternative-specific constants,ptype == 4,-999.0,0.164,
 Retired alternative-specific constants,ptype == 5,-999.0,0.8033720916190095,
 Univ Student alternative-specific constants,ptype == 3,1.304707960575958,1.290823005411461,
@@ -14,9 +10,8 @@ Pre-driving-age child who is in school alternative-specific constants,ptype == 7
 Pre-driving-age child who is in school interaction with age 6 to 9,(ptype == 7) & (age == 2),-0.2943,,
 Pre-driving-age child who is in school interaction with age 13 to 15,(ptype == 7) & (age == 3),-0.7141,-0.672,
 Pre-driving-age child who is too young for school alternative-specific constants,ptype == 8,4.942122992607917,-0.8404267563128031,
-# corrected tm1 age bug,,,,
 Pre-driving-age child who is too young for school interaction with age 0 to 1,(ptype == 8) & (age <= 1),-0.4515,,
-#Pre-driving-age child who is too young for school interaction with age 4 to 5,(ptype == 8) & (age >= 4) & (age <= 5),0.6107,,
+Pre-driving-age child who is too young for school interaction with age 4 to 5,(ptype == 8) & (age >= 4) & (age <= 5),0.6107,,
 Pre-driving-age child who is too young for school and doesn't have a school loc,(ptype == 8) & (school_zone_id < 0),-999,,
 #,,,,
 Full-time worker interaction with age less than 40,(ptype == 1) & (age < 7),0.2091,,
@@ -63,18 +58,10 @@ working university student in GQ housing,(ptype == 3) & (is_worker) & (HHT < 4) 
 non-working university student in non-family housing,(ptype == 3) & (~is_worker) & (HHT >= 4),0.16573332752946932,-1.2223963004171414,
 non-working university student in family housing,(ptype == 3) & (~is_worker) & (HHT < 4) & (type != 3),0.058646779881048675,-0.22458840819910103,
 non-working university student in GQ housing,(ptype == 3) & (~is_worker) & (HHT < 4) & (type == 3),0.2231239703501062,-1.1839396062896261,
-# commented out because not used in mtctm1,,,,
-# Full-time worker interaction with usual work location is home,(ptype == 1) * usualWorkLocationIsHome,-1.758,,0.1813
-# Part-time worker interaction with usual work location is home,(ptype == 2) * usualWorkLocationIsHome,-1.758,,0.1813
-# Full-time worker interaction with no usual work location,(ptype == 1) * noUsualWorkLocation,-0.5935,,
-# Part-time worker interaction with no usual work location,(ptype == 2) * noUsualWorkLocation,-0.5935,,
-# Driving-age child who is in school interaction with no usual school location,(ptype == 6) * noUsualWorkLocation,-0.866,,
-# Pre-driving age child who is in school interaction with no usual school location,(ptype == 7) * noUsualWorkLocation,-0.866,,
-#tm1 scenario test,,,,
-#Simulate telecommuting by reducing mandatory patterns,(ptype == 1) * (income_in_thousands >= 50),-0.142930042,,
+#Telecommute Adjustments,,,,
 Telecommutes 1 day per week,telecommute_frequency=='1_day_week',,0.526,0.496
 Telecommutes 2-3 days per week,telecommute_frequency=='2_3_days_week',,1.387,1.584
 Telecommutes 4 days per week,telecommute_frequency=='4_days_week',,1.848,1.711
-#Turning Mandatory pattern off for FT and PT who work from home (sandag),,,,
+#Turning Mandatory pattern off for FT and PT who work from home,,,,
 "Full time worker, works from home",(ptype == 1) & (work_from_home),-999,,
 "Part time worker, works from home",(ptype == 2) & (work_from_home),-999,,

@@ -45,10 +45,10 @@ school_segmentation_targets:
 # if target names are the same, they will be combined together
 workplace_segmentation_targets:
   # using total employment scaled to remove external workers. see annotate_landuse.csv
-  work_low: TOT_EMP
-  work_med: TOT_EMP
-  work_high: TOT_EMP
-  work_veryhigh: TOT_EMP
+  work_low: ADJ_TOT_EMP
+  work_med: ADJ_TOT_EMP
+  work_high: ADJ_TOT_EMP
+  work_veryhigh: ADJ_TOT_EMP
 
 # ignore criteria for zones smaller than target_threshold (total employmnet or enrollment)
-TARGET_THRESHOLD: 20
+TARGET_THRESHOLD: 10

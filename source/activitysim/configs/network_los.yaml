@@ -1,7 +1,7 @@
 # read cached skims (using numpy memmap) from output directory (memmap is faster than omx )
-read_skim_cache: True
+read_skim_cache: False
 # write memmapped cached skims to output directory after reading from omx, for use in subsequent runs
-write_skim_cache: True
+write_skim_cache: False
 
 #alternate dir to read/write skim cache (defaults to output_dir)
 #cache_dir: data/cache
@@ -15,6 +15,8 @@ taz_skims:
   - trnskims.omx
   - nmskims.omx
   - se_omx.omx
+  - districts.omx
+  - MIX_DENS.omx
 
 #TODO: update the time periods to these:
 #EA     Early AM     3:00 AM - 4:59 AM -  0 -  3
