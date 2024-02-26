@@ -61,7 +61,7 @@ SYSTEM_SCRIPTS_PATH   <- file.path(SYSTEM_APP_PATH, "scripts")
 RUNTIME_PATH          <- file.path(SYSTEM_APP_PATH, "runtime")
 BASE_DATA_PATH        <- BASE_SUMMARY_DIR
 BUILD_DATA_PATH       <- ABM_SUMMARY_DIR
-
+CENSUS_SCENARIO_NAME <- trimws(paste(parameters$Value[parameters$Key=="CENSUS_SCENARIO_NAME"]))
 
 ### Initialization
 # Load global variables

@@ -46,6 +46,8 @@ xwalk_file = file.path(ZONES_DIR, "TAZ2010.dbf")
 xwalk <- read.dbf(xwalk_file, as.is=FALSE)
 skim_file = file.path(SKIMS_DIR, "nmskims.omx")
 
+print(paste("Reading data from",ABM_DIR,"..."))
+
 hh                 <- read.csv(file.path(ABM_DIR, "final_households.csv"), header = TRUE)
 per                <- read.csv(file.path(ABM_DIR, "final_persons.csv"), header = TRUE)
 all_tours          <- read.csv(file.path(ABM_DIR, "final_tours.csv"), header = TRUE)
