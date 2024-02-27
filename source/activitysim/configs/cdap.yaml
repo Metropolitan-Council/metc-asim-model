@@ -1,7 +1,20 @@
-COEFFICIENTS: _dummy_coefficients.csv
+
 INDIV_AND_HHSIZE1_SPEC: cdap_indiv_and_hhsize1.csv
+COEFFICIENTS: cdap_coefficients.csv
+INTERACTION_COEFFICIENTS: cdap_interaction_coefficients.csv
 
 FIXED_RELATIVE_PROPORTIONS_SPEC: cdap_fixed_relative_proportions.csv
+
+# set to True if want to introduce joint tour utility in cdap
+# otherwise set to False or comment out, defaulted to False
+# ADD_JOINT_TOUR_UTILITY: False
+# JOINT_TOUR_COEFFICIENTS: cdap_joint_tour_coefficients.csv
+# JOINT_TOUR_USEFUL_COLUMNS:
+  # - auto_ownership
+  # - income
+  # - num_workers
+  # - shopping_accessibility
+  # - workplace_modechoice_logsum
 
 CONSTANTS:
   FULL: 1

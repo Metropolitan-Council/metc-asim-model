@@ -76,7 +76,7 @@ household_median_value_of_time:
 
 trace_hh_id: #345924
 #trace_od: [5, 11]
-resume_after: #free_parking
+resume_after: telecommute_frequency
 
 models:
   ### mp_init_proto_pop (single process)
@@ -99,32 +99,32 @@ models:
   - free_parking
   - telecommute_frequency
   - cdap_simulate
-  - mandatory_tour_frequency
-  - mandatory_tour_scheduling
-  - joint_tour_frequency
-  - joint_tour_composition
-  - joint_tour_participation
-  - joint_tour_destination
-  - joint_tour_scheduling
-  - non_mandatory_tour_frequency
-  - non_mandatory_tour_destination
-  - non_mandatory_tour_scheduling
-  - vehicle_allocation
-  - tour_mode_choice_simulate
-  - atwork_subtour_frequency
-  - atwork_subtour_destination
-  - atwork_subtour_scheduling
-  - atwork_subtour_mode_choice
-  - stop_frequency
-  - trip_purpose
-  - trip_destination
-  - trip_purpose_and_destination
-  - trip_scheduling
-  - trip_mode_choice
+  # - mandatory_tour_frequency
+  # - mandatory_tour_scheduling
+  # - joint_tour_frequency
+  # - joint_tour_composition
+  # - joint_tour_participation
+  # - joint_tour_destination
+  # - joint_tour_scheduling
+  # - non_mandatory_tour_frequency
+  # - non_mandatory_tour_destination
+  # - non_mandatory_tour_scheduling
+  # - vehicle_allocation
+  # - tour_mode_choice_simulate
+  # - atwork_subtour_frequency
+  # - atwork_subtour_destination
+  # - atwork_subtour_scheduling
+  # - atwork_subtour_mode_choice
+  # - stop_frequency
+  # - trip_purpose
+  # - trip_destination
+  # - trip_purpose_and_destination
+  # - trip_scheduling
+  # - trip_mode_choice
   ### mp_summarize step
   - write_data_dictionary
   - write_tables
-  - write_trip_matrices
+  # - write_trip_matrices
   - track_skim_usage
 
 multiprocess_steps:
