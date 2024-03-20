@@ -140,6 +140,7 @@ Drive_to_Transit_distance_penalty,Drive to Transit - distance penalty,@drvtrn_di
 util_WALK_not_available_for_long_distances,Walk not available for long distances,@(od_skims['DISTWALK'] + od_skims.reverse('DISTWALK')) > 8,,,,-999,,,,,,,
 util_BIKE_not_available_for_long_distances,Bike not available for long distances,@(od_skims['DISTBIKE'] + od_skims.reverse('DISTBIKE')) > 12,,,,,-999,,,,,,
 Drive_alone_not_available_for_escort_tours,Drive alone not available for escort tours,is_escort,-999,,,,,,,,,,
+No_auto_on_awst,No auto availability for at-work subtours,@(~df.work_tour_has_auto) & (df.is_atwork_subtour),-999,,,,,,,,,,
 #School_Bus,#School Bus,,,,,,,,,,,,
 School_Bus_Unavailable_if_NOT_school_tour,School Bus - Unavailable if NOT school tour,~is_school,,,,,,,,-999,,,
 School_Bus_In_vehicle_time_(HOV3+_skims)_20_mph,School Bus - In-vehicle time (HOV3+ skims) - 20 mph,@(odt_skims['HOV3_DIST_M'] + dot_skims['HOV3_DIST_M'])*3,,,,,,,,coef_ivt,,,

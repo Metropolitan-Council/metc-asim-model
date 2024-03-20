@@ -8,3 +8,4 @@ util_size_variable_atwork,Size variable atwork,@df['size_term'].apply(np.log1p),
 util_no_attractions_atwork_size_variable_is_0,"No attractions, atwork size variable is 0",size_term == 0,coef_no_attractions_atwork_size_variable_is_0
 util_mode_choice_logsum,Mode choice logsum,mode_choice_logsum,coef_mode_choice_logsum_atwork
 util_sample_of_alternatives_correction_factor,Sample of alternatives correction factor,"@np.minimum(np.log(df.pick_count/df.prob), 60)",coef_sample_of_alternatives_correction_factor
+util_short_trip_adjust,Adjustment for short trips,@_DIST <= 3.0,coef_short_trips

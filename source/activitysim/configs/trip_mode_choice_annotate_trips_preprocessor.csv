@@ -37,13 +37,15 @@ Description,Target,Expression
 ,work_tour_is_bike,parent_tour_mode=='BIKE'
 #,,
 ,i_tour_mode,df.tour_mode.map(I_MODE_MAP)
-,tour_mode_is_SOV,i_tour_mode.isin(I_SOV_MODES)
+#,tour_mode_is_SOV,i_tour_mode.isin(I_SOV_MODES)
+,tour_mode_is_SOV,df.tour_mode == 'DRIVEALONE'
 ,tour_mode_is_sr2,i_tour_mode.isin(I_SR2_MODES)
 ,tour_mode_is_sr3p,i_tour_mode.isin(I_SR3P_MODES)
 ,tour_mode_is_walk,i_tour_mode.isin([I_WALK_MODE])
 ,tour_mode_is_bike,i_tour_mode.isin([I_BIKE_MODE])
 ,tour_mode_is_walk_transit,i_tour_mode.isin(I_WALK_TRANSIT_MODES)
-,tour_mode_is_drive_transit,i_tour_mode.isin(I_DRIVE_TRANSIT_MODES)
+#,tour_mode_is_drive_transit,i_tour_mode.isin(I_DRIVE_TRANSIT_MODES)
+,tour_mode_is_drive_transit,df.tour_mode == 'TRNDRIVEACCESS'
 ,tour_mode_not_drive_transit,~tour_mode_is_drive_transit
 ,tour_mode_is_school_bus,i_tour_mode.isin(I_SCHOOLBUS_MODE)
 ,tour_mode_is_ride_hail,i_tour_mode.isin(I_RIDE_HAIL_MODES)

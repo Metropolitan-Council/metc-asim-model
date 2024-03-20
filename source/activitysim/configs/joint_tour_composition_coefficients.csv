@@ -1,7 +1,8 @@
 coefficient_name,value,constrain
 coef_unavailable,-999,T
-coef_asc_children,3.5538086006072676,F
-coef_asc_mixed,6.383486410003865,F
+coef_asc_adults,-0.187736,F
+coef_asc_children,1.3998891814145014,F
+coef_asc_mixed,7.1749113266462174,F
 coef_tour_purpose_is_eating_out_children,-0.9678,F
 coef_tour_purpose_is_eating_out_mixed,-0.8027,F
 coef_tour_purpose_is_discretionary_adults,0.7648,F

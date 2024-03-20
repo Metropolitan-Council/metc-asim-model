@@ -114,7 +114,7 @@ util_sr3p_tour_mode_availability,SR3+ tour md availabilit,tour_mode_is_sr3p,,,,,
 util_Walk_tour_mode_availability,Walk tour mode availability,tour_mode_is_walk,-999.0,-999.0,-999.0,,-999.0,-999.0,-999.0,-999.0,,,
 util_Bike_tour_mode_availability,Bike tour mode availability,tour_mode_is_bike,-999.0,-999.0,-999.0,,,,-999.0,-999.0,,,
 util_Walk_to_Transit_tour_mode_availability,Walk to Transit tour mode availability,tour_mode_is_walk_transit,-999.0,,,,,,-999.0,-999.0,,,
-util_Drive_to_Transit_tour_mode_availability,Drive to Transit tour mode availability,tour_mode_is_drive_transit,,,,,,,,-999.0,,,
+util_Drive_to_Transit_tour_mode_availability,Drive to Transit tour mode availability,tour_mode_is_drive_transit,-999.0,,,,,,,-999.0,,,
 util_School_bus_tour_mode_availability,School bus tour mode availability,tour_mode_is_school_bus,-999.0,,,,-999.0,,-999.0,,-999.0,-999.0,-999.0
 util_Taxi_tour_mode_availability,Ride Hail tour mode availability,tour_mode_is_ride_hail,-999.0,-999.0,-999.0,,-999.0,-999.0,-999.0,-999.0,,,
 util_TNC_Single_tour_mode_availability,Ride Hail tour mode availability,tour_mode_is_ride_hail,-999.0,-999.0,-999.0,,-999.0,-999.0,-999.0,-999.0,,,

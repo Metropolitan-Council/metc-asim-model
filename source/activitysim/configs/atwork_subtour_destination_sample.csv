@@ -6,3 +6,4 @@ util_dist_cubed,util_dist_cubed,"@(_DIST).clip(0,20)**3",coef_dist_cubed_atwork
 util_dist_logged,util_dist_logged,@(_DIST).apply(np.log1p),coef_dist_logged_atwork
 util_size_variable_atwork,Size variable atwork,@df['size_term'].apply(np.log1p),coef_size_variable_atwork
 util_no_attractions_atwork_size_variable_is_0,"No attractions, atwork size variable is 0",size_term==0,coef_no_attractions_atwork_size_variable_is_0
+util_short_trip_adjust,Adjustment for short trips,@_DIST <= 3.0,coef_short_trips

@@ -11,3 +11,5 @@ util_dist_hh_child,@(df['num_children']>0) * _DIST,coef_dist_hh_child_escort,0,c
 util_dist_joint_tour,@(df['tour_type']=='joint') * _DIST,0,coef_dist_joint_tour_shopping,0,0,coef_dist_joint_tour_social,coef_dist_joint_tour_othdiscr
 Size variable,@df['size_term'].apply(np.log1p),1,1,1,1,1,1
 No attractions,@df['size_term']==0,-999,-999,-999,-999,-999,-999
+util_adj_dist,@_DIST * (_DIST > 1),0,coef_calib_joint_maint,coef_calib_joint_disc,coef_calib_joint_maint,coef_calib_joint_disc,coef_calib_joint_disc
+util_short_trip_adjust,@_DIST < 0.5,coef_calib_st_joint_maint,coef_calib_st_joint_maint,coef_calib_st_joint_disc,coef_calib_st_joint_maint,coef_calib_st_joint_disc,coef_calib_st_joint_disc

@@ -42,3 +42,5 @@ coef_dist_logged_othdiscr,-0.680070996,F
 coef_dist_med_inc_othdiscr,0.036605959,F
 coef_dist_hh_child_othdiscr,-0.021556002,F
 coef_dist_joint_tour_othdiscr,0.011538605,F
+coef_calib_st_indiv_maint,2.00,F
+coef_calib_st_indiv_disc,1.02,F

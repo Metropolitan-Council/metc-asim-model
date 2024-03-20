@@ -1,5 +1,5 @@
 Label,Description,Expression,adults,children,mixed
-util_asc,Alternative-specific constant,1,,coef_asc_children,coef_asc_mixed
+util_asc,Alternative-specific constant,1.0,coef_asc_adults,coef_asc_children,coef_asc_mixed
 util_tour_purpose_is_eating_out,Joint tour purpose is eating out (dummy),tour_type=='eat',,coef_tour_purpose_is_eating_out_children,coef_tour_purpose_is_eating_out_mixed
 util_tour_purpose_is_discretionary,Joint tour purpose is discretionary (dummy),tour_type=='disc',coef_tour_purpose_is_discretionary_adults,coef_tour_purpose_is_discretionary_children,
 util_number_of_full_time_workers,Number of Full-Time Workers in the household,num_full_max3,coef_number_of_full_time_workers_adults,,coef_number_of_full_time_workers_mixed

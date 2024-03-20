@@ -13,3 +13,5 @@ Size variable,@df['size_term'].apply(np.log1p),1,1,1,1,1,1
 No attractions,@df['size_term']==0,-999,-999,-999,-999,-999,-999
 Mode choice logsum,mode_choice_logsum,coef_mode_logsum_escort,coef_mode_logsum_shopping,coef_mode_logsum_eatout,coef_mode_logsum_othmaint,coef_mode_logsum_social,coef_mode_logsum_othdiscr
 Sample of alternatives correction factor,"@np.minimum(np.log(df.pick_count/df.prob), 60)",1,1,1,1,1,1
+util_adj_dist,@_DIST * (_DIST > 1),0,coef_calib_joint_maint,coef_calib_joint_disc,coef_calib_joint_maint,coef_calib_joint_disc,coef_calib_joint_disc
+util_short_trip_adjust,@_DIST < 0.5,coef_calib_st_joint_maint,coef_calib_st_joint_maint,coef_calib_st_joint_disc,coef_calib_st_joint_maint,coef_calib_st_joint_disc,coef_calib_st_joint_disc
