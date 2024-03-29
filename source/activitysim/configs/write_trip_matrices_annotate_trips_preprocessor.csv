@@ -387,7 +387,13 @@ Description,Target,Expression
 #
 # Transit
 #
-,TrnW_Pk,((trips.trip_mode == 'TRNWALKACCESS') & ~(is_on | is_md | is_ev)) * tour_participants
-,TrnW_Op,((trips.trip_mode == 'TRNWALKACCESS') & (is_on | is_md | is_ev)) * tour_participants
-,TrnD_Pk,((trips.trip_mode == 'TRNDRIVEACCESS') & ~(is_on | is_md | is_ev)) * tour_participants
-,TrnD_Op,((trips.trip_mode == 'TRNDRIVEACCESS') & (is_on | is_md | is_ev)) * tour_participants
+,TrnW_EA,((trips.trip_mode == 'TRNWALKACCESS') & (is_on) * tour_participants)
+,TrnW_AM,((trips.trip_mode == 'TRNWALKACCESS') & (is_am1 | is_am2 | is_am3 | is_am4) * tour_participants)
+,TrnW_MD,((trips.trip_mode == 'TRNWALKACCESS') & (is_md) * tour_participants)
+,TrnW_PM,((trips.trip_mode == 'TRNWALKACCESS') & (is_pm1 | is_pm2 | is_pm3 | is_pm4) * tour_participants)
+,TrnW_NT,((trips.trip_mode == 'TRNWALKACCESS') & (is_ev) * tour_participants)
+,TrnD_EA,((trips.trip_mode == 'TRNDRIVEACCESS') & (is_on) * tour_participants)
+,TrnD_AM,((trips.trip_mode == 'TRNDRIVEACCESS') & (is_am1 | is_am2 | is_am3 | is_am4) * tour_participants)
+,TrnD_MD,((trips.trip_mode == 'TRNDRIVEACCESS') & (is_md) * tour_participants)
+,TrnD_PM,((trips.trip_mode == 'TRNDRIVEACCESS') & (is_pm1 | is_pm2 | is_pm3 | is_pm4) * tour_participants)
+,TrnD_NT,((trips.trip_mode == 'TRNDRIVEACCESS') & (is_ev) * tour_participants)

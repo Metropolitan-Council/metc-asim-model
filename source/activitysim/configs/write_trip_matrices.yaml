@@ -753,20 +753,42 @@ MATRICES:
         data_field: DA_Inc1_NoXP_EV
       - name: DriveAlone_All_Inc2345_NoXP
         data_field: DA_IncGT1_NoXP_EV
-
-  - file_name: transit_pk.omx
+ 
+  - file_name: transit_ea.omx
     tables:
       - name: WalkToTransit
-        data_field: TrnW_Pk
+        data_field: TrnW_EA
       - name: DriveToTransit
-        data_field: TrnD_Pk
+        data_field: TrnD_EA
 
-  - file_name: transit_op.omx
+  - file_name: transit_am.omx
     tables:
       - name: WalkToTransit
-        data_field: TrnW_Op
+        data_field: TrnW_AM
       - name: DriveToTransit
-        data_field: TrnD_Op
+        data_field: TrnD_AM
+        
+  - file_name: transit_md.omx
+    tables:
+      - name: WalkToTransit
+        data_field: TrnW_MD
+      - name: DriveToTransit
+        data_field: TrnD_MD
+        
+  - file_name: transit_pm.omx
+    tables:
+      - name: WalkToTransit
+        data_field: TrnW_PM
+      - name: DriveToTransit
+        data_field: TrnD_PM
+        
+  - file_name: transit_nt.omx
+    tables:
+      - name: WalkToTransit
+        data_field: TrnW_NT
+      - name: DriveToTransit
+        data_field: TrnD_NT
+
 
 CONSTANTS:
   time_periods:
