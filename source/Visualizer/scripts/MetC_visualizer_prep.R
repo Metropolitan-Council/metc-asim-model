@@ -413,7 +413,7 @@ mandTripLengths = cbind(workTripLengths_df, univTripLengths_df$univ, schlTripLen
 colnames(mandTripLengths) = c("District", "Work", "Univ", "Schl")
 # rearranging such that the "Total" comes at the end
 mandTripLengths = rbind(mandTripLengths[!(mandTripLengths$District == "Total"),], mandTripLengths[(mandTripLengths$District == "Total"),])
-write.csv(mandTripLengths, "mandTripLengths.csv", row.names = F)
+write.csv(mandTripLengths, "mandTourLengths.csv", row.names = F)
 
 
 
@@ -1280,8 +1280,6 @@ mtfSummary_vis$PERTYPE[mtfSummary_vis$PERTYPE=="Sum"] = "Total"
 write.csv(mtfSummary_vis, "mtfSummary_vis.csv")
 
 # indi NM summary ####
-# joint tours included to be consistent with model 
-# [Model doesnt allow 0 iNM and >0 JT]
 inm0Summary = plyr::count(perDays[perDays$inmTours==0,], c("PERTYPE"), "adjFinalWeight")
 inm1Summary = plyr::count(perDays[perDays$inmTours==1,], c("PERTYPE"), "adjFinalWeight")
 inm2Summary = plyr::count(perDays[perDays$inmTours==2,], c("PERTYPE"), "adjFinalWeight")

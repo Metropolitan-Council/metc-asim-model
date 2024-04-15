@@ -55,7 +55,7 @@ RUNTIME_PATH          <- paste(VIS_SOURCE, "runtime", sep = "/")
 # all originally (stupidly) set in the system templates path.
 SYSTEM_DATA_PATH      <- WORKING_DIR #file.path(SYSTEM_APP_PATH, "data")
 #SYSTEM_SHP_PATH       <- file.path(SYSTEM_DATA_PATH, "SHP")
-SYSTEM_JPEG_PATH      <- file.path(SYSTEM_DATA_PATH, "JPEG")
+SYSTEM_JPEG_PATH      <- ABM_SUMMARY_DIR #file.path(SYSTEM_DATA_PATH, "JPEG")
 SYSTEM_TEMPLATES_PATH <- file.path(SYSTEM_APP_PATH, "templates")
 SYSTEM_SCRIPTS_PATH   <- file.path(SYSTEM_APP_PATH, "scripts")
 RUNTIME_PATH          <- file.path(SYSTEM_APP_PATH, "runtime")
@@ -121,8 +121,8 @@ summaryFileList_build <- as.list(summaryFileList_build$summaryFile)
 #if(retVal) q(save = "no", status = 11)
 
 ### Copy jpegs
-jpeg_list <- list.files(BUILD_SUMMARY_DIR, "*.jpeg")
-jpeg_copy_retval <- file.copy(jpeg_list, SYSTEM_JPEG_PATH, overwrite = TRUE)
+# jpeg_list <- list.files(BUILD_SUMMARY_DIR, "*.jpeg")
+# jpeg_copy_retval <- file.copy(jpeg_list, SYSTEM_JPEG_PATH, overwrite = TRUE)
 
 ### Read Target and Output Summary files
 currDir <- getwd()

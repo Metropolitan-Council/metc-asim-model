@@ -16,7 +16,6 @@ taz_skims:
   - nmskims.omx
   - se_omx.omx
   - districts.omx
-  - MIX_DENS.omx
 
 #TODO: update the time periods to these:
 #EA     Early AM     3:00 AM - 4:59 AM -  0 -  3

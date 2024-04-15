@@ -41,16 +41,20 @@ ECHO VIS_FOLDER,%VIS_FOLDER% >> %PARAMETERS_FILE%
 ECHO CENSUS_DATA_PATH,%CENSUS_DATA_PATH% >> %PARAMETERS_FILE%
 ECHO ASSIGNED,1  >> %PARAMETERS_FILE%
 ECHO HTML_OUTPUT_PATH,%MAIN_DIRECTORY%\%SCENARIO_NAME% >> %PARAMETERS_FILE%
+ECHO ASIM_CONFIG_DIR,%MAIN_DIRECTORY%\source\ActivitySim\configs >> %PARAMETERS_FILE%
 
 SET R_SCRIPT="C:\Program Files\R\R-4.0.3\bin\RScript.exe"
 ECHO Summarizing Loaded Highway Network
-python.exe scripts\Summarize_model_HNET.py
+@REM python.exe scripts\Summarize_model_HNET.py
 
 ECHO Summarizing ActivitySim Outputs...
 %R_SCRIPT% scripts\Summarize_ActivitySim_metc.R %PARAMETERS_FILE%
 
 ECHO Preparing Auto Ownership Comparisons...
-%R_SCRIPT% scripts\AutoOwnership_Census_MetC.R %PARAMETERS_FILE%
+@REM %R_SCRIPT% scripts\AutoOwnership_Census_MetC.R %PARAMETERS_FILE%
+
+ECHO Preparing Worker Charts
+@REM %R_SCRIPT% scripts\workersByTAZ.R %PARAMETERS_FILE%
 
 :: Call the master R script to generate full visualizer
 :: #####################################################

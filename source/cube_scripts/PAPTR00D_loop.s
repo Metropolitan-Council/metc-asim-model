@@ -1,14 +1,13 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 
-*cluster transit 1-2 START EXIT
-LOOP TOD=1,2,1
+*cluster transit 1-5 START EXIT
+LOOP TOD=1,5,1
 
-
-
- IF(TOD=1) TPER='PK' ASSIGNNAME='Peak Period'  PER ='AM' 
- IF(TOD=2) TPER='OP' ASSIGNNAME='OffPeak Period'  PER ='MD' 
-
-
+ IF(TOD=1) TPER='EA' ASSIGNNAME='EA Period'  PER ='EA' 
+ IF(TOD=2) TPER='AM' ASSIGNNAME='AM Period'  PER ='AM' 
+ IF(TOD=3) TPER='MD' ASSIGNNAME='MD Period'  PER ='MD' 
+ IF(TOD=4) TPER='PM' ASSIGNNAME='PM Period'  PER ='PM' 
+ IF(TOD=5) TPER='NT' ASSIGNNAME='NT Period'  PER ='NT' 
 
  DISTRIBUTEMULTISTEP PROCESSID='transit' PROCESSNUM=@TOD@
 
@@ -56,4 +55,4 @@ ENDLOOP
 
 Wait4Files FILES='transit1.script.end, transit2.script.end' CheckReturnCode=T, DelDistribFiles=T
 
-*cluster transit 1-2 CLOSE EXIT
+*cluster transit 1-5 CLOSE EXIT

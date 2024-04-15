@@ -20,7 +20,7 @@ Description,Target,Expression
 ,inc3,"reindex(households.income_segment, trips.household_id) == 3"
 ,inc4,"reindex(households.income_segment, trips.household_id) == 4"
 ,inc5,"reindex(households.income_segment, trips.household_id) == 5"
-,wrk,"trips.purpose == 'Work'"
+,wrk,"trips.purpose == 'work'"
 # Trips Overnight
 ,DA_Wrk_Inc1_XP_ON,"((trips.trip_mode == 'DRIVEALONE') & is_on & inc1 & wrk & has_xp) * tour_participants"
 ,DA_Wrk_Inc2_XP_ON,"((trips.trip_mode == 'DRIVEALONE') & is_on & inc2 & wrk & has_xp) * tour_participants"

@@ -1,8 +1,8 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 RUN PGM=NETWORK MSG='Calculate Transit Speeds for %TPER%'
 FILEO NETO = "%SCENARIO_DIR%\XIT_NET_0_%TPER%.net"
-FILEI LOOKUPI[2] = "%CATALOG_DIR%\input\transit\%TPER%ExpressDelays.txt"
-FILEI LOOKUPI[1] = "%CATALOG_DIR%\input\transit\%TPER%LocalDelays.txt"
+FILEI LOOKUPI[2] = "%CATALOG_DIR%\input\transit\%TPER3%ExpressDelays.txt"
+FILEI LOOKUPI[1] = "%CATALOG_DIR%\input\transit\%TPER3%LocalDelays.txt"
 FILEI LINKI[1] = "%SCENARIO_DIR%\TransitBase.NET"
 
     ;  transit time = congested time +  distance * link delay
@@ -52,18 +52,18 @@ FILEI LINKI[1] = "%SCENARIO_DIR%\TransitBase.NET"
 ;;--------------------------------------------------------------------------    
 
     ; Override manually coded speed for transit only links
-    IF (LI.1.T_MANTIME>0)
-        LOCTIME = T_MANTIME
-        EXPTIME = T_MANTIME
-        LRTTIME = T_MANTIME
+    IF (LI.1.TTA_%TPER2%>0)
+        LOCTIME = TTA_%TPER2%
+        EXPTIME = TTA_%TPER2%
+        LRTTIME = TTA_%TPER2%
     ENDIF    
 
 ;;--------------------------------------------------------------------------
 
     ;Calculate Local Bus Transit Travel Time
     IF (LOCTIME=0)
-         _DELAY = locdelay(LI.1.AREA,LI.1.RCI)
-         IF (T_Priority=2)
+         _DELAY = locdelay(LI.1.AREA_TYPE,LI.1.RCI)
+         IF (TPri_%TPER2%=2)
             IF ((SPEED+15)<50)
                 _tspeed = MIN(SPEED+15,35)
             ELSE
@@ -82,8 +82,8 @@ FILEI LINKI[1] = "%SCENARIO_DIR%\TransitBase.NET"
     
     ;Calculate Express Bus Transit Travel Time
     IF (EXPTIME=0)
-        _DELAY = expdelay(LI.1.AREA,LI.1.RCI)
-         IF (T_Priority=2)
+        _DELAY = expdelay(LI.1.AREA_TYPE,LI.1.RCI)
+         IF (TPri_%TPER2%=2)
             IF ((SPEED+15)<50)
                 _tspeed = MIN(SPEED+15,35)
             ELSE

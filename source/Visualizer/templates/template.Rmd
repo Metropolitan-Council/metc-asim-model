@@ -697,8 +697,10 @@ colnames(base_df) = c("District","tot_wrk","wfh","share")
 build_df <- build_data[[which(build_csv_names=="wfh_summary")]]
 build_df$share <- build_df$WFH/build_df$Workers
 
-std_DF <- cbind(base_df[1:19,c("District", "share")], build_df[1:19,c("share")])
+std_DF <- merge(base_df[1:19,c("District", "share")], build_df[1:19,c("District", "share")], by = "District")
+
 colnames(std_DF) <- c("xvar", "prop1", "prop2")
+
 p <- plotly_bar_plotter(data = std_DF, xlabel = "District", ylabel = "Percent WFH", ynames = c(BASE_SCENARIO_NAME, BUILD_SCENARIO_NAME), percent = T, height = 275, tickangle = -320, bottom_offset = 25)
 p
 
@@ -743,7 +745,7 @@ build_df[is.na(build_df)] = 0
 # build_df <- cbind(build_df1, build_df2$value, build_df3$value)
 colnames(build_df) <- c("distbin","variable","value1","value2","value3")
 
-sd.purpose <- get_sharedData(data_df1 = build_df, data_df2 = base_df, run1_name = BUILD_SCENARIO_NAME,
+sd.purpose <- get_sharedData(data_df1 = base_df, data_df2 = build_df, run1_name = BUILD_SCENARIO_NAME,
                              run2_name = BASE_SCENARIO_NAME, x = "distbin", y = c("value1", "value2", "value3"), grp = "variable")
 
 p1 <- plotly_density_plotter(sd.purpose, index = "one", xlabel = "Miles to Work", percent = T, tickvals = seq(1,50,5), ticktext = seq(0,50,5), height = 240)
@@ -901,75 +903,74 @@ Chart Column 2{.tabset}
 --------------------------------------------
 
 ### By County{data-height=575}
-<!-- ```{r job_wrk1a}
-bscols(widths=c(6,6),
-  include_graphics(file.path(SYSTEM_JPEG_PATH, "workersByCounty.jpeg")),
-  include_graphics(file.path(SYSTEM_JPEG_PATH, "workersByTAZ.jpeg"))
-)
-
-# knitr::include_graphics(file.path(SYSTEM_JPEG_PATH, "workersByCounty.jpeg")),
-# knitr::include_graphics(file.path(SYSTEM_JPEG_PATH, "workersByTAZ.jpeg"))
-``` -->
 ```{r job_wrk1a}
-# base_df <- build_data[[which(build_csv_names=="employees_per_co")]]
-# build_df <- build_data[[which(build_csv_names=="workers_per_co")]]
+# bscols(widths=c(6,6),
+#   include_graphics(file.path(SYSTEM_JPEG_PATH, "workersByCounty.jpeg")),
+#   include_graphics(file.path(SYSTEM_JPEG_PATH, "workersByTAZ.jpeg"))
+# )
 
-## base_df$WDISTRICT = levels(base_df$WDISTRICT)[base_df$WDISTRICT]
-## build_df$WDISTRICT = levels(build_df$WDISTRICT)[build_df$WDISTRICT]
-# build_df = build_df[build_df$WDISTRICT %in% base_df$WDISTRICT,]
-# base_df = base_df[base_df$WDISTRICT %in% build_df$WDISTRICT,]
+# knitr::include_graphics(file.path(SYSTEM_JPEG_PATH, "workersByCounty.jpeg"))
+# knitr::include_graphics(file.path(SYSTEM_JPEG_PATH, "workersByTAZ.jpeg"))
+```
+```{r job_wrk1ab}
+base_df <- build_data[[which(build_csv_names=="employees_per_co")]]
+build_df <- build_data[[which(build_csv_names=="workers_per_co")]]
 
-##colnames(base_df)[which(colnames(base_df) == "freq")] = BASE_SCENARIO_NAME
-##colnames(build_df)[which(colnames(build_df) == "freq")] = BUILD_SCENARIO_NAME
-# 
-# df = base_df
-# df$freq_build = build_df$freq[which(df$WDISTRICT == build_df$WDISTRICT)]/BUILD_SAMPLE_RATE
+# base_df$WDISTRICT = levels(base_df$WDISTRICT)[base_df$WDISTRICT]
+# build_df$WDISTRICT = levels(build_df$WDISTRICT)[build_df$WDISTRICT]
+build_df = build_df[build_df$WDISTRICT %in% base_df$WDISTRICT,]
+base_df = base_df[base_df$WDISTRICT %in% build_df$WDISTRICT,]
 
-# co_cor = cor(df$freq, df$freq_build)^2
-# co_lm = lm(freq_build ~ freq, df)
+#colnames(base_df)[which(colnames(base_df) == "freq")] = BASE_SCENARIO_NAME
+#colnames(build_df)[which(colnames(build_df) == "freq")] = BUILD_SCENARIO_NAME
 
-# text1 = paste("r2 =", round(co_cor, 4))
-# text2 = paste("y = ", round(co_lm$coefficients[['freq']], 4), "x  + ", round(co_lm$coefficients[['(Intercept)']], 2), sep = "")
+df = base_df
+df$freq_build = build_df$freq[which(df$WDISTRICT == build_df$WDISTRICT)]/BUILD_SAMPLE_RATE
 
-# ggplot(df, aes(x = freq, y = freq_build, label = WDISTRICT)) + geom_point() +
-  # geom_abline(slope = 1, intercept = 0, color = "red") +
-  # geom_text(vjust = 0, nudge_y = 0.1, check_overlap = TRUE) +
-  # scale_x_log10("SEDATA Input", labels = comma, limits = c(10000, max(df$freq, df$build_freq))) +
-  # scale_y_log10("ActivitySim", labels = comma, limits = c(10000, max(df$freq, df$build_freq))) +
-  # annotate("text", x=500000, y=c(20000, 15000), label= c(text1, text2))
+co_cor = cor(df$freq, df$freq_build)^2
+co_lm = lm(freq_build ~ freq, df)
+
+text1 = paste("r2 =", round(co_cor, 4))
+text2 = paste("y = ", round(co_lm$coefficients[['freq']], 4), "x  + ", round(co_lm$coefficients[['(Intercept)']], 2), sep = "")
+
+ggplot(df, aes(x = freq, y = freq_build, label = WDISTRICT)) + geom_point() +
+  geom_abline(slope = 1, intercept = 0, color = "red") +
+  geom_text(vjust = 0, nudge_y = 0.1, check_overlap = TRUE) +
+  scale_x_log10("SEDATA Input", labels = comma, limits = c(10000, max(df$freq, df$build_freq))) +
+  scale_y_log10("ActivitySim", labels = comma, limits = c(10000, max(df$freq, df$build_freq))) +
+  annotate("text", x=20000, y=c(20000, 15000), label= c(text1, text2))
 ```
 
 ### By TAZ{data-height=575}
 ```{r job_wrk_taz}
-# base_df <- build_data[[which(build_csv_names=="employees_per_taz")]]
-# build_df <- build_data[[which(build_csv_names=="workers_per_taz")]]
+base_df <- build_data[[which(build_csv_names=="employees_per_taz")]]
+build_df <- build_data[[which(build_csv_names=="workers_per_taz")]]
 
+df = data.frame(taz = 1:3632) %>%
+  dplyr::left_join(base_df, by = "taz") %>%
+  dplyr::left_join(build_df, by = c("taz" = "worktaz")) %>%
+  rename(base = freq.x) %>%
+  mutate(build = freq.y/BUILD_SAMPLE_RATE) %>%
+  mutate(build = ifelse(is.na(build), 0, build),
+         base = ifelse(is.na(base), 0, base))
 
-# df = data.frame(taz = 1:3632) %>%
-  # dplyr::left_join(base_df, by = "taz") %>%
-  # dplyr::left_join(build_df, by = c("taz" = "worktaz")) %>%
-  # rename(base = freq.x) %>%
-  # mutate(build = freq.y/BUILD_SAMPLE_RATE) %>%
-  # mutate(build = ifelse(is.na(build), 0, build),
-         # base = ifelse(is.na(base), 0, base))
+co_cor = cor(df$base, df$build)^2
+co_lm = lm(build ~ base, df)
 
-# co_cor = cor(df$base, df$build)^2
-# co_lm = lm(build ~ base, df)
+text1 = paste("r2 =", round(co_cor, 4))
+text2 = paste("y = ", round(co_lm$coefficients[['base']], 4), "x  + ", round(co_lm$coefficients[['(Intercept)']], 2), sep = "")
 
-# text1 = paste("r2 =", round(co_cor, 4))
-# text2 = paste("y = ", round(co_lm$coefficients[['base']], 4), "x  + ", round(co_lm$coefficients[['(Intercept)']], 2), sep = "")
-
-# ggplot(df, aes(x = base, y = build)) + geom_point(alpha = 0.3) +
-  # geom_abline(slope = 1, intercept = 0, color = "red") +
-  # scale_x_continuous("SEDATA Input", labels = comma, limits = c(0, max(df$freq, df$build_freq))) +
-  # scale_y_continuous("ActivitySim", labels = comma, limits = c(0, max(df$freq, df$build_freq))) +
-  # annotate("text", x=60000, y=c(4000, 1500), label= c(text1, text2))
+ggplot(df, aes(x = base, y = build)) + geom_point(alpha = 0.3) +
+  geom_abline(slope = 1, intercept = 0, color = "red") +
+  scale_x_continuous("SEDATA Input", labels = comma, limits = c(0, max(df$freq, df$build_freq))) +
+  scale_y_continuous("ActivitySim", labels = comma, limits = c(0, max(df$freq, df$build_freq))) +
+  annotate("text", x=60000, y=c(4000, 1500), label= c(text1, text2))
 ```
 
 ### Low Income{data-height=575}
 ```{r job_wrk2}
 
-#knitr::include_graphics(file.path(SYSTEM_JPEG_PATH, "workersByEmpCat_inc1.jpeg"))
+knitr::include_graphics(file.path(SYSTEM_JPEG_PATH, "workersByEmpCat_inc1.jpeg"))
 
 
 # inc1_plots <- paste0(list.files(SYSTEM_JPEG_PATH, "inc1_", full.names=TRUE))
@@ -986,28 +987,28 @@ bscols(widths=c(6,6),
 ### Medium Income{data-height=575}
 ```{r job_wrk3}
 
-#knitr::include_graphics(file.path(SYSTEM_JPEG_PATH, "workersByEmpCat_inc2.jpeg"))
+knitr::include_graphics(file.path(SYSTEM_JPEG_PATH, "workersByEmpCat_inc2.jpeg"))
 
 ```
 
 ### High Income{data-height=575}
 ```{r job_wrk4}
 
-#knitr::include_graphics(file.path(SYSTEM_JPEG_PATH, "workersByEmpCat_inc3.jpeg"))
+knitr::include_graphics(file.path(SYSTEM_JPEG_PATH, "workersByEmpCat_inc3.jpeg"))
 
 ```
 
 ### Very High Income{data-height=575}
 ```{r job_wrk5}
 
-#knitr::include_graphics(file.path(SYSTEM_JPEG_PATH, "workersByEmpCat_inc4.jpeg"))
+knitr::include_graphics(file.path(SYSTEM_JPEG_PATH, "workersByEmpCat_inc4.jpeg"))
 
 ```
 
 ### Total{data-height=575}
 ```{r job_wrk7}
 
-#knitr::include_graphics(file.path(SYSTEM_JPEG_PATH, "workers_incAll.jpeg"))
+knitr::include_graphics(file.path(SYSTEM_JPEG_PATH, "workers_incAll.jpeg"))
 
 ```
 
@@ -1403,24 +1404,25 @@ sd.purpose <- get_sharedData(data_df1 = base_df, data_df2 = build_df, run1_name 
                              run2_name = BUILD_SCENARIO_NAME, x = "distbin", y = c("freq"), grp = "PURPOSE")
 
 p1 <- plotly_density_plotter(sd.purpose, index = "one", xlabel = "Miles", percent = T,
-                             tickvals = seq(2,41), ticktext = c(seq(1,40), "40pl"))
+                             tickvals = seq(1,40), ticktext = c(seq(1,40), "40pl"))
 bscols(widths=c(2,10),
-  filter_select("Tour Purpose", "Select Tour Purpose", sd.purpose, ~grp_var,multiple=F),
+  filter_select("Tour Purpose", "Select Tour Purpose", sd.purpose, ~grp_var, multiple=F),
   p1
   )
 ```
 
 ### Average Non-Mandatory Tour Lengths (Miles){data-height=250}
 ```{r Table1_nonMandTripLength}
-# base_df <- base_data[[which(base_csv_names=="nonMandTripLengths")]]
-# build_df <- build_data[[which(build_csv_names=="nonMandTripLengths")]]
-# df <- data.frame(base_df, build_df[,-1])
-# colnames(df) <- c("Purpose", BASE_SCENARIO_NAME, BUILD_SCENARIO_NAME)
-# df$Purpose <- purpose_type_df$name[match(df$Purpose, purpose_type_df$code)]
+base_df <- base_data[[which(base_csv_names=="nonMandTourLengths")]]
+build_df <- build_data[[which(build_csv_names=="nonMandTourLengths")]]
 
-# t1 <- kable(df, format = "html", digits = 2, row.names = F, align = 'c', format.args = list(big.mark = ',')) %>%
-  # kable_styling("striped", full_width = F)
-# t1
+df <- data.frame(base_df, build_df[,-1])
+colnames(df) <- c("Purpose", BASE_SCENARIO_NAME, BUILD_SCENARIO_NAME)
+df$Purpose <- purpose_type_df$name[match(df$Purpose, purpose_type_df$code)]
+
+t1 <- kable(df, format = "html", digits = 2, row.names = F, align = 'c', format.args = list(big.mark = ',')) %>%
+  kable_styling("striped", full_width = F)
+t1
 ```
 
 
@@ -1895,9 +1897,10 @@ if(IS_BASE_SURVEY=="Yes"){
   base_df <- base_data[[which(base_csv_names=="tripModeProfile_vis")]]
 }
 build_df <- build_data[[which(build_csv_names=="tripModeProfile_vis")]]
+
 # build_df <- build_data[[which(build_csv_names=="tripModeProfile_vis_HTS")]]
 
-colnames(build_df) <- colnames(base_df)
+# colnames(build_df) <- colnames(base_df)
 
 # change purpose names to standard format
 base_df$purpose <- as.character(base_df$purpose)
@@ -1970,10 +1973,24 @@ ggplot(vgsum, aes(x = vgidx, y = prmse_DAILY, color = "Model")) + geom_line(stat
   df = rbind.data.frame(cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$asnvmt_DAILY, "source" = "Model"), cbind("FTYPE" = vmtcomp$FTYPE, "VMT" = vmtcomp$obsvmt_DAILY, "source" = "Observed"))
 df$VMT = as.numeric(df$VMT)
 
-  ggplot(df, aes(x = FTYPE, y = VMT, fill = source)) + geom_bar(stat = "identity", position = "dodge") +
-    scale_x_discrete("") +
-    scale_color_discrete("Source") +
-    scale_y_continuous("Vehicle Miles of Travel", labels = comma) 
+base_df = cbind.data.frame("FTYPE" = vmtcomp$FTYPE, "value" = vmtcomp$obsvmt_DAILY, "source" = "Observed")
+base_df$grp_var = base_df$FTYPE
+build_df = cbind.data.frame("FTYPE" = vmtcomp$FTYPE, "value" = vmtcomp$asnvmt_DAILY, "source" = "Model")
+build_df$grp_var = build_df$FTYPE
+
+  # ggplot(df, aes(x = FTYPE, y = VMT, fill = source)) + geom_bar(stat = "identity", position = "dodge") +
+  #   scale_x_discrete("") +
+  #   scale_color_discrete("Source") +
+  #   scale_y_continuous("Vehicle Miles of Travel", labels = comma) 
+
+    sd.dy_vmt <- get_standardDF(data_df1=base_df, data_df2=build_df, x="FTYPE", y = c("value"), grp = "grp_var", shared = T)
+
+p <- plotly_bar_plotter(data = sd.dy_vmt, height = 700, xlabel = "Facility Type", ylabel = "VMT", ynames = c("Observed", BUILD_SCENARIO_NAME), percent = F, tickvals = seq(1,length(vmtcomp$FTYPE)), ticktext = vmtcomp$FTYPE, bottom_offset = 75)
+
+bscols(widths=c(12),
+  list(p)
+  )
+
 
 ```
 

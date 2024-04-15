@@ -1069,9 +1069,10 @@ def infer(configs_dir, input_dir, output_dir):
     persons["mandatory_tour_frequency"] = infer_mandatory_tour_frequency(persons, tours)
     assert skip_controls or check_controls("persons", "mandatory_tour_frequency")
 
-    households, pe_tour_ids = infer_school_escorting(
-        configs_dir, households, persons, tours
-    )
+    # households, pe_tour_ids = infer_school_escorting(
+        # configs_dir, households, persons, tours
+    # )
+    pe_tour_ids = []
 
     # persons.non_mandatory_tour_frequency
     tour_frequency = infer_non_mandatory_tour_frequency(configs_dir, persons, tours, pe_tour_ids)

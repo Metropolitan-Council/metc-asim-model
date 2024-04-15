@@ -6,6 +6,12 @@ FILEI MATI[2] = "%SCENARIO_DIR%\TRK_TRIP_%ITER%_%PER%.TRP"
 FILEO PRINTO[1] = "%SCENARIO_DIR%\HWY_LDNET_PRN_%ITER%_%PER%.txt"
 FILEO MATO[1] = "%SCENARIO_DIR%\HWY_SKIM_%ITER%_%PER%.tmp",
                  MO=1-120, DEC[1]=5*120, COMBINE=T
+FILEO MATO[2] = "%SCENARIO_DIR%\HWY_TOLL_DEBUG_%ITER%_%PER%.tmp",
+	MO=35,81-85,200-225 NAME=TOT_TOLL, toll01, toll02, toll03,	toll04,	toll05,	toll06,	toll07,	toll08,	toll09,	toll10,	
+		toll11,	toll12,	toll13,	toll14,	toll15,	toll16,	toll17,	toll18,	toll19,	toll20,	toll21,	toll22,	toll23,	toll24,
+		toll25,	toll26,	toll27,	toll28,	toll29,	toll30, toll31
+	
+
 FILEO NETO = "%SCENARIO_DIR%\HWY_LDNET_%ITER%_%PER%.NET"
 FILEI NETI = "%SCENARIO_DIR%\%HWY_NET%"
 FILEI LOOKUPI[1] = "%LU_will2pay%"
@@ -197,32 +203,32 @@ DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
                 MW[82]=_toll2, selectgroup=2,
                 MW[83]=_toll3, selectgroup=3,
                 MW[84]=_toll4, selectgroup=4,
-                MW[85]=_toll5, selectgroup=5 ; Rachel add in new working maxtrix starting at 200
-                MW[200]=_toll6, selectgroup=6
-                MW[201]=_toll7, selectgroup=7
-                MW[202]=_toll8, selectgroup=8
-                MW[203]=_toll9, selectgroup=9
-                MW[204]=_toll10, selectgroup=10
-                MW[205]=_toll11, selectgroup=11
-                MW[206]=_toll12, selectgroup=12
-                MW[207]=_toll13, selectgroup=13
-                MW[208]=_toll14, selectgroup=14
-                MW[209]=_toll15, selectgroup=15
-                MW[210]=_toll16, selectgroup=16
-                MW[211]=_toll17, selectgroup=17
-                MW[212]=_toll18, selectgroup=18
-                MW[213]=_toll19, selectgroup=19
-                MW[214]=_toll20, selectgroup=20
-                MW[215]=_toll21, selectgroup=21
-                MW[216]=_toll22, selectgroup=22
-                MW[217]=_toll23, selectgroup=23
-                MW[218]=_toll24, selectgroup=24
-                MW[219]=_toll25, selectgroup=25
-                MW[220]=_toll26, selectgroup=26
-                MW[221]=_toll27, selectgroup=27
-                MW[222]=_toll28, selectgroup=28
-                MW[223]=_toll29, selectgroup=29
-                MW[224]=_toll31, selectgroup=31
+                MW[85]=_toll5, selectgroup=5, ; Rachel add in new working maxtrix starting at 200
+                MW[200]=_toll6, selectgroup=6,
+                MW[201]=_toll7, selectgroup=7,
+                MW[202]=_toll8, selectgroup=8,
+                MW[203]=_toll9, selectgroup=9,
+                MW[204]=_toll10, selectgroup=10,
+                MW[205]=_toll11, selectgroup=11,
+                MW[206]=_toll12, selectgroup=12,
+                MW[207]=_toll13, selectgroup=13,
+                MW[208]=_toll14, selectgroup=14,
+                MW[209]=_toll15, selectgroup=15,
+                MW[210]=_toll16, selectgroup=16,
+                MW[211]=_toll17, selectgroup=17,
+                MW[212]=_toll18, selectgroup=18,
+                MW[213]=_toll19, selectgroup=19,
+                MW[214]=_toll20, selectgroup=20,
+                MW[215]=_toll21, selectgroup=21,
+                MW[216]=_toll22, selectgroup=22,
+                MW[217]=_toll23, selectgroup=23,
+                MW[218]=_toll24, selectgroup=24,
+                MW[219]=_toll25, selectgroup=25,
+                MW[220]=_toll26, selectgroup=26,
+                MW[221]=_toll27, selectgroup=27,
+                MW[222]=_toll28, selectgroup=28,
+                MW[223]=_toll29, selectgroup=29,
+                MW[224]=_toll31, selectgroup=31,
                 MW[225]=_toll32, selectgroup=32
                 
 

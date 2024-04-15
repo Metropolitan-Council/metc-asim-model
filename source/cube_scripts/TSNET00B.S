@@ -10,25 +10,47 @@ FILEI LINKI[1] = "%SCENARIO_DIR%\link.dbf"
     ZONES=%zones%
     
     ; TODO: Move this into the GeoDB
-    PHASE=NODEMERGE FILEI=NI.1 
-      IF (N=17502)
-        FAREZONE=1
-      ENDIF
-      IF (N=19759)
-        FAREZONE=2
-      ENDIF
-      IF (N=19761)
-        FAREZONE=3
-      ENDIF
-      IF (N=19762)
-        FAREZONE=4
-      ENDIF
-      IF (N=19763)
-        FAREZONE=5
-      ENDIF
-      IF (N=19764)
-        FAREZONE=6
-      ENDIF
+    ; PHASE=NODEMERGE FILEI=NI.1 
+      ; IF (N=17502)
+        ; FAREZONE=1
+      ; ENDIF
+      ; IF (N=19759)
+        ; FAREZONE=2
+      ; ENDIF
+      ; IF (N=19761)
+        ; FAREZONE=3
+      ; ENDIF
+      ; IF (N=19762)
+        ; FAREZONE=4
+      ; ENDIF
+      ; IF (N=19763)
+        ; FAREZONE=5
+      ; ENDIF
+      ; IF (N=19764)
+        ; FAREZONE=6
+      ; ENDIF
+      
+    ; ENDPROCESS
+
+	PHASE=NODEMERGE FILEI=NI.1 
+       IF (N=417232)
+         FAREZONE=1
+       ENDIF
+       IF (N=417233)
+         FAREZONE=2
+       ENDIF
+       IF (N=417234)
+         FAREZONE=3
+       ENDIF
+       IF (N=417235)
+         FAREZONE=4
+       ENDIF
+       IF (N=417236)
+         FAREZONE=5
+       ENDIF
+       IF (N=417237)
+         FAREZONE=6
+       ENDIF
       
     ENDPROCESS
       

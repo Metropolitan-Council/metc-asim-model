@@ -151,7 +151,7 @@ write.csv(emp_taz, "employees_per_taz.csv")
 write.csv(emp_co, "employees_per_co.csv")
 
 
-per$worktaz <- xwalk$TAZ[match(per$workplace_zone_id, xwalk$MAZ)]
+per$worktaz <- xwalk$TAZ[match(per$workplace_zone_id, xwalk$TAZ)]
 wrk_taz = plyr::count(per[per$workplace_zone_id > 0,], c("worktaz"), "finalweight")
 wrk_co = plyr::count(per[per$workplace_zone_id > 0,], c("WDISTRICT"), "finalweight")
 
@@ -763,10 +763,10 @@ mtfSummary_vis$PERTYPE[mtfSummary_vis$PERTYPE=="Sum"] <- "Total"
 write.csv(mtfSummary_vis, file.path(WD, "mtfSummary_vis.csv"))
 
 # indi NM summary
-inm0Summary <- count(per[per$numTours==0,], c("PERTYPE"), "finalweight")
-inm1Summary <- count(per[per$numTours==1,], c("PERTYPE"), "finalweight")
-inm2Summary <- count(per[per$numTours==2,], c("PERTYPE"), "finalweight")
-inm3Summary <- count(per[per$numTours>=3,], c("PERTYPE"), "finalweight")
+inm0Summary <- count(per[per$inmTours==0,], c("PERTYPE"), "finalweight")
+inm1Summary <- count(per[per$inmTours==1,], c("PERTYPE"), "finalweight")
+inm2Summary <- count(per[per$inmTours==2,], c("PERTYPE"), "finalweight")
+inm3Summary <- count(per[per$inmTours>=3,], c("PERTYPE"), "finalweight")
 
 inmSummary <- data.frame(PERTYPE = c(1,2,3,4,5,6,7,8))
 inmSummary$tour0 <- inm0Summary$freq[match(inmSummary$PERTYPE, inm0Summary$PERTYPE)]
@@ -1123,8 +1123,8 @@ tmodeAS2Profile_vis$purpose[tmodeAS2Profile_vis$purpose=="Sum"] <- "Total"
 tmodeProfile_vis <- data.frame(tmodeAS0Profile_vis, tmodeAS1Profile_vis$freq_as1, tmodeAS2Profile_vis$freq_as2)
 colnames(tmodeProfile_vis) <- c("id", "purpose", "freq_as0", "freq_as1", "freq_as2")
 tmodeProfile_vis$freq_all <- tmodeProfile_vis$freq_as0 + tmodeProfile_vis$freq_as1 + tmodeProfile_vis$freq_as2
+tmodeProfile_vis$id = as.integer(tmodeProfile_vis$id)
 write.csv(tmodeProfile_vis, file.path(WD, "tmodeProfile_vis.csv"), row.names = F)
-
 
 # Non Mand Tour lengths
 # ------------------------------------
