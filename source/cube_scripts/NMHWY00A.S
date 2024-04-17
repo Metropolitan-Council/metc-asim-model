@@ -1,8 +1,9 @@
-; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 RUN PGM=HIGHWAY MSG='Skim Bike Path Times'
-FILEO MATO[1] = "%SCENARIO_DIR%\NM_SKIM_BIKE.skm",
+FILEO MATO[1] = "%SCENARIO_DIR%\nonmotorized\NM_SKIM_BIKE.skm",
  MO=1-6, NAME=PERCTIME, BIKETIME, DISTANCE, B3DIST, B2DIST, B1DIST
-FILEI NETI = "%SCENARIO_DIR%\NM_NET.net"
+FILEI NETI = "%SCENARIO_DIR%\nonmotorized\NM_NET.net"
+
+DISTRIBUTEINTRASTEP PROCESSID=mcskim PROCESSLIST=1-%max_threads%
 
 PROCESS PHASE=ILOOP
 
@@ -16,6 +17,5 @@ PROCESS PHASE=ILOOP
       MW[5][I] = 0 ; assume no bike paths on the intrazonal
       MW[6][I] = 0 ; assume no bike paths on the intrazonal
 ENDPROCESS
-
 
 ENDRUN

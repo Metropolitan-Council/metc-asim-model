@@ -1,21 +1,22 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 RUN PGM=HIGHWAY MSG='Assignment Period: %ASSIGNNAME%'
-FILEI MATI[4] = "%SCENARIO_DIR%\HWY_SPC_AUTO_TRIP_%ITER%_%PER%.trp"
-FILEI MATI[3] = "%SCENARIO_DIR%\HWY_EXT_TRIP_%ITER%_%PER%.TRP"
-FILEI MATI[2] = "%SCENARIO_DIR%\TRK_TRIP_%ITER%_%PER%.TRP"
-FILEO PRINTO[1] = "%SCENARIO_DIR%\HWY_LDNET_PRN_%ITER%_%PER%.txt"
-FILEO MATO[1] = "%SCENARIO_DIR%\HWY_SKIM_%ITER%_%PER%.tmp",
+FILEI MATI[4] = "%SCENARIO_DIR%\specialgen\HWY_SPC_AUTO_TRIP_%ITER%_%PER%.trp"
+FILEI MATI[3] = "%SCENARIO_DIR%\external\HWY_EXT_TRIP_%ITER%_%PER%.TRP"
+FILEI MATI[2] = "%SCENARIO_DIR%\truck\TRK_TRIP_%ITER%_%PER%.TRP"
+FILEO PRINTO[1] = "%SCENARIO_DIR%\highway\HWY_LDNET_PRN_%ITER%_%PER%.txt"
+FILEO MATO[1] = "%SCENARIO_DIR%\highway\HWY_SKIM_%ITER%_%PER%.tmp",
                  MO=1-120, DEC[1]=5*120, COMBINE=T
-FILEO MATO[2] = "%SCENARIO_DIR%\HWY_TOLL_DEBUG_%ITER%_%PER%.tmp",
+FILEO MATO[2] = "%SCENARIO_DIR%\highway\HWY_TOLL_DEBUG_%ITER%_%PER%.tmp",
 	MO=35,81-85,200-225 NAME=TOT_TOLL, toll01, toll02, toll03,	toll04,	toll05,	toll06,	toll07,	toll08,	toll09,	toll10,	
 		toll11,	toll12,	toll13,	toll14,	toll15,	toll16,	toll17,	toll18,	toll19,	toll20,	toll21,	toll22,	toll23,	toll24,
 		toll25,	toll26,	toll27,	toll28,	toll29,	toll30, toll31
 	
 
-FILEO NETO = "%SCENARIO_DIR%\HWY_LDNET_%ITER%_%PER%.NET"
-FILEI NETI = "%SCENARIO_DIR%\%HWY_NET%"
+FILEO NETO = "%SCENARIO_DIR%\highway\HWY_LDNET_%ITER%_%PER%.NET"
+;FILEI NETI = "%SCENARIO_DIR%\highway\%HWY_NET%"
+FILEI NETI = "%NETWORK_FOLDER%\%HWY_NET%"
 FILEI LOOKUPI[1] = "%LU_will2pay%"
-FILEI MATI[1] = "%SCENARIO_DIR%\HWY_AUTO_TRIP_%ITER%_%PER%.TRP"
+FILEI MATI[1] = "%SCENARIO_DIR%\highway\HWY_AUTO_TRIP_%ITER%_%PER%.TRP"
 
 DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
 

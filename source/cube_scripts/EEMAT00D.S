@@ -1,6 +1,6 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 RUN PGM=MATRIX MSG='Sum trips from each time period'
-FILEI MATI[1] = "%SCENARIO_DIR%\HWY_TRIP_%ITER%_%PER%.trp"
+FILEI MATI[1] = "%SCENARIO_DIR%\highway\HWY_TRIP_%ITER%_%PER%.trp"
 
   ;_total = 0
 
@@ -73,7 +73,7 @@ FILEI MATI[1] = "%SCENARIO_DIR%\HWY_TRIP_%ITER%_%PER%.trp"
 		ROWSUM(32) 
   
   IF(I==%int_zones%)
-    LIST= %TOD%, ' %PER%', _total FILE = "%SCENARIO_DIR%\HWY_TRIP_PRN_%ITER%.CSV",
+    LIST= %TOD%, ' %PER%', _total FILE = "%SCENARIO_DIR%\external\HWY_TRIP_PRN_%ITER%.CSV",
  APPEND=T, CSV=T
   ENDIF
  

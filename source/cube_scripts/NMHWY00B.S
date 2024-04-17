@@ -1,8 +1,10 @@
-; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 RUN PGM=HIGHWAY MSG='Skim Walk Path Distance'
-FILEO MATO[1] = "%SCENARIO_DIR%\NM_SKIM_WALK.skm",
+FILEO MATO[1] = "%SCENARIO_DIR%\nonmotorized\NM_SKIM_WALK.skm",
  MO=1-4, NAME=DISTANCE, B3DIST, B2DIST, B1DIST
-FILEI NETI = "%SCENARIO_DIR%\NM_NET.net"
+FILEI NETI = "%SCENARIO_DIR%\nonmotorized\NM_NET.net"
+
+DISTRIBUTEINTRASTEP PROCESSID=mcskim PROCESSLIST=1-%max_threads%
+
 PROCESS PHASE=ILOOP
 
   PATHLOAD PATH=LI.DISTANCE, MW[1]=pathtrace(LI.DISTANCE), MW[2]=pathtrace(LI.B3DIST),

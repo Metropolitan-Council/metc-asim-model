@@ -1,11 +1,11 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 RUN PGM=MATRIX MSG='Auto EI / IE Destination Choice'
-FILEI DBI[2] = "%SCENARIO_DIR%\HWY_EXT.dbf"
-FILEI MATI[1] = "%SCENARIO_DIR%\HWY_SKIM_%PREV_ITER%_AM.skm"
-FILEO MATO[2] = "%SCENARIO_DIR%\HWY_EXT_IETRIP_%ITER%.trp",
+FILEI DBI[2] = "%SCENARIO_DIR%\external\HWY_EXT.dbf"
+FILEI MATI[1] = "%SCENARIO_DIR%\highway\HWY_SKIM_%PREV_ITER%_AM.skm"
+FILEO MATO[2] = "%SCENARIO_DIR%\external\HWY_EXT_IETRIP_%ITER%.trp",
  MO=11-18, NAME=termTime,time,sizeVar, expU, prob, IE_DA, IE_S2, IE_S3
  
-FILEO MATO[1] = "%SCENARIO_DIR%\HWY_EXT_EITRIP_%ITER%.trp",
+FILEO MATO[1] = "%SCENARIO_DIR%\external\HWY_EXT_EITRIP_%ITER%.trp",
  MO=1-8, NAME=termTime,time,sizeVar, expU, prob, EI_DA,	EI_S2,	EI_S3
 
 FILEI DBI[1] = "%zone_attribs%"

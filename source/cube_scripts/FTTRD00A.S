@@ -1,10 +1,10 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 RUN PGM=TRIPDIST MSG='Truck gravity model'
-FILEO MATO[1] = "%SCENARIO_DIR%\TRK_TRIP_%ITER%.tmp",
+FILEO MATO[1] = "%SCENARIO_DIR%\truck\TRK_TRIP_%ITER%.tmp",
  MO=1-3, DEC=D,D,D, NAME=SINGLEUNIT, COMBINATION, HV
 FILEI LOOKUPI[1] = "%qrfm_ff%"
-FILEI MATI[1] = "%SCENARIO_DIR%\TRK_SKIM_%ITER%.tmp"
-FILEI ZDATI[1] = "%SCENARIO_DIR%\TRK_PA.txt",
+FILEI MATI[1] = "%SCENARIO_DIR%\truck\TRK_SKIM_%ITER%.tmp"
+FILEI ZDATI[1] = "%SCENARIO_DIR%\truck\TRK_PA.txt",
  Z=#1, P1=#2, A1=#3, P2=#4, A2=#5 ;PA DATA
 
  MAXITERS=10

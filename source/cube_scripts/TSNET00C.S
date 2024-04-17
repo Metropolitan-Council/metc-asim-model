@@ -1,8 +1,8 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 RUN PGM=NETWORK MSG='Calculate Transit Speeds for %TPER%'
 FILEO NETO = "%SCENARIO_DIR%\XIT_NET_0_%TPER%.net"
-FILEI LOOKUPI[2] = "%CATALOG_DIR%\input\transit\%TPER3%ExpressDelays.txt"
-FILEI LOOKUPI[1] = "%CATALOG_DIR%\input\transit\%TPER3%LocalDelays.txt"
+FILEI LOOKUPI[2] = "%TRANSIT_FOLDER%\%TPER3%ExpressDelays.txt"
+FILEI LOOKUPI[1] = "%TRANSIT_FOLDER%\%TPER3%LocalDelays.txt"
 FILEI LINKI[1] = "%SCENARIO_DIR%\TransitBase.NET"
 
     ;  transit time = congested time +  distance * link delay

@@ -1,10 +1,10 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 RUN PGM=GENERATION MSG='Quick Response Freight Manual routine'
-FILEO PAO[2] = "%SCENARIO_DIR%\TRK_PA.txt",
+FILEO PAO[2] = "%SCENARIO_DIR%\truck\TRK_PA.txt",
  FORM=6.0, LIST=Z, P[1],A[1], P[2], A[2]
-FILEO PAO[1] = "%SCENARIO_DIR%\TRK_PA.dbf",
+FILEO PAO[1] = "%SCENARIO_DIR%\truck\TRK_PA.dbf",
  FORM=6.0, DBF=T, LIST=Z, P[1], A[1], P[2], A[2]
-FILEO PRINTO[1] = "%SCENARIO_DIR%\TRK_GENERATION.PRN"
+FILEO PRINTO[1] = "%SCENARIO_DIR%\truck\TRK_GENERATION.PRN"
 FILEI ZDATI[2] = "%ext_sta%"
 FILEI ZDATI[1] = "%zone_attribs%"
 ;FILEI LOOKUPI[1] = "%qfrm%" fixed by Dennis Farmer due to mispelling

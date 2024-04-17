@@ -7,6 +7,8 @@ FILEO MATO[1] = "%SCENARIO_DIR%\HWY_SKIM.skm",
   NAME=daptime, daptoll, dantime, dantoll, dapdist, a2ptime, a2ptoll, a2ntime, a2ntoll, a2pdist, 
   a3ptime, a3ptoll, a3ntime, a3ntoll, a3pdist, lnrtdist
 
+DISTRIBUTEINTRASTEP PROCESSID=mcskim PROCESSLIST=1-%max_threads%
+
 PROCESS PHASE=ILOOP
     PATHLOAD PATH = TIME,  
     mw[1] = PATHTRACE(TIME) NOACCESS=1000,

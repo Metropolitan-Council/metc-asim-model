@@ -1,8 +1,8 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 RUN PGM=NETWORK MSG='Set Managed Lanes for: %NETNAME%'
 
-FILEI LINKI[1] = "%SCENARIO_DIR%\ALL_NET.net"
-FILEO NETO = "%SCENARIO_DIR%\HWY_NET_%TOD%.net"
+FILEI LINKI[1] = "%SCENARIO_DIR%\highway\ALL_NET.net"
+FILEO NETO = "%SCENARIO_DIR%\highway\HWY_NET_%TOD%.net"
 
 
   IF (RCI=100) DELETE ; Remove Rail

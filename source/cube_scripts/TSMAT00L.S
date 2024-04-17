@@ -1,9 +1,9 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 RUN PGM=MATRIX MSG='Create Special Generator Matrix'
 FILEI LOOKUPI[1] = "%LU_spc_tod%"
-FILEO MATO[1] = "%SCENARIO_DIR%\HWY_SPC_TRIP.trp",
+FILEO MATO[1] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP.trp",
  MO=1-11, NAME= AM1, AM2, AM3, AM4, MD, PM1, PM2, PM3, PM4, EV, ON
-FILEI MATI[1] = "%SCENARIO_DIR%\HWY_SPC_PA.dbf",
+FILEI MATI[1] = "%SCENARIO_DIR%\specialgen\HWY_SPC_PA.dbf",
  PATTERN=IJ:V, FIELDS=ORIG, DEST, TRIPS
 
 

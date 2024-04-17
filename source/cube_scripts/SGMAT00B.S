@@ -1,8 +1,8 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 RUN PGM=MATRIX MSG='Add return trips'
-FILEO MATO[1] = "%SCENARIO_DIR%\HWY_SPC_TRIP_%ITER%_%PER%.trp",
+FILEO MATO[1] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_%PER%.trp",
  MO=1-5, DEC=3,3,3,3,3, NAME= DA,SR2,SR3,XIT_WK, XIT_DR
-FILEI MATI[1] = "%SCENARIO_DIR%\HWY_SPC_TRIP_%ITER%_%PER%.tmp"
+FILEI MATI[1] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_%PER%.tmp"
  
  MW[1] = MI.1.1 + MI.1.1.T
  MW[2] = MI.1.2 + MI.1.2.T + (MI.1.2 + MI.1.2.T)*0.9391

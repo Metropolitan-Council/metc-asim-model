@@ -1,7 +1,7 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 RUN PGM=NETWORK MSG='Export Bike Network from Geodatabase'
-FILEO NETO = "%SCENARIO_DIR%\NM_NET.net"
-FILEI LINKI[1] = "%SCENARIO_DIR%\ALL_NET.tmp"
+FILEO NETO = "%SCENARIO_DIR%\nonmotorized\NM_NET.net"
+FILEI LINKI[1] = "%SCENARIO_DIR%\highway\ALL_NET.tmp"
 
 ;Length corrections
 ;DISTANCE = SHAPE_Length/1609.344 ; Adds distance to any new link that was not coded with a distance

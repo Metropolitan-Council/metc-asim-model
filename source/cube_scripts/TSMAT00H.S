@@ -1,7 +1,7 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 RUN PGM=MATRIX MSG='External Auto Allocation and Mode Choice'
-FILEO PRINTO[2] = "%SCENARIO_DIR%\HWY_EXT_MARGINAL_TARGET.txt"
-FILEO RECO[1] = "%SCENARIO_DIR%\HWY_EXT.dbf",
+FILEO PRINTO[2] = "%SCENARIO_DIR%\external\HWY_EXT_MARGINAL_TARGET.txt"
+FILEO RECO[1] = "%SCENARIO_DIR%\external\HWY_EXT.dbf",
  FIELDS=ZONE,AUTOS,EE,EI_DA,EI_S2,EI_S3,IE_DA,IE_S2,IE_S3
 FILEI LOOKUPI[1] = "%LU_external%"
 FILEI DBI[1] = "%ext_sta%"
