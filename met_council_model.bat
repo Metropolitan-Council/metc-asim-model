@@ -1,6 +1,6 @@
 ::~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 @ECHO OFF
-::SetLocal EnableDelayedExpansion
+SetLocal EnableDelayedExpansion
 :: ----------------------------------------------------------------------------
 ::
 :: Step 1:  Set the necessary path variables 
@@ -12,13 +12,15 @@ CALL .\set_parameters.bat
 
 COPY .\set_parameters.bat %SCENARIO_DIR%\set_parameters.txt
 
+GOTO trnntlloop
+
 :: ----------------------------------------------------------------------------
 ::
 :: Step 2:  Networks and initial skims 
 ::
 :: ----------------------------------------------------------------------------
 :: Generate zonal data for model run
-COPY "%zone_attribs%" "%SCENARIO_DIR%\zones.dbf"
+COPY "%zone_attribs%" "%SCENARIO_DIR%\landuse\zones.dbf"
 
 :: Make Networks
 :: Filter the all_link and all_node shape files to create separate 
@@ -37,21 +39,26 @@ COPY "%zone_attribs%" "%SCENARIO_DIR%\zones.dbf"
 ::%check_cube_errors%
 ::endComment
 
+:HNET
 ECHO HIGHWAY
 :: HIGHWAY
 :: No current option to copy skims as a warm start, could be added.
 ::%beginComment%
-:: Export highway network from temp file (candidate for streamlining)
-runtpp %SCRIPT_PATH%\BNNET00B.s
-%check_cube_errors%
+:: Export highway network from temp file (candidate for streamlining) ::FIXME: turn this back on (it's SLOW)
+REM runtpp %SCRIPT_PATH%\BNNET00B.s
+REM %check_cube_errors%
 
 :: This does a GIS analysis to determine the nearest managed lane facility in to each zone
-python "%MAIN_DIRECTORY%\source\python\metc_nearestml.py" -l "%SCENARIO_DIR%\link.shp" -n "%SCENARIO_DIR%\node.shp" -z %zones% -o "%SCENARIO_DIR%\nearestml.csv"
+REM python "%MAIN_DIRECTORY%\source\python\metc_nearestml.py" -l "%SCENARIO_DIR%\highway\link.shp" -n "%SCENARIO_DIR%\highway\node.shp" -z %zones% -o "%SCENARIO_DIR%\landuse\nearestml.csv"
 
+:NM_SKIMS
 ECHO INITIAL NETWORKS AND INITIAL SKIMS
 :: NON-MOTORIZED
 :: Skim bike and walk networks
 ::%beginComment%
+:: Start Cluster
+runtpp %SCRIPT_PATH%\HAPIL00D.s
+%check_cube_errors%
 runtpp %SCRIPT_PATH%\NMNET00A.s
 %check_cube_errors%
 runtpp %SCRIPT_PATH%\NMHWY00A.s
@@ -59,6 +66,9 @@ runtpp %SCRIPT_PATH%\NMHWY00A.s
 runtpp %SCRIPT_PATH%\NMHWY00B.s
 %check_cube_errors%
 runtpp %SCRIPT_PATH%\NMMAT00A.s
+%check_cube_errors%
+:: Close Cluster
+runtpp %SCRIPT_PATH%\HAPIL00B.s
 %check_cube_errors%
 ::endComment
 
@@ -73,26 +83,31 @@ runtpp %SCRIPT_PATH%\NMMAT00A.s
 
 :initialSkim
 ECHO Initial Skims
-runtpp %SCRIPT_PATH%\HNNET00B.s
-%check_cube_errors%
+:: TURNED OFF BY ASR
+:: These scripts need to be updated for 2022
+REM runtpp %SCRIPT_PATH%\HNNET00B.s
+REM %check_cube_errors%
 :: Set managed lanes (comments cannot go inside for loops)
-FOR /L %%I IN (1, 1, 6) DO (
-	SET TOD=%%I
+REM FOR /L %%I IN (1, 1, 6) DO (
+	REM SET TOD=%%I
 
-	IF %%I EQU 1 (SET NETNAME=Overnight 7:00 PM to 5:00 AM)
-	IF %%I EQU 2 (SET NETNAME=Reverse Lane Change Over 5:00 AM to 6:00 AM  and 1:00 PM to 2:00 PM)
-	IF %%I EQU 3 (SET NETNAME=AM Peak Period 6:00 AM to 10:00 AM)
-	IF %%I EQU 4 (SET NETNAME=Mid Day Period 10:00 AM to 1:00 PM)
-	IF %%I EQU 5 (SET NETNAME=Pre PM Peak Period 2:00 PM to 3:00 PM)
-	IF %%I EQU 6 (SET NETNAME=PM Peak Period 3:00 PM to 7:00 PM)
+	REM IF %%I EQU 1 (SET NETNAME=Overnight 7:00 PM to 5:00 AM)
+	REM IF %%I EQU 2 (SET NETNAME=Reverse Lane Change Over 5:00 AM to 6:00 AM  and 1:00 PM to 2:00 PM)
+	REM IF %%I EQU 3 (SET NETNAME=AM Peak Period 6:00 AM to 10:00 AM)
+	REM IF %%I EQU 4 (SET NETNAME=Mid Day Period 10:00 AM to 1:00 PM)
+	REM IF %%I EQU 5 (SET NETNAME=Pre PM Peak Period 2:00 PM to 3:00 PM)
+	REM IF %%I EQU 6 (SET NETNAME=PM Peak Period 3:00 PM to 7:00 PM)
 
-	runtpp %SCRIPT_PATH%\HNNET00C.s
-    :: Need to test how exitRun works inside loop
-    %check_cube_errors%
-)
+	REM runtpp %SCRIPT_PATH%\HNNET00C.s
+    REM :: Need to test how exitRun works inside loop
+    REM %check_cube_errors%
+REM )
 
 IF %FREE_FLOW%==1 (goto initialSkim) else (goto copySkims)
 
+:: Start Cluster
+runtpp %SCRIPT_PATH%\HAPIL00D.s
+%check_cube_errors%
 ::: Skim free flow network
 runtpp %SCRIPT_PATH%\FFHWY00A.s
 %check_cube_errors%
@@ -100,6 +115,9 @@ runtpp %SCRIPT_PATH%\FFHWY00A.s
 runtpp %SCRIPT_PATH%\FFPIL00A.s
 %check_cube_errors%
 ::endComment
+:: Close Cluster
+runtpp %SCRIPT_PATH%\HAPIL00B.s
+%check_cube_errors%
 
 ECHO TRANSIT
 :: No current option to copy skims as a warm start, could be added.
@@ -110,18 +128,28 @@ runtpp %SCRIPT_PATH%\TSNET00A.s
 runtpp %SCRIPT_PATH%\TSNET00B.s
 %check_cube_errors%
 
+
 :: Calculate transit speeds for each period
 :: Build walk access, transfer access, and drive access connectors for each period
 :: Skim walk transit and drive transit
-FOR /L %%I IN (1, 1, 2) DO (
+FOR /L %%I IN (1, 1, 5) DO (
 
 	SET TOD=%%I
 
 	IF %%I EQU 1 (
-        SET TPER=PK
+        SET TPER=EA
         )
 	IF %%I EQU 2 (
-        SET TPER=OP
+        SET TPER=AM
+        )
+	IF %%I EQU 3 (
+        SET TPER=MD
+        )
+	IF %%I EQU 4 (
+        SET TPER=PM
+        )
+	IF %%I EQU 5 (
+        SET TPER=NT
         )
 
 	runtpp %SCRIPT_PATH%\TSNET00C.s
@@ -151,10 +179,11 @@ runtpp %SCRIPT_PATH%\CSPIL00A.s
 %check_cube_errors%
 runtpp %SCRIPT_PATH%\TCPIL00E.s
 %check_cube_errors%   
-runtpp %SCRIPT_PATH%\TCNET00B.S
-%check_cube_errors%   
+:: ASR: does not need to run - same process runs as BNNET00B
+REM runtpp %SCRIPT_PATH%\TCNET00B.S
+REM %check_cube_errors%   
 
-    
+
 ::endComment
 
 :ancillary
@@ -212,7 +241,7 @@ runtpp %SCRIPT_PATH%\TSMAT00M.s
 
 ECHO CREATE EXOGENOUS VARIABLES
 ::%beginComment%
-IF %ITER% EQU 1 (COPY %SCENARIO_DIR%\zones.dbf %SCENARIO_DIR%\zones_%PREV_ITER%.dbf)
+IF %ITER% EQU 1 (COPY %SCENARIO_DIR%\landuse\zones.dbf %SCENARIO_DIR%\landuse\zones_%PREV_ITER%.dbf)
 ::%check_cube_errors%
 :: Highway Accessibility
 ::runtpp %SCRIPT_PATH%\EVMAT00A.s
@@ -238,7 +267,7 @@ IF %ITER% EQU 1 (COPY %SCENARIO_DIR%\zones.dbf %SCENARIO_DIR%\zones_%PREV_ITER%.
 
 :: Prepare skims for ActivitySim
 :ASim
-runtpp %SCRIPT_PATH%\EVMAT00G.s
+REM runtpp %SCRIPT_PATH%\EVMAT00G.s
 %check_cube_errors%
 
 
@@ -248,13 +277,13 @@ ECHO Python Path: %PYTHON_PATH%
 ECHO Script Path: %SCRIPT_PATH%
 ECHO Scenario Dir: %SCENARIO_DIR%
 
-python.exe "%SCRIPT_PATH%\EVMAT00H.py" "%SCENARIO_DIR%\set_parameters.txt"
-%check_cube_errors%
+REM python.exe "%SCRIPT_PATH%\EVMAT00H.py" "%SCENARIO_DIR%\set_parameters.txt"
+REM %check_cube_errors%
 
 :: Run ActivitySim
-python.exe source\ActivitySim\simulation.py -c source\ActivitySim\configs -d %SE% -d %SCENARIO_DIR%\OMX -o %ASIM_OUT%
+REM python.exe source\ActivitySim\simulation.py -c source\ActivitySim\configs -d %SE% -d %SCENARIO_DIR%\OMX -o %ASIM_OUT%
 %check_python_errors%
-
+:AfterAsim
 echo Iteration=%ITER%
 :: Output ActivitySim Matrices
 for /L %%I IN (1, 1, 11) DO (
@@ -279,9 +308,12 @@ for /L %%I IN (1, 1, 11) DO (
 echo Iteration=%ITER%
 
 ::Convert Transit Trip Tables
-for /L %%I IN (1, 1, 2) DO (    
-    IF %%I EQU 1 (SET TPER=PK)
-    IF %%I EQU 2 (SET TPER=OP)
+FOR /L %%I IN (1, 1, 5) DO (
+	IF %%I EQU 1 (SET TPER=EA)
+	IF %%I EQU 2 (SET TPER=AM)
+	IF %%I EQU 3 (SET TPER=MD)
+	IF %%I EQU 4 (SET TPER=PM)
+	IF %%I EQU 5 (SET TPER=NT)
 	runtpp %SCRIPT_PATH%\ASPIL00B.S
 	%check_cube_errors%
 	)
@@ -294,6 +326,7 @@ echo Iteration=%ITER%
 ::
 :: ----------------------------------------------------------------------------
 ::%beginComment%
+:freight
 ECHO FREIGHT
 :: Create weighted skim times
 runtpp %SCRIPT_PATH%\FTMAT00A.s
@@ -306,6 +339,7 @@ runtpp %SCRIPT_PATH%\FTMAT00B.s
 %check_cube_errors%
 ::endComment
 
+:external_assign
 ECHO EXTERNAL AUTOS
 ::%beginComment%
 :: Auto EI/IE destination choice
@@ -342,7 +376,7 @@ runtpp %SCRIPT_PATH%\EEMAT00E.s
 %check_cube_errors%
 ::endComment
 
-
+:specgen_assign
 ::%beginComment%
 :: SPECIAL GENERATORS
 :: Data from AirportModECHOiceParams.txt
@@ -352,57 +386,57 @@ for /L %%I IN (1, 1, 11) DO (
     IF %%I EQU 1 (
         SET PER=AM1
         SET HPER=AM
-        SET TPER=PK
+        SET TPER=AM
     )
     IF %%I EQU 2 (
         SET PER=AM2
         SET HPER=AM
-        SET TPER=PK
+        SET TPER=AM
     ) 
     IF %%I EQU 3 (
         SET PER=AM3
         SET HPER=AM
-        SET TPER=PK
+        SET TPER=AM
     ) 
     IF %%I EQU 4 (
         SET PER=AM4
         SET HPER=AM
-        SET TPER=PK
+        SET TPER=AM
     )   
     IF %%I EQU 5 (
         SET PER=MD
         SET HPER=MD
-        SET TPER=OP
+        SET TPER=MD
     )
     IF %%I EQU 6 (
         SET PER=PM1
         SET HPER=PM
-        SET TPER=PK
+        SET TPER=PM
     )  
     IF %%I EQU 7 (
         SET PER=PM2
         SET HPER=PM
-        SET TPER=PK
+        SET TPER=PM
     ) 
     IF %%I EQU 8 (
         SET PER=PM3
         SET HPER=PM
-        SET TPER=PK
+        SET TPER=PM
     ) 
     IF %%I EQU 9 (
         SET PER=PM4
         SET HPER=PM
-        SET TPER=PK
+        SET TPER=PM
     )
     IF %%I EQU 10 (
         SET PER=EV
         SET HPER=NT
-        SET TPER=OP
+        SET TPER=NT
     ) 
     IF %%I EQU 11 (
         SET PER=ON
         SET HPER=NT
-        SET TPER=OP
+        SET TPER=NT
     )
     
     :: Airport mode choice
@@ -424,6 +458,7 @@ echo Iteration=%ITER%
 ::
 :: ----------------------------------------------------------------------------
 :: HIGHWAY skims
+:hassign
 :: Start cube cluster
 runtpp %SCRIPT_PATH%\HAPIL00D.s
 %check_cube_errors%
@@ -489,10 +524,11 @@ FOR /L %%I IN (1, 1, 4) DO (
 :: End cube cluster
 runtpp %SCRIPT_PATH%\HAPIL00B.s
 %check_cube_errors% 
-:endComment
+::endComment
+
 
 echo Iteration=%ITER%
-
+:ha_post
 :: HWY Assignment Post-Processor
 :: Combine convergence assignment networks
 runtpp %SCRIPT_PATH%\CANET00A.s
@@ -507,7 +543,7 @@ runtpp %SCRIPT_PATH%\CAMAT00A.s
 
 :: TRANSIT skimming
 echo Iteration=%ITER%
-
+:tassign
 ::%beginComment%
 ::now
 :: Calculate transit speeds for period
@@ -526,27 +562,49 @@ runtpp %SCRIPT_PATH%\TSPTR00S_loop.s
 runtpp %SCRIPT_PATH%\TSPTR00U_loop.s
 %check_cube_errors%
 	
-SET I=1
+
 :trnntlloop
 
-SET TOD=%I%
-IF %I% EQU 1 (
-   SET TPER=PK
-   SET ASSIGNNAME=Peak Period
-   SET PER=AM
+FOR /L %%I IN (1, 1, 5) DO (
+
+	SET TOD=%%I
+	IF %%I EQU 1 (
+		SET TPER=EA
+		SET TPER2=OP
+		SET ASSIGNNAME=EA Period
+		SET PER=NT
+	)
+	IF %%I EQU 2 (
+		SET TPER=AM
+		SET TPER2=PK
+		SET ASSIGNNAME=AM Period
+		SET PER=AM
+	)
+	IF %%I EQU 3 (
+		SET TPER=MD
+		SET TPER2=OP
+		SET ASSIGNNAME=MD Period
+		SET PER=MD
+	)
+	IF %%I EQU 4 (
+		SET TPER=PM
+		SET TPER2=PK
+		SET ASSIGNNAME=PM Period
+		SET PER=PM
+	)
+	IF %%I EQU 5 (
+		SET TPER=NT
+		SET TPER2=OP
+		SET ASSIGNNAME=NT Period
+		SET PER=NT
+	)
+	
+	:: Copy temp files to non-transit leg files
+	ECHO %SCENARIO_DIR%\transit\XIT_WKACC_NTL_%ITER%_!TPER!.tmp
+	COPY %SCENARIO_DIR%\transit\XIT_WKACC_NTL_%ITER%_!TPER!.tmp+%TRANSIT_FOLDER%\WalkOverrides.txt %SCENARIO_DIR%\transit\XIT_WKACC_NTL_%ITER%_!TPER!.ntl
+	COPY %SCENARIO_DIR%\transit\XIT_XFER_NTL_%ITER%_!TPER!.tmp+%TRANSIT_FOLDER%\TransferOverrides.txt %SCENARIO_DIR%\transit\XIT_XFER_NTL_%ITER%_!TPER!.ntl
+	COPY %SCENARIO_DIR%\transit\XIT_DRACC_NTL_%ITER%_!TPER!.tmp+%TRANSIT_FOLDER%\DriveOverrides.txt %SCENARIO_DIR%\transit\XIT_DRACC_NTL_%ITER%_!TPER!.ntl
 )
-IF %I% EQU 2 (
-	SET TPER=OP
-	SET ASSIGNNAME=OffPeak Period
-	SET PER=MD
-) 
-
-:: Copy temp files to non-transit leg files
-COPY %SCENARIO_DIR%\XIT_WKACC_NTL_%ITER%_%TPER%.tmp+%TRANSIT_FOLDER%\WalkOverrides.txt %SCENARIO_DIR%\XIT_WKACC_NTL_%ITER%_%TPER%.ntl
-COPY %SCENARIO_DIR%\XIT_XFER_NTL_%ITER%_%TPER%.tmp+%TRANSIT_FOLDER%\TransferOverrides.txt %SCENARIO_DIR%\XIT_XFER_NTL_%ITER%_%TPER%.ntl
-COPY %SCENARIO_DIR%\XIT_DRACC_NTL_%ITER%_%TPER%.tmp+%TRANSIT_FOLDER%\DriveOverrides.txt %SCENARIO_DIR%\XIT_DRACC_NTL_%ITER%_%TPER%.ntl
-
-IF %I% EQU 1 (SET I=2 & GOTO trnntlloop)
 
 :: Walk transit skim step 1
 runtpp %SCRIPT_PATH%\TSPTR00J_loop.s
@@ -563,7 +621,9 @@ runtpp %SCRIPT_PATH%\TSMAT00E_loop.s
 :: Drive transit skim step 2
 runtpp %SCRIPT_PATH%\TSMAT00G_loop.s
 %check_cube_errors%
-@ECHO OFF
+
+::FIXME: Andrew is down to here.
+GOTO endOfFile
 ::now
 
 ::runtpp %SCRIPT_PATH%\TSPIL00E.S
