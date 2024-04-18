@@ -1,28 +1,24 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 
-*cluster transit 1-2 START EXIT
-LOOP TOD=1,2,1
+*cluster transit 1-5 START EXIT
+LOOP TOD=1,5,1
 
-
-
- IF(TOD=1) TPER='PK' ASSIGNNAME='Peak Period'  PER ='AM' 
- IF(TOD=2) TPER='OP' ASSIGNNAME='OffPeak Period'  PER ='MD' 
-
-
+ IF(TOD=1) TPER='EA' ASSIGNNAME='EA Period'  PER ='NT' TPER2 = 'OP'
+ IF(TOD=2) TPER='AM' ASSIGNNAME='AM Period'  PER ='AM' TPER2 = 'PK'
+ IF(TOD=3) TPER='MD' ASSIGNNAME='MD Period'  PER ='MD' TPER2 = 'OP'
+ IF(TOD=4) TPER='PM' ASSIGNNAME='PM Period'  PER ='PM' TPER2 = 'PK'
+ IF(TOD=5) TPER='NT' ASSIGNNAME='NT Period'  PER ='NT' TPER2 = 'OP'
 
   DISTRIBUTEMULTISTEP PROCESSID='transit' PROCESSNUM=@TOD@
 
 
-RUN PGM=NETWORK MSG='Calculate Transit Speeds for %TPER%'
-
-
-
-FILEI NODEI[1] = "%SCENARIO_DIR%\node.dbf"
-FILEI LINKI[2] = "%SCENARIO_DIR%\ALL_NET.net"
-FILEO NETO = "%SCENARIO_DIR%\XIT_NET_%ITER%_@TPER@.NET"
-FILEI LOOKUPI[2] = "%CATALOG_DIR%\INPUT\TRANSIT\@TPER@EXPRESSDELAYS.TXT"
-FILEI LOOKUPI[1] = "%CATALOG_DIR%\INPUT\TRANSIT\@TPER@LOCALDELAYS.TXT"
-FILEI LINKI[1] = "%SCENARIO_DIR%\HWY_LDNET_%ITER%_@PER@.net"
+RUN PGM=NETWORK MSG='Calculate Transit Speeds for @TPER@'
+FILEI NODEI[1] = "%SCENARIO_DIR%\highway\node.dbf"
+FILEI LINKI[2] = "%SCENARIO_DIR%\highway\ALL_NET.net"
+FILEO NETO = "%SCENARIO_DIR%\transit\XIT_NET_%ITER%_@TPER@.NET"
+FILEI LOOKUPI[2] = "%TRANSIT_FOLDER%\@TPER2@EXPRESSDELAYS.TXT"
+FILEI LOOKUPI[1] = "%TRANSIT_FOLDER%\@TPER2@LOCALDELAYS.TXT"
+FILEI LINKI[1] = "%SCENARIO_DIR%\highway\HWY_LDNET_%ITER%_@PER@.net"
 
 
 
@@ -96,18 +92,18 @@ FILEI LINKI[1] = "%SCENARIO_DIR%\HWY_LDNET_%ITER%_@PER@.net"
 ;;--------------------------------------------------------------------------    
 
     ; Override manually coded speed for transit only links
-    IF (LI.2.T_MANTIME>0)
-        LOCTIME = T_MANTIME
-        EXPTIME = T_MANTIME
-        LRTTIME = T_MANTIME
+    IF (LI.2.TTIME_ASSERT_@PER@>0)
+        LOCTIME = TTIME_ASSERT_@PER@
+        EXPTIME = TTIME_ASSERT_@PER@
+        LRTTIME = TTIME_ASSERT_@PER@
     ENDIF    
 
 ;;--------------------------------------------------------------------------
 
     ;Calculate Local Bus Transit Travel Time
     IF (LOCTIME=0)
-         _DELAY = locdelay(LI.1.AREA,LI.1.RCI)
-         IF (T_Priority=2)
+         _DELAY = locdelay(LI.1.AREA_TYPE,LI.1.RCI)
+         IF (TRN_PRIORITY_@PER@=2)
             IF ((SPEED+15)<50)
                 _tspeed = MIN(SPEED+15,35)
             ELSE
@@ -126,8 +122,8 @@ FILEI LINKI[1] = "%SCENARIO_DIR%\HWY_LDNET_%ITER%_@PER@.net"
     
     ;Calculate Express Bus Transit Travel Time
     IF (EXPTIME=0)
-        _DELAY = expdelay(LI.1.AREA,LI.1.RCI)
-         IF (T_Priority=2)
+        _DELAY = expdelay(LI.1.AREA_TYPE,LI.1.RCI)
+         IF (TRN_PRIORITY_@PER@=2)
             IF ((SPEED+15)<50)
                 _tspeed = MIN(SPEED+15,35)
             ELSE
@@ -147,9 +143,9 @@ FILEI LINKI[1] = "%SCENARIO_DIR%\HWY_LDNET_%ITER%_@PER@.net"
 
 ENDDISTRIBUTEMULTISTEP
 ENDLOOP
-Wait4Files FILES='transit1.script.end, transit2.script.end' CheckReturnCode=T, DelDistribFiles=T
+Wait4Files FILES='transit1.script.end, transit2.script.end, transit3.script.end, transit4.script.end, transit5.script.end' CheckReturnCode=T, DelDistribFiles=T
 
-*cluster transit 1-2 CLOSE EXIT
+*cluster transit 1-5 CLOSE EXIT
 
 
 

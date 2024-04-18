@@ -80,7 +80,7 @@ FILEI MATI[1] = "%SCENARIO_DIR%\highway\HWY_TRIP_%ITER%_%PER%.TRP"
     _spc  = ROWSUM(41) + ROWSUM(42) + ROWSUM(43) + _spc
   
   IF(I==%zones%)
-    LIST= %TOD%, ' %PER%', _total, _trucks, _eiieauto, _spc FILE = "%SCENARIO_DIR%\HWY_TRIP_PRN_%ITER%_VEHSUMM.CSV",
+    LIST= %TOD%, ' %PER%', _total, _trucks, _eiieauto, _spc FILE = "%SCENARIO_DIR%\external\HWY_TRIP_PRN_%ITER%_VEHSUMM.CSV",
  APPEND=T, CSV=T
   ENDIF         
           

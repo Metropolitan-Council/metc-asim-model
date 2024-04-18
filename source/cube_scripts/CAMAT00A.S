@@ -1,7 +1,7 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 RUN PGM=MATRIX MSG='Export to csv'
-FILEI DBI[1] = "%SCENARIO_DIR%\HWY_LDNET_%ITER%_DAILY.dbf"
-FILEO PRINTO[1] = "%SCENARIO_DIR%\HWY_LDNET_%ITER%_DAILY.csv"
+FILEI DBI[1] = "%SCENARIO_DIR%\highway\HWY_LDNET_%ITER%_DAILY.dbf"
+FILEO PRINTO[1] = "%SCENARIO_DIR%\highway\HWY_LDNET_%ITER%_DAILY.csv"
 
   zones = 1
  

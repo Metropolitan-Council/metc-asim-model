@@ -1,21 +1,20 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
-*cluster transit 1-2 START EXIT
-LOOP TOD=1,2,1
+*cluster transit 1-5 START EXIT
+LOOP TOD=1,5,1
 
-
-
- IF(TOD=1) TPER='PK' ASSIGNNAME='Peak Period'  PER ='AM' 
- IF(TOD=2) TPER='OP' ASSIGNNAME='OffPeak Period'  PER ='MD' 
-
-
+ IF(TOD=1) TPER='EA' ASSIGNNAME='EA Period'  PER ='NT' TPER2 = 'OP'
+ IF(TOD=2) TPER='AM' ASSIGNNAME='AM Period'  PER ='AM' TPER2 = 'PK'
+ IF(TOD=3) TPER='MD' ASSIGNNAME='MD Period'  PER ='MD' TPER2 = 'OP'
+ IF(TOD=4) TPER='PM' ASSIGNNAME='PM Period'  PER ='PM' TPER2 = 'PK'
+ IF(TOD=5) TPER='NT' ASSIGNNAME='NT Period'  PER ='NT' TPER2 = 'OP'
 
 DISTRIBUTEMULTISTEP PROCESSID='transit' PROCESSNUM=@TOD@
 
 
 RUN PGM=MATRIX MSG='@TPER@ Drive Skim - Step 2'
-FILEO MATO[1] = "%SCENARIO_DIR%\XIT_DR_SKIM_%ITER%_@TPER@.SKM",
+FILEO MATO[1] = "%SCENARIO_DIR%\transit\XIT_DR_SKIM_%ITER%_@TPER@.SKM",
  MO=1-12, NAME=TRNTIME,DRACC,WLKXFER,WLKEGR,IWAIT,XWAIT,XFERS,FARE,FAREP,FARER,FARES,DRACCDIST
-FILEI MATI[1] = "%SCENARIO_DIR%\XIT_DR_SKIM_%ITER%_@TPER@.TMP"
+FILEI MATI[1] = "%SCENARIO_DIR%\transit\XIT_DR_SKIM_%ITER%_@TPER@.TMP"
 
 MW[1]=MI.1.1 + MI.1.2 + MI.1.3 + MI.1.4 + MI.1.5 ; Bus, LB, Exp, LRT, CRT - IVT
 MW[2]=MI.1.13      ;Walk access, Egress and Transfer Time
@@ -54,6 +53,7 @@ ENDDISTRIBUTEMULTISTEP
 
 
 ENDLOOP
-Wait4Files FILES='transit1.script.end, transit2.script.end' CheckReturnCode=T, DelDistribFiles=T
-*cluster transit 1-2 CLOSE EXIT
+Wait4Files FILES='transit1.script.end, transit2.script.end, transit3.script.end, transit4.script.end, transit5.script.end' CheckReturnCode=T, DelDistribFiles=T
+
+*cluster transit 1-5 CLOSE EXIT
 

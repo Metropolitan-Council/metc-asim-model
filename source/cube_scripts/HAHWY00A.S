@@ -91,7 +91,7 @@ DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
         IF (LI.CAPACITY=0)
             T0  = 99999
         ENDIF
-        LW.HOV  = LI.HOV
+        LW.HOV  = 0 ;LI.HOV ;;FIXME: Temporarily disabled
         C       = LI.CAPACITY * %CAPFAC%
         Alpha   = LI.Alpha
         Beta    = LI.Beta
@@ -100,40 +100,40 @@ DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
 
 ; **********   Create Link Groups    ************
 ; Group 1: All HOV Lanes
-        IF (LI.HOV>0 && LI.HOV<99) ADDTOGROUP=30  ;Used as exclusion group on path building
+        ;IF (LI.HOV>0 && LI.HOV<99) ADDTOGROUP=30  ;Used as exclusion group on path building
 
 ; Group 2: HOV SECTIONS - Rachel Editing groups, adding more
-        IF (LI.HOV=1,7,9)    ADDTOGROUP=1  ;I-35W	NB	Dakota County to Downtown 
-        IF (LI.HOV=2,8,17)   ADDTOGROUP=2  ;I-35W	SB	Downtown to Dakota County 
-        IF (LI.HOV=6)        ADDTOGROUP=3  ;I-394	WB DT to 100
-        IF (LI.HOV=61)       ADDTOGROUP=4  ;I-394	EB 100 to DT
-        IF (LI.HOV=4)        ADDTOGROUP=5  ;I-394	WB	STH-100	I-494 Outbound
-        IF (LI.HOV=5)        ADDTOGROUP=6  ;I-394	EB	I-494	STH-100	Inbound
-        IF (LI.HOV=11,25)    ADDTOGROUP=7  ; 35E outbound, DT StP to CRJ
-        IF (LI.HOV=12,24)    ADDTOGROUP=8  ; 35w inbound, CRJ to DTstP
-        IF (LI.HOV=13)       ADDTOGROUP=9 ; 35W NB, Hwy 36 to Blaine
-        IF (LI.HOV=14)       ADDTOGROUP=10 ; 35W SB , Blaine to Hwy 36
-        IF (LI.HOV=15)       ADDTOGROUP=11 ; 94 between downtowns EB
-        IF (LI.HOV=16)       ADDTOGROUP=12 ; 94 between downtowns WB
-        IF (LI.HOV=18)       ADDTOGROUP=13 ; 252 SB
-        IF (LI.HOV=19)       ADDTOGROUP=14 ; 252 NB
-        IF (LI.HOV=23,21)    ADDTOGROUP=15 ; SB 94 from 694 to DT
-        IF (LI.HOV=20,22)    ADDTOGROUP=16  ; NB 94 from DT to 694
-        IF (LI.HOV=27,29)    ADDTOGROUP=17  ; NB 35w / Hwy 36
-        IF (LI.HOV=26,28)    ADDTOGROUP=18 ; SB hwy 36 / 35W
-        IF (LI.HOV=30)    ADDTOGROUP=19 ; 94 rogers to maplegrove
-        IF (LI.HOV=31)    ADDTOGROUP=20 ; 94 maplegrove to rogers
-        IF (LI.HOV=32)    ADDTOGROUP=21 ; 169 from 694 to 394
-        IF (LI.HOV=33)    ADDTOGROUP=22  ; 169 from 394 to 694
-        IF (LI.HOV=34)    ADDTOGROUP=23 ; 169 from shakopee to 394
-        IF (LI.HOV=35)    ADDTOGROUP=24 ; 169 from 394 to shakopee
-        IF (LI.HOV=36)    ADDTOGROUP=25 ; 494 EB from 212 to Minnesota River, congested both directions 
-        IF (LI.HOV=37)    ADDTOGROUP=26 ; 494 WB from Minnesota River to 212, congested both directions 
-        IF (LI.HOV=38,39)    ADDTOGROUP=27 ; 94/694 from maple grove to 94 south into DT, partial lane converstion
-        IF (LI.HOV=40,41)    ADDTOGROUP=28 ; 94/694 from 94 to maplegrove, partial lane converstion 
-        IF (LI.HOV=42)    ADDTOGROUP=29 ; 694 EB from 94 to 35W
-        IF (LI.HOV=43)    ADDTOGROUP=31 ; 694 WB from 35W to 94 ; SKIPPING GROUP 30 because it is exclusion group above . ugh 
-        IF (LI.HOV=44,45)    ADDTOGROUP=32 ; 77 NB and SB because i cna't have 33 groups WHICH IS STUPID
+        ; IF (LI.HOV=1,7,9)    ADDTOGROUP=1  ;I-35W	NB	Dakota County to Downtown 
+        ; IF (LI.HOV=2,8,17)   ADDTOGROUP=2  ;I-35W	SB	Downtown to Dakota County 
+        ; IF (LI.HOV=6)        ADDTOGROUP=3  ;I-394	WB DT to 100
+        ; IF (LI.HOV=61)       ADDTOGROUP=4  ;I-394	EB 100 to DT
+        ; IF (LI.HOV=4)        ADDTOGROUP=5  ;I-394	WB	STH-100	I-494 Outbound
+        ; IF (LI.HOV=5)        ADDTOGROUP=6  ;I-394	EB	I-494	STH-100	Inbound
+        ; IF (LI.HOV=11,25)    ADDTOGROUP=7  ; 35E outbound, DT StP to CRJ
+        ; IF (LI.HOV=12,24)    ADDTOGROUP=8  ; 35w inbound, CRJ to DTstP
+        ; IF (LI.HOV=13)       ADDTOGROUP=9 ; 35W NB, Hwy 36 to Blaine
+        ; IF (LI.HOV=14)       ADDTOGROUP=10 ; 35W SB , Blaine to Hwy 36
+        ; IF (LI.HOV=15)       ADDTOGROUP=11 ; 94 between downtowns EB
+        ; IF (LI.HOV=16)       ADDTOGROUP=12 ; 94 between downtowns WB
+        ; IF (LI.HOV=18)       ADDTOGROUP=13 ; 252 SB
+        ; IF (LI.HOV=19)       ADDTOGROUP=14 ; 252 NB
+        ; IF (LI.HOV=23,21)    ADDTOGROUP=15 ; SB 94 from 694 to DT
+        ; IF (LI.HOV=20,22)    ADDTOGROUP=16  ; NB 94 from DT to 694
+        ; IF (LI.HOV=27,29)    ADDTOGROUP=17  ; NB 35w / Hwy 36
+        ; IF (LI.HOV=26,28)    ADDTOGROUP=18 ; SB hwy 36 / 35W
+        ; IF (LI.HOV=30)    ADDTOGROUP=19 ; 94 rogers to maplegrove
+        ; IF (LI.HOV=31)    ADDTOGROUP=20 ; 94 maplegrove to rogers
+        ; IF (LI.HOV=32)    ADDTOGROUP=21 ; 169 from 694 to 394
+        ; IF (LI.HOV=33)    ADDTOGROUP=22  ; 169 from 394 to 694
+        ; IF (LI.HOV=34)    ADDTOGROUP=23 ; 169 from shakopee to 394
+        ; IF (LI.HOV=35)    ADDTOGROUP=24 ; 169 from 394 to shakopee
+        ; IF (LI.HOV=36)    ADDTOGROUP=25 ; 494 EB from 212 to Minnesota River, congested both directions 
+        ; IF (LI.HOV=37)    ADDTOGROUP=26 ; 494 WB from Minnesota River to 212, congested both directions 
+        ; IF (LI.HOV=38,39)    ADDTOGROUP=27 ; 94/694 from maple grove to 94 south into DT, partial lane converstion
+        ; IF (LI.HOV=40,41)    ADDTOGROUP=28 ; 94/694 from 94 to maplegrove, partial lane converstion 
+        ; IF (LI.HOV=42)    ADDTOGROUP=29 ; 694 EB from 94 to 35W
+        ; IF (LI.HOV=43)    ADDTOGROUP=31 ; 694 WB from 35W to 94 ; SKIPPING GROUP 30 because it is exclusion group above . ugh 
+        ; IF (LI.HOV=44,45)    ADDTOGROUP=32 ; 77 NB and SB because i cna't have 33 groups WHICH IS STUPID
       
         
         
