@@ -18,7 +18,7 @@ coef_income_school_univ,-0.262,F
 coef_income_maint,-0.262,F
 coef_income_disc,-0.262,F
 coef_income_atwork,-0.262,F
-coef_income,-0.625,F
+#coef_income,-0.625,F
 coef_age1619_da,0.0,F
 coef_age010_trn,0.0,F
 coef_age16p_sr,0.0,F

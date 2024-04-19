@@ -19,741 +19,979 @@ SAVE_TRIPS_TABLE: True
 MATRICES:
   - file_name: trips_on.omx
     tables:
-      - name: DriveAlone_Work_Inc1_XP
-        data_field: DA_Wrk_Inc1_XP_ON
-      - name: DriveAlone_Work_Inc2_XP
-        data_field: DA_Wrk_Inc2_XP_ON
-      - name: DriveAlone_Work_Inc3_XP
-        data_field: DA_Wrk_Inc3_XP_ON
-      - name: DriveAlone_Work_Inc4_XP
-        data_field: DA_Wrk_Inc4_XP_ON
-      - name: DriveAlone_Work_Inc5_XP
-        data_field: DA_Wrk_Inc5_XP_ON
-      - name: SharedRide2_Work_Inc1
-        data_field: SR2_Wrk_Inc1_ON
-      - name: SharedRide2_Work_Inc2
-        data_field: SR2_Wrk_Inc2_ON
-      - name: SharedRide2_Work_Inc3
-        data_field: SR2_Wrk_Inc3_ON
-      - name: SharedRide2_Work_Inc4
-        data_field: SR2_Wrk_Inc4_ON
-      - name: SharedRide2_Work_Inc5
-        data_field: SR2_Wrk_Inc5_ON
-      - name: SharedRide3_Work_Inc1
-        data_field: SR3_Wrk_Inc1_ON
-      - name: SharedRide3_Work_Inc2
-        data_field: SR3_Wrk_Inc2_ON
-      - name: SharedRide3_Work_Inc3
-        data_field: SR3_Wrk_Inc3_ON
-      - name: SharedRide3_Work_Inc4
-        data_field: SR3_Wrk_Inc4_ON
-      - name: SharedRide3_Work_Inc5
-        data_field: SR3_Wrk_Inc5_ON
-      - name: DriveAlone_NonWork_Inc1_XP
-        data_field: DA_NWrk_Inc1_XP_ON
-      - name: DriveAlone_NonWork_Inc2_XP
-        data_field: DA_NWrk_Inc2_XP_ON
-      - name: DriveAlone_NonWork_Inc3_XP
-        data_field: DA_NWrk_Inc3_XP_ON
-      - name: DriveAlone_NonWork_Inc4_XP
-        data_field: DA_NWrk_Inc4_XP_ON
-      - name: DriveAlone_NonWork_Inc5_XP
-        data_field: DA_NWrk_Inc5_XP_ON
-      - name: SharedRide2_NonWork_Inc1
-        data_field: SR2_NWrk_Inc1_ON
-      - name: SharedRide2_NonWork_Inc2
-        data_field: SR2_NWrk_Inc2_ON
-      - name: SharedRide2_NonWork_Inc3
-        data_field: SR2_NWrk_Inc3_ON
-      - name: SharedRide2_NonWork_Inc4
-        data_field: SR2_NWrk_Inc4_ON
-      - name: SharedRide2_NonWork_Inc5
-        data_field: SR2_NWrk_Inc5_ON
-      - name: SharedRide3_NonWork_Inc1
-        data_field: SR3_NWrk_Inc1_ON
-      - name: SharedRide3_NonWork_Inc2
-        data_field: SR3_NWrk_Inc2_ON
-      - name: SharedRide3_NonWork_Inc3
-        data_field: SR3_NWrk_Inc3_ON
-      - name: SharedRide3_NonWork_Inc4
-        data_field: SR3_NWrk_Inc4_ON
-      - name: SharedRide3_NonWork_Inc5
-        data_field: SR3_NWrk_Inc5_ON
-      - name: DriveAlone_All_Inc1_NoXP
-        data_field: DA_Inc1_NoXP_ON
-      - name: DriveAlone_All_Inc2345_NoXP
-        data_field: DA_IncGT1_NoXP_ON
+      - name: DA_Wrk_XP_VOT1_ON
+        data_field: DA_Wrk_XP_VOT1_ON
+      - name: DA_Wrk_XP_VOT2_ON
+        data_field: DA_Wrk_XP_VOT2_ON
+      - name: DA_Wrk_XP_VOT3_ON
+        data_field: DA_Wrk_XP_VOT3_ON
+      - name: DA_Wrk_NXP_VOT1_ON
+        data_field: DA_Wrk_NXP_VOT1_ON
+      - name: DA_Wrk_NXP_VOT2_ON
+        data_field: DA_Wrk_NXP_VOT2_ON
+      - name: DA_Wrk_NXP_VOT3_ON
+        data_field: DA_Wrk_NXP_VOT3_ON
+      - name: S2_Wrk_XP_VOT1_ON
+        data_field: S2_Wrk_XP_VOT1_ON
+      - name: S2_Wrk_XP_VOT2_ON
+        data_field: S2_Wrk_XP_VOT2_ON
+      - name: S2_Wrk_XP_VOT3_ON
+        data_field: S2_Wrk_XP_VOT3_ON
+      - name: S2_Wrk_NXP_VOT1_ON
+        data_field: S2_Wrk_NXP_VOT1_ON
+      - name: S2_Wrk_NXP_VOT2_ON
+        data_field: S2_Wrk_NXP_VOT2_ON
+      - name: S2_Wrk_NXP_VOT3_ON
+        data_field: S2_Wrk_NXP_VOT3_ON
+      - name: S3_Wrk_XP_VOT1_ON
+        data_field: S3_Wrk_XP_VOT1_ON
+      - name: S3_Wrk_XP_VOT2_ON
+        data_field: S3_Wrk_XP_VOT2_ON
+      - name: S3_Wrk_XP_VOT3_ON
+        data_field: S3_Wrk_XP_VOT3_ON
+      - name: S3_Wrk_NXP_VOT1_ON
+        data_field: S3_Wrk_NXP_VOT1_ON
+      - name: S3_Wrk_NXP_VOT2_ON
+        data_field: S3_Wrk_NXP_VOT2_ON
+      - name: S3_Wrk_NXP_VOT3_ON
+        data_field: S3_Wrk_NXP_VOT3_ON
+      - name: DA_NWrk_XP_VOT1_ON
+        data_field: DA_NWrk_XP_VOT1_ON
+      - name: DA_NWrk_XP_VOT2_ON
+        data_field: DA_NWrk_XP_VOT2_ON
+      - name: DA_NWrk_XP_VOT3_ON
+        data_field: DA_NWrk_XP_VOT3_ON
+      - name: DA_NWrk_NXP_VOT1_ON
+        data_field: DA_NWrk_NXP_VOT1_ON
+      - name: DA_NWrk_NXP_VOT2_ON
+        data_field: DA_NWrk_NXP_VOT2_ON
+      - name: DA_NWrk_NXP_VOT3_ON
+        data_field: DA_NWrk_NXP_VOT3_ON
+      - name: S2_NWrk_XP_VOT1_ON
+        data_field: S2_NWrk_XP_VOT1_ON
+      - name: S2_NWrk_XP_VOT2_ON
+        data_field: S2_NWrk_XP_VOT2_ON
+      - name: S2_NWrk_XP_VOT3_ON
+        data_field: S2_NWrk_XP_VOT3_ON
+      - name: S2_NWrk_NXP_VOT1_ON
+        data_field: S2_NWrk_NXP_VOT1_ON
+      - name: S2_NWrk_NXP_VOT2_ON
+        data_field: S2_NWrk_NXP_VOT2_ON
+      - name: S2_NWrk_NXP_VOT3_ON
+        data_field: S2_NWrk_NXP_VOT3_ON
+      - name: S3_NWrk_XP_VOT1_ON
+        data_field: S3_NWrk_XP_VOT1_ON
+      - name: S3_NWrk_XP_VOT2_ON
+        data_field: S3_NWrk_XP_VOT2_ON
+      - name: S3_NWrk_XP_VOT3_ON
+        data_field: S3_NWrk_XP_VOT3_ON
+      - name: S3_NWrk_NXP_VOT1_ON
+        data_field: S3_NWrk_NXP_VOT1_ON
+      - name: S3_NWrk_NXP_VOT2_ON
+        data_field: S3_NWrk_NXP_VOT2_ON
+      - name: S3_NWrk_NXP_VOT3_ON
+        data_field: S3_NWrk_NXP_VOT3_ON
         
   - file_name: trips_am1.omx
     tables:
-      - name: DriveAlone_Work_Inc1_XP
-        data_field: DA_Wrk_Inc1_XP_AM1
-      - name: DriveAlone_Work_Inc2_XP
-        data_field: DA_Wrk_Inc2_XP_AM1
-      - name: DriveAlone_Work_Inc3_XP
-        data_field: DA_Wrk_Inc3_XP_AM1
-      - name: DriveAlone_Work_Inc4_XP
-        data_field: DA_Wrk_Inc4_XP_AM1
-      - name: DriveAlone_Work_Inc5_XP
-        data_field: DA_Wrk_Inc5_XP_AM1
-      - name: SharedRide2_Work_Inc1
-        data_field: SR2_Wrk_Inc1_AM1
-      - name: SharedRide2_Work_Inc2
-        data_field: SR2_Wrk_Inc2_AM1
-      - name: SharedRide2_Work_Inc3
-        data_field: SR2_Wrk_Inc3_AM1
-      - name: SharedRide2_Work_Inc4
-        data_field: SR2_Wrk_Inc4_AM1
-      - name: SharedRide2_Work_Inc5
-        data_field: SR2_Wrk_Inc5_AM1
-      - name: SharedRide3_Work_Inc1
-        data_field: SR3_Wrk_Inc1_AM1
-      - name: SharedRide3_Work_Inc2
-        data_field: SR3_Wrk_Inc2_AM1
-      - name: SharedRide3_Work_Inc3
-        data_field: SR3_Wrk_Inc3_AM1
-      - name: SharedRide3_Work_Inc4
-        data_field: SR3_Wrk_Inc4_AM1
-      - name: SharedRide3_Work_Inc5
-        data_field: SR3_Wrk_Inc5_AM1
-      - name: DriveAlone_NonWork_Inc1_XP
-        data_field: DA_NWrk_Inc1_XP_AM1
-      - name: DriveAlone_NonWork_Inc2_XP
-        data_field: DA_NWrk_Inc2_XP_AM1
-      - name: DriveAlone_NonWork_Inc3_XP
-        data_field: DA_NWrk_Inc3_XP_AM1
-      - name: DriveAlone_NonWork_Inc4_XP
-        data_field: DA_NWrk_Inc4_XP_AM1
-      - name: DriveAlone_NonWork_Inc5_XP
-        data_field: DA_NWrk_Inc5_XP_AM1
-      - name: SharedRide2_NonWork_Inc1
-        data_field: SR2_NWrk_Inc1_AM1
-      - name: SharedRide2_NonWork_Inc2
-        data_field: SR2_NWrk_Inc2_AM1
-      - name: SharedRide2_NonWork_Inc3
-        data_field: SR2_NWrk_Inc3_AM1
-      - name: SharedRide2_NonWork_Inc4
-        data_field: SR2_NWrk_Inc4_AM1
-      - name: SharedRide2_NonWork_Inc5
-        data_field: SR2_NWrk_Inc5_AM1
-      - name: SharedRide3_NonWork_Inc1
-        data_field: SR3_NWrk_Inc1_AM1
-      - name: SharedRide3_NonWork_Inc2
-        data_field: SR3_NWrk_Inc2_AM1
-      - name: SharedRide3_NonWork_Inc3
-        data_field: SR3_NWrk_Inc3_AM1
-      - name: SharedRide3_NonWork_Inc4
-        data_field: SR3_NWrk_Inc4_AM1
-      - name: SharedRide3_NonWork_Inc5
-        data_field: SR3_NWrk_Inc5_AM1
-      - name: DriveAlone_All_Inc1_NoXP
-        data_field: DA_Inc1_NoXP_AM1
-      - name: DriveAlone_All_Inc2345_NoXP
-        data_field: DA_IncGT1_NoXP_AM1
+      - name: DA_Wrk_XP_VOT1_AM1
+        data_field: DA_Wrk_XP_VOT1_AM1
+      - name: DA_Wrk_XP_VOT2_AM1
+        data_field: DA_Wrk_XP_VOT2_AM1
+      - name: DA_Wrk_XP_VOT3_AM1
+        data_field: DA_Wrk_XP_VOT3_AM1
+      - name: DA_Wrk_NXP_VOT1_AM1
+        data_field: DA_Wrk_NXP_VOT1_AM1
+      - name: DA_Wrk_NXP_VOT2_AM1
+        data_field: DA_Wrk_NXP_VOT2_AM1
+      - name: DA_Wrk_NXP_VOT3_AM1
+        data_field: DA_Wrk_NXP_VOT3_AM1
+      - name: S2_Wrk_XP_VOT1_AM1
+        data_field: S2_Wrk_XP_VOT1_AM1
+      - name: S2_Wrk_XP_VOT2_AM1
+        data_field: S2_Wrk_XP_VOT2_AM1
+      - name: S2_Wrk_XP_VOT3_AM1
+        data_field: S2_Wrk_XP_VOT3_AM1
+      - name: S2_Wrk_NXP_VOT1_AM1
+        data_field: S2_Wrk_NXP_VOT1_AM1
+      - name: S2_Wrk_NXP_VOT2_AM1
+        data_field: S2_Wrk_NXP_VOT2_AM1
+      - name: S2_Wrk_NXP_VOT3_AM1
+        data_field: S2_Wrk_NXP_VOT3_AM1
+      - name: S3_Wrk_XP_VOT1_AM1
+        data_field: S3_Wrk_XP_VOT1_AM1
+      - name: S3_Wrk_XP_VOT2_AM1
+        data_field: S3_Wrk_XP_VOT2_AM1
+      - name: S3_Wrk_XP_VOT3_AM1
+        data_field: S3_Wrk_XP_VOT3_AM1
+      - name: S3_Wrk_NXP_VOT1_AM1
+        data_field: S3_Wrk_NXP_VOT1_AM1
+      - name: S3_Wrk_NXP_VOT2_AM1
+        data_field: S3_Wrk_NXP_VOT2_AM1
+      - name: S3_Wrk_NXP_VOT3_AM1
+        data_field: S3_Wrk_NXP_VOT3_AM1
+      - name: DA_NWrk_XP_VOT1_AM1
+        data_field: DA_NWrk_XP_VOT1_AM1
+      - name: DA_NWrk_XP_VOT2_AM1
+        data_field: DA_NWrk_XP_VOT2_AM1
+      - name: DA_NWrk_XP_VOT3_AM1
+        data_field: DA_NWrk_XP_VOT3_AM1
+      - name: DA_NWrk_NXP_VOT1_AM1
+        data_field: DA_NWrk_NXP_VOT1_AM1
+      - name: DA_NWrk_NXP_VOT2_AM1
+        data_field: DA_NWrk_NXP_VOT2_AM1
+      - name: DA_NWrk_NXP_VOT3_AM1
+        data_field: DA_NWrk_NXP_VOT3_AM1
+      - name: S2_NWrk_XP_VOT1_AM1
+        data_field: S2_NWrk_XP_VOT1_AM1
+      - name: S2_NWrk_XP_VOT2_AM1
+        data_field: S2_NWrk_XP_VOT2_AM1
+      - name: S2_NWrk_XP_VOT3_AM1
+        data_field: S2_NWrk_XP_VOT3_AM1
+      - name: S2_NWrk_NXP_VOT1_AM1
+        data_field: S2_NWrk_NXP_VOT1_AM1
+      - name: S2_NWrk_NXP_VOT2_AM1
+        data_field: S2_NWrk_NXP_VOT2_AM1
+      - name: S2_NWrk_NXP_VOT3_AM1
+        data_field: S2_NWrk_NXP_VOT3_AM1
+      - name: S3_NWrk_XP_VOT1_AM1
+        data_field: S3_NWrk_XP_VOT1_AM1
+      - name: S3_NWrk_XP_VOT2_AM1
+        data_field: S3_NWrk_XP_VOT2_AM1
+      - name: S3_NWrk_XP_VOT3_AM1
+        data_field: S3_NWrk_XP_VOT3_AM1
+      - name: S3_NWrk_NXP_VOT1_AM1
+        data_field: S3_NWrk_NXP_VOT1_AM1
+      - name: S3_NWrk_NXP_VOT2_AM1
+        data_field: S3_NWrk_NXP_VOT2_AM1
+      - name: S3_NWrk_NXP_VOT3_AM1
+        data_field: S3_NWrk_NXP_VOT3_AM1
         
   - file_name: trips_am2.omx
     tables:
-      - name: DriveAlone_Work_Inc1_XP
-        data_field: DA_Wrk_Inc1_XP_AM2
-      - name: DriveAlone_Work_Inc2_XP
-        data_field: DA_Wrk_Inc2_XP_AM2
-      - name: DriveAlone_Work_Inc3_XP
-        data_field: DA_Wrk_Inc3_XP_AM2
-      - name: DriveAlone_Work_Inc4_XP
-        data_field: DA_Wrk_Inc4_XP_AM2
-      - name: DriveAlone_Work_Inc5_XP
-        data_field: DA_Wrk_Inc5_XP_AM2
-      - name: SharedRide2_Work_Inc1
-        data_field: SR2_Wrk_Inc1_AM2
-      - name: SharedRide2_Work_Inc2
-        data_field: SR2_Wrk_Inc2_AM2
-      - name: SharedRide2_Work_Inc3
-        data_field: SR2_Wrk_Inc3_AM2
-      - name: SharedRide2_Work_Inc4
-        data_field: SR2_Wrk_Inc4_AM2
-      - name: SharedRide2_Work_Inc5
-        data_field: SR2_Wrk_Inc5_AM2
-      - name: SharedRide3_Work_Inc1
-        data_field: SR3_Wrk_Inc1_AM2
-      - name: SharedRide3_Work_Inc2
-        data_field: SR3_Wrk_Inc2_AM2
-      - name: SharedRide3_Work_Inc3
-        data_field: SR3_Wrk_Inc3_AM2
-      - name: SharedRide3_Work_Inc4
-        data_field: SR3_Wrk_Inc4_AM2
-      - name: SharedRide3_Work_Inc5
-        data_field: SR3_Wrk_Inc5_AM2
-      - name: DriveAlone_NonWork_Inc1_XP
-        data_field: DA_NWrk_Inc1_XP_AM2
-      - name: DriveAlone_NonWork_Inc2_XP
-        data_field: DA_NWrk_Inc2_XP_AM2
-      - name: DriveAlone_NonWork_Inc3_XP
-        data_field: DA_NWrk_Inc3_XP_AM2
-      - name: DriveAlone_NonWork_Inc4_XP
-        data_field: DA_NWrk_Inc4_XP_AM2
-      - name: DriveAlone_NonWork_Inc5_XP
-        data_field: DA_NWrk_Inc5_XP_AM2
-      - name: SharedRide2_NonWork_Inc1
-        data_field: SR2_NWrk_Inc1_AM2
-      - name: SharedRide2_NonWork_Inc2
-        data_field: SR2_NWrk_Inc2_AM2
-      - name: SharedRide2_NonWork_Inc3
-        data_field: SR2_NWrk_Inc3_AM2
-      - name: SharedRide2_NonWork_Inc4
-        data_field: SR2_NWrk_Inc4_AM2
-      - name: SharedRide2_NonWork_Inc5
-        data_field: SR2_NWrk_Inc5_AM2
-      - name: SharedRide3_NonWork_Inc1
-        data_field: SR3_NWrk_Inc1_AM2
-      - name: SharedRide3_NonWork_Inc2
-        data_field: SR3_NWrk_Inc2_AM2
-      - name: SharedRide3_NonWork_Inc3
-        data_field: SR3_NWrk_Inc3_AM2
-      - name: SharedRide3_NonWork_Inc4
-        data_field: SR3_NWrk_Inc4_AM2
-      - name: SharedRide3_NonWork_Inc5
-        data_field: SR3_NWrk_Inc5_AM2
-      - name: DriveAlone_All_Inc1_NoXP
-        data_field: DA_Inc1_NoXP_AM2
-      - name: DriveAlone_All_Inc2345_NoXP
-        data_field: DA_IncGT1_NoXP_AM2
-
+      - name: DA_Wrk_XP_VOT1_AM2
+        data_field: DA_Wrk_XP_VOT1_AM2
+      - name: DA_Wrk_XP_VOT2_AM2
+        data_field: DA_Wrk_XP_VOT2_AM2
+      - name: DA_Wrk_XP_VOT3_AM2
+        data_field: DA_Wrk_XP_VOT3_AM2
+      - name: DA_Wrk_NXP_VOT1_AM2
+        data_field: DA_Wrk_NXP_VOT1_AM2
+      - name: DA_Wrk_NXP_VOT2_AM2
+        data_field: DA_Wrk_NXP_VOT2_AM2
+      - name: DA_Wrk_NXP_VOT3_AM2
+        data_field: DA_Wrk_NXP_VOT3_AM2
+      - name: S2_Wrk_XP_VOT1_AM2
+        data_field: S2_Wrk_XP_VOT1_AM2
+      - name: S2_Wrk_XP_VOT2_AM2
+        data_field: S2_Wrk_XP_VOT2_AM2
+      - name: S2_Wrk_XP_VOT3_AM2
+        data_field: S2_Wrk_XP_VOT3_AM2
+      - name: S2_Wrk_NXP_VOT1_AM2
+        data_field: S2_Wrk_NXP_VOT1_AM2
+      - name: S2_Wrk_NXP_VOT2_AM2
+        data_field: S2_Wrk_NXP_VOT2_AM2
+      - name: S2_Wrk_NXP_VOT3_AM2
+        data_field: S2_Wrk_NXP_VOT3_AM2
+      - name: S3_Wrk_XP_VOT1_AM2
+        data_field: S3_Wrk_XP_VOT1_AM2
+      - name: S3_Wrk_XP_VOT2_AM2
+        data_field: S3_Wrk_XP_VOT2_AM2
+      - name: S3_Wrk_XP_VOT3_AM2
+        data_field: S3_Wrk_XP_VOT3_AM2
+      - name: S3_Wrk_NXP_VOT1_AM2
+        data_field: S3_Wrk_NXP_VOT1_AM2
+      - name: S3_Wrk_NXP_VOT2_AM2
+        data_field: S3_Wrk_NXP_VOT2_AM2
+      - name: S3_Wrk_NXP_VOT3_AM2
+        data_field: S3_Wrk_NXP_VOT3_AM2
+      - name: DA_NWrk_XP_VOT1_AM2
+        data_field: DA_NWrk_XP_VOT1_AM2
+      - name: DA_NWrk_XP_VOT2_AM2
+        data_field: DA_NWrk_XP_VOT2_AM2
+      - name: DA_NWrk_XP_VOT3_AM2
+        data_field: DA_NWrk_XP_VOT3_AM2
+      - name: DA_NWrk_NXP_VOT1_AM2
+        data_field: DA_NWrk_NXP_VOT1_AM2
+      - name: DA_NWrk_NXP_VOT2_AM2
+        data_field: DA_NWrk_NXP_VOT2_AM2
+      - name: DA_NWrk_NXP_VOT3_AM2
+        data_field: DA_NWrk_NXP_VOT3_AM2
+      - name: S2_NWrk_XP_VOT1_AM2
+        data_field: S2_NWrk_XP_VOT1_AM2
+      - name: S2_NWrk_XP_VOT2_AM2
+        data_field: S2_NWrk_XP_VOT2_AM2
+      - name: S2_NWrk_XP_VOT3_AM2
+        data_field: S2_NWrk_XP_VOT3_AM2
+      - name: S2_NWrk_NXP_VOT1_AM2
+        data_field: S2_NWrk_NXP_VOT1_AM2
+      - name: S2_NWrk_NXP_VOT2_AM2
+        data_field: S2_NWrk_NXP_VOT2_AM2
+      - name: S2_NWrk_NXP_VOT3_AM2
+        data_field: S2_NWrk_NXP_VOT3_AM2
+      - name: S3_NWrk_XP_VOT1_AM2
+        data_field: S3_NWrk_XP_VOT1_AM2
+      - name: S3_NWrk_XP_VOT2_AM2
+        data_field: S3_NWrk_XP_VOT2_AM2
+      - name: S3_NWrk_XP_VOT3_AM2
+        data_field: S3_NWrk_XP_VOT3_AM2
+      - name: S3_NWrk_NXP_VOT1_AM2
+        data_field: S3_NWrk_NXP_VOT1_AM2
+      - name: S3_NWrk_NXP_VOT2_AM2
+        data_field: S3_NWrk_NXP_VOT2_AM2
+      - name: S3_NWrk_NXP_VOT3_AM2
+        data_field: S3_NWrk_NXP_VOT3_AM2
+        
   - file_name: trips_am3.omx
-    tables:
-      - name: DriveAlone_Work_Inc1_XP
-        data_field: DA_Wrk_Inc1_XP_AM3
-      - name: DriveAlone_Work_Inc2_XP
-        data_field: DA_Wrk_Inc2_XP_AM3
-      - name: DriveAlone_Work_Inc3_XP
-        data_field: DA_Wrk_Inc3_XP_AM3
-      - name: DriveAlone_Work_Inc4_XP
-        data_field: DA_Wrk_Inc4_XP_AM3
-      - name: DriveAlone_Work_Inc5_XP
-        data_field: DA_Wrk_Inc5_XP_AM3
-      - name: SharedRide2_Work_Inc1
-        data_field: SR2_Wrk_Inc1_AM3
-      - name: SharedRide2_Work_Inc2
-        data_field: SR2_Wrk_Inc2_AM3
-      - name: SharedRide2_Work_Inc3
-        data_field: SR2_Wrk_Inc3_AM3
-      - name: SharedRide2_Work_Inc4
-        data_field: SR2_Wrk_Inc4_AM3
-      - name: SharedRide2_Work_Inc5
-        data_field: SR2_Wrk_Inc5_AM3
-      - name: SharedRide3_Work_Inc1
-        data_field: SR3_Wrk_Inc1_AM3
-      - name: SharedRide3_Work_Inc2
-        data_field: SR3_Wrk_Inc2_AM3
-      - name: SharedRide3_Work_Inc3
-        data_field: SR3_Wrk_Inc3_AM3
-      - name: SharedRide3_Work_Inc4
-        data_field: SR3_Wrk_Inc4_AM3
-      - name: SharedRide3_Work_Inc5
-        data_field: SR3_Wrk_Inc5_AM3
-      - name: DriveAlone_NonWork_Inc1_XP
-        data_field: DA_NWrk_Inc1_XP_AM3
-      - name: DriveAlone_NonWork_Inc2_XP
-        data_field: DA_NWrk_Inc2_XP_AM3
-      - name: DriveAlone_NonWork_Inc3_XP
-        data_field: DA_NWrk_Inc3_XP_AM3
-      - name: DriveAlone_NonWork_Inc4_XP
-        data_field: DA_NWrk_Inc4_XP_AM3
-      - name: DriveAlone_NonWork_Inc5_XP
-        data_field: DA_NWrk_Inc5_XP_AM3
-      - name: SharedRide2_NonWork_Inc1
-        data_field: SR2_NWrk_Inc1_AM3
-      - name: SharedRide2_NonWork_Inc2
-        data_field: SR2_NWrk_Inc2_AM3
-      - name: SharedRide2_NonWork_Inc3
-        data_field: SR2_NWrk_Inc3_AM3
-      - name: SharedRide2_NonWork_Inc4
-        data_field: SR2_NWrk_Inc4_AM3
-      - name: SharedRide2_NonWork_Inc5
-        data_field: SR2_NWrk_Inc5_AM3
-      - name: SharedRide3_NonWork_Inc1
-        data_field: SR3_NWrk_Inc1_AM3
-      - name: SharedRide3_NonWork_Inc2
-        data_field: SR3_NWrk_Inc2_AM3
-      - name: SharedRide3_NonWork_Inc3
-        data_field: SR3_NWrk_Inc3_AM3
-      - name: SharedRide3_NonWork_Inc4
-        data_field: SR3_NWrk_Inc4_AM3
-      - name: SharedRide3_NonWork_Inc5
-        data_field: SR3_NWrk_Inc5_AM3
-      - name: DriveAlone_All_Inc1_NoXP
-        data_field: DA_Inc1_NoXP_AM3
-      - name: DriveAlone_All_Inc2345_NoXP
-        data_field: DA_IncGT1_NoXP_AM3
+    tables:        
+      - name: DA_Wrk_XP_VOT1_AM3
+        data_field: DA_Wrk_XP_VOT1_AM3
+      - name: DA_Wrk_XP_VOT2_AM3
+        data_field: DA_Wrk_XP_VOT2_AM3
+      - name: DA_Wrk_XP_VOT3_AM3
+        data_field: DA_Wrk_XP_VOT3_AM3
+      - name: DA_Wrk_NXP_VOT1_AM3
+        data_field: DA_Wrk_NXP_VOT1_AM3
+      - name: DA_Wrk_NXP_VOT2_AM3
+        data_field: DA_Wrk_NXP_VOT2_AM3
+      - name: DA_Wrk_NXP_VOT3_AM3
+        data_field: DA_Wrk_NXP_VOT3_AM3
+      - name: S2_Wrk_XP_VOT1_AM3
+        data_field: S2_Wrk_XP_VOT1_AM3
+      - name: S2_Wrk_XP_VOT2_AM3
+        data_field: S2_Wrk_XP_VOT2_AM3
+      - name: S2_Wrk_XP_VOT3_AM3
+        data_field: S2_Wrk_XP_VOT3_AM3
+      - name: S2_Wrk_NXP_VOT1_AM3
+        data_field: S2_Wrk_NXP_VOT1_AM3
+      - name: S2_Wrk_NXP_VOT2_AM3
+        data_field: S2_Wrk_NXP_VOT2_AM3
+      - name: S2_Wrk_NXP_VOT3_AM3
+        data_field: S2_Wrk_NXP_VOT3_AM3
+      - name: S3_Wrk_XP_VOT1_AM3
+        data_field: S3_Wrk_XP_VOT1_AM3
+      - name: S3_Wrk_XP_VOT2_AM3
+        data_field: S3_Wrk_XP_VOT2_AM3
+      - name: S3_Wrk_XP_VOT3_AM3
+        data_field: S3_Wrk_XP_VOT3_AM3
+      - name: S3_Wrk_NXP_VOT1_AM3
+        data_field: S3_Wrk_NXP_VOT1_AM3
+      - name: S3_Wrk_NXP_VOT2_AM3
+        data_field: S3_Wrk_NXP_VOT2_AM3
+      - name: S3_Wrk_NXP_VOT3_AM3
+        data_field: S3_Wrk_NXP_VOT3_AM3
+      - name: DA_NWrk_XP_VOT1_AM3
+        data_field: DA_NWrk_XP_VOT1_AM3
+      - name: DA_NWrk_XP_VOT2_AM3
+        data_field: DA_NWrk_XP_VOT2_AM3
+      - name: DA_NWrk_XP_VOT3_AM3
+        data_field: DA_NWrk_XP_VOT3_AM3
+      - name: DA_NWrk_NXP_VOT1_AM3
+        data_field: DA_NWrk_NXP_VOT1_AM3
+      - name: DA_NWrk_NXP_VOT2_AM3
+        data_field: DA_NWrk_NXP_VOT2_AM3
+      - name: DA_NWrk_NXP_VOT3_AM3
+        data_field: DA_NWrk_NXP_VOT3_AM3
+      - name: S2_NWrk_XP_VOT1_AM3
+        data_field: S2_NWrk_XP_VOT1_AM3
+      - name: S2_NWrk_XP_VOT2_AM3
+        data_field: S2_NWrk_XP_VOT2_AM3
+      - name: S2_NWrk_XP_VOT3_AM3
+        data_field: S2_NWrk_XP_VOT3_AM3
+      - name: S2_NWrk_NXP_VOT1_AM3
+        data_field: S2_NWrk_NXP_VOT1_AM3
+      - name: S2_NWrk_NXP_VOT2_AM3
+        data_field: S2_NWrk_NXP_VOT2_AM3
+      - name: S2_NWrk_NXP_VOT3_AM3
+        data_field: S2_NWrk_NXP_VOT3_AM3
+      - name: S3_NWrk_XP_VOT1_AM3
+        data_field: S3_NWrk_XP_VOT1_AM3
+      - name: S3_NWrk_XP_VOT2_AM3
+        data_field: S3_NWrk_XP_VOT2_AM3
+      - name: S3_NWrk_XP_VOT3_AM3
+        data_field: S3_NWrk_XP_VOT3_AM3
+      - name: S3_NWrk_NXP_VOT1_AM3
+        data_field: S3_NWrk_NXP_VOT1_AM3
+      - name: S3_NWrk_NXP_VOT2_AM3
+        data_field: S3_NWrk_NXP_VOT2_AM3
+      - name: S3_NWrk_NXP_VOT3_AM3
+        data_field: S3_NWrk_NXP_VOT3_AM3
         
   - file_name: trips_am4.omx
-    tables:
-      - name: DriveAlone_Work_Inc1_XP
-        data_field: DA_Wrk_Inc1_XP_AM4
-      - name: DriveAlone_Work_Inc2_XP
-        data_field: DA_Wrk_Inc2_XP_AM4
-      - name: DriveAlone_Work_Inc3_XP
-        data_field: DA_Wrk_Inc3_XP_AM4
-      - name: DriveAlone_Work_Inc4_XP
-        data_field: DA_Wrk_Inc4_XP_AM4
-      - name: DriveAlone_Work_Inc5_XP
-        data_field: DA_Wrk_Inc5_XP_AM4
-      - name: SharedRide2_Work_Inc1
-        data_field: SR2_Wrk_Inc1_AM4
-      - name: SharedRide2_Work_Inc2
-        data_field: SR2_Wrk_Inc2_AM4
-      - name: SharedRide2_Work_Inc3
-        data_field: SR2_Wrk_Inc3_AM4
-      - name: SharedRide2_Work_Inc4
-        data_field: SR2_Wrk_Inc4_AM4
-      - name: SharedRide2_Work_Inc5
-        data_field: SR2_Wrk_Inc5_AM4
-      - name: SharedRide3_Work_Inc1
-        data_field: SR3_Wrk_Inc1_AM4
-      - name: SharedRide3_Work_Inc2
-        data_field: SR3_Wrk_Inc2_AM4
-      - name: SharedRide3_Work_Inc3
-        data_field: SR3_Wrk_Inc3_AM4
-      - name: SharedRide3_Work_Inc4
-        data_field: SR3_Wrk_Inc4_AM4
-      - name: SharedRide3_Work_Inc5
-        data_field: SR3_Wrk_Inc5_AM4
-      - name: DriveAlone_NonWork_Inc1_XP
-        data_field: DA_NWrk_Inc1_XP_AM4
-      - name: DriveAlone_NonWork_Inc2_XP
-        data_field: DA_NWrk_Inc2_XP_AM4
-      - name: DriveAlone_NonWork_Inc3_XP
-        data_field: DA_NWrk_Inc3_XP_AM4
-      - name: DriveAlone_NonWork_Inc4_XP
-        data_field: DA_NWrk_Inc4_XP_AM4
-      - name: DriveAlone_NonWork_Inc5_XP
-        data_field: DA_NWrk_Inc5_XP_AM4
-      - name: SharedRide2_NonWork_Inc1
-        data_field: SR2_NWrk_Inc1_AM4
-      - name: SharedRide2_NonWork_Inc2
-        data_field: SR2_NWrk_Inc2_AM4
-      - name: SharedRide2_NonWork_Inc3
-        data_field: SR2_NWrk_Inc3_AM4
-      - name: SharedRide2_NonWork_Inc4
-        data_field: SR2_NWrk_Inc4_AM4
-      - name: SharedRide2_NonWork_Inc5
-        data_field: SR2_NWrk_Inc5_AM4
-      - name: SharedRide3_NonWork_Inc1
-        data_field: SR3_NWrk_Inc1_AM4
-      - name: SharedRide3_NonWork_Inc2
-        data_field: SR3_NWrk_Inc2_AM4
-      - name: SharedRide3_NonWork_Inc3
-        data_field: SR3_NWrk_Inc3_AM4
-      - name: SharedRide3_NonWork_Inc4
-        data_field: SR3_NWrk_Inc4_AM4
-      - name: SharedRide3_NonWork_Inc5
-        data_field: SR3_NWrk_Inc5_AM4
-      - name: DriveAlone_All_Inc1_NoXP
-        data_field: DA_Inc1_NoXP_AM4
-      - name: DriveAlone_All_Inc2345_NoXP
-        data_field: DA_IncGT1_NoXP_AM4
-
+    tables:        
+      - name: DA_Wrk_XP_VOT1_AM4
+        data_field: DA_Wrk_XP_VOT1_AM4
+      - name: DA_Wrk_XP_VOT2_AM4
+        data_field: DA_Wrk_XP_VOT2_AM4
+      - name: DA_Wrk_XP_VOT3_AM4
+        data_field: DA_Wrk_XP_VOT3_AM4
+      - name: DA_Wrk_NXP_VOT1_AM4
+        data_field: DA_Wrk_NXP_VOT1_AM4
+      - name: DA_Wrk_NXP_VOT2_AM4
+        data_field: DA_Wrk_NXP_VOT2_AM4
+      - name: DA_Wrk_NXP_VOT3_AM4
+        data_field: DA_Wrk_NXP_VOT3_AM4
+      - name: S2_Wrk_XP_VOT1_AM4
+        data_field: S2_Wrk_XP_VOT1_AM4
+      - name: S2_Wrk_XP_VOT2_AM4
+        data_field: S2_Wrk_XP_VOT2_AM4
+      - name: S2_Wrk_XP_VOT3_AM4
+        data_field: S2_Wrk_XP_VOT3_AM4
+      - name: S2_Wrk_NXP_VOT1_AM4
+        data_field: S2_Wrk_NXP_VOT1_AM4
+      - name: S2_Wrk_NXP_VOT2_AM4
+        data_field: S2_Wrk_NXP_VOT2_AM4
+      - name: S2_Wrk_NXP_VOT3_AM4
+        data_field: S2_Wrk_NXP_VOT3_AM4
+      - name: S3_Wrk_XP_VOT1_AM4
+        data_field: S3_Wrk_XP_VOT1_AM4
+      - name: S3_Wrk_XP_VOT2_AM4
+        data_field: S3_Wrk_XP_VOT2_AM4
+      - name: S3_Wrk_XP_VOT3_AM4
+        data_field: S3_Wrk_XP_VOT3_AM4
+      - name: S3_Wrk_NXP_VOT1_AM4
+        data_field: S3_Wrk_NXP_VOT1_AM4
+      - name: S3_Wrk_NXP_VOT2_AM4
+        data_field: S3_Wrk_NXP_VOT2_AM4
+      - name: S3_Wrk_NXP_VOT3_AM4
+        data_field: S3_Wrk_NXP_VOT3_AM4
+      - name: DA_NWrk_XP_VOT1_AM4
+        data_field: DA_NWrk_XP_VOT1_AM4
+      - name: DA_NWrk_XP_VOT2_AM4
+        data_field: DA_NWrk_XP_VOT2_AM4
+      - name: DA_NWrk_XP_VOT3_AM4
+        data_field: DA_NWrk_XP_VOT3_AM4
+      - name: DA_NWrk_NXP_VOT1_AM4
+        data_field: DA_NWrk_NXP_VOT1_AM4
+      - name: DA_NWrk_NXP_VOT2_AM4
+        data_field: DA_NWrk_NXP_VOT2_AM4
+      - name: DA_NWrk_NXP_VOT3_AM4
+        data_field: DA_NWrk_NXP_VOT3_AM4
+      - name: S2_NWrk_XP_VOT1_AM4
+        data_field: S2_NWrk_XP_VOT1_AM4
+      - name: S2_NWrk_XP_VOT2_AM4
+        data_field: S2_NWrk_XP_VOT2_AM4
+      - name: S2_NWrk_XP_VOT3_AM4
+        data_field: S2_NWrk_XP_VOT3_AM4
+      - name: S2_NWrk_NXP_VOT1_AM4
+        data_field: S2_NWrk_NXP_VOT1_AM4
+      - name: S2_NWrk_NXP_VOT2_AM4
+        data_field: S2_NWrk_NXP_VOT2_AM4
+      - name: S2_NWrk_NXP_VOT3_AM4
+        data_field: S2_NWrk_NXP_VOT3_AM4
+      - name: S3_NWrk_XP_VOT1_AM4
+        data_field: S3_NWrk_XP_VOT1_AM4
+      - name: S3_NWrk_XP_VOT2_AM4
+        data_field: S3_NWrk_XP_VOT2_AM4
+      - name: S3_NWrk_XP_VOT3_AM4
+        data_field: S3_NWrk_XP_VOT3_AM4
+      - name: S3_NWrk_NXP_VOT1_AM4
+        data_field: S3_NWrk_NXP_VOT1_AM4
+      - name: S3_NWrk_NXP_VOT2_AM4
+        data_field: S3_NWrk_NXP_VOT2_AM4
+      - name: S3_NWrk_NXP_VOT3_AM4
+        data_field: S3_NWrk_NXP_VOT3_AM4
+        
+  - file_name: trips_am.omx
+    tables:        
+      - name: DA_Wrk_XP_VOT1_AM
+        data_field: DA_Wrk_XP_VOT1_AM
+      - name: DA_Wrk_XP_VOT2_AM
+        data_field: DA_Wrk_XP_VOT2_AM
+      - name: DA_Wrk_XP_VOT3_AM
+        data_field: DA_Wrk_XP_VOT3_AM
+      - name: DA_Wrk_NXP_VOT1_AM
+        data_field: DA_Wrk_NXP_VOT1_AM
+      - name: DA_Wrk_NXP_VOT2_AM
+        data_field: DA_Wrk_NXP_VOT2_AM
+      - name: DA_Wrk_NXP_VOT3_AM
+        data_field: DA_Wrk_NXP_VOT3_AM
+      - name: S2_Wrk_XP_VOT1_AM
+        data_field: S2_Wrk_XP_VOT1_AM
+      - name: S2_Wrk_XP_VOT2_AM
+        data_field: S2_Wrk_XP_VOT2_AM
+      - name: S2_Wrk_XP_VOT3_AM
+        data_field: S2_Wrk_XP_VOT3_AM
+      - name: S2_Wrk_NXP_VOT1_AM
+        data_field: S2_Wrk_NXP_VOT1_AM
+      - name: S2_Wrk_NXP_VOT2_AM
+        data_field: S2_Wrk_NXP_VOT2_AM
+      - name: S2_Wrk_NXP_VOT3_AM
+        data_field: S2_Wrk_NXP_VOT3_AM
+      - name: S3_Wrk_XP_VOT1_AM
+        data_field: S3_Wrk_XP_VOT1_AM
+      - name: S3_Wrk_XP_VOT2_AM
+        data_field: S3_Wrk_XP_VOT2_AM
+      - name: S3_Wrk_XP_VOT3_AM
+        data_field: S3_Wrk_XP_VOT3_AM
+      - name: S3_Wrk_NXP_VOT1_AM
+        data_field: S3_Wrk_NXP_VOT1_AM
+      - name: S3_Wrk_NXP_VOT2_AM
+        data_field: S3_Wrk_NXP_VOT2_AM
+      - name: S3_Wrk_NXP_VOT3_AM
+        data_field: S3_Wrk_NXP_VOT3_AM
+      - name: DA_NWrk_XP_VOT1_AM
+        data_field: DA_NWrk_XP_VOT1_AM
+      - name: DA_NWrk_XP_VOT2_AM
+        data_field: DA_NWrk_XP_VOT2_AM
+      - name: DA_NWrk_XP_VOT3_AM
+        data_field: DA_NWrk_XP_VOT3_AM
+      - name: DA_NWrk_NXP_VOT1_AM
+        data_field: DA_NWrk_NXP_VOT1_AM
+      - name: DA_NWrk_NXP_VOT2_AM
+        data_field: DA_NWrk_NXP_VOT2_AM
+      - name: DA_NWrk_NXP_VOT3_AM
+        data_field: DA_NWrk_NXP_VOT3_AM
+      - name: S2_NWrk_XP_VOT1_AM
+        data_field: S2_NWrk_XP_VOT1_AM
+      - name: S2_NWrk_XP_VOT2_AM
+        data_field: S2_NWrk_XP_VOT2_AM
+      - name: S2_NWrk_XP_VOT3_AM
+        data_field: S2_NWrk_XP_VOT3_AM
+      - name: S2_NWrk_NXP_VOT1_AM
+        data_field: S2_NWrk_NXP_VOT1_AM
+      - name: S2_NWrk_NXP_VOT2_AM
+        data_field: S2_NWrk_NXP_VOT2_AM
+      - name: S2_NWrk_NXP_VOT3_AM
+        data_field: S2_NWrk_NXP_VOT3_AM
+      - name: S3_NWrk_XP_VOT1_AM
+        data_field: S3_NWrk_XP_VOT1_AM
+      - name: S3_NWrk_XP_VOT2_AM
+        data_field: S3_NWrk_XP_VOT2_AM
+      - name: S3_NWrk_XP_VOT3_AM
+        data_field: S3_NWrk_XP_VOT3_AM
+      - name: S3_NWrk_NXP_VOT1_AM
+        data_field: S3_NWrk_NXP_VOT1_AM
+      - name: S3_NWrk_NXP_VOT2_AM
+        data_field: S3_NWrk_NXP_VOT2_AM
+      - name: S3_NWrk_NXP_VOT3_AM
+        data_field: S3_NWrk_NXP_VOT3_AM
+        
   - file_name: trips_md.omx
-    tables:
-      - name: DriveAlone_Work_Inc1_XP
-        data_field: DA_Wrk_Inc1_XP_MD
-      - name: DriveAlone_Work_Inc2_XP
-        data_field: DA_Wrk_Inc2_XP_MD
-      - name: DriveAlone_Work_Inc3_XP
-        data_field: DA_Wrk_Inc3_XP_MD
-      - name: DriveAlone_Work_Inc4_XP
-        data_field: DA_Wrk_Inc4_XP_MD
-      - name: DriveAlone_Work_Inc5_XP
-        data_field: DA_Wrk_Inc5_XP_MD
-      - name: SharedRide2_Work_Inc1
-        data_field: SR2_Wrk_Inc1_MD
-      - name: SharedRide2_Work_Inc2
-        data_field: SR2_Wrk_Inc2_MD
-      - name: SharedRide2_Work_Inc3
-        data_field: SR2_Wrk_Inc3_MD
-      - name: SharedRide2_Work_Inc4
-        data_field: SR2_Wrk_Inc4_MD
-      - name: SharedRide2_Work_Inc5
-        data_field: SR2_Wrk_Inc5_MD
-      - name: SharedRide3_Work_Inc1
-        data_field: SR3_Wrk_Inc1_MD
-      - name: SharedRide3_Work_Inc2
-        data_field: SR3_Wrk_Inc2_MD
-      - name: SharedRide3_Work_Inc3
-        data_field: SR3_Wrk_Inc3_MD
-      - name: SharedRide3_Work_Inc4
-        data_field: SR3_Wrk_Inc4_MD
-      - name: SharedRide3_Work_Inc5
-        data_field: SR3_Wrk_Inc5_MD
-      - name: DriveAlone_NonWork_Inc1_XP
-        data_field: DA_NWrk_Inc1_XP_MD
-      - name: DriveAlone_NonWork_Inc2_XP
-        data_field: DA_NWrk_Inc2_XP_MD
-      - name: DriveAlone_NonWork_Inc3_XP
-        data_field: DA_NWrk_Inc3_XP_MD
-      - name: DriveAlone_NonWork_Inc4_XP
-        data_field: DA_NWrk_Inc4_XP_MD
-      - name: DriveAlone_NonWork_Inc5_XP
-        data_field: DA_NWrk_Inc5_XP_MD
-      - name: SharedRide2_NonWork_Inc1
-        data_field: SR2_NWrk_Inc1_MD
-      - name: SharedRide2_NonWork_Inc2
-        data_field: SR2_NWrk_Inc2_MD
-      - name: SharedRide2_NonWork_Inc3
-        data_field: SR2_NWrk_Inc3_MD
-      - name: SharedRide2_NonWork_Inc4
-        data_field: SR2_NWrk_Inc4_MD
-      - name: SharedRide2_NonWork_Inc5
-        data_field: SR2_NWrk_Inc5_MD
-      - name: SharedRide3_NonWork_Inc1
-        data_field: SR3_NWrk_Inc1_MD
-      - name: SharedRide3_NonWork_Inc2
-        data_field: SR3_NWrk_Inc2_MD
-      - name: SharedRide3_NonWork_Inc3
-        data_field: SR3_NWrk_Inc3_MD
-      - name: SharedRide3_NonWork_Inc4
-        data_field: SR3_NWrk_Inc4_MD
-      - name: SharedRide3_NonWork_Inc5
-        data_field: SR3_NWrk_Inc5_MD
-      - name: DriveAlone_All_Inc1_NoXP
-        data_field: DA_Inc1_NoXP_MD
-      - name: DriveAlone_All_Inc2345_NoXP
-        data_field: DA_IncGT1_NoXP_MD
-
+    tables:        
+      - name: DA_Wrk_XP_VOT1_MD
+        data_field: DA_Wrk_XP_VOT1_MD
+      - name: DA_Wrk_XP_VOT2_MD
+        data_field: DA_Wrk_XP_VOT2_MD
+      - name: DA_Wrk_XP_VOT3_MD
+        data_field: DA_Wrk_XP_VOT3_MD
+      - name: DA_Wrk_NXP_VOT1_MD
+        data_field: DA_Wrk_NXP_VOT1_MD
+      - name: DA_Wrk_NXP_VOT2_MD
+        data_field: DA_Wrk_NXP_VOT2_MD
+      - name: DA_Wrk_NXP_VOT3_MD
+        data_field: DA_Wrk_NXP_VOT3_MD
+      - name: S2_Wrk_XP_VOT1_MD
+        data_field: S2_Wrk_XP_VOT1_MD
+      - name: S2_Wrk_XP_VOT2_MD
+        data_field: S2_Wrk_XP_VOT2_MD
+      - name: S2_Wrk_XP_VOT3_MD
+        data_field: S2_Wrk_XP_VOT3_MD
+      - name: S2_Wrk_NXP_VOT1_MD
+        data_field: S2_Wrk_NXP_VOT1_MD
+      - name: S2_Wrk_NXP_VOT2_MD
+        data_field: S2_Wrk_NXP_VOT2_MD
+      - name: S2_Wrk_NXP_VOT3_MD
+        data_field: S2_Wrk_NXP_VOT3_MD
+      - name: S3_Wrk_XP_VOT1_MD
+        data_field: S3_Wrk_XP_VOT1_MD
+      - name: S3_Wrk_XP_VOT2_MD
+        data_field: S3_Wrk_XP_VOT2_MD
+      - name: S3_Wrk_XP_VOT3_MD
+        data_field: S3_Wrk_XP_VOT3_MD
+      - name: S3_Wrk_NXP_VOT1_MD
+        data_field: S3_Wrk_NXP_VOT1_MD
+      - name: S3_Wrk_NXP_VOT2_MD
+        data_field: S3_Wrk_NXP_VOT2_MD
+      - name: S3_Wrk_NXP_VOT3_MD
+        data_field: S3_Wrk_NXP_VOT3_MD
+      - name: DA_NWrk_XP_VOT1_MD
+        data_field: DA_NWrk_XP_VOT1_MD
+      - name: DA_NWrk_XP_VOT2_MD
+        data_field: DA_NWrk_XP_VOT2_MD
+      - name: DA_NWrk_XP_VOT3_MD
+        data_field: DA_NWrk_XP_VOT3_MD
+      - name: DA_NWrk_NXP_VOT1_MD
+        data_field: DA_NWrk_NXP_VOT1_MD
+      - name: DA_NWrk_NXP_VOT2_MD
+        data_field: DA_NWrk_NXP_VOT2_MD
+      - name: DA_NWrk_NXP_VOT3_MD
+        data_field: DA_NWrk_NXP_VOT3_MD
+      - name: S2_NWrk_XP_VOT1_MD
+        data_field: S2_NWrk_XP_VOT1_MD
+      - name: S2_NWrk_XP_VOT2_MD
+        data_field: S2_NWrk_XP_VOT2_MD
+      - name: S2_NWrk_XP_VOT3_MD
+        data_field: S2_NWrk_XP_VOT3_MD
+      - name: S2_NWrk_NXP_VOT1_MD
+        data_field: S2_NWrk_NXP_VOT1_MD
+      - name: S2_NWrk_NXP_VOT2_MD
+        data_field: S2_NWrk_NXP_VOT2_MD
+      - name: S2_NWrk_NXP_VOT3_MD
+        data_field: S2_NWrk_NXP_VOT3_MD
+      - name: S3_NWrk_XP_VOT1_MD
+        data_field: S3_NWrk_XP_VOT1_MD
+      - name: S3_NWrk_XP_VOT2_MD
+        data_field: S3_NWrk_XP_VOT2_MD
+      - name: S3_NWrk_XP_VOT3_MD
+        data_field: S3_NWrk_XP_VOT3_MD
+      - name: S3_NWrk_NXP_VOT1_MD
+        data_field: S3_NWrk_NXP_VOT1_MD
+      - name: S3_NWrk_NXP_VOT2_MD
+        data_field: S3_NWrk_NXP_VOT2_MD
+      - name: S3_NWrk_NXP_VOT3_MD
+        data_field: S3_NWrk_NXP_VOT3_MD
+        
   - file_name: trips_pm1.omx
-    tables:
-      - name: DriveAlone_Work_Inc1_XP
-        data_field: DA_Wrk_Inc1_XP_PM1
-      - name: DriveAlone_Work_Inc2_XP
-        data_field: DA_Wrk_Inc2_XP_PM1
-      - name: DriveAlone_Work_Inc3_XP
-        data_field: DA_Wrk_Inc3_XP_PM1
-      - name: DriveAlone_Work_Inc4_XP
-        data_field: DA_Wrk_Inc4_XP_PM1
-      - name: DriveAlone_Work_Inc5_XP
-        data_field: DA_Wrk_Inc5_XP_PM1
-      - name: SharedRide2_Work_Inc1
-        data_field: SR2_Wrk_Inc1_PM1
-      - name: SharedRide2_Work_Inc2
-        data_field: SR2_Wrk_Inc2_PM1
-      - name: SharedRide2_Work_Inc3
-        data_field: SR2_Wrk_Inc3_PM1
-      - name: SharedRide2_Work_Inc4
-        data_field: SR2_Wrk_Inc4_PM1
-      - name: SharedRide2_Work_Inc5
-        data_field: SR2_Wrk_Inc5_PM1
-      - name: SharedRide3_Work_Inc1
-        data_field: SR3_Wrk_Inc1_PM1
-      - name: SharedRide3_Work_Inc2
-        data_field: SR3_Wrk_Inc2_PM1
-      - name: SharedRide3_Work_Inc3
-        data_field: SR3_Wrk_Inc3_PM1
-      - name: SharedRide3_Work_Inc4
-        data_field: SR3_Wrk_Inc4_PM1
-      - name: SharedRide3_Work_Inc5
-        data_field: SR3_Wrk_Inc5_PM1
-      - name: DriveAlone_NonWork_Inc1_XP
-        data_field: DA_NWrk_Inc1_XP_PM1
-      - name: DriveAlone_NonWork_Inc2_XP
-        data_field: DA_NWrk_Inc2_XP_PM1
-      - name: DriveAlone_NonWork_Inc3_XP
-        data_field: DA_NWrk_Inc3_XP_PM1
-      - name: DriveAlone_NonWork_Inc4_XP
-        data_field: DA_NWrk_Inc4_XP_PM1
-      - name: DriveAlone_NonWork_Inc5_XP
-        data_field: DA_NWrk_Inc5_XP_PM1
-      - name: SharedRide2_NonWork_Inc1
-        data_field: SR2_NWrk_Inc1_PM1
-      - name: SharedRide2_NonWork_Inc2
-        data_field: SR2_NWrk_Inc2_PM1
-      - name: SharedRide2_NonWork_Inc3
-        data_field: SR2_NWrk_Inc3_PM1
-      - name: SharedRide2_NonWork_Inc4
-        data_field: SR2_NWrk_Inc4_PM1
-      - name: SharedRide2_NonWork_Inc5
-        data_field: SR2_NWrk_Inc5_PM1
-      - name: SharedRide3_NonWork_Inc1
-        data_field: SR3_NWrk_Inc1_PM1
-      - name: SharedRide3_NonWork_Inc2
-        data_field: SR3_NWrk_Inc2_PM1
-      - name: SharedRide3_NonWork_Inc3
-        data_field: SR3_NWrk_Inc3_PM1
-      - name: SharedRide3_NonWork_Inc4
-        data_field: SR3_NWrk_Inc4_PM1
-      - name: SharedRide3_NonWork_Inc5
-        data_field: SR3_NWrk_Inc5_PM1
-      - name: DriveAlone_All_Inc1_NoXP
-        data_field: DA_Inc1_NoXP_PM1
-      - name: DriveAlone_All_Inc2345_NoXP
-        data_field: DA_IncGT1_NoXP_PM1
+    tables:        
+      - name: DA_Wrk_XP_VOT1_PM1
+        data_field: DA_Wrk_XP_VOT1_PM1
+      - name: DA_Wrk_XP_VOT2_PM1
+        data_field: DA_Wrk_XP_VOT2_PM1
+      - name: DA_Wrk_XP_VOT3_PM1
+        data_field: DA_Wrk_XP_VOT3_PM1
+      - name: DA_Wrk_NXP_VOT1_PM1
+        data_field: DA_Wrk_NXP_VOT1_PM1
+      - name: DA_Wrk_NXP_VOT2_PM1
+        data_field: DA_Wrk_NXP_VOT2_PM1
+      - name: DA_Wrk_NXP_VOT3_PM1
+        data_field: DA_Wrk_NXP_VOT3_PM1
+      - name: S2_Wrk_XP_VOT1_PM1
+        data_field: S2_Wrk_XP_VOT1_PM1
+      - name: S2_Wrk_XP_VOT2_PM1
+        data_field: S2_Wrk_XP_VOT2_PM1
+      - name: S2_Wrk_XP_VOT3_PM1
+        data_field: S2_Wrk_XP_VOT3_PM1
+      - name: S2_Wrk_NXP_VOT1_PM1
+        data_field: S2_Wrk_NXP_VOT1_PM1
+      - name: S2_Wrk_NXP_VOT2_PM1
+        data_field: S2_Wrk_NXP_VOT2_PM1
+      - name: S2_Wrk_NXP_VOT3_PM1
+        data_field: S2_Wrk_NXP_VOT3_PM1
+      - name: S3_Wrk_XP_VOT1_PM1
+        data_field: S3_Wrk_XP_VOT1_PM1
+      - name: S3_Wrk_XP_VOT2_PM1
+        data_field: S3_Wrk_XP_VOT2_PM1
+      - name: S3_Wrk_XP_VOT3_PM1
+        data_field: S3_Wrk_XP_VOT3_PM1
+      - name: S3_Wrk_NXP_VOT1_PM1
+        data_field: S3_Wrk_NXP_VOT1_PM1
+      - name: S3_Wrk_NXP_VOT2_PM1
+        data_field: S3_Wrk_NXP_VOT2_PM1
+      - name: S3_Wrk_NXP_VOT3_PM1
+        data_field: S3_Wrk_NXP_VOT3_PM1
+      - name: DA_NWrk_XP_VOT1_PM1
+        data_field: DA_NWrk_XP_VOT1_PM1
+      - name: DA_NWrk_XP_VOT2_PM1
+        data_field: DA_NWrk_XP_VOT2_PM1
+      - name: DA_NWrk_XP_VOT3_PM1
+        data_field: DA_NWrk_XP_VOT3_PM1
+      - name: DA_NWrk_NXP_VOT1_PM1
+        data_field: DA_NWrk_NXP_VOT1_PM1
+      - name: DA_NWrk_NXP_VOT2_PM1
+        data_field: DA_NWrk_NXP_VOT2_PM1
+      - name: DA_NWrk_NXP_VOT3_PM1
+        data_field: DA_NWrk_NXP_VOT3_PM1
+      - name: S2_NWrk_XP_VOT1_PM1
+        data_field: S2_NWrk_XP_VOT1_PM1
+      - name: S2_NWrk_XP_VOT2_PM1
+        data_field: S2_NWrk_XP_VOT2_PM1
+      - name: S2_NWrk_XP_VOT3_PM1
+        data_field: S2_NWrk_XP_VOT3_PM1
+      - name: S2_NWrk_NXP_VOT1_PM1
+        data_field: S2_NWrk_NXP_VOT1_PM1
+      - name: S2_NWrk_NXP_VOT2_PM1
+        data_field: S2_NWrk_NXP_VOT2_PM1
+      - name: S2_NWrk_NXP_VOT3_PM1
+        data_field: S2_NWrk_NXP_VOT3_PM1
+      - name: S3_NWrk_XP_VOT1_PM1
+        data_field: S3_NWrk_XP_VOT1_PM1
+      - name: S3_NWrk_XP_VOT2_PM1
+        data_field: S3_NWrk_XP_VOT2_PM1
+      - name: S3_NWrk_XP_VOT3_PM1
+        data_field: S3_NWrk_XP_VOT3_PM1
+      - name: S3_NWrk_NXP_VOT1_PM1
+        data_field: S3_NWrk_NXP_VOT1_PM1
+      - name: S3_NWrk_NXP_VOT2_PM1
+        data_field: S3_NWrk_NXP_VOT2_PM1
+      - name: S3_NWrk_NXP_VOT3_PM1
+        data_field: S3_NWrk_NXP_VOT3_PM1
         
   - file_name: trips_pm2.omx
-    tables:
-      - name: DriveAlone_Work_Inc1_XP
-        data_field: DA_Wrk_Inc1_XP_PM2
-      - name: DriveAlone_Work_Inc2_XP
-        data_field: DA_Wrk_Inc2_XP_PM2
-      - name: DriveAlone_Work_Inc3_XP
-        data_field: DA_Wrk_Inc3_XP_PM2
-      - name: DriveAlone_Work_Inc4_XP
-        data_field: DA_Wrk_Inc4_XP_PM2
-      - name: DriveAlone_Work_Inc5_XP
-        data_field: DA_Wrk_Inc5_XP_PM2
-      - name: SharedRide2_Work_Inc1
-        data_field: SR2_Wrk_Inc1_PM2
-      - name: SharedRide2_Work_Inc2
-        data_field: SR2_Wrk_Inc2_PM2
-      - name: SharedRide2_Work_Inc3
-        data_field: SR2_Wrk_Inc3_PM2
-      - name: SharedRide2_Work_Inc4
-        data_field: SR2_Wrk_Inc4_PM2
-      - name: SharedRide2_Work_Inc5
-        data_field: SR2_Wrk_Inc5_PM2
-      - name: SharedRide3_Work_Inc1
-        data_field: SR3_Wrk_Inc1_PM2
-      - name: SharedRide3_Work_Inc2
-        data_field: SR3_Wrk_Inc2_PM2
-      - name: SharedRide3_Work_Inc3
-        data_field: SR3_Wrk_Inc3_PM2
-      - name: SharedRide3_Work_Inc4
-        data_field: SR3_Wrk_Inc4_PM2
-      - name: SharedRide3_Work_Inc5
-        data_field: SR3_Wrk_Inc5_PM2
-      - name: DriveAlone_NonWork_Inc1_XP
-        data_field: DA_NWrk_Inc1_XP_PM2
-      - name: DriveAlone_NonWork_Inc2_XP
-        data_field: DA_NWrk_Inc2_XP_PM2
-      - name: DriveAlone_NonWork_Inc3_XP
-        data_field: DA_NWrk_Inc3_XP_PM2
-      - name: DriveAlone_NonWork_Inc4_XP
-        data_field: DA_NWrk_Inc4_XP_PM2
-      - name: DriveAlone_NonWork_Inc5_XP
-        data_field: DA_NWrk_Inc5_XP_PM2
-      - name: SharedRide2_NonWork_Inc1
-        data_field: SR2_NWrk_Inc1_PM2
-      - name: SharedRide2_NonWork_Inc2
-        data_field: SR2_NWrk_Inc2_PM2
-      - name: SharedRide2_NonWork_Inc3
-        data_field: SR2_NWrk_Inc3_PM2
-      - name: SharedRide2_NonWork_Inc4
-        data_field: SR2_NWrk_Inc4_PM2
-      - name: SharedRide2_NonWork_Inc5
-        data_field: SR2_NWrk_Inc5_PM2
-      - name: SharedRide3_NonWork_Inc1
-        data_field: SR3_NWrk_Inc1_PM2
-      - name: SharedRide3_NonWork_Inc2
-        data_field: SR3_NWrk_Inc2_PM2
-      - name: SharedRide3_NonWork_Inc3
-        data_field: SR3_NWrk_Inc3_PM2
-      - name: SharedRide3_NonWork_Inc4
-        data_field: SR3_NWrk_Inc4_PM2
-      - name: SharedRide3_NonWork_Inc5
-        data_field: SR3_NWrk_Inc5_PM2
-      - name: DriveAlone_All_Inc1_NoXP
-        data_field: DA_Inc1_NoXP_PM2
-      - name: DriveAlone_All_Inc2345_NoXP
-        data_field: DA_IncGT1_NoXP_PM2
-
+    tables:        
+      - name: DA_Wrk_XP_VOT1_PM2
+        data_field: DA_Wrk_XP_VOT1_PM2
+      - name: DA_Wrk_XP_VOT2_PM2
+        data_field: DA_Wrk_XP_VOT2_PM2
+      - name: DA_Wrk_XP_VOT3_PM2
+        data_field: DA_Wrk_XP_VOT3_PM2
+      - name: DA_Wrk_NXP_VOT1_PM2
+        data_field: DA_Wrk_NXP_VOT1_PM2
+      - name: DA_Wrk_NXP_VOT2_PM2
+        data_field: DA_Wrk_NXP_VOT2_PM2
+      - name: DA_Wrk_NXP_VOT3_PM2
+        data_field: DA_Wrk_NXP_VOT3_PM2
+      - name: S2_Wrk_XP_VOT1_PM2
+        data_field: S2_Wrk_XP_VOT1_PM2
+      - name: S2_Wrk_XP_VOT2_PM2
+        data_field: S2_Wrk_XP_VOT2_PM2
+      - name: S2_Wrk_XP_VOT3_PM2
+        data_field: S2_Wrk_XP_VOT3_PM2
+      - name: S2_Wrk_NXP_VOT1_PM2
+        data_field: S2_Wrk_NXP_VOT1_PM2
+      - name: S2_Wrk_NXP_VOT2_PM2
+        data_field: S2_Wrk_NXP_VOT2_PM2
+      - name: S2_Wrk_NXP_VOT3_PM2
+        data_field: S2_Wrk_NXP_VOT3_PM2
+      - name: S3_Wrk_XP_VOT1_PM2
+        data_field: S3_Wrk_XP_VOT1_PM2
+      - name: S3_Wrk_XP_VOT2_PM2
+        data_field: S3_Wrk_XP_VOT2_PM2
+      - name: S3_Wrk_XP_VOT3_PM2
+        data_field: S3_Wrk_XP_VOT3_PM2
+      - name: S3_Wrk_NXP_VOT1_PM2
+        data_field: S3_Wrk_NXP_VOT1_PM2
+      - name: S3_Wrk_NXP_VOT2_PM2
+        data_field: S3_Wrk_NXP_VOT2_PM2
+      - name: S3_Wrk_NXP_VOT3_PM2
+        data_field: S3_Wrk_NXP_VOT3_PM2
+      - name: DA_NWrk_XP_VOT1_PM2
+        data_field: DA_NWrk_XP_VOT1_PM2
+      - name: DA_NWrk_XP_VOT2_PM2
+        data_field: DA_NWrk_XP_VOT2_PM2
+      - name: DA_NWrk_XP_VOT3_PM2
+        data_field: DA_NWrk_XP_VOT3_PM2
+      - name: DA_NWrk_NXP_VOT1_PM2
+        data_field: DA_NWrk_NXP_VOT1_PM2
+      - name: DA_NWrk_NXP_VOT2_PM2
+        data_field: DA_NWrk_NXP_VOT2_PM2
+      - name: DA_NWrk_NXP_VOT3_PM2
+        data_field: DA_NWrk_NXP_VOT3_PM2
+      - name: S2_NWrk_XP_VOT1_PM2
+        data_field: S2_NWrk_XP_VOT1_PM2
+      - name: S2_NWrk_XP_VOT2_PM2
+        data_field: S2_NWrk_XP_VOT2_PM2
+      - name: S2_NWrk_XP_VOT3_PM2
+        data_field: S2_NWrk_XP_VOT3_PM2
+      - name: S2_NWrk_NXP_VOT1_PM2
+        data_field: S2_NWrk_NXP_VOT1_PM2
+      - name: S2_NWrk_NXP_VOT2_PM2
+        data_field: S2_NWrk_NXP_VOT2_PM2
+      - name: S2_NWrk_NXP_VOT3_PM2
+        data_field: S2_NWrk_NXP_VOT3_PM2
+      - name: S3_NWrk_XP_VOT1_PM2
+        data_field: S3_NWrk_XP_VOT1_PM2
+      - name: S3_NWrk_XP_VOT2_PM2
+        data_field: S3_NWrk_XP_VOT2_PM2
+      - name: S3_NWrk_XP_VOT3_PM2
+        data_field: S3_NWrk_XP_VOT3_PM2
+      - name: S3_NWrk_NXP_VOT1_PM2
+        data_field: S3_NWrk_NXP_VOT1_PM2
+      - name: S3_NWrk_NXP_VOT2_PM2
+        data_field: S3_NWrk_NXP_VOT2_PM2
+      - name: S3_NWrk_NXP_VOT3_PM2
+        data_field: S3_NWrk_NXP_VOT3_PM2
+        
   - file_name: trips_pm3.omx
-    tables:
-      - name: DriveAlone_Work_Inc1_XP
-        data_field: DA_Wrk_Inc1_XP_PM3
-      - name: DriveAlone_Work_Inc2_XP
-        data_field: DA_Wrk_Inc2_XP_PM3
-      - name: DriveAlone_Work_Inc3_XP
-        data_field: DA_Wrk_Inc3_XP_PM3
-      - name: DriveAlone_Work_Inc4_XP
-        data_field: DA_Wrk_Inc4_XP_PM3
-      - name: DriveAlone_Work_Inc5_XP
-        data_field: DA_Wrk_Inc5_XP_PM3
-      - name: SharedRide2_Work_Inc1
-        data_field: SR2_Wrk_Inc1_PM3
-      - name: SharedRide2_Work_Inc2
-        data_field: SR2_Wrk_Inc2_PM3
-      - name: SharedRide2_Work_Inc3
-        data_field: SR2_Wrk_Inc3_PM3
-      - name: SharedRide2_Work_Inc4
-        data_field: SR2_Wrk_Inc4_PM3
-      - name: SharedRide2_Work_Inc5
-        data_field: SR2_Wrk_Inc5_PM3
-      - name: SharedRide3_Work_Inc1
-        data_field: SR3_Wrk_Inc1_PM3
-      - name: SharedRide3_Work_Inc2
-        data_field: SR3_Wrk_Inc2_PM3
-      - name: SharedRide3_Work_Inc3
-        data_field: SR3_Wrk_Inc3_PM3
-      - name: SharedRide3_Work_Inc4
-        data_field: SR3_Wrk_Inc4_PM3
-      - name: SharedRide3_Work_Inc5
-        data_field: SR3_Wrk_Inc5_PM3
-      - name: DriveAlone_NonWork_Inc1_XP
-        data_field: DA_NWrk_Inc1_XP_PM3
-      - name: DriveAlone_NonWork_Inc2_XP
-        data_field: DA_NWrk_Inc2_XP_PM3
-      - name: DriveAlone_NonWork_Inc3_XP
-        data_field: DA_NWrk_Inc3_XP_PM3
-      - name: DriveAlone_NonWork_Inc4_XP
-        data_field: DA_NWrk_Inc4_XP_PM3
-      - name: DriveAlone_NonWork_Inc5_XP
-        data_field: DA_NWrk_Inc5_XP_PM3
-      - name: SharedRide2_NonWork_Inc1
-        data_field: SR2_NWrk_Inc1_PM3
-      - name: SharedRide2_NonWork_Inc2
-        data_field: SR2_NWrk_Inc2_PM3
-      - name: SharedRide2_NonWork_Inc3
-        data_field: SR2_NWrk_Inc3_PM3
-      - name: SharedRide2_NonWork_Inc4
-        data_field: SR2_NWrk_Inc4_PM3
-      - name: SharedRide2_NonWork_Inc5
-        data_field: SR2_NWrk_Inc5_PM3
-      - name: SharedRide3_NonWork_Inc1
-        data_field: SR3_NWrk_Inc1_PM3
-      - name: SharedRide3_NonWork_Inc2
-        data_field: SR3_NWrk_Inc2_PM3
-      - name: SharedRide3_NonWork_Inc3
-        data_field: SR3_NWrk_Inc3_PM3
-      - name: SharedRide3_NonWork_Inc4
-        data_field: SR3_NWrk_Inc4_PM3
-      - name: SharedRide3_NonWork_Inc5
-        data_field: SR3_NWrk_Inc5_PM3
-      - name: DriveAlone_All_Inc1_NoXP
-        data_field: DA_Inc1_NoXP_PM3
-      - name: DriveAlone_All_Inc2345_NoXP
-        data_field: DA_IncGT1_NoXP_PM3
+    tables:        
+      - name: DA_Wrk_XP_VOT1_PM3
+        data_field: DA_Wrk_XP_VOT1_PM3
+      - name: DA_Wrk_XP_VOT2_PM3
+        data_field: DA_Wrk_XP_VOT2_PM3
+      - name: DA_Wrk_XP_VOT3_PM3
+        data_field: DA_Wrk_XP_VOT3_PM3
+      - name: DA_Wrk_NXP_VOT1_PM3
+        data_field: DA_Wrk_NXP_VOT1_PM3
+      - name: DA_Wrk_NXP_VOT2_PM3
+        data_field: DA_Wrk_NXP_VOT2_PM3
+      - name: DA_Wrk_NXP_VOT3_PM3
+        data_field: DA_Wrk_NXP_VOT3_PM3
+      - name: S2_Wrk_XP_VOT1_PM3
+        data_field: S2_Wrk_XP_VOT1_PM3
+      - name: S2_Wrk_XP_VOT2_PM3
+        data_field: S2_Wrk_XP_VOT2_PM3
+      - name: S2_Wrk_XP_VOT3_PM3
+        data_field: S2_Wrk_XP_VOT3_PM3
+      - name: S2_Wrk_NXP_VOT1_PM3
+        data_field: S2_Wrk_NXP_VOT1_PM3
+      - name: S2_Wrk_NXP_VOT2_PM3
+        data_field: S2_Wrk_NXP_VOT2_PM3
+      - name: S2_Wrk_NXP_VOT3_PM3
+        data_field: S2_Wrk_NXP_VOT3_PM3
+      - name: S3_Wrk_XP_VOT1_PM3
+        data_field: S3_Wrk_XP_VOT1_PM3
+      - name: S3_Wrk_XP_VOT2_PM3
+        data_field: S3_Wrk_XP_VOT2_PM3
+      - name: S3_Wrk_XP_VOT3_PM3
+        data_field: S3_Wrk_XP_VOT3_PM3
+      - name: S3_Wrk_NXP_VOT1_PM3
+        data_field: S3_Wrk_NXP_VOT1_PM3
+      - name: S3_Wrk_NXP_VOT2_PM3
+        data_field: S3_Wrk_NXP_VOT2_PM3
+      - name: S3_Wrk_NXP_VOT3_PM3
+        data_field: S3_Wrk_NXP_VOT3_PM3
+      - name: DA_NWrk_XP_VOT1_PM3
+        data_field: DA_NWrk_XP_VOT1_PM3
+      - name: DA_NWrk_XP_VOT2_PM3
+        data_field: DA_NWrk_XP_VOT2_PM3
+      - name: DA_NWrk_XP_VOT3_PM3
+        data_field: DA_NWrk_XP_VOT3_PM3
+      - name: DA_NWrk_NXP_VOT1_PM3
+        data_field: DA_NWrk_NXP_VOT1_PM3
+      - name: DA_NWrk_NXP_VOT2_PM3
+        data_field: DA_NWrk_NXP_VOT2_PM3
+      - name: DA_NWrk_NXP_VOT3_PM3
+        data_field: DA_NWrk_NXP_VOT3_PM3
+      - name: S2_NWrk_XP_VOT1_PM3
+        data_field: S2_NWrk_XP_VOT1_PM3
+      - name: S2_NWrk_XP_VOT2_PM3
+        data_field: S2_NWrk_XP_VOT2_PM3
+      - name: S2_NWrk_XP_VOT3_PM3
+        data_field: S2_NWrk_XP_VOT3_PM3
+      - name: S2_NWrk_NXP_VOT1_PM3
+        data_field: S2_NWrk_NXP_VOT1_PM3
+      - name: S2_NWrk_NXP_VOT2_PM3
+        data_field: S2_NWrk_NXP_VOT2_PM3
+      - name: S2_NWrk_NXP_VOT3_PM3
+        data_field: S2_NWrk_NXP_VOT3_PM3
+      - name: S3_NWrk_XP_VOT1_PM3
+        data_field: S3_NWrk_XP_VOT1_PM3
+      - name: S3_NWrk_XP_VOT2_PM3
+        data_field: S3_NWrk_XP_VOT2_PM3
+      - name: S3_NWrk_XP_VOT3_PM3
+        data_field: S3_NWrk_XP_VOT3_PM3
+      - name: S3_NWrk_NXP_VOT1_PM3
+        data_field: S3_NWrk_NXP_VOT1_PM3
+      - name: S3_NWrk_NXP_VOT2_PM3
+        data_field: S3_NWrk_NXP_VOT2_PM3
+      - name: S3_NWrk_NXP_VOT3_PM3
+        data_field: S3_NWrk_NXP_VOT3_PM3
         
   - file_name: trips_pm4.omx
-    tables:
-      - name: DriveAlone_Work_Inc1_XP
-        data_field: DA_Wrk_Inc1_XP_PM4
-      - name: DriveAlone_Work_Inc2_XP
-        data_field: DA_Wrk_Inc2_XP_PM4
-      - name: DriveAlone_Work_Inc3_XP
-        data_field: DA_Wrk_Inc3_XP_PM4
-      - name: DriveAlone_Work_Inc4_XP
-        data_field: DA_Wrk_Inc4_XP_PM4
-      - name: DriveAlone_Work_Inc5_XP
-        data_field: DA_Wrk_Inc5_XP_PM4
-      - name: SharedRide2_Work_Inc1
-        data_field: SR2_Wrk_Inc1_PM4
-      - name: SharedRide2_Work_Inc2
-        data_field: SR2_Wrk_Inc2_PM4
-      - name: SharedRide2_Work_Inc3
-        data_field: SR2_Wrk_Inc3_PM4
-      - name: SharedRide2_Work_Inc4
-        data_field: SR2_Wrk_Inc4_PM4
-      - name: SharedRide2_Work_Inc5
-        data_field: SR2_Wrk_Inc5_PM4
-      - name: SharedRide3_Work_Inc1
-        data_field: SR3_Wrk_Inc1_PM4
-      - name: SharedRide3_Work_Inc2
-        data_field: SR3_Wrk_Inc2_PM4
-      - name: SharedRide3_Work_Inc3
-        data_field: SR3_Wrk_Inc3_PM4
-      - name: SharedRide3_Work_Inc4
-        data_field: SR3_Wrk_Inc4_PM4
-      - name: SharedRide3_Work_Inc5
-        data_field: SR3_Wrk_Inc5_PM4
-      - name: DriveAlone_NonWork_Inc1_XP
-        data_field: DA_NWrk_Inc1_XP_PM4
-      - name: DriveAlone_NonWork_Inc2_XP
-        data_field: DA_NWrk_Inc2_XP_PM4
-      - name: DriveAlone_NonWork_Inc3_XP
-        data_field: DA_NWrk_Inc3_XP_PM4
-      - name: DriveAlone_NonWork_Inc4_XP
-        data_field: DA_NWrk_Inc4_XP_PM4
-      - name: DriveAlone_NonWork_Inc5_XP
-        data_field: DA_NWrk_Inc5_XP_PM4
-      - name: SharedRide2_NonWork_Inc1
-        data_field: SR2_NWrk_Inc1_PM4
-      - name: SharedRide2_NonWork_Inc2
-        data_field: SR2_NWrk_Inc2_PM4
-      - name: SharedRide2_NonWork_Inc3
-        data_field: SR2_NWrk_Inc3_PM4
-      - name: SharedRide2_NonWork_Inc4
-        data_field: SR2_NWrk_Inc4_PM4
-      - name: SharedRide2_NonWork_Inc5
-        data_field: SR2_NWrk_Inc5_PM4
-      - name: SharedRide3_NonWork_Inc1
-        data_field: SR3_NWrk_Inc1_PM4
-      - name: SharedRide3_NonWork_Inc2
-        data_field: SR3_NWrk_Inc2_PM4
-      - name: SharedRide3_NonWork_Inc3
-        data_field: SR3_NWrk_Inc3_PM4
-      - name: SharedRide3_NonWork_Inc4
-        data_field: SR3_NWrk_Inc4_PM4
-      - name: SharedRide3_NonWork_Inc5
-        data_field: SR3_NWrk_Inc5_PM4
-      - name: DriveAlone_All_Inc1_NoXP
-        data_field: DA_Inc1_NoXP_PM4
-      - name: DriveAlone_All_Inc2345_NoXP
-        data_field: DA_IncGT1_NoXP_PM4
-
+    tables:        
+      - name: DA_Wrk_XP_VOT1_PM4
+        data_field: DA_Wrk_XP_VOT1_PM4
+      - name: DA_Wrk_XP_VOT2_PM4
+        data_field: DA_Wrk_XP_VOT2_PM4
+      - name: DA_Wrk_XP_VOT3_PM4
+        data_field: DA_Wrk_XP_VOT3_PM4
+      - name: DA_Wrk_NXP_VOT1_PM4
+        data_field: DA_Wrk_NXP_VOT1_PM4
+      - name: DA_Wrk_NXP_VOT2_PM4
+        data_field: DA_Wrk_NXP_VOT2_PM4
+      - name: DA_Wrk_NXP_VOT3_PM4
+        data_field: DA_Wrk_NXP_VOT3_PM4
+      - name: S2_Wrk_XP_VOT1_PM4
+        data_field: S2_Wrk_XP_VOT1_PM4
+      - name: S2_Wrk_XP_VOT2_PM4
+        data_field: S2_Wrk_XP_VOT2_PM4
+      - name: S2_Wrk_XP_VOT3_PM4
+        data_field: S2_Wrk_XP_VOT3_PM4
+      - name: S2_Wrk_NXP_VOT1_PM4
+        data_field: S2_Wrk_NXP_VOT1_PM4
+      - name: S2_Wrk_NXP_VOT2_PM4
+        data_field: S2_Wrk_NXP_VOT2_PM4
+      - name: S2_Wrk_NXP_VOT3_PM4
+        data_field: S2_Wrk_NXP_VOT3_PM4
+      - name: S3_Wrk_XP_VOT1_PM4
+        data_field: S3_Wrk_XP_VOT1_PM4
+      - name: S3_Wrk_XP_VOT2_PM4
+        data_field: S3_Wrk_XP_VOT2_PM4
+      - name: S3_Wrk_XP_VOT3_PM4
+        data_field: S3_Wrk_XP_VOT3_PM4
+      - name: S3_Wrk_NXP_VOT1_PM4
+        data_field: S3_Wrk_NXP_VOT1_PM4
+      - name: S3_Wrk_NXP_VOT2_PM4
+        data_field: S3_Wrk_NXP_VOT2_PM4
+      - name: S3_Wrk_NXP_VOT3_PM4
+        data_field: S3_Wrk_NXP_VOT3_PM4
+      - name: DA_NWrk_XP_VOT1_PM4
+        data_field: DA_NWrk_XP_VOT1_PM4
+      - name: DA_NWrk_XP_VOT2_PM4
+        data_field: DA_NWrk_XP_VOT2_PM4
+      - name: DA_NWrk_XP_VOT3_PM4
+        data_field: DA_NWrk_XP_VOT3_PM4
+      - name: DA_NWrk_NXP_VOT1_PM4
+        data_field: DA_NWrk_NXP_VOT1_PM4
+      - name: DA_NWrk_NXP_VOT2_PM4
+        data_field: DA_NWrk_NXP_VOT2_PM4
+      - name: DA_NWrk_NXP_VOT3_PM4
+        data_field: DA_NWrk_NXP_VOT3_PM4
+      - name: S2_NWrk_XP_VOT1_PM4
+        data_field: S2_NWrk_XP_VOT1_PM4
+      - name: S2_NWrk_XP_VOT2_PM4
+        data_field: S2_NWrk_XP_VOT2_PM4
+      - name: S2_NWrk_XP_VOT3_PM4
+        data_field: S2_NWrk_XP_VOT3_PM4
+      - name: S2_NWrk_NXP_VOT1_PM4
+        data_field: S2_NWrk_NXP_VOT1_PM4
+      - name: S2_NWrk_NXP_VOT2_PM4
+        data_field: S2_NWrk_NXP_VOT2_PM4
+      - name: S2_NWrk_NXP_VOT3_PM4
+        data_field: S2_NWrk_NXP_VOT3_PM4
+      - name: S3_NWrk_XP_VOT1_PM4
+        data_field: S3_NWrk_XP_VOT1_PM4
+      - name: S3_NWrk_XP_VOT2_PM4
+        data_field: S3_NWrk_XP_VOT2_PM4
+      - name: S3_NWrk_XP_VOT3_PM4
+        data_field: S3_NWrk_XP_VOT3_PM4
+      - name: S3_NWrk_NXP_VOT1_PM4
+        data_field: S3_NWrk_NXP_VOT1_PM4
+      - name: S3_NWrk_NXP_VOT2_PM4
+        data_field: S3_NWrk_NXP_VOT2_PM4
+      - name: S3_NWrk_NXP_VOT3_PM4
+        data_field: S3_NWrk_NXP_VOT3_PM4
+        
+  - file_name: trips_pm.omx
+    tables:        
+      - name: DA_Wrk_XP_VOT1_PM
+        data_field: DA_Wrk_XP_VOT1_PM
+      - name: DA_Wrk_XP_VOT2_PM
+        data_field: DA_Wrk_XP_VOT2_PM
+      - name: DA_Wrk_XP_VOT3_PM
+        data_field: DA_Wrk_XP_VOT3_PM
+      - name: DA_Wrk_NXP_VOT1_PM
+        data_field: DA_Wrk_NXP_VOT1_PM
+      - name: DA_Wrk_NXP_VOT2_PM
+        data_field: DA_Wrk_NXP_VOT2_PM
+      - name: DA_Wrk_NXP_VOT3_PM
+        data_field: DA_Wrk_NXP_VOT3_PM
+      - name: S2_Wrk_XP_VOT1_PM
+        data_field: S2_Wrk_XP_VOT1_PM
+      - name: S2_Wrk_XP_VOT2_PM
+        data_field: S2_Wrk_XP_VOT2_PM
+      - name: S2_Wrk_XP_VOT3_PM
+        data_field: S2_Wrk_XP_VOT3_PM
+      - name: S2_Wrk_NXP_VOT1_PM
+        data_field: S2_Wrk_NXP_VOT1_PM
+      - name: S2_Wrk_NXP_VOT2_PM
+        data_field: S2_Wrk_NXP_VOT2_PM
+      - name: S2_Wrk_NXP_VOT3_PM
+        data_field: S2_Wrk_NXP_VOT3_PM
+      - name: S3_Wrk_XP_VOT1_PM
+        data_field: S3_Wrk_XP_VOT1_PM
+      - name: S3_Wrk_XP_VOT2_PM
+        data_field: S3_Wrk_XP_VOT2_PM
+      - name: S3_Wrk_XP_VOT3_PM
+        data_field: S3_Wrk_XP_VOT3_PM
+      - name: S3_Wrk_NXP_VOT1_PM
+        data_field: S3_Wrk_NXP_VOT1_PM
+      - name: S3_Wrk_NXP_VOT2_PM
+        data_field: S3_Wrk_NXP_VOT2_PM
+      - name: S3_Wrk_NXP_VOT3_PM
+        data_field: S3_Wrk_NXP_VOT3_PM
+      - name: DA_NWrk_XP_VOT1_PM
+        data_field: DA_NWrk_XP_VOT1_PM
+      - name: DA_NWrk_XP_VOT2_PM
+        data_field: DA_NWrk_XP_VOT2_PM
+      - name: DA_NWrk_XP_VOT3_PM
+        data_field: DA_NWrk_XP_VOT3_PM
+      - name: DA_NWrk_NXP_VOT1_PM
+        data_field: DA_NWrk_NXP_VOT1_PM
+      - name: DA_NWrk_NXP_VOT2_PM
+        data_field: DA_NWrk_NXP_VOT2_PM
+      - name: DA_NWrk_NXP_VOT3_PM
+        data_field: DA_NWrk_NXP_VOT3_PM
+      - name: S2_NWrk_XP_VOT1_PM
+        data_field: S2_NWrk_XP_VOT1_PM
+      - name: S2_NWrk_XP_VOT2_PM
+        data_field: S2_NWrk_XP_VOT2_PM
+      - name: S2_NWrk_XP_VOT3_PM
+        data_field: S2_NWrk_XP_VOT3_PM
+      - name: S2_NWrk_NXP_VOT1_PM
+        data_field: S2_NWrk_NXP_VOT1_PM
+      - name: S2_NWrk_NXP_VOT2_PM
+        data_field: S2_NWrk_NXP_VOT2_PM
+      - name: S2_NWrk_NXP_VOT3_PM
+        data_field: S2_NWrk_NXP_VOT3_PM
+      - name: S3_NWrk_XP_VOT1_PM
+        data_field: S3_NWrk_XP_VOT1_PM
+      - name: S3_NWrk_XP_VOT2_PM
+        data_field: S3_NWrk_XP_VOT2_PM
+      - name: S3_NWrk_XP_VOT3_PM
+        data_field: S3_NWrk_XP_VOT3_PM
+      - name: S3_NWrk_NXP_VOT1_PM
+        data_field: S3_NWrk_NXP_VOT1_PM
+      - name: S3_NWrk_NXP_VOT2_PM
+        data_field: S3_NWrk_NXP_VOT2_PM
+      - name: S3_NWrk_NXP_VOT3_PM
+        data_field: S3_NWrk_NXP_VOT3_PM
+        
   - file_name: trips_ev.omx
-    tables:
-      - name: DriveAlone_Work_Inc1_XP
-        data_field: DA_Wrk_Inc1_XP_EV
-      - name: DriveAlone_Work_Inc2_XP
-        data_field: DA_Wrk_Inc2_XP_EV
-      - name: DriveAlone_Work_Inc3_XP
-        data_field: DA_Wrk_Inc3_XP_EV
-      - name: DriveAlone_Work_Inc4_XP
-        data_field: DA_Wrk_Inc4_XP_EV
-      - name: DriveAlone_Work_Inc5_XP
-        data_field: DA_Wrk_Inc5_XP_EV
-      - name: SharedRide2_Work_Inc1
-        data_field: SR2_Wrk_Inc1_EV
-      - name: SharedRide2_Work_Inc2
-        data_field: SR2_Wrk_Inc2_EV
-      - name: SharedRide2_Work_Inc3
-        data_field: SR2_Wrk_Inc3_EV
-      - name: SharedRide2_Work_Inc4
-        data_field: SR2_Wrk_Inc4_EV
-      - name: SharedRide2_Work_Inc5
-        data_field: SR2_Wrk_Inc5_EV
-      - name: SharedRide3_Work_Inc1
-        data_field: SR3_Wrk_Inc1_EV
-      - name: SharedRide3_Work_Inc2
-        data_field: SR3_Wrk_Inc2_EV
-      - name: SharedRide3_Work_Inc3
-        data_field: SR3_Wrk_Inc3_EV
-      - name: SharedRide3_Work_Inc4
-        data_field: SR3_Wrk_Inc4_EV
-      - name: SharedRide3_Work_Inc5
-        data_field: SR3_Wrk_Inc5_EV
-      - name: DriveAlone_NonWork_Inc1_XP
-        data_field: DA_NWrk_Inc1_XP_EV
-      - name: DriveAlone_NonWork_Inc2_XP
-        data_field: DA_NWrk_Inc2_XP_EV
-      - name: DriveAlone_NonWork_Inc3_XP
-        data_field: DA_NWrk_Inc3_XP_EV
-      - name: DriveAlone_NonWork_Inc4_XP
-        data_field: DA_NWrk_Inc4_XP_EV
-      - name: DriveAlone_NonWork_Inc5_XP
-        data_field: DA_NWrk_Inc5_XP_EV
-      - name: SharedRide2_NonWork_Inc1
-        data_field: SR2_NWrk_Inc1_EV
-      - name: SharedRide2_NonWork_Inc2
-        data_field: SR2_NWrk_Inc2_EV
-      - name: SharedRide2_NonWork_Inc3
-        data_field: SR2_NWrk_Inc3_EV
-      - name: SharedRide2_NonWork_Inc4
-        data_field: SR2_NWrk_Inc4_EV
-      - name: SharedRide2_NonWork_Inc5
-        data_field: SR2_NWrk_Inc5_EV
-      - name: SharedRide3_NonWork_Inc1
-        data_field: SR3_NWrk_Inc1_EV
-      - name: SharedRide3_NonWork_Inc2
-        data_field: SR3_NWrk_Inc2_EV
-      - name: SharedRide3_NonWork_Inc3
-        data_field: SR3_NWrk_Inc3_EV
-      - name: SharedRide3_NonWork_Inc4
-        data_field: SR3_NWrk_Inc4_EV
-      - name: SharedRide3_NonWork_Inc5
-        data_field: SR3_NWrk_Inc5_EV
-      - name: DriveAlone_All_Inc1_NoXP
-        data_field: DA_Inc1_NoXP_EV
-      - name: DriveAlone_All_Inc2345_NoXP
-        data_field: DA_IncGT1_NoXP_EV
- 
+    tables:        
+      - name: DA_Wrk_XP_VOT1_EV
+        data_field: DA_Wrk_XP_VOT1_EV
+      - name: DA_Wrk_XP_VOT2_EV
+        data_field: DA_Wrk_XP_VOT2_EV
+      - name: DA_Wrk_XP_VOT3_EV
+        data_field: DA_Wrk_XP_VOT3_EV
+      - name: DA_Wrk_NXP_VOT1_EV
+        data_field: DA_Wrk_NXP_VOT1_EV
+      - name: DA_Wrk_NXP_VOT2_EV
+        data_field: DA_Wrk_NXP_VOT2_EV
+      - name: DA_Wrk_NXP_VOT3_EV
+        data_field: DA_Wrk_NXP_VOT3_EV
+      - name: S2_Wrk_XP_VOT1_EV
+        data_field: S2_Wrk_XP_VOT1_EV
+      - name: S2_Wrk_XP_VOT2_EV
+        data_field: S2_Wrk_XP_VOT2_EV
+      - name: S2_Wrk_XP_VOT3_EV
+        data_field: S2_Wrk_XP_VOT3_EV
+      - name: S2_Wrk_NXP_VOT1_EV
+        data_field: S2_Wrk_NXP_VOT1_EV
+      - name: S2_Wrk_NXP_VOT2_EV
+        data_field: S2_Wrk_NXP_VOT2_EV
+      - name: S2_Wrk_NXP_VOT3_EV
+        data_field: S2_Wrk_NXP_VOT3_EV
+      - name: S3_Wrk_XP_VOT1_EV
+        data_field: S3_Wrk_XP_VOT1_EV
+      - name: S3_Wrk_XP_VOT2_EV
+        data_field: S3_Wrk_XP_VOT2_EV
+      - name: S3_Wrk_XP_VOT3_EV
+        data_field: S3_Wrk_XP_VOT3_EV
+      - name: S3_Wrk_NXP_VOT1_EV
+        data_field: S3_Wrk_NXP_VOT1_EV
+      - name: S3_Wrk_NXP_VOT2_EV
+        data_field: S3_Wrk_NXP_VOT2_EV
+      - name: S3_Wrk_NXP_VOT3_EV
+        data_field: S3_Wrk_NXP_VOT3_EV
+      - name: DA_NWrk_XP_VOT1_EV
+        data_field: DA_NWrk_XP_VOT1_EV
+      - name: DA_NWrk_XP_VOT2_EV
+        data_field: DA_NWrk_XP_VOT2_EV
+      - name: DA_NWrk_XP_VOT3_EV
+        data_field: DA_NWrk_XP_VOT3_EV
+      - name: DA_NWrk_NXP_VOT1_EV
+        data_field: DA_NWrk_NXP_VOT1_EV
+      - name: DA_NWrk_NXP_VOT2_EV
+        data_field: DA_NWrk_NXP_VOT2_EV
+      - name: DA_NWrk_NXP_VOT3_EV
+        data_field: DA_NWrk_NXP_VOT3_EV
+      - name: S2_NWrk_XP_VOT1_EV
+        data_field: S2_NWrk_XP_VOT1_EV
+      - name: S2_NWrk_XP_VOT2_EV
+        data_field: S2_NWrk_XP_VOT2_EV
+      - name: S2_NWrk_XP_VOT3_EV
+        data_field: S2_NWrk_XP_VOT3_EV
+      - name: S2_NWrk_NXP_VOT1_EV
+        data_field: S2_NWrk_NXP_VOT1_EV
+      - name: S2_NWrk_NXP_VOT2_EV
+        data_field: S2_NWrk_NXP_VOT2_EV
+      - name: S2_NWrk_NXP_VOT3_EV
+        data_field: S2_NWrk_NXP_VOT3_EV
+      - name: S3_NWrk_XP_VOT1_EV
+        data_field: S3_NWrk_XP_VOT1_EV
+      - name: S3_NWrk_XP_VOT2_EV
+        data_field: S3_NWrk_XP_VOT2_EV
+      - name: S3_NWrk_XP_VOT3_EV
+        data_field: S3_NWrk_XP_VOT3_EV
+      - name: S3_NWrk_NXP_VOT1_EV
+        data_field: S3_NWrk_NXP_VOT1_EV
+      - name: S3_NWrk_NXP_VOT2_EV
+        data_field: S3_NWrk_NXP_VOT2_EV
+      - name: S3_NWrk_NXP_VOT3_EV
+        data_field: S3_NWrk_NXP_VOT3_EV
+
   - file_name: transit_ea.omx
     tables:
       - name: WalkToTransit
@@ -832,4 +1070,4 @@ CONSTANTS:
 
   # SHARED2 and SHARED2 Occupancies
   OCC_SHARED2: 2.0
-  OCC_SHARED3: 3.33
+  OCC_SHARED3: 3.2

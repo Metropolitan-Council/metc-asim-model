@@ -9,7 +9,7 @@ coef_nest_RIDEHAIL,,,,,,,,,,
 coef_nest_SCHOOL_BUS,,,,,,,,,,
 #,,,,,,,,,,
 coef_ivt,coef_ivt_work,coef_ivt_univ_school,coef_ivt_univ_school,coef_ivt_escort_shopping_eatout_othdiscr_atwork,coef_ivt_escort_shopping_eatout_othdiscr_atwork,coef_ivt_escort_shopping_eatout_othdiscr_atwork,coef_ivt_othmaint_social,coef_ivt_othmaint_social,coef_ivt_escort_shopping_eatout_othdiscr_atwork,coef_ivt_escort_shopping_eatout_othdiscr_atwork
-coef_income,coef_income_disc,coef_income_maint,coef_income_disc,coef_income_maint,coef_income_school_univ,coef_income_maint,coef_income_disc,coef_income_school_univ,coef_income_work,coef_income_atwork
+coef_income,coef_income_work,coef_income_school_univ,coef_income_school_univ,coef_income_maint,coef_income_maint,coef_income_disc,coef_income_maint,coef_income_disc,coef_income_disc,coef_income_atwork
 coef_age1619_da,,,,,,,,,,
 coef_age010_trn,,,,,,,,,,
 coef_age16p_sr,,,,,,,,,,

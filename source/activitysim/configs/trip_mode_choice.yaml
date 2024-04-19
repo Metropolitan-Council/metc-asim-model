@@ -73,3 +73,12 @@ TOURS_MERGED_CHOOSER_COLUMNS:
 
 
 MODE_CHOICE_LOGSUM_COLUMN_NAME: mode_choice_logsum
+
+CHOOSER_COLS_TO_KEEP:
+  - vot_da
+  - vot_s2
+  - vot_s3
+
+annotate_trips:
+  SPEC: trip_mode_choice_annotate_trips
+  DF: trips_merged
