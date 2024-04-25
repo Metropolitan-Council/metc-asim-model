@@ -3,9 +3,9 @@ RUN PGM=NETWORK MSG='TEMP: set rail zone node field'
 ;FILEI LINKI[4] = "C:\ABM_BatchTest\Input\network\T_Priority.dbf"
 ;FILEI LINKI[3] = "C:\ABM_BatchTest\Input\network\T_MANTIME.dbf"
 ;FILEI LINKI[2] = "C:\ABM_BatchTest\Input\network\Distances.dbf"
-FILEO NETO = "%SCENARIO_DIR%\TransitBase.NET"
-FILEI NODEI[1] = "%SCENARIO_DIR%\node.dbf"
-FILEI LINKI[1] = "%SCENARIO_DIR%\link.dbf"
+FILEO NETO = "%SCENARIO_DIR%\transit\TransitBase.NET"
+FILEI NODEI[1] = "%SCENARIO_DIR%\transit\node.dbf"
+FILEI LINKI[1] = "%SCENARIO_DIR%\transit\link.dbf"
 
     ZONES=%zones%
     

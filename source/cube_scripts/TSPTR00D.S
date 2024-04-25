@@ -1,12 +1,12 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 RUN PGM=PUBLIC TRANSPORT MSG='Build %TPER% Walk Access Connectors'
-FILEO NTLEGO = "%SCENARIO_DIR%\XIT_WKACC_NTL_%TPER%.tmp"
-FILEO REPORTO = "%SCENARIO_DIR%\XIT_WKACC_RPT_%TPER%.rpt"
-FILEO NETO = "%SCENARIO_DIR%\XIT_WKACC_NET_%TPER%.NET"
+FILEO NTLEGO = "%SCENARIO_DIR%\transit\XIT_WKACC_NTL_%TPER%.tmp"
+FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_WKACC_RPT_%TPER%.rpt"
+FILEO NETO = "%SCENARIO_DIR%\transit\XIT_WKACC_NET_%TPER%.NET"
 FILEI SYSTEMI = "%xit_system%"
-FILEI FACTORI[1] = "%TRANSIT_FOLDER%\%TPER3%_WK_2010.FAC"
+FILEI FACTORI[1] = "%TRANSIT_FOLDER%\%TPER2%_WK_2010.FAC"
 FILEI LINEI[1] = "%xit_lines%"
-FILEI NETI = "%SCENARIO_DIR%\XIT_NET_0_%TPER%.net"
+FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_0_%TPER%.net"
 
     REPORT Lines=T
     REREPORT Accesslegs=T, Egresslegs=T, Xferlegs=T, Lines=T, STOPNODES=T

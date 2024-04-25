@@ -1,7 +1,7 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 RUN PGM=MATRIX MSG='Create Highway Skims: %ASSIGNNAME%'
-FILEI MATI[2] = "%SCENARIO_DIR%\highway\HWY_SKIM_%PREV_ITER%_%PER%.skm"
-FILEO MATO[1] = "%SCENARIO_DIR%\highway\HWY_SKIM_%ITER%_%PER%.skm",
+FILEI MATI[2] = "%SCENARIO_DIR%\highway\HWY_SKIM_%PREV_ITER%_%PER%_M.skm"
+FILEO MATO[1] = "%SCENARIO_DIR%\highway\HWY_SKIM_%ITER%_%PER%_M.skm",
  MO=1-16, 
   NAME=daptime, daptoll, dantime, dantoll, dapdist, a2ptime, a2ptoll, a2ntime, a2ntoll, a2pdist, 
   a3ptime, a3ptoll, a3ntime, a3ntoll, a3pdist, lnrtdist

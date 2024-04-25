@@ -3,31 +3,33 @@ RUN PGM=MATRIX MSG='Airport Mode Choice'
 FILEO MATO[1] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_%PER%.tmp",
  MO=134-138, DEC=3,3,3,3,3, NAME= DA,SR2,SR3,XIT_WK, XIT_DR
 FILEI MATI[4] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP.trp"
-FILEI MATI[3] = "%SCENARIO_DIR%\highway\HWY_SKIM_%PREV_ITER%_%HPER%.skm"
+FILEI MATI[3] = "%SCENARIO_DIR%\highway\HWY_SKIM_%PREV_ITER%_%HPER%_M.skm"
 FILEI MATI[2] = "%SCENARIO_DIR%\transit\XIT_DR_SKIM_%PREV_ITER%_%TPER%.skm"
 FILEI MATI[1] = "%SCENARIO_DIR%\transit\XIT_WK_SKIM_%PREV_ITER%_%TPER%.SKM"
 
 
- MW[3]=MI.3.1     ; AUTO IVTT
-  MW[4]=MI.3.5     ; AUTO DISTANCE
-  MW[5]=MI.3.2	   ; AUTO TOLL
+  MW[3]=MI.3.daptime     ; AUTO IVTT
+  MW[4]=MI.3.dapdist     ; AUTO DISTANCE
+  MW[5]=MI.3.daptoll	   ; AUTO TOLL
   
-  MW[203]=MI.3.6     ; SR2 IVTT
-  MW[204]=MI.3.10    ; SR2 DISTANCE
-  MW[205]=MI.3.7	 ; SR2 TOLL
+  MW[203]=MI.3.a2ptime     ; SR2 IVTT
+  MW[204]=MI.3.a2pdist    ; SR2 DISTANCE
+  MW[205]=MI.3.a2ptoll	 ; SR2 TOLL
   
-  MW[303]=MI.3.11    ; SR3 IVTT
-  MW[304]=MI.3.15    ; SR3 DISTANCE
-  MW[305]=MI.3.12	 ; SR3 TOLL
+  MW[303]=MI.3.a3ptime    ; SR3 IVTT
+  MW[304]=MI.3.a3pdist    ; SR3 DISTANCE
+  MW[305]=MI.3.a3ptoll	 ; SR3 TOLL
   
   
-  MW[6]= MI.1.2+MI.1.3+MI.1.4+MI.1.5+MI.1.6    ; WALK ACCESS OVTT
-  MW[9]= MI.1.1                                ; IVTT, WALK ACCESS
-  MW[10]= MI.1.8                               ; WALK ACCESS FARE
+  ;IVT_Bus,IVT_LB,IVT_Exp,IVT_LRT,IVT_CRT,WAIT1,WAIT2,XFERS,WALKT,FARE,XBFARE,CRTFare
+  
+  MW[6]= MI.1.AWALKT + MI.1.XWALKT                                                ; WALK ACCESS OVTT
+  MW[9]= MI.1.IVT_Bus + MI.1.IVT_LB + MI.1.IVT_Exp + MI.1.IVT_LRT + MI.1.IVT_CRT  ; IVTT, WALK ACCESS
+  MW[10]= MI.1.FARE + MI.1.XBFARE + MI.1.CRTFare                                  ; WALK ACCESS FARE
 
-  MW[26]= MI.2.2+MI.2.3+MI.2.4+MI.2.5+MI.2.6    ; AUTO ACCESS OVTT
-  MW[29]= MI.2.1                                ; IVTT, DRIVE ACCESS
-  MW[30]= MI.2.8                                ; DRIVE ACCESS FARE
+  MW[26]= MI.2.DR_ACCR + MI.2.AWALKT + MI.2.XWALKT                                ; AUTO ACCESS OVTT
+  MW[29]= MI.2.IVT_Bus + MI.2.IVT_LB + MI.2.IVT_Exp + MI.2.IVT_LRT + MI.2.IVT_CRT ; IVTT, DRIVE ACCESS
+  MW[30]= MI.2.FARE + MI.2.XBFARE + MI.2.CRTFare                                  ; DRIVE ACCESS FARE
 
 JLOOP INCLUDE=1521
   MW[41]= %TTIME_AUTO%*%HWTCOEFF% + MW[3]*%HWTCOEFF%   + MW[4]*%AUTOCOST%*%DA_COST%          + MW[5]*%DA_COST%    + 20*%DA_COST%      +%C_DA%    ; DA UTILITY

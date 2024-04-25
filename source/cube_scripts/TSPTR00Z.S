@@ -1,12 +1,12 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
-RUN PGM=PUBLIC TRANSPORT PRNFILE="%SCENARIO_DIR%\transit\XIT_DR_PRN_0_%TPER%.prn" MSG='%TPER% Drive Transit Access Skim'
+RUN PGM=PUBLIC TRANSPORT PRNFILE="%SCENARIO_DIR%\transit\XIT_DRE_PRN_0_%TPER%.prn" MSG='%TPER% Drive Transit Egress Skim'
 FILEI FAREI = "%XIT_FARE%"
-FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_DR_RPT_0_%TPER%.RPT"
-FILEO ROUTEO[1] = "%SCENARIO_DIR%\transit\XIT_DR_RTE_0_%TPER%.RTE"
-FILEO MATO[1] = "%SCENARIO_DIR%\transit\XIT_DR_SKIM_0_%TPER%.skm",
+FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_DRE_RPT_0_%TPER%.RPT"
+FILEO ROUTEO[1] = "%SCENARIO_DIR%\transit\XIT_DRE_RTE_0_%TPER%.RTE"
+FILEO MATO[1] = "%SCENARIO_DIR%\transit\XIT_DRE_SKIM_0_%TPER%.skm",
  MO=1-15 NAME=IVT_Bus,IVT_LB,IVT_Exp,IVT_LRT,IVT_CRT,WAIT1,WAIT2,XFERS,AWALKT,XWALKT,FARE,XBFARE,CRTFare,DR_ACCR,DR_ACCD
-FILEO NETO = "%SCENARIO_DIR%\transit\XIT_DR_NET_0_%TPER%.NET"
-FILEI FACTORI[1] = "%TRANSIT_FOLDER%\%TPER2%_DR_2010.FAC"
+FILEO NETO = "%SCENARIO_DIR%\transit\XIT_DRE_NET_0_%TPER%.NET"
+FILEI FACTORI[1] = "%TRANSIT_FOLDER%\%TPER2%_DRE_2010.FAC"
 FILEI NTLEGI[3] = "%SCENARIO_DIR%\transit\XIT_XFER_NTL_%TPER%.NTL"
 FILEI NTLEGI[2] = "%SCENARIO_DIR%\transit\XIT_DRACC_NTL_0_%TPER%.NTL"
 FILEI NTLEGI[1] = "%SCENARIO_DIR%\transit\XIT_WKACC_NTL_%TPER%.NTL"
@@ -45,7 +45,7 @@ FILEI FAREMATI[1] = "%XIT_FAREMAT%"
         MW[11]=FAREA(0,5,6,8)       ; local, limited and LRT Fares
         MW[12]=FAREA(0,7)           ; Express Fare        
         MW[13]=FAREA(0,9)           ; CRT Fare        
-        MW[14]=TIMEA(0,2)           ; Drive access time
-        MW[15]=DIST(0,2)            ; Drive access dist
+        MW[14]=TIMEA(0,2)
+        MW[15]=DIST(0,2)
     ENDPROCESS
 ENDRUN

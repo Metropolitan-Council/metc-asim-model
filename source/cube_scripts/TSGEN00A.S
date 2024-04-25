@@ -3,7 +3,7 @@ RUN PGM=GENERATION MSG='Quick Response Freight Manual routine'
 FILEO PAO[2] = "%SCENARIO_DIR%\truck\TRK_PA.txt",
  FORM=6.0, LIST=Z, P[1],A[1], P[2], A[2]
 FILEO PAO[1] = "%SCENARIO_DIR%\truck\TRK_PA.dbf",
- FORM=6.0, DBF=T, LIST=Z, P[1], A[1], P[2], A[2]
+ FORM=6.0, DBF=T, LIST=Z, P[1], A[1], P[2], A[2] ;, NAMES=Z,SUT_P,SUT_A,MUT_P,MUT_A
 FILEO PRINTO[1] = "%SCENARIO_DIR%\truck\TRK_GENERATION.PRN"
 FILEI ZDATI[2] = "%ext_sta%"
 FILEI ZDATI[1] = "%zone_attribs%"

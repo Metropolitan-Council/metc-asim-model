@@ -6,8 +6,8 @@ FILEO MATO[1] = "%SCENARIO_DIR%\external\HWY_EXT_TRIP_%ITER%.trp",
 FILEI MATI[2] = "%SCENARIO_DIR%\external\HWY_EXT_IETRIP_%ITER%.trp"
 FILEI MATI[1] = "%SCENARIO_DIR%\external\HWY_EXT_EITRIP_%ITER%.trp"
 
-  MW[1] = MI.1.6 + MI.1.6.T + MI.2.6 + MI.2.6.T + MI.3.1 ; exclude EE trips from MnPass
-  MW[2] = MI.1.7 + MI.1.7.T + MI.2.7 + MI.2.7.T
-  MW[3] = MI.1.8 + MI.1.8.T + MI.2.8 + MI.2.8.T  
+  MW[1] = MI.1.EI_DA + MI.1.EI_DA.T + MI.2.IE_DA + MI.2.IE_DA.T + MI.3.1 ; exclude EE trips from MnPass
+  MW[2] = MI.1.EI_S2 + MI.1.EI_S2.T + MI.2.IE_S2 + MI.2.IE_S2.T
+  MW[3] = MI.1.EI_S3 + MI.1.EI_S3.T + MI.2.IE_S3 + MI.2.IE_S3.T  
 
 ENDRUN

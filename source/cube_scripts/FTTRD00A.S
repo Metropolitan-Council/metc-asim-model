@@ -23,8 +23,8 @@ FILEI ZDATI[1] = "%SCENARIO_DIR%\truck\TRK_PA.txt",
  ;Define Friction Factors for Single Unit and Combination Trucks;
  ;Note: Use these as KFACTOR matrices, because FFACTORS cannot be in matrix form;
  ;*****
- MW[10]= MI.1.1
- MW[11]= MI.1.2
+ MW[10]= MI.1.SNGLTIME 
+ MW[11]= MI.1.MULTTIME
 
  GRAVITY PURPOSE=1, LOS=MW[10], FFACTORS=FF,  LOSRANGE=0-999   ;SINGLE UNIT GRAVITY MODEL
  FREQUENCY VALUEMW=1, BASEMW=10, RANGE=1-100, TITLE='SINGLE UNIT TRIPS'

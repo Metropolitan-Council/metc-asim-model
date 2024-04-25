@@ -17,8 +17,7 @@ FILEO MATO[2] = "%SCENARIO_DIR%\highway\HWY_SKIM_0_%PER%_M.skm",
   
 FILEO MATO[3] = "%SCENARIO_DIR%\highway\HWY_SKIM_0_%PER%_H.skm",
  MO=31-45, 
-  NAME=daptime, daptoll, dantime, dantoll, dapdist, a2ptime, a2ptoll, a2ntime, a2ntoll, a2pdist, 
-  a3ptime, a3ptoll, a3ntime, a3ntoll, a3pdist
+  NAME=daptime, daptoll, dantime, dantoll, dapdist, a2ptime, a2ptoll, a2ntime, a2ntoll, a2pdist, a3ptime, a3ptoll, a3ntime, a3ntoll, a3pdist
 
 DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
 
@@ -30,7 +29,6 @@ _VOT_MED = VOT_INCOME_02 / 100
 _VOT_HIGH = VOT_INCOME_03 / 100
 
 PHASE = LINKREAD
-	; ASR: I'm just adding some tolls in here to charge up the skims
 	LW.HOV_TIME_PNLTY = 0
 	LW.TOLL_PRICE_SOV = 0
 	LW.MNPASS_CODE = LI.MNPASS_CODE

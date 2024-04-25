@@ -3,8 +3,8 @@ RUN PGM=NETWORK MSG='Set highway link speeds, capacities, and AB'
 FILEI LOOKUPI[3] = "%LU_AlphaBeta%"
 FILEI LOOKUPI[2] = "%LU_capacity%"
 FILEI LOOKUPI[1] = "%LU_speed%"
-FILEI LINKI[1] = "%SCENARIO_DIR%\ALL_NET.tmp"
-FILEO NETO = "%SCENARIO_DIR%\ALL_NET.net"
+FILEI LINKI[1] = "%SCENARIO_DIR%\highway\ALL_NET.tmp"
+FILEO NETO = "%SCENARIO_DIR%\highway\ALL_NET.net"
  
 ;Length corrections
   ;DISTANCE = SHAPE_Length/1609.344 ; Adds distance to any new link that was not coded with a distance

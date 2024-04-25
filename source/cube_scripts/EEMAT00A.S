@@ -1,7 +1,7 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 RUN PGM=MATRIX MSG='Auto EI / IE Destination Choice'
 FILEI DBI[2] = "%SCENARIO_DIR%\external\HWY_EXT.dbf"
-FILEI MATI[1] = "%SCENARIO_DIR%\highway\HWY_SKIM_%PREV_ITER%_AM.skm"
+FILEI MATI[1] = "%SCENARIO_DIR%\highway\HWY_SKIM_%PREV_ITER%_AM_M.skm"
 FILEO MATO[2] = "%SCENARIO_DIR%\external\HWY_EXT_IETRIP_%ITER%.trp",
  MO=11-18, NAME=termTime,time,sizeVar, expU, prob, IE_DA, IE_S2, IE_S3
  
@@ -40,13 +40,13 @@ FILEI DBI[1] = "%zone_attribs%"
     JLOOP J=1,%int_zones%
       ; EI
       mw[1] = destTermT[J] 
-      mw[2] = MI.1.1 * -0.116 + 0.00059 * MI.1.1 ^ 2 + -0.00000036 * MI.1.1 ^ 3 
+      mw[2] = MI.1.daptime * -0.116 + 0.00059 * MI.1.daptime ^ 2 + -0.00000036 * MI.1.daptime ^ 3 
       mw[3] = destSizeV[J]
       mw[4] = exp(mw[1] + mw[2]) * mw[3]
 
       ; IE
       mw[11] = origTermT[J] 
-      mw[12] = MI.1.1 * -0.194 + 0.0020 * MI.1.1 ^ 2 + -0.0000073 * MI.1.1 ^ 3 
+      mw[12] = MI.1.daptime * -0.194 + 0.0020 * MI.1.daptime ^ 2 + -0.0000073 * MI.1.daptime ^ 3 
       mw[13] = origSizeV[J]
       mw[14] = exp(mw[11] + mw[12]) * mw[13]  
       

@@ -62,17 +62,17 @@ FILEI MATI[1] = "%SCENARIO_DIR%\external\HWY_EXT_TRIP_%ITER%.trp"
   ;
   ; Apply share to create TOD trip tables.
   ;
-	MW[11] = MI.1.1 * share[1]	MW[12] = MI.1.2 * share[1]	MW[13] = MI.1.3 * share[1]
-	MW[21] = MI.1.1 * share[2]	MW[22] = MI.1.2 * share[2]	MW[23] = MI.1.3 * share[2]
-	MW[31] = MI.1.1 * share[3]	MW[32] = MI.1.2 * share[3]	MW[33] = MI.1.3 * share[3]
-	MW[41] = MI.1.1 * share[4]	MW[42] = MI.1.2 * share[4]	MW[43] = MI.1.3 * share[4]
-	MW[51] = MI.1.1 * share[5]	MW[52] = MI.1.2 * share[5]	MW[53] = MI.1.3 * share[5]
-	MW[61] = MI.1.1 * share[6]	MW[62] = MI.1.2 * share[6]	MW[63] = MI.1.3 * share[6]  
-	MW[71] = MI.1.1 * share[7]	MW[72] = MI.1.2 * share[7]	MW[73] = MI.1.3 * share[7]
-	MW[81] = MI.1.1 * share[8]	MW[82] = MI.1.2 * share[8]	MW[83] = MI.1.3 * share[8]
-	MW[91] = MI.1.1 * share[9]	MW[92] = MI.1.2 * share[9]	MW[93] = MI.1.3 * share[9]
-	MW[101] = MI.1.1 * share[10]	MW[102] = MI.1.2 * share[10]	MW[103] = MI.1.3 * share[10]
-	MW[111] = MI.1.1 * share[11]	MW[112] = MI.1.2 * share[11]	MW[113] = MI.1.3 * share[11]
+	MW[11] = MI.1.DA * share[1]	MW[12] = MI.1.SR2 * share[1]	MW[13] = MI.1.SR3 * share[1]
+	MW[21] = MI.1.DA * share[2]	MW[22] = MI.1.SR2 * share[2]	MW[23] = MI.1.SR3 * share[2]
+	MW[31] = MI.1.DA * share[3]	MW[32] = MI.1.SR2 * share[3]	MW[33] = MI.1.SR3 * share[3]
+	MW[41] = MI.1.DA * share[4]	MW[42] = MI.1.SR2 * share[4]	MW[43] = MI.1.SR3 * share[4]
+	MW[51] = MI.1.DA * share[5]	MW[52] = MI.1.SR2 * share[5]	MW[53] = MI.1.SR3 * share[5]
+	MW[61] = MI.1.DA * share[6]	MW[62] = MI.1.SR2 * share[6]	MW[63] = MI.1.SR3 * share[6]  
+	MW[71] = MI.1.DA * share[7]	MW[72] = MI.1.SR2 * share[7]	MW[73] = MI.1.SR3 * share[7]
+	MW[81] = MI.1.DA * share[8]	MW[82] = MI.1.SR2 * share[8]	MW[83] = MI.1.SR3 * share[8]
+	MW[91] = MI.1.DA * share[9]	MW[92] = MI.1.SR2 * share[9]	MW[93] = MI.1.SR3 * share[9]
+	MW[101] = MI.1.DA * share[10]	MW[102] = MI.1.SR2 * share[10]	MW[103] = MI.1.SR3 * share[10]
+	MW[111] = MI.1.DA * share[11]	MW[112] = MI.1.SR2 * share[11]	MW[113] = MI.1.SR3 * share[11]
   
   _am1Ext = ROWSUM(11) + ROWSUM(12) + ROWSUM(13)
   _am1Ext = ROWSUM(21) + ROWSUM(22) + ROWSUM(23)

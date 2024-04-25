@@ -1,24 +1,24 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 RUN PGM=MATRIX MSG='Aggregate SPC Trip Tables for Interm Assignment'
-FILEO MATO[3] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_NT.TRP",
-                 MO=201-203, DEC[1]=3*2, 
+FILEI MATI[1] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_AM1.TRP"
+FILEI MATI[2] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_AM2.TRP"
+FILEI MATI[3] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_AM3.TRP"
+FILEI MATI[4] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_AM4.TRP"
+FILEI MATI[5] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_PM1.TRP"
+FILEI MATI[6] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_PM2.TRP"
+FILEI MATI[7] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_PM3.TRP"
+FILEI MATI[8] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_PM4.TRP"
+FILEI MATI[9] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_EV.TRP"
+FILEI MATI[10] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_ON.TRP"
+FILEO MATO[1] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_AM.TRP",
+                 MO=1-3, DEC[1]=3*2, 
                  NAME = DA, SR2, SR3
 FILEO MATO[2] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_PM.TRP",
                  MO=101-103, DEC[1]=3*2, 
                  NAME = DA, SR2, SR3
-FILEI MATI[10] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_ON.TRP"
-FILEI MATI[9] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_EV.TRP"
-FILEI MATI[8] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_PM4.TRP"
-FILEI MATI[7] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_PM3.TRP"
-FILEI MATI[6] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_PM2.TRP"
-FILEI MATI[5] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_PM1.TRP"
-FILEO MATO[1] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_AM.TRP",
-                 MO=1-3, DEC[1]=3*2, 
+FILEO MATO[3] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_NT.TRP",
+                 MO=201-203, DEC[1]=3*2, 
                  NAME = DA, SR2, SR3
-FILEI MATI[4] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_AM4.TRP"
-FILEI MATI[3] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_AM3.TRP"
-FILEI MATI[2] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_AM2.TRP"
-FILEI MATI[1] = "%SCENARIO_DIR%\specialgen\HWY_SPC_TRIP_%ITER%_AM1.TRP"
 
 DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
 
