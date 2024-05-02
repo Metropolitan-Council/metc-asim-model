@@ -21,7 +21,7 @@ DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
     ; Define Assignment Parameters--------------------------------------------------
 
     ;PARAMETERS RAAD = 0.0001 GAP = 0.0001 RELATIVEGAP = 0.00001 AAD = 0.01 MAXITERS = %hwy_assignIters%
-	PARAMETERS  COMBINE = EQUI, ENHANCE = 2, MULTITHREAD = %max_threads%, MAXITERS = 1 ;%hwy_assignIters%
+	PARAMETERS  COMBINE = EQUI, ENHANCE = 2, MULTITHREAD = %max_threads%, MAXITERS = 50 ;%hwy_assignIters%
 
 
 	; Define toll price scheme (reported by MnDOT) ----------------------------------
