@@ -20,6 +20,7 @@ Description,Target,Expression
 ,vot1,trips.vot_bin == 1
 ,vot2,trips.vot_bin == 2
 ,vot3,trips.vot_bin == 3
+,wrk,"trips.purpose == 'Work'"
 # Overnight, work trips
 ,DA_Wrk_XP_VOT1_ON,"((trips.trip_mode == 'DRIVEALONE') & is_on & vot1 & wrk & has_xp) * tour_participants"
 ,DA_Wrk_XP_VOT2_ON,"((trips.trip_mode == 'DRIVEALONE') & is_on & vot2 & wrk & has_xp) * tour_participants"

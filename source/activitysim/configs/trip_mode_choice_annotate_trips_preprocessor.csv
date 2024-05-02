@@ -71,14 +71,6 @@ dest terminal time not counted at home,_dest_terminal_time,"np.where(inbound & l
 ,trip_topology,1
 ,density_index,"np.where(df.outbound, reindex(land_use.density_index, df[DESTINATION]), reindex(land_use.density_index, df[ORIGIN]))"
 ,origin_density_index,"np.where(df.outbound, reindex(land_use.density_index, df[ORIGIN]), reindex(land_use.density_index, df[DESTINATION]))"
-# FIXME no transit subzones so all zones short walk to transit,,
-,_walk_transit_origin,True
-,_walk_transit_destination,True
-,walk_transit_available,_walk_transit_origin & _walk_transit_destination
-,drive_transit_available,tour_mode_is_drive_transit
-#,knr_transit_available,tour_mode_is_knr_transit
-,origin_walk_time,shortWalk*60/walkSpeed
-,destination_walk_time,shortWalk*60/walkSpeed
 # RIDEHAIL,,
 ,origin_density_measure,"(reindex(land_use.POPULATION, df[orig_col_name]) + reindex(land_use.TOT_EMP, df[orig_col_name])) / (reindex(land_use.AREA, df[orig_col_name]) / 640)"
 ,origin_density,"pd.cut(origin_density_measure, bins=[-np.inf, 500, 2000, 5000, 15000, np.inf], labels=[5, 4, 3, 2, 1]).astype(int)"
@@ -96,11 +88,7 @@ dest terminal time not counted at home,_dest_terminal_time,"np.where(inbound & l
 #,sov_available,(odt_skims['SOV_N_TIME']>0) #& tour_mode_not_drive_transit
 #,hov2_available,(odt_skims['HOV2_N_TIME']>0) #& tour_mode_not_drive_transit
 #,hov3_available,(odt_skims['HOV3_N_TIME']>0) #& tour_mode_not_drive_transit
-,walk_local_available,walk_transit_available & (odt_skims['WLK_TRN_IVT']>0)
-,walk_premium_available,walk_transit_available & (odt_skims['WLK_TRN_IVT']>0)
-,walk_mix_available,walk_transit_available & (odt_skims['WLK_TRN_IVT']>0)
-,drive_transit_available_outbound,drive_transit_available & df.outbound & (odt_skims['DRV_TRN_IVT']>0)
-,drive_transit_available_inbound,drive_transit_available & ~df.outbound & (odt_skims['DRV_TRN_IVT']>0)
+
 #,pnr_premium_available_outbound,pnr_transit_available & df.outbound & (odt_skims['DRV_TRN_IVT']>0)
 #,pnr_premium_available_inbound,pnr_transit_available & ~df.outbound & (odt_skims['DRV_TRN_IVT']>0)
 #,pnr_mix_available_outbound,pnr_transit_available & df.outbound & (odt_skims['DRV_TRN_IVT']>0)
@@ -131,32 +119,56 @@ dest terminal time not counted at home,_dest_terminal_time,"np.where(inbound & l
 ,sov_available,"(odt_skims['SOV_N_TIME_M']>0) & (df.age>=minimumAgeDA) * np.where(is_joint,0,1)"
 ,hov2_available,"(odt_skims['HOV2_N_TIME_M'])>0"
 ,hov3_available,"(odt_skims['HOV3_N_TIME_M']>0)"
-,walk_trn_ivt,odt_skims['WLK_TRN_IVT'] 
-,walk_transit_available_out,(walk_trn_ivt>0)
-,walk_trn_wait,odt_skims['WLK_TRN_IWAIT']
-,walk_xfr_wait,odt_skims['WLK_TRN_XWAIT'] 
-,walk_xfrs,odt_skims['WLK_TRN_XFERS'] 
-,walk_access_time,odt_skims['WLK_TRN_ACC'] 
-,walk_egress_time,odt_skims['WLK_TRN_WLKEGR'] 
-,walk_xfr_walk_time,odt_skims['WLK_TRN_WLKXFER'] 
-,walk_fare,odt_skims['WLK_TRN_FARE'] 
-,drive_trn_ivt_out,odt_skims['DRV_TRN_IVT'] 
+
+
+
+
+#
+# Transit Modes
+#
+,walk_bus_ivt,odt_skims['IVT_Bus_WK']
+,walk_ltd_ivt_ob,odt_skims['IVT_LB_WK']
+,walk_exp_ivt_ob,odt_skims['IVT_Exp_WK']
+,walk_lrt_ivt_ob,odt_skims['IVT_LRT_WK']
+,walk_crt_ivt_ob,odt_skims['IVT_CRT_WK']
+,walk_trn_ivt,walk_bus_ivt + walk_ltd_ivt_ob + walk_exp_ivt_ob + walk_lrt_ivt_ob + walk_crt_ivt_ob
+,walk_transit_available,(walk_trn_ivt>0)
+,walk_trn_wait,odt_skims['WAIT1_WK']
+,walk_xfr_wait,odt_skims['WAIT2_WK'] 
+,walk_xfrs,odt_skims['XFERS_WK'] 
+,walk_access_time,odt_skims['AWALKT_WK'] 
+,walk_egress_time,0 
+,walk_xfr_walk_time,odt_skims['XWALKT_WK'] 
+,walk_fare,odt_skims['FARE_WK'] + odt_skims['XBFARE_WK'] + odt_skims['CRTFare_WK']  
+,walk_local_available,walk_transit_available & (odt_skims['IVT_Bus_WK'] + odt_skims['IVT_LB_WK'] + odt_skims['IVT_Exp_WK'] >0)
+,walk_premium_available,walk_transit_available & (odt_skims['IVT_LRT_WK'] + odt_skims['IVT_CRT_WK'] >0)
+,_drive_bus_ivt_ob,odt_skims['IVT_Bus_DR']
+,_drive_ltd_ivt_ob,odt_skims['IVT_LB_DR']
+,_drive_exp_ivt_ob,odt_skims['IVT_Exp_DR']
+,_drive_lrt_ivt_ob,odt_skims['IVT_LRT_DR']
+,_drive_crt_ivt_ob,odt_skims['IVT_CRT_DR']
+,drive_trn_ivt_out,_drive_bus_ivt_ob + _drive_ltd_ivt_ob + _drive_exp_ivt_ob + _drive_lrt_ivt_ob + _drive_crt_ivt_ob
 ,drive_transit_available_out,(drive_trn_ivt_out>0)
-,drive_trn_wait_out,odt_skims['DRV_TRN_IWAIT'] 
-,drive_xfr_wait_out,odt_skims['DRV_TRN_XWAIT'] 
-,drive_xfrs_out,odt_skims['DRV_TRN_XFERS'] 
-,drive_access_time_out,odt_skims['DRV_TRN_DRACC'] 
-,drive_egress_time_out,odt_skims['DRV_TRN_WLKEGR'] 
-,drive_xfr_walk_time_out,odt_skims['DRV_TRN_WLKXFER'] 
-,drive_fare_out,odt_skims['DRV_TRN_FARE'] 
-,drive_access_dist_out,odt_skims['DRV_TRN_DRACCDIST'] 
-,drive_trn_ivt_in,odt_skims['DRV_TRN_IVT'] 
+,drive_trn_wait_out,odt_skims['WAIT1_DR'] 
+,drive_xfr_wait_out,odt_skims['WAIT2_DR'] 
+,drive_xfrs_out,odt_skims['XFERS_DR'] 
+,drive_access_time_out,odt_skims['DR_ACCR_DR'] 
+,drive_egress_time_out,odt_skims['AWALKT_DR'] 
+,drive_xfr_walk_time_out,odt_skims['XWALKT_DR'] 
+,drive_fare_out,odt_skims['FARE_DR'] + odt_skims['XBFARE_DR'] + odt_skims['CRTFare_DR']
+,drive_access_dist_out,odt_skims['DR_ACCD_DR'] 
+,_drive_bus_ivt_ib,odt_skims['IVT_Bus_DE']
+,_drive_ltd_ivt_ib,odt_skims['IVT_LB_DE']
+,_drive_exp_ivt_ib,odt_skims['IVT_Exp_DE']
+,_drive_lrt_ivt_ib,odt_skims['IVT_LRT_DE']
+,_drive_crt_ivt_ib,odt_skims['IVT_CRT_DE']
+,drive_trn_ivt_in,_drive_bus_ivt_ib + _drive_ltd_ivt_ib + _drive_exp_ivt_ib + _drive_lrt_ivt_ib + _drive_crt_ivt_ib
 ,drive_transit_available_in,(drive_trn_ivt_in>0)
-,drive_trn_wait_in,odt_skims['DRV_TRN_IWAIT'] 
-,drive_xfr_wait_in,odt_skims['DRV_TRN_XWAIT'] 
-,drive_xfrs_in,odt_skims['DRV_TRN_XFERS'] 
-,drive_access_time_in,odt_skims['DRV_TRN_WLKEGR'] 
-,drive_egress_time_in,odt_skims['DRV_TRN_DRACC'] 
-,drive_xfr_walk_time_in,odt_skims['DRV_TRN_WLKXFER'] 
-,drive_fare_in,odt_skims['DRV_TRN_FARE'] 
-,drive_access_dist_in,odt_skims['DRV_TRN_DRACCDIST'] 
+,drive_trn_wait_in,odt_skims['WAIT1_DE'] 
+,drive_xfr_wait_in,odt_skims['WAIT2_DE'] 
+,drive_xfrs_in,odt_skims['XFERS_DE'] 
+,drive_access_time_in,odt_skims['AWALKT_DE'] 
+,drive_egress_time_in,odt_skims['DR_ACCR_DR'] 
+,drive_xfr_walk_time_in,odt_skims['XWALKT_DE'] 
+,drive_fare_in,odt_skims['FARE_DE'] + odt_skims['XBFARE_DE'] + odt_skims['CRTFare_DE'] 
+,drive_access_dist_in,odt_skims['DR_ACCD_DE'] 
