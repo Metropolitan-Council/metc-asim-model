@@ -46,9 +46,9 @@ FILEI LINKI[1] = "%SCENARIO_DIR%\transit\TransitBase.NET"
 ;;--------------------------------------------------------------------------
 
     ; Code free flow speed for all links
-    LOCTIME = (DISTANCE * 60 / SPEED)
-    EXPTIME = (DISTANCE * 60 / SPEED)
-	LRTTIME = (DISTANCE * 60 / SPEED)
+    LOCTIME = (DISTANCE * 60) / SPEED
+    EXPTIME = (DISTANCE * 60) / SPEED
+	LRTTIME = (DISTANCE * 60) / SPEED
     
 ;;--------------------------------------------------------------------------    
 
