@@ -157,6 +157,7 @@ local,_DF_IS_TOUR,'tour_type' in df.columns
 ,drive_lrt_ivt,_drive_lrt_ivt_ob + _drive_lrt_ivt_ib
 ,_drive_crt_ivt_ob,odt_skims['IVT_CRT_DR']
 ,_drive_crt_ivt_ib,dot_skims['IVT_CRT_DE']
+,drive_crt_ivt,_drive_crt_ivt_ob + _drive_crt_ivt_ib
 ,_drive_trn_ivt_ob,_drive_bus_ivt_ob + _drive_ltd_ivt_ob + _drive_exp_ivt_ob + _drive_lrt_ivt_ob + _drive_crt_ivt_ob 
 ,_drive_trn_ivt_ib,_drive_bus_ivt_ib + _drive_ltd_ivt_ib + _drive_exp_ivt_ib + _drive_lrt_ivt_ib + _drive_crt_ivt_ib
 ,drive_trn_ivt,_drive_trn_ivt_ob+_drive_trn_ivt_ib
