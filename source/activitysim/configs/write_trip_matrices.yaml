@@ -998,6 +998,8 @@ MATRICES:
         data_field: TrnW_EA
       - name: DriveToTransit
         data_field: TrnD_EA
+      - name: TrnDriveEgress
+        data_field: TrnDE_EA
 
   - file_name: transit_am.omx
     tables:
@@ -1005,6 +1007,8 @@ MATRICES:
         data_field: TrnW_AM
       - name: DriveToTransit
         data_field: TrnD_AM
+      - name: TrnDriveEgress
+        data_field: TrnDE_AM
         
   - file_name: transit_md.omx
     tables:
@@ -1012,6 +1016,8 @@ MATRICES:
         data_field: TrnW_MD
       - name: DriveToTransit
         data_field: TrnD_MD
+      - name: TrnDriveEgress
+        data_field: TrnDE_MD
         
   - file_name: transit_pm.omx
     tables:
@@ -1019,6 +1025,8 @@ MATRICES:
         data_field: TrnW_PM
       - name: DriveToTransit
         data_field: TrnD_PM
+      - name: TrnDriveEgress
+        data_field: TrnDE_PM
         
   - file_name: transit_nt.omx
     tables:
@@ -1026,6 +1034,8 @@ MATRICES:
         data_field: TrnW_NT
       - name: DriveToTransit
         data_field: TrnD_NT
+      - name: TrnDriveEgress
+        data_field: TrnDE_NT
 
 
 CONSTANTS:

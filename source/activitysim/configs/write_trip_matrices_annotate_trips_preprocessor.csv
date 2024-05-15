@@ -3,6 +3,7 @@ Description,Target,Expression
 ,tour_participants,trips.tour_id.map(tours.number_of_participants)
 ,distance,od_skims['DIST']
 # code time periods,,
+,is_outbound,trips.outbound
 ,is_on,"(trips.depart.between(time_periods['EA']['first_hour'], time_periods['EA']['last_hour'])) | (trips.depart.between(time_periods['NT']['first_hour'], time_periods['NT']['last_hour']))"
 ,is_am1,"trips.depart.between(time_periods['AM1']['first_hour'], time_periods['AM1']['last_hour'])"
 ,is_am2,"trips.depart.between(time_periods['AM2']['first_hour'], time_periods['AM2']['last_hour'])"
@@ -523,8 +524,13 @@ Description,Target,Expression
 ,TrnW_MD,((trips.trip_mode == 'TRNWALKACCESS') & (is_md) * tour_participants)
 ,TrnW_PM,((trips.trip_mode == 'TRNWALKACCESS') & (is_pm) * tour_participants)
 ,TrnW_NT,((trips.trip_mode == 'TRNWALKACCESS') & (is_ev) * tour_participants)
-,TrnD_EA,((trips.trip_mode == 'TRNDRIVEACCESS') & (is_on) * tour_participants)
-,TrnD_AM,((trips.trip_mode == 'TRNDRIVEACCESS') & (is_am) * tour_participants)
-,TrnD_MD,((trips.trip_mode == 'TRNDRIVEACCESS') & (is_md) * tour_participants)
-,TrnD_PM,((trips.trip_mode == 'TRNDRIVEACCESS') & (is_pm) * tour_participants)
-,TrnD_NT,((trips.trip_mode == 'TRNDRIVEACCESS') & (is_ev) * tour_participants)
+,TrnD_EA,((trips.trip_mode == 'TRNDRIVEACCESS') & (is_outbound) & (is_on) * tour_participants)
+,TrnD_AM,((trips.trip_mode == 'TRNDRIVEACCESS') & (is_outbound) & (is_am) * tour_participants)
+,TrnD_MD,((trips.trip_mode == 'TRNDRIVEACCESS') & (is_outbound) & (is_md) * tour_participants)
+,TrnD_PM,((trips.trip_mode == 'TRNDRIVEACCESS') & (is_outbound) & (is_pm) * tour_participants)
+,TrnD_NT,((trips.trip_mode == 'TRNDRIVEACCESS') & (is_outbound) & (is_ev) * tour_participants)
+,TrnDE_EA,((trips.trip_mode == 'TRNDRIVEACCESS') & (~is_outbound) & (is_on) * tour_participants)
+,TrnDE_AM,((trips.trip_mode == 'TRNDRIVEACCESS') & (~is_outbound) & (is_am) * tour_participants)
+,TrnDE_MD,((trips.trip_mode == 'TRNDRIVEACCESS') & (~is_outbound) & (is_md) * tour_participants)
+,TrnDE_PM,((trips.trip_mode == 'TRNDRIVEACCESS') & (~is_outbound) & (is_pm) * tour_participants)
+,TrnDE_NT,((trips.trip_mode == 'TRNDRIVEACCESS') & (~is_outbound) & (is_ev) * tour_participants)
