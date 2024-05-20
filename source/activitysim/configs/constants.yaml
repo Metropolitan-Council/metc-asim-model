@@ -175,11 +175,13 @@ min_waitTime: 0
 max_waitTime: 50
 
 ivt_cost_multiplier: 0.6
-ivt_pmov_multiplier: 1.0
-ivt_stcar_multiplier: 0.9
-ivt_brt_multiplier: 0.9
-ivt_urb_multiplier: 0.8
-ivt_com_multiplier: 0.7
+ivt_bus_multiplier: 1.0
+ivt_llb_multiplier: 0.9
+ivt_exb_multiplier: 0.8
+ivt_brt_multiplier: 0.8
+ivt_urb_multiplier: 0.7
+ivt_com_multiplier: 0.6
+
 walktimeshort_multiplier: 2
 walktimelong_multiplier: 10
 biketimeshort_multiplier: 4

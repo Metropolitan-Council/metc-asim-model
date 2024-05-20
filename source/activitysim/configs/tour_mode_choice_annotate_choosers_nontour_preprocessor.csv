@@ -128,8 +128,8 @@ local,_DF_IS_TOUR,'tour_type' in df.columns
 ,_walk_xfr_wait_ob,odt_skims['WAIT2_WK']
 ,_walk_xfr_wait_ib,dot_skims['WAIT2_WK']
 ,walk_xfr_wait,_walk_xfr_wait_ob+_walk_xfr_wait_ib
-,_walk_xfrs_ob,odt_skims['XFERS_WK']
-,_walk_xfrs_ib,dot_skims['XFERS_WK']
+,_walk_xfrs_ob,"np.maximum(0, odt_skims['XFERS_WK'] - 1)"
+,_walk_xfrs_ib,"np.maximum(0, dot_skims['XFERS_WK'] - 1)"
 ,walk_xfrs,_walk_xfrs_ob+_walk_xfrs_ib
 ,_walk_access_time_ob,odt_skims['AWALKT_WK']
 ,_walk_access_time_ib,dot_skims['AWALKT_WK']
@@ -167,8 +167,8 @@ local,_DF_IS_TOUR,'tour_type' in df.columns
 ,_drive_xfr_wait_ob,odt_skims['WAIT2_DR']
 ,_drive_xfr_wait_ib,dot_skims['WAIT2_DE']
 ,drive_xfr_wait,_drive_xfr_wait_ob+_drive_xfr_wait_ib
-,_drive_xfrs_ob,odt_skims['XFERS_DR']
-,_drive_xfrs_ib,dot_skims['XFERS_DE']
+,_drive_xfrs_ob,"np.maximum(0, odt_skims['XFERS_DR'] - 1)"
+,_drive_xfrs_ib,"np.maximum(0, dot_skims['XFERS_DE'] - 1)"
 ,drive_xfrs,_drive_xfrs_ob+_drive_xfrs_ib
 ,_drive_access_time_ib,odt_skims['DR_ACCR_DR']
 ,_drive_access_time_ob,dot_skims['DR_ACCR_DR']
