@@ -20,12 +20,13 @@ RUN PGM=MATRIX MSG='Expand trip table to full zones'
 FILEI MATI[2] = "%SCENARIO_DIR%\transit\XIT_SPC_TRIP_%ITER%_@TPER@.trp"
 FILEO PRINTO[1] = "%SCENARIO_DIR%\transit\XIT_TRIP_PRN_%ITER%_@TPER@.trp"
 FILEO MATO[1] = "%SCENARIO_DIR%\transit\XIT_TRIP_%ITER%_@TPER@_CLEAN.trp",
- MO=1-2, NAME=WalkToTransit, DriveToTransit
+ MO=1-3, NAME=WalkToTransit, DriveToTransit, TrnDriveEgress
 FILEI MATI[1] = "%SCENARIO_DIR%\transit\XIT_TRIP_%ITER%_@TPER@.trp"
 
   
   mw[1] = MI.1.WalkToTransit + MI.2.WK; Walk to Transit
   mw[2] = MI.1.DriveToTransit  + MI.2.DR; Drive to Transit
+  mw[3] = MI.1.TrnDriveEgress
   
   ; MW[3] = MI.2.1
   ; MW[4] = MI.3.1
