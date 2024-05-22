@@ -16,4 +16,4 @@ util_dist_logged,Distance logged,@(_DIST).apply(np.log1p),0,coef_dist_logged,coe
 util_dist_part_time,"Distance,part time",@(df['pemploy']==2) * _DIST,0,coef_dist_part_time,coef_dist_part_time
 util_dist_child_0_5,"Distance,child 0  to 5",@(df['age_0_to_5']==True) * _DIST,0,coef_dist_child_0_5,coef_dist_child_0_5
 util_dist_child_6_12,"Distance,child 6 to 12",@(df['age_6_to_12']==True) * _DIST,0,coef_dist_child_6_12,coef_dist_child_6_12
-util_stay_in_state,"No crossing state boundaries",@_STATE != df.home_state,,-10,-10
+#util_stay_in_state,"No crossing state boundaries",@_STATE != df.home_state,,-10,-10

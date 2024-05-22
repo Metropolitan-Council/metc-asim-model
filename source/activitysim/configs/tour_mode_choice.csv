@@ -119,6 +119,9 @@ util_DRIVE_to_Transit_Auto_sufficient,PNR to Transit - Auto Sufficient,@(df.is_i
 util_rideshare_Zero_auto,Taxi - Zero auto,@(df.is_indiv & (df.auto_ownership == 0)),,,,,,,,,rideshare_ASC_no_auto,rideshare_ASC_no_auto,rideshare_ASC_no_auto
 util_rideshare_Auto_deficient,Taxi - Auto deficient,@(df.is_indiv & (df.auto_ownership < df.num_workers) & (df.auto_ownership > 0)),,,,,,,,,rideshare_ASC_auto_deficient,rideshare_ASC_auto_deficient,rideshare_ASC_auto_deficient
 util_rideshare_Auto_sufficient,Taxi - Auto sufficient,@(df.is_indiv & (df.auto_ownership >= df.num_workers) & (df.auto_ownership > 0)),,,,,,,,,rideshare_ASC_auto_sufficient,rideshare_ASC_auto_sufficient,rideshare_ASC_auto_sufficient
+# These no longer exist in the survey data,,,,,,,,,,,,,
+util_taxi_asc,Taxi ASC,1,,,,,,,,,taxi_ASC,,taxi_ASC
+util_tnc_shared_asc,TNC Shared ASC,1,,,,,,,,,tnc_shared_ASC,,tnc_shared_ASC
 #util_Joint_tour_ASCs,#joint maint tour ASCs,,,,,,,,,,,,
 util_joint_WALK_ASC_Zero_auto,Joint - Walk ASC - Zero auto,@(df.is_joint & (df.auto_ownership == 0)),,,,joint_walk_ASC_no_auto,,,,,,,
 util_joint_WALK_ASC_Auto_deficient,Joint - Walk ASC - Auto deficient,@(df.is_joint & (df.auto_ownership < df.num_workers) & (df.auto_ownership > 0)),,,,joint_walk_ASC_auto_deficient,,,,,,,
