@@ -76,7 +76,7 @@ util_TRNDRIVEACCESS_outbound_CRT_In-vehicle_time,PNR_LOC outbound - In-vehicle t
 util_TRNDRIVEACCESS_outbound_Short_iwait_time,PNR_LOC outbound - Short iwait time,@df.outbound * coef_short_iwait_multiplier * (df.drive_trn_wait_out).clip(upper=waitThresh),,,,,,,coef_ivt,,,,
 util_TRNDRIVEACCESS_outbound_Long_iwait_time,PNR_LOC outbound - Long iwait time,@df.outbound * coef_long_iwait_multiplier * (df.drive_trn_wait_out-waitThresh).clip(0),,,,,,,coef_ivt,,,,
 util_TRNDRIVEACCESS_outbound_transfer_wait_time,PNR_LOC outbound - transfer wait time,@df.outbound * coef_xwait_multiplier * df.drive_xfr_wait_out,,,,,,,coef_ivt,,,,
-util_TRNDRIVEACCESS_outbound_number_of_transfers,PNR_LOC outbound - number of transfers,@df.outbound * xfers_wlk_multiplier * df.drive_xfrs_out.clip(0),,,,,,,coef_ivt,,,,
+util_TRNDRIVEACCESS_outbound_number_of_transfers,PNR_LOC outbound - number of transfers,@df.outbound * xfers_drv_multiplier * df.drive_xfrs_out.clip(0),,,,,,,coef_ivt,,,,
 util_TRNDRIVEACCESS_outbound_Drive_time,PNR_LOC outbound - Drive time,@df.outbound * coef_dtim_multiplier * df.drive_access_time_out,,,,,,,coef_ivt,,,,
 util_TRNDRIVEACCESS_outbound_Walk_egress_time,PNR_LOC outbound - Walk egress time,@df.outbound * coef_wegr_multiplier * df.drive_egress_time_out,,,,,,,coef_ivt,,,,
 util_TRNDRIVEACCESS_outbound_Walk_other_time,PNR_LOC outbound - Walk other time,@df.outbound * coef_waux_multiplier * df.drive_xfr_walk_time_out,,,,,,,coef_ivt,,,,
@@ -240,3 +240,7 @@ util_joint_sr3p_ASC_tnc_shared,desc,@(df.is_joint & df.i_tour_mode.isin(I_SR3P_M
 #util_Bike_not_available_for_long_distances,Bike not available for long distances,@(od_skims['DISTBIKE'] > 6),,,,,-999,,,,,,
 util_Origin_density_index,Origin density index,@density_index_multiplier * origin_density_applied * df.origin_density_index.clip(upper=origin_density_index_max),,,,,,coef_ivt,coef_ivt ,,,,
 util_TNC_shared_adjustment,TNC shared adjustment,@adjust_tnc_shared,,,,,,,,,,,coef_ivt
+util_LRT_Transit,LRT Alternative Specific Constant,@df.walk_lrt_ivt > 0,,,,,,asc_lrt,,,,,
+util_LRT_Transit,LRT Alternative Specific Constant,@(df.inbound * df.drive_lrt_ivt_ib > 0) | (~df.inbound * df.drive_lrt_ivt_ib > 0),,,,,,,asc_lrt,,,,
+util_CRT_Transit,CRT Alternative Specific Constant,@df.walk_crt_ivt > 0,,,,,,asc_crt,,,,,
+util_CRT_Transit,CRT Alternative Specific Constant,@(df.inbound * df.drive_crt_ivt_ib > 0) | (~df.inbound * df.drive_crt_ivt_ib > 0),,,,,,,asc_crt,,,,

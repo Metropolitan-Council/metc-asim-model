@@ -73,7 +73,7 @@ util_TRNDRIVEACCESS_CRT_In_vehicle_time,PNR_LOC - In-vehicle time,@df.drive_crt_
 util_TRNDRIVEACCESS_Short_iwait_time,PNR_LOC - Short iwait time,@short_i_wait_multiplier * df.drive_trn_wait_ob.clip(upper=waitThresh) + df.drive_trn_wait_ib.clip(upper=waitThresh),,,,,,,coef_ivt,,,,
 util_TRNDRIVEACCESS_Long_iwait_time,PNR_LOC - Long iwait time,@long_i_wait_multiplier * ((df.drive_trn_wait_ob-waitThresh).clip(0) + (df.drive_trn_wait_ib-waitThresh).clip(0)),,,,,,,coef_ivt,,,,
 util_TRNDRIVEACCESS_transfer_wait_time,PNR_LOC - transfer wait time,@xwait_multiplier * df.drive_xfr_wait,,,,,,,coef_ivt,,,,
-util_TRNDRIVEACCESS_number_of_transfers,PNR_LOC - number of transfers,@xfers_wlk_multiplier * df.drive_xfrs.clip(0),,,,,,,coef_ivt,,,,
+util_TRNDRIVEACCESS_number_of_transfers,PNR_LOC - number of transfers,@xfers_drv_multiplier * df.drive_xfrs.clip(0),,,,,,,coef_ivt,,,,
 util_TRNDRIVEACCESS_PNR_time,PNR_LOC - PNR time,@dtim_multiplier * df.drive_access_time,,,,,,,coef_ivt,,,,
 util_TRNDRIVEACCESS_Walk_access_time,PNR_LOC - Walk access time,@wacc_multiplier * df.drive_egress_time,,,,,,,coef_ivt,,,,
 util_TRNDRIVEACCESS_Walk_other_time,PNR_LOC - Walk other time,@waux_multiplier * df.walk_xfr_walk_time,,,,,,,coef_ivt,,,,
@@ -116,6 +116,9 @@ util_WALK_to_Transit_Auto_sufficient,Walk to Transit - Auto Sufficient,@(df.is_i
 util_DRIVE_to_Transit_Zero_auto,PNR to Transit - Zero auto,@(df.is_indiv & (df.auto_ownership == 0)),,,,,,,pnr_transit_ASC_no_auto,,,,
 util_DRIVE_to_Transit_Auto_deficient,PNR to Transit - Auto deficient,@(df.is_indiv & (df.auto_ownership < df.num_workers) & (df.auto_ownership > 0)),,,,,,,pnr_transit_ASC_auto_deficient,,,,
 util_DRIVE_to_Transit_Auto_sufficient,PNR to Transit - Auto Sufficient,@(df.is_indiv & (df.auto_ownership >= df.num_workers) & (df.auto_ownership > 0)),,,,,,,pnr_transit_ASC_auto_sufficient,,,,
+util_CLT_Transit,CLT Alternative Specific Constant,@(df.drive_lrt_ivt > 0) | (df.walk_lrt_ivt > 0),,,,,,asc_lrt,asc_lrt,,,,
+util_CRT_Transit,LRT Alternative Specific Constant,@(df.drive_crt_ivt > 0) | (df.walk_crt_ivt > 0),,,,,,asc_crt,asc_crt,,,,
+util_transit_ASC,All transit ASC,1,,,,,,asc_transit,asc_transit,,,,
 util_rideshare_Zero_auto,Taxi - Zero auto,@(df.is_indiv & (df.auto_ownership == 0)),,,,,,,,,rideshare_ASC_no_auto,rideshare_ASC_no_auto,rideshare_ASC_no_auto
 util_rideshare_Auto_deficient,Taxi - Auto deficient,@(df.is_indiv & (df.auto_ownership < df.num_workers) & (df.auto_ownership > 0)),,,,,,,,,rideshare_ASC_auto_deficient,rideshare_ASC_auto_deficient,rideshare_ASC_auto_deficient
 util_rideshare_Auto_sufficient,Taxi - Auto sufficient,@(df.is_indiv & (df.auto_ownership >= df.num_workers) & (df.auto_ownership > 0)),,,,,,,,,rideshare_ASC_auto_sufficient,rideshare_ASC_auto_sufficient,rideshare_ASC_auto_sufficient

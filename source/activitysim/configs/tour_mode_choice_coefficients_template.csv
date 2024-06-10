@@ -1,4 +1,7 @@
 coefficient_name,eatout,escort,othdiscr,othmaint,school,shopping,social,univ,work,atwork
+asc_crt,asc_crt,asc_crt,asc_crt,asc_crt,asc_crt,asc_crt,asc_crt,asc_crt,asc_crt,asc_crt
+asc_lrt,asc_lrt,asc_lrt,asc_lrt,asc_lrt,asc_lrt,asc_lrt,asc_lrt,asc_lrt,asc_lrt,asc_lrt
+asc_transit,asc_transit,asc_transit,asc_transit,asc_transit,asc_transit,asc_transit,asc_transit,asc_transit,asc_transit,asc_transit
 taxi_ASC,taxi_ASC,taxi_ASC,taxi_ASC,taxi_ASC,taxi_ASC,taxi_ASC,taxi_ASC,taxi_ASC,taxi_ASC,taxi_ASC
 tnc_shared_ASC,tnc_shared_ASC,tnc_shared_ASC,tnc_shared_ASC,tnc_shared_ASC,tnc_shared_ASC,tnc_shared_ASC,tnc_shared_ASC,tnc_shared_ASC,tnc_shared_ASC,tnc_shared_ASC
 coef_nest_root,coef_nest_root,coef_nest_root,coef_nest_root,coef_nest_root,coef_nest_root,coef_nest_root,coef_nest_root,coef_nest_root,coef_nest_root,coef_nest_root

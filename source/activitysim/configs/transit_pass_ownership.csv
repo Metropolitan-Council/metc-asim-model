@@ -1,6 +1,5 @@
 Label,Description,Expression,no_pass,pass
 util_not_a_worker,No pass for non-workers,@~df.is_worker,0,-999.0
-# Old Code below
 util_ft,Full-time worker,@df.pemploy==PEMPLOY_FULL,0,coef_ft_pass
 util_pt,Part-time worker,@df.pemploy==PEMPLOY_PART,0,coef_pt_pass
 util_un,University/College,@df.ptype==PTYPE_SCHOOL,0,coef_un_pass
