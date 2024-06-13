@@ -13,38 +13,16 @@ LOOP TOD=1,5,1
  DISTRIBUTEMULTISTEP PROCESSID='transit' PROCESSNUM=@TOD@
 
 
-RUN PGM=PUBLIC TRANSPORT PRNFILE="%SCENARIO_DIR%\transit\XIT_WK_LD_PRN_%ITER%_@TPER@.prn" MSG='@TPER@ Walk Transit Assignment'
-FILEI ROUTEI[1] = "%SCENARIO_DIR%\transit\XIT_WK_RTE_%ITER%_@TPER@.RTE"
-FILEO LINKO[1] = "%SCENARIO_DIR%\transit\XIT_WK_LD_%ITER%_@TPER@.DBF",
+RUN PGM=PUBLIC TRANSPORT PRNFILE="%SCENARIO_DIR%\transit\XIT_WK_LD_PRN_%PREV_ITER%_@TPER@.prn" MSG='@TPER@ Walk Transit Assignment'
+FILEI ROUTEI[1] = "%SCENARIO_DIR%\transit\XIT_WK_RTE_%PREV_ITER%_@TPER@.RTE"
+FILEO LINKO[1] = "%SCENARIO_DIR%\transit\XIT_WK_LD_%PREV_ITER%_@TPER@.DBF",
 ONOFFS=Y, NTLEGS=Y, SKIP0=Y
-FILEI MATI[1] = "%SCENARIO_DIR%\transit\XIT_TRIP_%ITER%_@TPER@_CLEAN.trp"
-; FILEI FAREI = "%XIT_FARE%"
-FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_WK_LD_RPT_%ITER%_@TPER@.RPT"
-; FILEI FACTORI[1] = "%TRANSIT_FOLDER%\@TPER3@_WK_%xit_fac_year%.FAC"
-; FILEI NTLEGI[3] = "%SCENARIO_DIR%\transit\XIT_XFER_NTL_@TPER@.NTL"
-; FILEI NTLEGI[2] = "%SCENARIO_DIR%\transit\XIT_DRACC_NTL_%ITER%_@TPER@.NTL"
-; FILEI NTLEGI[1] = "%SCENARIO_DIR%\transit\XIT_WKACC_NTL_@TPER@.NTL"
-; FILEI LINEI[1] = "%XIT_LINES%"
-; FILEI SYSTEMI = "%XIT_SYSTEM%"
-FILEI NETI = "%SCENARIO_DIR%\transit\XIT_WK_NET_%ITER%_@TPER@.NET"
-FILEO NETO = "%SCENARIO_DIR%\transit\XIT_LDNET_WK_%ITER%_@TPER2@.net"
-; FILEI FAREMATI[1] = "%XIT_FAREMAT%"
+FILEI MATI[1] = "%SCENARIO_DIR%\transit\XIT_TRIP_%PREV_ITER%_@TPER@_CLEAN.trp"
+FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_WK_LD_RPT_%PREV_ITER%_@TPER@.RPT"
+FILEI NETI = "%SCENARIO_DIR%\transit\XIT_WK_NET_%PREV_ITER%_@TPER@.NET"
+FILEO NETO = "%SCENARIO_DIR%\transit\XIT_LDNET_WK_%PREV_ITER%_@TPER@.net"
 
-    ; PARAMETERS  HDWAYPERIOD=@TOD@
-       
-    ; PROCESS PHASE = DATAPREP
-       ; TRANTIME[5]=li.loctime       ; local
-       ; TRANTIME[6]=li.loctime       ; local
-       ; TRANTIME[7]=li.exptime       ; express
-       ; TRANTIME[8]=li.lrttime       ; lrt
-       ; TRANTIME[9]=li.exptime       ; commuter bus
-       ; GENERATE,
-           ; READNTLEGI=1             ; walk  access link (mode=1)
-       ; GENERATE,
-          ; READNTLEGI=2             ; drive access link (mode=2)
-       ; GENERATE,
-           ; READNTLEGI=3             ; transfer link (mode=4)
-    ; ENDPROCESS
+    PARAMETERS  HDWAYPERIOD=@TOD@
     
  PARAMETERS TRIPSIJ[1] = MI.1.WalkToTransit, NOROUTEMSGS = 9999, NOROUTEERRS = 9999   ; ASSIGN WALK TO Transit TRIPS
 

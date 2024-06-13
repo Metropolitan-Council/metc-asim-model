@@ -3,28 +3,28 @@
 *cluster transit 1-5 START EXIT
 LOOP TOD=1,5,1
 
- IF(TOD=1) TPER='EA' ASSIGNNAME='EA Period'  PER ='EA' TPER2='NT' TPER3='OP'
- IF(TOD=2) TPER='AM' ASSIGNNAME='AM Period'  PER ='AM' TPER2='AM' TPER3='PK'
- IF(TOD=3) TPER='MD' ASSIGNNAME='MD Period'  PER ='MD' TPER2='MD' TPER3='OP'
- IF(TOD=4) TPER='PM' ASSIGNNAME='PM Period'  PER ='PM' TPER2='PM' TPER3='PK'
- IF(TOD=5) TPER='NT' ASSIGNNAME='NT Period'  PER ='NT' TPER2='NT' TPER3='OP'
+ IF(TOD=1) TPER='EA' ASSIGNNAME='EA Period'  PER ='NT' TPER2 = 'OP'
+ IF(TOD=2) TPER='AM' ASSIGNNAME='AM Period'  PER ='AM' TPER2 = 'PK'
+ IF(TOD=3) TPER='MD' ASSIGNNAME='MD Period'  PER ='MD' TPER2 = 'OP'
+ IF(TOD=4) TPER='PM' ASSIGNNAME='PM Period'  PER ='PM' TPER2 = 'PK'
+ IF(TOD=5) TPER='NT' ASSIGNNAME='NT Period'  PER ='NT' TPER2 = 'OP'
 
  DISTRIBUTEMULTISTEP PROCESSID='transit' PROCESSNUM=@TOD@
 
-RUN PGM=PUBLIC TRANSPORT PRNFILE="%SCENARIO_DIR%\transit\XIT_DRE_LD_PRN_%ITER%_@TPER@.prn" MSG='@TPER@ Drive Egress Transit Assignment'
-FILEO ROUTEO[1] = "%SCENARIO_DIR%\transit\XIT_DRE_LD_RTE_%ITER%_@TPER@.RTE"
-FILEO LINKO[1] = "%SCENARIO_DIR%\transit\XIT_DRE_LD_%ITER%_@TPER@.DBF",
-ONOFFS=Y, NTLEGS=Y, SKIP0=Y
-FILEI MATI[1] = "%SCENARIO_DIR%\transit\XIT_TRIP_%ITER%_@TPER@.trp"
+RUN PGM=PUBLIC TRANSPORT PRNFILE="%SCENARIO_DIR%\transit\XIT_DRE_LD_PRN_%ITER%_@TPER@.prn" MSG='@TPER@ Drive Egress Transit Skim'
 FILEI FAREI = "%XIT_FARE%"
-FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_DRE_LD_RPT_%ITER%_@TPER@.RPT"
-FILEI FACTORI[1] = "%TRANSIT_FOLDER%\@TPER3@_DRE_%xit_fac_year%.FAC"
+FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_DRE_RPT_%ITER%_@TPER@.RPT"
+FILEO ROUTEO[1] = "%SCENARIO_DIR%\transit\XIT_DRE_RTE_%ITER%_@TPER@.RTE"
+FILEO MATO[1] = "%SCENARIO_DIR%\transit\XIT_DRE_SKIM_%ITER%_@TPER@.skm",
+ MO=1-14 NAME=IVT_Bus,IVT_LB,IVT_Exp,IVT_LRT,IVT_CRT,WAIT1,WAIT2,XFERS,WALKT,FARE,XBFARE,CRTFare,DR_ACCR,DR_ACCD
+FILEO NETO = "%SCENARIO_DIR%\transit\XIT_DRE_NET_%ITER%_@TPER@.NET"
+FILEI FACTORI[1] = "%TRANSIT_FOLDER%\@TPER2@_DRE_%xit_fac_year%.FAC"
 FILEI NTLEGI[3] = "%SCENARIO_DIR%\transit\XIT_XFER_NTL_@TPER@.NTL"
 FILEI NTLEGI[2] = "%SCENARIO_DIR%\transit\XIT_DRACC_NTL_%ITER%_@TPER@.NTL"
 FILEI NTLEGI[1] = "%SCENARIO_DIR%\transit\XIT_WKACC_NTL_@TPER@.NTL"
 FILEI LINEI[1] = "%XIT_LINES%"
 FILEI SYSTEMI = "%XIT_SYSTEM%"
-FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_%ITER%_@TPER2@.net"
+FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_%ITER%_@TPER@.NET"
 FILEI FAREMATI[1] = "%XIT_FAREMAT%"
 
     PARAMETERS  HDWAYPERIOD=@TOD@
@@ -43,9 +43,22 @@ FILEI FAREMATI[1] = "%XIT_FAREMAT%"
             READNTLEGI=3             ; transfer link (mode=4)
     ENDPROCESS
     
- PARAMETERS TRIPSIJ[1] = MI.1.2, NOROUTEERRS=9999999         ; ASSIGN Drive TO Transit TRIPS
-
- REPORT LINES=T, SORT=MODE, LINEVOLS=T, STOPSONLY=T, SKIP0=T, XFERSUM=MODE
+    PROCESS PHASE = SKIMIJ
+        MW[1]=TIMEA(0,5)            ; IVTT for local bus (mode=5) 
+        MW[2]=TIMEA(0,6)            ; IVTT local limited stop bus (mode=6)
+        MW[3]=TIMEA(0,7)            ; IVTT for Express Bus (mode=7)
+        MW[4]=TIMEA(0,8)            ; IVTT for LRT (mode=8)
+        MW[5]=TIMEA(0,9)            ; IVTT for CRT (mode=9)
+        MW[6]=IWAITA(0)             ; initial wait time
+        MW[7]=XWAITA(0)             ; transfer wait time
+        MW[8]=BRDINGS(0,5,6,7,8,9)  ; number of boardings
+        MW[9]=TIMEA(0,1,4)            ; OVTT for walk access & transfer
+        MW[10]=FAREA(0,5,6,8)       ; local, limited and LRT Fares
+        MW[11]=FAREA(0,7)           ; Express Fare        
+        MW[12]=FAREA(0,9)           ; CRT Fare        
+        MW[13]=TIMEA(0,2)
+        MW[14]=DIST(0,2)
+    ENDPROCESS
 
 ENDRUN
 

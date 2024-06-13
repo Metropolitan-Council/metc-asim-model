@@ -23,7 +23,7 @@ FILEI NTLEGI[2] = "%SCENARIO_DIR%\transit\XIT_DRACC_NTL_%ITER%_@TPER@.NTL"
 FILEI NTLEGI[1] = "%SCENARIO_DIR%\transit\XIT_WKACC_NTL_@TPER@.NTL"
 FILEI LINEI[1] = "%XIT_LINES%"
 FILEI SYSTEMI = "%XIT_SYSTEM%"
-FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_%ITER%_@TPER@.NET"
+FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_%PREV_ITER%_@TPER@.NET"
 FILEI FAREMATI[1] = "%XIT_FAREMAT%"
 
 
@@ -38,8 +38,6 @@ FILEI FAREMATI[1] = "%XIT_FAREMAT%"
        TRANTIME[9]=li.exptime       ; commuter bus
        GENERATE,
            READNTLEGI=1             ; walk  access link (mode=1)
-       GENERATE,
-           READNTLEGI=2             ; drive access link (mode=2)
        GENERATE,
            READNTLEGI=3             ; transfer link (mode=4)
     ENDPROCESS

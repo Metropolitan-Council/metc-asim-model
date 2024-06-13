@@ -15,18 +15,19 @@
 
 LOOP TOD=1,5,1
 
- IF(TOD=1) TPER='EA' ASSIGNNAME='EA Period' PER ='EA' TPER2 = 'OP' TPER3 = 'NT'
- IF(TOD=2) TPER='AM' ASSIGNNAME='AM Period' PER ='AM' TPER2 = 'PK' TPER3 = 'AM' 
- IF(TOD=3) TPER='MD' ASSIGNNAME='MD Period' PER ='MD' TPER2 = 'OP' TPER3 = 'MD'
- IF(TOD=4) TPER='PM' ASSIGNNAME='PM Period' PER ='PM' TPER2 = 'PK' TPER3 = 'PM'
- IF(TOD=5) TPER='NT' ASSIGNNAME='NT Period' PER ='NT' TPER2 = 'OP' TPER3 = 'NT'
+ IF(TOD=1) TPER='EA' ASSIGNNAME='EA Period' PER ='EA' TPER2 = 'OP' TPER3 = 'NT' HW = 1
+ IF(TOD=2) TPER='AM' ASSIGNNAME='AM Period' PER ='AM' TPER2 = 'PK' TPER3 = 'AM' HW = 2 
+ IF(TOD=3) TPER='MD' ASSIGNNAME='MD Period' PER ='MD' TPER2 = 'OP' TPER3 = 'MD' HW = 3
+ IF(TOD=4) TPER='PM' ASSIGNNAME='PM Period' PER ='PM' TPER2 = 'PK' TPER3 = 'PM' HW = 4
+ IF(TOD=5) TPER='NT' ASSIGNNAME='NT Period' PER ='NT' TPER2 = 'OP' TPER3 = 'NT' HW = 5
 
  DISTRIBUTEMULTISTEP PROCESSID='transit' PROCESSNUM=@TOD@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 ;
 ; Former TSNET00C.S
+
 RUN PGM=NETWORK MSG='Calculate Transit Speeds for @TPER@'
-FILEO NETO = "%SCENARIO_DIR%\transit\XIT_NET_0_@TPER@.net"
+FILEO NETO = "%SCENARIO_DIR%\transit\XIT_NET_%PREV_ITER%_@TPER@.net"
 FILEI LOOKUPI[2] = "%TRANSIT_FOLDER%\@TPER2@ExpressDelays.txt"
 FILEI LOOKUPI[1] = "%TRANSIT_FOLDER%\@TPER2@LocalDelays.txt"
 FILEI LINKI[1] = "%SCENARIO_DIR%\transit\TransitBase.NET"
@@ -73,8 +74,17 @@ FILEI LINKI[1] = "%SCENARIO_DIR%\transit\TransitBase.NET"
 
     ; Code free flow speed for all links
     LOCTIME = (DISTANCE * 60) / SPEED
+	; Quick adjustment to transit speeds due to local busses being too high
+	; 
+	; Per Insight report pg 3, local busses are over twice as fast as 
+	; they should be, so for any roadway that isn't a freeway, I'm 
+	; slowing them down by half
+	IF(LI.1.RCI > 3)
+	  LOCTIME = LOCTIME * 0.5
+	ENDIF
     EXPTIME = (DISTANCE * 60) / SPEED
 	LRTTIME = (DISTANCE * 60) / SPEED
+	CRTTIME = (DISTANCE * 60) / 45 ; Per Northstar timetables - 45 MPH effective speed
     
 ;;--------------------------------------------------------------------------    
 
@@ -129,14 +139,14 @@ FILEI LINKI[1] = "%SCENARIO_DIR%\transit\TransitBase.NET"
 ENDRUN
 
 ; Former TSPTR00D.S
-RUN PGM=PUBLIC TRANSPORT MSG='Build %TPER% Walk Access Connectors'
+RUN PGM=PUBLIC TRANSPORT MSG='Build @TPER@ Walk Access Connectors'
 FILEO NTLEGO = "%SCENARIO_DIR%\transit\XIT_WKACC_NTL_@TPER@.tmp"
 FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_WKACC_RPT_@TPER@.rpt"
 FILEO NETO = "%SCENARIO_DIR%\transit\XIT_WKACC_NET_@TPER@.NET"
 FILEI SYSTEMI = "%xit_system%"
 FILEI FACTORI[1] = "%TRANSIT_FOLDER%\@TPER2@_WK_2010.FAC"
 FILEI LINEI[1] = "%xit_lines%"
-FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_0_@TPER@.net"
+FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_%PREV_ITER%_@TPER@.net"
 
     REPORT Lines=T
     REREPORT Accesslegs=T, Egresslegs=T, Xferlegs=T, Lines=T, STOPNODES=T
@@ -154,18 +164,18 @@ FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_0_@TPER@.net"
         TRANTIME[6]=li.loctime       ; local
         TRANTIME[7]=li.exptime       ; express
         TRANTIME[8]=li.lrttime       ; lrt
-        TRANTIME[9]=li.exptime       ; commuter bus
+        TRANTIME[9]=li.crttime       ; commuter bus
 
         generate,
         fromnode=1-3061,
         tonode=3100-999999,
         direction=3,
         oneway=F,
-        cost=li.Distance,
-        extractcost=(Li.Distance*60/_wlkspd),
+        cost=(Li.Distance*60/_wlkspd),
         excludelink=(li.RCI=1-5,13,14),   ;no walking on freeway, tollway,ramps and managed links
-        maxcost=4*0,5*2,                 ;set maximum walking distance to 2 Miles
-        maxntlegs=4*1,5*99,
+        maxcost=7*30.0,2*45.0,                 ;set maximum walking distance to 2 Miles
+        maxntlegs=99*10,
+		slack=99*10,
         ntlegmode=1
     ENDPHASE
 
@@ -180,9 +190,9 @@ FILEO NETO = "%SCENARIO_DIR%\transit\XIT_XFER_NET_@TPER@.NET"
 FILEI SYSTEMI = "%XIT_SYSTEM%"
 FILEI FACTORI[1] = "%TRANSIT_FOLDER%\@TPER2@_WK_2010.FAC"
 FILEI LINEI[1] = "%XIT_LINES%"
-FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_0_@TPER@.net"
+FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_%PREV_ITER%_@TPER@.net"
  
-    SKIPBADLINES = Y
+    SKIPBADLINES = N
     REPORT Lines=T
     REREPORT Accesslegs=T, Egresslegs=T, Xferlegs=T, Lines=T, STOPNODES=T
     HDWAYPERIOD=@TOD@
@@ -200,7 +210,7 @@ FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_0_@TPER@.net"
         TRANTIME[6]=li.loctime       ; local
         TRANTIME[7]=li.exptime       ; express
         TRANTIME[8]=li.lrttime       ; lrt
-        TRANTIME[9]=li.exptime       ; commuter bus
+        TRANTIME[9]=li.crttime       ; commuter bus
 
         ;*************************************
         ;    TRANSFER CONNECTORS
@@ -213,8 +223,9 @@ FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_0_@TPER@.net"
         oneway=F,
         excludelink=(li.RCI=1-5,13,14),   ;no walking on freeway, tollway, and managed links
         cost=(Li.Distance*60/_wlkspd),
-        maxcost=4*1,5*10,                 ;set maximum walking time to 10 minutes
-        maxntlegs=4*1,5*10,
+        maxcost=99*15,                 ;set maximum walking time to 10 minutes
+        maxntlegs=99*3,
+		slack=5,
         ntlegmode=4
        
     ENDPHASE
@@ -222,14 +233,14 @@ FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_0_@TPER@.net"
 ENDRUN
 
 ; Former TSPTR00H.s
-RUN PGM=PUBLIC TRANSPORT MSG='Build %TPER% Drive Access Connectors'
-FILEO NTLEGO = "%SCENARIO_DIR%\transit\XIT_DRACC_NTL_0_@TPER@.NTL"
-FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_DRACC_RPT_0_@TPER@.RPT"
-FILEO NETO = "%SCENARIO_DIR%\transit\XIT_DRACC_NET_0_@TPER@.NET"
+RUN PGM=PUBLIC TRANSPORT MSG='Build @TPER@ Drive Access Connectors'
+FILEO NTLEGO = "%SCENARIO_DIR%\transit\XIT_DRACC_NTL_%PREV_ITER%_@TPER@.tmp"
+FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_DRACC_RPT_%PREV_ITER%_@TPER@.RPT"
+FILEO NETO = "%SCENARIO_DIR%\transit\XIT_DRACC_NET_%PREV_ITER%_@TPER@.NET"
 FILEI SYSTEMI = "%XIT_SYSTEM%"
 FILEI FACTORI[1] = "%TRANSIT_FOLDER%\@TPER2@_WK_2010.FAC"
 FILEI LINEI[1] = "%XIT_LINES%"
-FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_0_@TPER@.net"
+FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_%PREV_ITER%_@TPER@.net"
 
     REPORT Lines=T
     REREPORT Accesslegs=T, Egresslegs=T, Xferlegs=T, Lines=T, STOPNODES=T
@@ -248,7 +259,7 @@ FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_0_@TPER@.net"
         TRANTIME[6]=li.loctime       ; local
         TRANTIME[7]=li.exptime       ; express
         TRANTIME[8]=li.lrttime       ; lrt
-        TRANTIME[9]=li.exptime       ; commuter bus
+        TRANTIME[9]=li.crttime       ; commuter bus
 
         Read FILE = "%XIT_PNRNODES%"
     ENDPHASE
@@ -256,25 +267,26 @@ FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_0_@TPER@.net"
 ENDRUN
 
 ; Former TSPIL00C.S
-*copy "%SCENARIO_DIR%\transit\XIT_WKACC_NTL_%TPER%.tmp"+"%TRANSIT_FOLDER%\WalkOverrides.txt" "%SCENARIO_DIR%\transit\XIT_WKACC_NTL_%TPER%.ntl"
-*copy "%SCENARIO_DIR%\transit\XIT_XFER_NTL_%TPER%.tmp"+"%TRANSIT_FOLDER%\TransferOverrides.txt" "%SCENARIO_DIR%\transit\XIT_XFER_NTL_%TPER%.ntl"
-*copy "%SCENARIO_DIR%\transit\XIT_DRACC_NTL_0_%TPER%.tmp"+"%TRANSIT_FOLDER%\DriveOverrides.txt" "%SCENARIO_DIR%\transit\XIT_DRACC_NTL_0_%TPER%.ntl"
+*copy /Y "%SCENARIO_DIR%\transit\XIT_WKACC_NTL_@TPER@.tmp"+"%TRANSIT_FOLDER%\WalkOverrides.txt" "%SCENARIO_DIR%\transit\XIT_WKACC_NTL_@TPER@.ntl"
+*copy /Y "%SCENARIO_DIR%\transit\XIT_XFER_NTL_@TPER@.tmp"+"%TRANSIT_FOLDER%\TransferOverrides.txt" "%SCENARIO_DIR%\transit\XIT_XFER_NTL_@TPER@.ntl"
+*copy /Y "%SCENARIO_DIR%\transit\XIT_DRACC_NTL_%PREV_ITER%_@TPER@.tmp"+"%TRANSIT_FOLDER%\DriveOverrides.txt" "%SCENARIO_DIR%\transit\XIT_DRACC_NTL_%PREV_ITER%_@TPER@.ntl"
+
 
 ; Former TSPTR00A.S
-RUN PGM=PUBLIC TRANSPORT PRNFILE="%SCENARIO_DIR%\transit\XIT_WK_PRN_0_@TPER@.prn" MSG='@TPER@ Walk Transit Skim'
+RUN PGM=PUBLIC TRANSPORT PRNFILE="%SCENARIO_DIR%\transit\XIT_WK_PRN_%PREV_ITER%_@TPER@.prn" MSG='@TPER@ Walk Transit Skim'
 FILEI FAREI = "%xit_fare%"
-FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_WK_RPT_0_@TPER@.RPT"
-FILEO ROUTEO[1] = "%SCENARIO_DIR%\transit\XIT_WK_RTE_0_@TPER@.RTE" REPORTI=2297
-FILEO MATO[1] = "%SCENARIO_DIR%\transit\XIT_WK_SKIM_0_@TPER@.skm",
+FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_WK_RPT_%PREV_ITER%_@TPER@.RPT"
+FILEO ROUTEO[1] = "%SCENARIO_DIR%\transit\XIT_WK_RTE_%PREV_ITER%_@TPER@.RTE"
+FILEO MATO[1] = "%SCENARIO_DIR%\transit\XIT_WK_SKIM_%PREV_ITER%_@TPER@.skm",
  MO=1-13 NAME=IVT_Bus,IVT_LB,IVT_Exp,IVT_LRT,IVT_CRT,WAIT1,WAIT2,XFERS,AWALKT,XWALKT,FARE,XBFARE,CRTFare
-FILEO NETO = "%SCENARIO_DIR%\transit\XIT_WK_NET_0_@TPER@.NET"
+FILEO NETO = "%SCENARIO_DIR%\transit\XIT_WK_NET_%PREV_ITER%_@TPER@.NET"
 FILEI FACTORI[1] = "%TRANSIT_FOLDER%\@TPER2@_WK_2010.FAC"
 FILEI NTLEGI[3] = "%SCENARIO_DIR%\transit\XIT_XFER_NTL_@TPER@.ntl"
 FILEI NTLEGI[2] = "%SCENARIO_DIR%\transit\XIT_DRACC_NTL_@TPER@.ntl"
 FILEI NTLEGI[1] = "%SCENARIO_DIR%\transit\XIT_WKACC_NTL_@TPER@.ntl"
 FILEI LINEI[1] = "%xit_lines%"
 FILEI SYSTEMI = "%xit_system%"
-FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_0_@TPER@.net"
+FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_%PREV_ITER%_@TPER@.net"
 FILEI FAREMATI[1] = "%xit_faremat%"
 
     PARAMETERS  HDWAYPERIOD=@TOD@
@@ -284,7 +296,7 @@ FILEI FAREMATI[1] = "%xit_faremat%"
        TRANTIME[6]=li.loctime       ; local
        TRANTIME[7]=li.exptime       ; express
        TRANTIME[8]=li.lrttime       ; lrt
-       TRANTIME[9]=li.exptime       ; commuter bus
+       TRANTIME[9]=li.crttime       ; commuter bus
        GENERATE,
            READNTLEGI=1             ; walk  access link (mode=1)
        GENERATE,
@@ -310,21 +322,22 @@ FILEI FAREMATI[1] = "%xit_faremat%"
 ENDRUN
 
 ; Former TSPTR00C.S
-RUN PGM=PUBLIC TRANSPORT PRNFILE="%SCENARIO_DIR%\transit\XIT_DR_PRN_0_@TPER@.prn" MSG='@TPER@ Drive Transit Access Skim'
+RUN PGM=PUBLIC TRANSPORT PRNFILE="%SCENARIO_DIR%\transit\XIT_DR_PRN_%PREV_ITER%_@TPER@.prn" MSG='@TPER@ Drive Transit Access Skim'
 FILEI FAREI = "%XIT_FARE%"
-FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_DR_RPT_0_@TPER@.RPT"
-FILEO ROUTEO[1] = "%SCENARIO_DIR%\transit\XIT_DR_RTE_0_@TPER@.RTE"
-FILEO MATO[1] = "%SCENARIO_DIR%\transit\XIT_DR_SKIM_0_@TPER@.skm",
+FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_DR_RPT_%PREV_ITER%_@TPER@.RPT"
+FILEO ROUTEO[1] = "%SCENARIO_DIR%\transit\XIT_DR_RTE_%PREV_ITER%_@TPER@.RTE"
+FILEO MATO[1] = "%SCENARIO_DIR%\transit\XIT_DR_SKIM_%PREV_ITER%_@TPER@.skm",
  MO=1-15 NAME=IVT_Bus,IVT_LB,IVT_Exp,IVT_LRT,IVT_CRT,WAIT1,WAIT2,XFERS,AWALKT,XWALKT,FARE,XBFARE,CRTFare,DR_ACCR,DR_ACCD
-FILEO NETO = "%SCENARIO_DIR%\transit\XIT_DR_NET_0_@TPER@.NET"
+FILEO NETO = "%SCENARIO_DIR%\transit\XIT_DR_NET_%PREV_ITER%_@TPER@.NET"
 FILEI FACTORI[1] = "%TRANSIT_FOLDER%\@TPER2@_DR_2010.FAC"
 FILEI NTLEGI[3] = "%SCENARIO_DIR%\transit\XIT_XFER_NTL_@TPER@.NTL"
-FILEI NTLEGI[2] = "%SCENARIO_DIR%\transit\XIT_DRACC_NTL_0_@TPER@.NTL"
+FILEI NTLEGI[2] = "%SCENARIO_DIR%\transit\XIT_DRACC_NTL_%PREV_ITER%_@TPER@.NTL"
 FILEI NTLEGI[1] = "%SCENARIO_DIR%\transit\XIT_WKACC_NTL_@TPER@.NTL"
 FILEI LINEI[1] = "%XIT_LINES%"
 FILEI SYSTEMI = "%XIT_SYSTEM%"
-FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_0_@TPER@.net"
+FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_%PREV_ITER%_@TPER@.net"
 FILEI FAREMATI[1] = "%XIT_FAREMAT%"
+
 
     PARAMETERS  HDWAYPERIOD=@TOD@
    
@@ -333,7 +346,7 @@ FILEI FAREMATI[1] = "%XIT_FAREMAT%"
         TRANTIME[6]=li.loctime       ; local
         TRANTIME[7]=li.exptime       ; express
         TRANTIME[8]=li.lrttime       ; lrt
-        TRANTIME[9]=li.exptime       ; commuter bus
+        TRANTIME[9]=li.crttime       ; commuter bus
         GENERATE,
             READNTLEGI=1             ; walk  access link (mode=1)
         GENERATE,
@@ -362,20 +375,20 @@ FILEI FAREMATI[1] = "%XIT_FAREMAT%"
 ENDRUN
 
 ; Former TSPTR00Z.S
-RUN PGM=PUBLIC TRANSPORT PRNFILE="%SCENARIO_DIR%\transit\XIT_DRE_PRN_0_@TPER@.prn" MSG='@TPER@ Drive Transit Egress Skim'
+RUN PGM=PUBLIC TRANSPORT PRNFILE="%SCENARIO_DIR%\transit\XIT_DRE_PRN_%PREV_ITER%_@TPER@.prn" MSG='@TPER@ Drive Transit Egress Skim'
 FILEI FAREI = "%XIT_FARE%"
-FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_DRE_RPT_0_@TPER@.RPT"
-FILEO ROUTEO[1] = "%SCENARIO_DIR%\transit\XIT_DRE_RTE_0_@TPER@.RTE" 
-FILEO MATO[1] = "%SCENARIO_DIR%\transit\XIT_DRE_SKIM_0_@TPER@.skm",
+FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_DRE_RPT_%PREV_ITER%_@TPER@.RPT"
+FILEO ROUTEO[1] = "%SCENARIO_DIR%\transit\XIT_DRE_RTE_%PREV_ITER%_@TPER@.RTE" 
+FILEO MATO[1] = "%SCENARIO_DIR%\transit\XIT_DRE_SKIM_%PREV_ITER%_@TPER@.skm",
  MO=1-15 NAME=IVT_Bus,IVT_LB,IVT_Exp,IVT_LRT,IVT_CRT,WAIT1,WAIT2,XFERS,AWALKT,XWALKT,FARE,XBFARE,CRTFare,DR_ACCR,DR_ACCD
-FILEO NETO = "%SCENARIO_DIR%\transit\XIT_DRE_NET_0_@TPER@.NET"
+FILEO NETO = "%SCENARIO_DIR%\transit\XIT_DRE_NET_%PREV_ITER%_@TPER@.NET"
 FILEI FACTORI[1] = "%TRANSIT_FOLDER%\@TPER2@_DRE_2010.FAC"
 FILEI NTLEGI[3] = "%SCENARIO_DIR%\transit\XIT_XFER_NTL_@TPER@.NTL"
-FILEI NTLEGI[2] = "%SCENARIO_DIR%\transit\XIT_DRACC_NTL_0_@TPER@.NTL"
+FILEI NTLEGI[2] = "%SCENARIO_DIR%\transit\XIT_DRACC_NTL_%PREV_ITER%_@TPER@.NTL"
 FILEI NTLEGI[1] = "%SCENARIO_DIR%\transit\XIT_WKACC_NTL_@TPER@.NTL"
 FILEI LINEI[1] = "%XIT_LINES%"
 FILEI SYSTEMI = "%XIT_SYSTEM%"
-FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_0_@TPER@.net"
+FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_%PREV_ITER%_@TPER@.net"
 FILEI FAREMATI[1] = "%XIT_FAREMAT%"
 
     PARAMETERS  HDWAYPERIOD=@TOD@
@@ -385,7 +398,7 @@ FILEI FAREMATI[1] = "%XIT_FAREMAT%"
         TRANTIME[6]=li.loctime       ; local
         TRANTIME[7]=li.exptime       ; express
         TRANTIME[8]=li.lrttime       ; lrt
-        TRANTIME[9]=li.exptime       ; commuter bus
+        TRANTIME[9]=li.crttime       ; commuter bus
         GENERATE,
             READNTLEGI=1             ; walk  access link (mode=1)
         GENERATE,
@@ -412,7 +425,6 @@ FILEI FAREMATI[1] = "%XIT_FAREMAT%"
         MW[15]=DIST(0,2)
     ENDPROCESS
 ENDRUN
-
 
 ENDDISTRIBUTEMULTISTEP
 ENDLOOP
