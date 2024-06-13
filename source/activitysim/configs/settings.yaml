@@ -74,9 +74,9 @@ household_median_value_of_time:
   4: 12.86
 
 
-trace_hh_id: #84476
+trace_hh_id: 1107760
 #trace_od: [5, 11]
-resume_after: trip_purpose
+resume_after: 
 
 models:
   ### mp_init_proto_pop (single process)
@@ -124,8 +124,8 @@ models:
   ### mp_summarize step
   - write_data_dictionary
   - write_tables
-  # - write_trip_matrices
-  - track_skim_usage
+  - write_trip_matrices
+  # - track_skim_usage
 
 multiprocess_steps:
   - name: mp_init_proto_pop
