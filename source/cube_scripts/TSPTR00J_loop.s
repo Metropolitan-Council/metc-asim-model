@@ -10,12 +10,12 @@ LOOP TOD=1,5,1
  
 DISTRIBUTEMULTISTEP PROCESSID='transit' PROCESSNUM=@TOD@
 
-RUN PGM=PUBLIC TRANSPORT PRNFILE="%SCENARIO_DIR%\transit\XIT_WK_PRN_%ITER%_@TPER@.prn" MSG='@TPER@ Walk Transit Skim - Step 1'
+RUN PGM=PUBLIC TRANSPORT PRNFILE="%SCENARIO_DIR%\transit\XIT_WK_PRN_%ITER%_@TPER@.prn" MSG='@TPER@ Walk Transit Skims'
 FILEI FAREI = "%XIT_FARE%"
 FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_WK_RPT_%ITER%_@TPER@.RPT"
 FILEO ROUTEO[1] = "%SCENARIO_DIR%\transit\XIT_WK_RTE_%ITER%_@TPER@.RTE"
 FILEO MATO[1] = "%SCENARIO_DIR%\transit\XIT_WK_SKIM_%ITER%_@TPER@.SKM",
- MO=1-12 NAME=IVT_Bus,IVT_LB,IVT_Exp,IVT_LRT,IVT_CRT,WAIT1,WAIT2,XFERS,WALKT,FARE,XBFARE,CRTFare
+ MO=1-13 NAME=IVT_Bus,IVT_LB,IVT_Exp,IVT_LRT,IVT_CRT,WAIT1,WAIT2,XFERS,AWALKT,XWALKT,FARE,XBFARE,CRTFare
 FILEO NETO = "%SCENARIO_DIR%\transit\XIT_WK_NET_%ITER%_@TPER@.NET"
 FILEI FACTORI[1] = "%TRANSIT_FOLDER%\@TPER2@_WK_%xit_fac_year%.FAC"
 FILEI NTLEGI[3] = "%SCENARIO_DIR%\transit\XIT_XFER_NTL_@TPER@.NTL"
@@ -51,10 +51,11 @@ FILEI FAREMATI[1] = "%XIT_FAREMAT%"
         MW[6]=IWAITA(0)             ; initial wait time
         MW[7]=XWAITA(0)             ; transfer wait time
         MW[8]=BRDINGS(0,5,6,7,8,9)  ; number of boardings
-        MW[9]=TIMEA(0,1,4)          ; OVTT for walk access & transfer
-        MW[10]=FAREA(0,5,6,8)       ; local, limited and LRT Fares
-        MW[11]=FAREA(0,7)           ; Express Fare        
-        MW[12]=FAREA(0,9)           ; CRT Fare
+        MW[9]=TIMEA(0,1)            ; OVTT for walk access & egress
+		MW[10]=TIMEA(0,4)           ; OVTT for transfer
+        MW[11]=FAREA(0,5,6,8)       ; local, limited and LRT Fares
+        MW[12]=FAREA(0,7)           ; Express Fare        
+        MW[13]=FAREA(0,9)           ; CRT Fare
     ENDPROCESS
 
 ENDRUN

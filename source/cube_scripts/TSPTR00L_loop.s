@@ -10,12 +10,12 @@ LOOP TOD=1,5,1
 
  DISTRIBUTEMULTISTEP PROCESSID='transit' PROCESSNUM=@TOD@
 
-RUN PGM=PUBLIC TRANSPORT PRNFILE="%SCENARIO_DIR%\transit\XIT_DR_PRN_%ITER%_@TPER@.prn" MSG='@TPER@ Drive Transit Skim - Step 1'
+RUN PGM=PUBLIC TRANSPORT PRNFILE="%SCENARIO_DIR%\transit\XIT_DR_PRN_%ITER%_@TPER@.prn" MSG='@TPER@ Drive Transit Skim'
 FILEI FAREI = "%XIT_FARE%"
 FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_DR_RPT_%ITER%_@TPER@.RPT"
 FILEO ROUTEO[1] = "%SCENARIO_DIR%\transit\XIT_DR_RTE_%ITER%_@TPER@.RTE"
 FILEO MATO[1] = "%SCENARIO_DIR%\transit\XIT_DR_SKIM_%ITER%_@TPER@.skm",
- MO=1-14 NAME=IVT_Bus,IVT_LB,IVT_Exp,IVT_LRT,IVT_CRT,WAIT1,WAIT2,XFERS,WALKT,FARE,XBFARE,CRTFare,DR_ACCR,DR_ACCD
+ MO=1-15 NAME=IVT_Bus,IVT_LB,IVT_Exp,IVT_LRT,IVT_CRT,WAIT1,WAIT2,XFERS,AWALKT,XWALKT,FARE,XBFARE,CRTFare,DR_ACCR,DR_ACCD
 FILEO NETO = "%SCENARIO_DIR%\transit\XIT_DR_NET_%ITER%_@TPER@.NET"
 FILEI FACTORI[1] = "%TRANSIT_FOLDER%\@TPER2@_DR_%xit_fac_year%.FAC"
 FILEI NTLEGI[3] = "%SCENARIO_DIR%\transit\XIT_XFER_NTL_@TPER@.NTL"
@@ -42,8 +42,8 @@ FILEI FAREMATI[1] = "%XIT_FAREMAT%"
             READNTLEGI=3             ; transfer link (mode=4)
     ENDPROCESS
     
-    PROCESS PHASE = SKIMIJ
-        MW[1]=TIMEA(0,5)            ; IVTT for local bus (mode=5) 
+    PROCESS PHASE = SKIMIJ	
+		MW[1]=TIMEA(0,5)            ; IVTT for local bus (mode=5) 
         MW[2]=TIMEA(0,6)            ; IVTT local limited stop bus (mode=6)
         MW[3]=TIMEA(0,7)            ; IVTT for Express Bus (mode=7)
         MW[4]=TIMEA(0,8)            ; IVTT for LRT (mode=8)
@@ -51,12 +51,13 @@ FILEI FAREMATI[1] = "%XIT_FAREMAT%"
         MW[6]=IWAITA(0)             ; initial wait time
         MW[7]=XWAITA(0)             ; transfer wait time
         MW[8]=BRDINGS(0,5,6,7,8,9)  ; number of boardings
-        MW[9]=TIMEA(0,1,4)            ; OVTT for walk access & transfer
-        MW[10]=FAREA(0,5,6,8)       ; local, limited and LRT Fares
-        MW[11]=FAREA(0,7)           ; Express Fare        
-        MW[12]=FAREA(0,9)           ; CRT Fare        
-        MW[13]=TIMEA(0,2)
-        MW[14]=DIST(0,2)
+        MW[9]=TIMEA(0,1)            ; OVTT for walk access & egress
+		MW[10]=TIMEA(0,4)           ; OVTT for transfer
+        MW[11]=FAREA(0,5,6,8)       ; local, limited and LRT Fares
+        MW[12]=FAREA(0,7)           ; Express Fare        
+        MW[13]=FAREA(0,9)           ; CRT Fare        
+        MW[14]=TIMEA(0,2)           ; Drive access time
+        MW[15]=DIST(0,2)            ; Drive access dist
     ENDPROCESS
 ENDRUN
 

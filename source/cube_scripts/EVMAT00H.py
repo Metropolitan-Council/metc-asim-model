@@ -63,7 +63,7 @@ def runZones():
 	try:
 		dbfFile = Dbf5(INPUT_FOLDER + INPUT_ZONES)
 	except FileNotFoundError:
-		print(f"The input zonal data file is not found, expected to be at {INPUT_FOLDER + INPUT_PERSON}. Check files and paths in set_parameters.txt.")
+		print(f"The input zonal data file is not found, expected to be at {INPUT_FOLDER + INPUT_ZONES}. Check files and paths in set_parameters.txt.")
 		return(2)
 	landUseDf = dbfFile.to_dataframe()
 	landUseDf.rename(columns = {"ZONE": "zone_id"}, inplace = True)
@@ -105,16 +105,16 @@ if rc > 0:
 	print("There were errors preparing data for ActivitySim. RUN FAILED.")
 	sys.exit(2)
 
-print("Preparing Synthetic Households for ActivitySim...")
-rc = runHH()
-if rc > 0:
-	print("There were errors preparing data for ActivitySim. RUN FAILED.")
-	sys.exit(2)
+# print("Preparing Synthetic Households for ActivitySim...")
+# rc = runHH()
+# if rc > 0:
+	# print("There were errors preparing data for ActivitySim. RUN FAILED.")
+	# sys.exit(2)
 	
-print("Preparing Synthetic Population for ActivitySim...")
-rc = runPer()
-if rc > 0:
-	print("There were errors preparing data for ActivitySim. RUN FAILED.")
-	sys.exit(2)
+# print("Preparing Synthetic Population for ActivitySim...")
+# rc = runPer()
+# if rc > 0:
+	# print("There were errors preparing data for ActivitySim. RUN FAILED.")
+	# sys.exit(2)
 	
-print("Reticulating Splines...")
+# print("Reticulating Splines...")
