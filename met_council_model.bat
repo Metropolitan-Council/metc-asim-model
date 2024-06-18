@@ -216,7 +216,7 @@ IF %ITER% EQU 1 (COPY %SCENARIO_DIR%\landuse\zones.dbf %SCENARIO_DIR%\landuse\zo
 
 :: Prepare skims for ActivitySim
 
-python.exe source\scripts\python\make_county_omx.py -l %SCENARIO_DIR%\landuse\landuse.csv -f STATEFP -i zone_id -m STATEFP -o %SCENARIO_DIR%\OMX\se_omx.omx
+python.exe source\python\make_county_omx.py -l %SE%\land_use.csv -f STATEFP -i zone_id -m STATEFP -o %SCENARIO_DIR%\OMX\se_omx.omx
 
 runtpp %SCRIPT_PATH%\EVMAT00G.s
 %check_cube_errors%
@@ -593,11 +593,11 @@ IF %CONV% EQU 0 (
 	echo Iteration=%ITER%
 	
 	:: Calculate transit speeds for period
-	REM runtpp %SCRIPT_PATH%\TSNET00F_loop.s
+	runtpp %SCRIPT_PATH%\TSNET00F_loop.s
 	%check_cube_errors%
 
 	:: Build period drive access connectors
-	REM runtpp %SCRIPT_PATH%\TSPTR00U_loop.s
+	runtpp %SCRIPT_PATH%\TSPTR00U_loop.s
 	%check_cube_errors%
 
 	FOR /L %%I IN (1, 1, 5) DO (
