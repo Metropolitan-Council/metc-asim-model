@@ -1,7 +1,7 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 RUN PGM=MATRIX MSG='Calculate convergence stats'
-FILEO PRINTO[1] = "%SCENARIO_DIR%\CONVERGE_%ITER%_%PER%.txt"
-FILEI DBI[1] = "%SCENARIO_DIR%\HWY_ITERCOMP_%PREV_ITER%_%ITER%_%PER%.dbf",
+FILEO PRINTO[1] = "%SCENARIO_DIR%\highway\CONVERGE_%ITER%_%PER%.txt"
+FILEI DBI[1] = "%SCENARIO_DIR%\highway\HWY_ITERCOMP_%PREV_ITER%_%ITER%_%PER%.dbf",
  SORT=A,B 
 
   zones = 1

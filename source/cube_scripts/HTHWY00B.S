@@ -1,16 +1,16 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
 RUN PGM=HIGHWAY MSG='Assignment Period: %ASSIGNNAME%'
-FILEI MATI[4] = "%SCENARIO_DIR%\HWY_SPC_AUTO_TRIP_%ITER%_%PER%.trp"
-FILEI MATI[3] = "%SCENARIO_DIR%\HWY_EXT_TRIP_%ITER%_%PER%.trp"
-FILEI MATI[2] = "%SCENARIO_DIR%\TRK_TRIP_%ITER%_%PER%.trp"
-FILEO PRINTO[1] = "%SCENARIO_DIR%\HWY_LDNET_PRN_%ITER%_%PER%.txt"
+FILEI MATI[4] = "%SCENARIO_DIR%\highway\HWY_SPC_AUTO_TRIP_%ITER%_%PER%.trp"
+FILEI MATI[3] = "%SCENARIO_DIR%\highway\HWY_EXT_TRIP_%ITER%_%PER%.trp"
+FILEI MATI[2] = "%SCENARIO_DIR%\highway\TRK_TRIP_%ITER%_%PER%.trp"
+FILEO PRINTO[1] = "%SCENARIO_DIR%\highway\HWY_LDNET_PRN_%ITER%_%PER%.txt"
 DISTRIBUTEINTRASTEP ProcessID="Intrastep", ProcessList=1-%max_threads%
-FILEO MATO[1] = "%SCENARIO_DIR%\HWY_SKIM_%ITER%_%PER%.tmp",
+FILEO MATO[1] = "%SCENARIO_DIR%\highway\HWY_SKIM_%ITER%_%PER%.tmp",
                  MO=1-120, 200-225, DEC[1]=5*120, COMBINE=T
-FILEO NETO = "%SCENARIO_DIR%\HWY_LDNET_%ITER%_%PER%.NET"
+FILEO NETO = "%SCENARIO_DIR%\highway\HWY_LDNET_%ITER%_%PER%.NET"
 FILEI NETI = "%SCENARIO_DIR%\%HWY_NET%"
 FILEI LOOKUPI[1] = "%LU_WILL2PAY%"
-FILEI MATI[1] = "%SCENARIO_DIR%\HWY_AUTO_TRIP_%ITER%_%PER%.trp"
+FILEI MATI[1] = "%SCENARIO_DIR%\highway\HWY_AUTO_TRIP_%ITER%_%PER%.trp"
 
 
  ; **********   Define Assignment Parameters    ************
