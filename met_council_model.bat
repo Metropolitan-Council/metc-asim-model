@@ -10,11 +10,6 @@ SetLocal EnableDelayedExpansion
 :: Future work could move this to a folder and name parameter files after model run
 CALL .\set_parameters.bat
 
-SET CONV=1
-SET ITER=4
-SET PREV_ITER=3
-GOTO Final_highway_assign
-
 COPY .\set_parameters.bat %SCENARIO_DIR%\set_parameters.txt
 
 :: ----------------------------------------------------------------------------
