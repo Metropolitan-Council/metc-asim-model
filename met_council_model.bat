@@ -10,6 +10,11 @@ SetLocal EnableDelayedExpansion
 :: Future work could move this to a folder and name parameter files after model run
 CALL .\set_parameters.bat
 
+SET CONV=1
+SET ITER=4
+SET PREV_ITER=3
+GOTO Final_highway_assign
+
 COPY .\set_parameters.bat %SCENARIO_DIR%\set_parameters.txt
 
 :: ----------------------------------------------------------------------------
@@ -214,12 +219,13 @@ ECHO CREATE EXOGENOUS VARIABLES
 ::%beginComment%
 IF %ITER% EQU 1 (COPY %SCENARIO_DIR%\landuse\zones.dbf %SCENARIO_DIR%\landuse\zones_%PREV_ITER%.dbf)
 
-:: Prepare skims for ActivitySim
-
-python.exe source\python\make_county_omx.py -l %SE%\land_use.csv -f STATEFP -i zone_id -m STATEFP -o %SCENARIO_DIR%\OMX\se_omx.omx
-
 runtpp %SCRIPT_PATH%\EVMAT00G.s
 %check_cube_errors%
+
+:: Prepare skims for ActivitySim
+python.exe source\activitysim\make_county_omx.py -l %SE%\land_use.csv -f STATEFP -i zone_id -m STATEFP -z 3061 -o %SCENARIO_DIR%\OMX\se_omx.omx
+python.exe source\activitysim\make_county_omx.py -l %SE%\land_use.csv -f DISTRICT -i zone_id -m DISTRICT -z 3061 -o %SCENARIO_DIR%\OMX\districts.omx
+
 REM goto veryEndOfFile
 :ASim
 :: Prepare sedata for ActivitySim
@@ -518,7 +524,7 @@ IF %ITER% EQU 1 (
         IF %%I EQU 3 (SET PER=MD)
         IF %%I EQU 4 (SET PER=PM)
         
-        REM runtpp %SCRIPT_PATH%\IINET00C.s
+        runtpp %SCRIPT_PATH%\IINET00C.s
         %check_cube_errors%
     )
 
@@ -649,7 +655,7 @@ IF %CONV% EQU 0 (
 	runtpp %SCRIPT_PATH%\TSPTR00X_loop.s
 	%check_cube_errors%
 )
-echo after
+:Final_highway_assign
 ::%beginComment%
 :: If the model is converged, run assignment one last time
 IF %CONV% EQU 1 (
@@ -736,13 +742,12 @@ IF %CONV% EQU 1 (
             SET CAPFAC=2.59
         )
         
-        runtpp %SCRIPT_PATH%\HTMAT00B.s
-        %check_cube_errors%
-        runtpp %SCRIPT_PATH%\HTHWY00B.s
-        %check_cube_errors%
-
-
- 
+		REM Not sure the next script should run - looks like it would cause double-counting
+        REM runtpp %SCRIPT_PATH%\HTMAT00B.s
+        REM %check_cube_errors%
+		REM was HTHWY00B.s - shouldn't these be the same??
+        runtpp %SCRIPT_PATH%\HAHWY00A.s
+        %check_cube_errors% 
     )
      :: End Cube Cluster
      runtpp %SCRIPT_PATH%\HTPIL00E.S
