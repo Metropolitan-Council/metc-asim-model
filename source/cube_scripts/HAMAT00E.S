@@ -5,32 +5,32 @@ FILEI MATI[1] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_AM1.TRP"
 FILEI MATI[2] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_AM2.TRP"
 FILEI MATI[3] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_AM3.TRP"
 FILEI MATI[4] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_AM4.TRP"
-FILEI MATI[5] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_MD.TRP"
+;FILEI MATI[5] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_MD.TRP"
 FILEI MATI[6] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_PM1.TRP"
 FILEI MATI[7] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_PM2.TRP"
 FILEI MATI[8] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_PM3.TRP"
 FILEI MATI[9] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_PM4.TRP"
 FILEI MATI[10] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_EV.TRP"
 FILEI MATI[11] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_ON.TRP"
-FILEO MATO[1] = "%SCENARIO_DIR%\highway\HWY_TRIP_%ITER%_AM.TRP",
+FILEO MATO[1] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_AM.TRP",
                  MO=1-12, DEC[1]=12*2, 
                  NAME = SOV_T_L, SOV_T_M, SOV_T_H,
                  HOV2_L, HOV2_M, HOV2_H, 
                  HOV3_L, HOV3_M, HOV3_H, 
                  SOV_N_L,SOV_N_M,SOV_N_H
-FILEO MATO[2] = "%SCENARIO_DIR%\highway\HWY_TRIP_%ITER%_MD.TRP",
-                 MO=13-24, DEC[1]=12*2, 
-                 NAME = SOV_T_L, SOV_T_M, SOV_T_H,
-                 HOV2_L, HOV2_M, HOV2_H, 
-                 HOV3_L, HOV3_M, HOV3_H, 
-                 SOV_N_L,SOV_N_M,SOV_N_H
-FILEO MATO[3] = "%SCENARIO_DIR%\highway\HWY_TRIP_%ITER%_PM.TRP",
+# FILEO MATO[2] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_MD.TRP",
+                 # MO=13-24, DEC[1]=12*2, 
+                 # NAME = SOV_T_L, SOV_T_M, SOV_T_H,
+                 # HOV2_L, HOV2_M, HOV2_H, 
+                 # HOV3_L, HOV3_M, HOV3_H, 
+                 # SOV_N_L,SOV_N_M,SOV_N_H
+FILEO MATO[3] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_PM.TRP",
                  MO=25-36, DEC[1]=12*2, 
                  NAME = SOV_T_L, SOV_T_M, SOV_T_H,
                  HOV2_L, HOV2_M, HOV2_H, 
                  HOV3_L, HOV3_M, HOV3_H, 
                  SOV_N_L,SOV_N_M,SOV_N_H
-FILEO MATO[4] = "%SCENARIO_DIR%\highway\HWY_TRIP_%ITER%_NT.TRP",
+FILEO MATO[4] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_NT.TRP",
                  MO=37-48, DEC[1]=12*2, 
                  NAME = SOV_T_L, SOV_T_M, SOV_T_H,
                  HOV2_L, HOV2_M, HOV2_H, 
