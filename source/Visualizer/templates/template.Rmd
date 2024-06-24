@@ -642,13 +642,11 @@ Chart Column 1 {data-width=200}
 --------------------------------------------
 ### Auto Ownership{data-height=265}
 ```{r Chart_Auto_Ownership}
-# if(IS_BASE_SURVEY=="Yes"){
-#   #cat("Census source: ", AO_CENSUS_LONG)
-#   # [3/31/2020] DH No census data used for SEMCOG
-#   base_df <- base_data[[which(base_csv_names=="autoOwnershipCensus")]]
-# }else{
+if(IS_BASE_SURVEY=="Yes"){
+  base_df <- census_data[[which(census_csv_names=="autoOwnershipcensus_2021")]]
+}else{
   base_df <- base_data[[which(base_csv_names=="autoOwnership")]]
-# }
+}
 
 build_df <- build_data[[which(build_csv_names=="autoOwnership")]]
 
@@ -964,7 +962,7 @@ ggplot(df, aes(x = base, y = build)) + geom_point(alpha = 0.3) +
   geom_abline(slope = 1, intercept = 0, color = "red") +
   scale_x_continuous("SEDATA Input", labels = comma, limits = c(0, max(df$freq, df$build_freq))) +
   scale_y_continuous("ActivitySim", labels = comma, limits = c(0, max(df$freq, df$build_freq))) +
-  annotate("text", x=60000, y=c(4000, 1500), label= c(text1, text2))
+  annotate("text", x=15000, y=c(4000, 1500), label= c(text1, text2))
 ```
 
 ### Low Income{data-height=575}

@@ -44,7 +44,7 @@ WD <- ABM_SUMMARY_DIR
 
 xwalk_file = file.path(ZONES_DIR, "TAZ2010.dbf")
 xwalk <- read.dbf(xwalk_file, as.is=FALSE)
-skim_file = file.path(SKIMS_DIR, "nmskims.omx")
+skim_file = file.path(SKIMS_DIR, "allskims_M.omx")
 
 print(paste("Reading data from",ABM_DIR,"..."))
 

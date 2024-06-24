@@ -337,7 +337,7 @@ def write_tables_to_excel(dfs,
                           col_title):
 
     # have to write first table to initialize sheet before writing title
-    dfs[0].to_excel(excel_writer, excel_sheet_name, startrow=start_row+2, startcol=start_col)
+    dfs[0].to_excel(excel_writer, excel_sheet_name, startrow=start_row+3, startcol=start_col+1)
     worksheet = excel_writer.sheets[excel_sheet_name]
     start_row += 1
     start_col += 1
@@ -507,7 +507,7 @@ def write_scaled_targets_to_excel(unscaled_model_tables,
                                   scaled_model_tables,
                                   scaled_calib_tables,
                                   output_dir):
-    excel_writer = pd.ExcelWriter(os.path.join(output_dir, 'scaled_targets.xlsx'))
+    excel_writer = pd.ExcelWriter(os.path.join(output_dir, 'scaled_targets_trip.xlsx'))
 
     start_col = 0
     # unscaled model
@@ -557,6 +557,25 @@ def write_scaled_targets_to_excel(unscaled_model_tables,
         sep_for_col_title=3,
         col_title='Tour Mode'
     )
+
+    df_diff = list()
+    for df_1, df_2 in zip(full_model_tables, full_calib_tables):
+        df_diff.append(df_1 - df_2)
+        df_diff[-1].name = df_1.name
+    #Added ASR - difference btwn full model and full calib
+    start_col += 13
+    # full calibration targets
+    write_tables_to_excel(
+        dfs=df_diff,
+        excel_writer=excel_writer,
+        excel_sheet_name='trip_mode_choice',
+        start_row=0,
+        start_col=start_col,
+        title='Trip Difference',
+        sep_for_col_title=3,
+        col_title='Tour Mode'
+    )
+
     start_col += 13
     # scaled model
     write_tables_to_excel(
