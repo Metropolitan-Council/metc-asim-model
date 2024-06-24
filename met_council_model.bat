@@ -742,9 +742,8 @@ IF %CONV% EQU 1 (
             SET CAPFAC=2.59
         )
         
-		REM Not sure the next script should run - looks like it would cause double-counting
-        REM runtpp %SCRIPT_PATH%\HTMAT00B.s
-        REM %check_cube_errors%
+        runtpp %SCRIPT_PATH%\HAMAT00A.s
+        %check_cube_errors%
 		REM was HTHWY00B.s - shouldn't these be the same??
         runtpp %SCRIPT_PATH%\HAHWY00A.s
         %check_cube_errors% 
