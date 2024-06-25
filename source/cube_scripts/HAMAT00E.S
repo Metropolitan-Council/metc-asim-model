@@ -18,12 +18,12 @@ FILEO MATO[1] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_AM.TRP",
                  HOV2_L, HOV2_M, HOV2_H, 
                  HOV3_L, HOV3_M, HOV3_H, 
                  SOV_N_L,SOV_N_M,SOV_N_H
-# FILEO MATO[2] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_MD.TRP",
-                 # MO=13-24, DEC[1]=12*2, 
-                 # NAME = SOV_T_L, SOV_T_M, SOV_T_H,
-                 # HOV2_L, HOV2_M, HOV2_H, 
-                 # HOV3_L, HOV3_M, HOV3_H, 
-                 # SOV_N_L,SOV_N_M,SOV_N_H
+;FILEO MATO[2] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_MD.TRP",
+;                 MO=13-24, DEC[1]=12*2, 
+;                 NAME = SOV_T_L, SOV_T_M, SOV_T_H,
+;                 HOV2_L, HOV2_M, HOV2_H, 
+;                 HOV3_L, HOV3_M, HOV3_H, 
+;                 SOV_N_L,SOV_N_M,SOV_N_H
 FILEO MATO[3] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_PM.TRP",
                  MO=25-36, DEC[1]=12*2, 
                  NAME = SOV_T_L, SOV_T_M, SOV_T_H,
@@ -61,21 +61,21 @@ FILEO MATO[4] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_NT.TRP",
 	MW[12] = MI.1.3 + MI.2.3 + MI.3.3 + MI.4.3 + MI.1.9 + MI.2.9 + MI.3.9 + MI.4.9
 	
 	; MD Period - SOV w/transponder (MI 5)
-	MW[13] = MI.5.4 + MI.5.10
-	MW[14] = MI.5.5 + MI.5.11 
-	MW[15] = MI.5.6 + MI.5.12
+	;MW[13] = MI.5.4 + MI.5.10
+	;MW[14] = MI.5.5 + MI.5.11 
+	;MW[15] = MI.5.6 + MI.5.12
 	; MD S2
-	MW[16] = MI.5.13 + MI.5.16 + MI.5.19 + MI.5.22
-	MW[17] = MI.5.14 + MI.5.17 + MI.5.20 + MI.5.23 
-	MW[18] = MI.5.15 + MI.5.18 + MI.5.21 + MI.5.24 
+	;MW[16] = MI.5.13 + MI.5.16 + MI.5.19 + MI.5.22
+	;MW[17] = MI.5.14 + MI.5.17 + MI.5.20 + MI.5.23 
+	;MW[18] = MI.5.15 + MI.5.18 + MI.5.21 + MI.5.24 
 	; MD S3
-	MW[19] = MI.5.25 + MI.5.28 + MI.5.31 + MI.5.34
-	MW[20] = MI.5.26 + MI.5.29 + MI.5.32 + MI.5.35
-	MW[21] = MI.5.27 + MI.5.30 + MI.5.33 + MI.5.36
+	;MW[19] = MI.5.25 + MI.5.28 + MI.5.31 + MI.5.34
+	;MW[20] = MI.5.26 + MI.5.29 + MI.5.32 + MI.5.35
+	;MW[21] = MI.5.27 + MI.5.30 + MI.5.33 + MI.5.36
 	; MD SOV no transponder
-	MW[22] = MI.5.1 + MI.5.7
-	MW[23] = MI.5.2 + MI.5.8
-	MW[24] = MI.5.3 + MI.5.9
+	;MW[22] = MI.5.1 + MI.5.7
+	;MW[23] = MI.5.2 + MI.5.8
+	;MW[24] = MI.5.3 + MI.5.9
 	
 	; PM Period - SOV w/transponder (MI 6-9)
 	MW[25] = MI.6.4 + MI.7.4 + MI.8.4 + MI.9.4 + MI.6.10 + MI.7.10 + MI.8.10 + MI.9.10

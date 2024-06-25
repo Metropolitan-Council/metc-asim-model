@@ -13,13 +13,13 @@ LOOP TOD=1,5,1
 
 
 RUN PGM=NETWORK MSG='Calculate Transit Speeds for @TPER@'
-FILEI NODEI[1] = "%SCENARIO_DIR%\highway\node.dbf"
-FILEI LINKI[2] = "%SCENARIO_DIR%\highway\ALL_NET.tmp"
+FILEI NODEI[1] = "%SCENARIO_DIR%\transit\TransitBase.NET"
+FILEI LINKI[1] = "%SCENARIO_DIR%\transit\TransitBase.NET"
 FILEO NETO = "%SCENARIO_DIR%\transit\XIT_NET_%ITER%_@TPER@.NET"
 FILEI LOOKUPI[2] = "%TRANSIT_FOLDER%\@TPER2@EXPRESSDELAYS.TXT"
 FILEI LOOKUPI[1] = "%TRANSIT_FOLDER%\@TPER2@LOCALDELAYS.TXT"
-FILEI LINKI[1] = "%SCENARIO_DIR%\highway\HWY_LDNET_%ITER%_@PER@.net", RENAME=TTIME_ASSERT_AM-TTA_AM, TTIME_ASSERT_MD-TTA_MD,
-	TTIME_ASSERT_PM-TTA_PM, TTIME_ASSERT_NT-TTA_NT
+FILEI LINKI[2] = "%SCENARIO_DIR%\highway\HWY_LDNET_%ITER%_@PER@.net";, RENAME=TTIME_ASSERT_AM-TTA_AM, TTIME_ASSERT_MD-TTA_MD,
+	;TTIME_ASSERT_PM-TTA_PM, TTIME_ASSERT_NT-TTA_NT
 
 
 
@@ -53,35 +53,38 @@ FILEI LINKI[1] = "%SCENARIO_DIR%\highway\HWY_LDNET_%ITER%_@PER@.net", RENAME=TTI
 
 
     ; TODO: Move this into the GeoDB
-    PHASE=NODEMERGE FILEI=NI.1 
-      IF (N=17502)
-        FAREZONE=1
-      ENDIF
-      IF (N=19759)
-        FAREZONE=2
-      ENDIF
-      IF (N=19761)
-        FAREZONE=3
-      ENDIF
-      IF (N=19762)
-        FAREZONE=4
-      ENDIF
-      IF (N=19763)
-        FAREZONE=5
-      ENDIF
-      IF (N=19764)
-        FAREZONE=6
-      ENDIF
+    ;PHASE=NODEMERGE FILEI=NI.1 
+      ;IF (N=17502)
+      ;  FAREZONE=1
+      ;ENDIF
+      ;IF (N=19759)
+      ;  FAREZONE=2
+      ;ENDIF
+      ;IF (N=19761)
+      ;  FAREZONE=3
+      ;ENDIF
+      ;IF (N=19762)
+      ;  FAREZONE=4
+      ;ENDIF
+      ;IF (N=19763)
+      ;  FAREZONE=5
+      ;ENDIF
+      ;IF (N=19764)
+      ;  FAREZONE=6
+      ;ENDIF
       
-    ENDPHASE                          
+    ;ENDPHASE       
+
+	LRTTIME = (DISTANCE * 60) / SPEED
+	CRTTIME = (DISTANCE * 60) / 45 ; Per Northstar timetables - 45 MPH effective speed
                             
 ;;--------------------------------------------------------------------------
 
     ; Set transit speeds - same for PK/OP
-    IF(LI.1.CSPD_1=0)
+    IF(LI.2.CSPD_1=0)
       SPEED=0.1
     ELSE
-      SPEED = LI.1.CSPD_1
+      SPEED = LI.2.CSPD_1
     ENDIF
     
 ;;--------------------------------------------------------------------------
@@ -103,7 +106,7 @@ FILEI LINKI[1] = "%SCENARIO_DIR%\highway\HWY_LDNET_%ITER%_@PER@.net", RENAME=TTI
 
     ;Calculate Local Bus Transit Travel Time
     IF (LOCTIME=0)
-         _DELAY = locdelay(LI.1.AREA_TYPE,LI.1.RCI)
+         _DELAY = locdelay(LI.2.AREA_TYPE,LI.2.RCI)
          IF (TRN_PRIORITY_@PER@=2)
             IF ((SPEED+15)<50)
                 _tspeed = MIN(SPEED+15,35)
@@ -123,7 +126,7 @@ FILEI LINKI[1] = "%SCENARIO_DIR%\highway\HWY_LDNET_%ITER%_@PER@.net", RENAME=TTI
     
     ;Calculate Express Bus Transit Travel Time
     IF (EXPTIME=0)
-        _DELAY = expdelay(LI.1.AREA_TYPE,LI.1.RCI)
+        _DELAY = expdelay(LI.2.AREA_TYPE,LI.2.RCI)
          IF (TRN_PRIORITY_@PER@=2)
             IF ((SPEED+15)<50)
                 _tspeed = MIN(SPEED+15,35)
@@ -138,7 +141,11 @@ FILEI LINKI[1] = "%SCENARIO_DIR%\highway\HWY_LDNET_%ITER%_@PER@.net", RENAME=TTI
         IF (EXPTIME=0) 
             PRINT LIST='EXPRESS BUS TIME IS ZERO FOR - ', A(6), B(6)
         ENDIF
-    ENDIF       
+    ENDIF     
+	; Local time fix (see TSNET00C_Loop.S)
+	IF(LI.1.RCI > 3)
+	  LOCTIME = LOCTIME * 0.5
+	ENDIF
 
  ENDRUN   
 
