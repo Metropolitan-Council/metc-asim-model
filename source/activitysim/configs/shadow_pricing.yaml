@@ -2,8 +2,9 @@
 inherit_settings: True
 
 shadow_pricing_models:
-  school: school_location
   workplace: workplace_location
+  school: school_location
+  
 
 # global switch to enable/disable loading of saved shadow prices
 # (ignored if global use_shadow_pricing switch is False)
@@ -39,8 +40,10 @@ SHADOW_PRICE_METHOD: simulation
 school_segmentation_targets:
   # format is segment: land_use_column
   university: ENROLLED
-  highschool: G9_12
-  gradeschool: K_8
+  mn_gradesch: mn_gradesch
+  mn_hisch: mn_hisch
+  wi_gradesch: wi_gradesch
+  wi_hisch: wi_hisch
 
 # if target names are the same, they will be combined together
 workplace_segmentation_targets:

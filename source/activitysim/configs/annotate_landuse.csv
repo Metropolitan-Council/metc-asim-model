@@ -11,3 +11,7 @@ Adjusted Non-Retail Employment,ADJ_NRET_EMP,emp_adjust * land_use.NRET_EMP
 Adjusted Other Employment,ADJ_AMC_EMP,emp_adjust * land_use.AMC_EMP
 Adjusted Office Employment,ADJ_OFF_EMP,emp_adjust * land_use.OFF_EMP
 Adjusted Total Employment,ADJ_TOT_EMP,emp_adjust * land_use.TOT_EMP
+,mn_gradesch,(land_use.STATEFP == 27) * land_use.K_8
+,mn_hisch,(land_use.STATEFP == 27) * land_use.G9_12
+,wi_gradesch,(land_use.STATEFP == 55) * land_use.K_8
+,wi_hisch,(land_use.STATEFP == 55) * land_use.G9_12

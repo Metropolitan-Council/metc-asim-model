@@ -60,15 +60,14 @@ is_gradeschool,is_gradeschool,(pstudent == PSTUDENT_GRADE_OR_HIGH) & (age <= GRA
 is_highschool,is_highschool,(pstudent == PSTUDENT_GRADE_OR_HIGH) & (age > GRADE_SCHOOL_MAX_AGE)
 is_university,is_university,(pstudent == PSTUDENT_UNIVERSITY) | (ptype == PTYPE_UNIVERSITY)
 school_segment gradeschool,school_segment,"np.where(is_gradeschool, SCHOOL_SEGMENT_GRADE, SCHOOL_SEGMENT_NONE)"
-school_segment highschool,school_segment,"np.where(is_highschool, SCHOOL_SEGMENT_HIGH, school_segment)"
-school_segment university,school_segment,"np.where(pstudent == PSTUDENT_UNIVERSITY, SCHOOL_SEGMENT_UNIV , school_segment).astype(np.int8)"
+# school_segment highschool,school_segment,"np.where(is_highschool, SCHOOL_SEGMENT_HIGH, school_segment)"
 #school_segment adult,school_segment,"np.where((is_student) & ((~is_highschool) & (~is_gradeschool) & (~is_university) & (school_segment == 0)), SCHOOL_SEGMENT_UNIV, school_segment)"
 #is_university adult,is_university,"(ptype == PTYPE_UNIVERSITY) & (is_student)"
-#,,
+school_segment university,school_segment,"np.where(pstudent == PSTUDENT_UNIVERSITY, SCHOOL_SEGMENT_UNIV , school_segment).astype(np.int8)"
+#
 is_worker,is_worker,"np.where((pemploy == PEMPLOY_FULL) |( pemploy == PEMPLOY_PART), True, False)"
 student_is_employed,student_is_employed,"np.where((is_student) & (is_worker), True, False)"
 #,,
-home_zone_id,home_zone_id,"reindex(households.home_zone_id, persons.household_id)"
 ###hh_child,hh_child,"reindex(households.children, persons.household_id)"
 person number,PNUM,persons.pnum
 #income,income,"reindex(households.HINCP, persons.household_id)"
