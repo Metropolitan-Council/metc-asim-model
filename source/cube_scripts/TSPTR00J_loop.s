@@ -35,7 +35,7 @@ FILEI FAREMATI[1] = "%XIT_FAREMAT%"
        TRANTIME[6]=li.loctime       ; local
        TRANTIME[7]=li.exptime       ; express
        TRANTIME[8]=li.lrttime       ; lrt
-       TRANTIME[9]=li.exptime       ; commuter bus
+       TRANTIME[9]=li.crttime       ; commuter bus
        GENERATE,
            READNTLEGI=1             ; walk  access link (mode=1)
        GENERATE,
