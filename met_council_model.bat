@@ -12,6 +12,11 @@ CALL .\set_parameters.bat
 
 COPY .\set_parameters.bat %SCENARIO_DIR%\set_parameters.txt
 
+::Remove before flight
+SET ITER=4
+SET PREV_ITER=3
+GOTO Final_highway_assign
+REM GOTO tskim
 :: ----------------------------------------------------------------------------
 ::
 :: Step 2:  Networks and initial skims 
@@ -233,8 +238,10 @@ REM python.exe "%SCRIPT_PATH%\EVMAT00H.py" "%SCENARIO_DIR%\set_parameters.txt"
 REM %check_cube_errors%
 
 :: Run ActivitySim
+IF %ITER% LSS 4 GOTO AfterAsim
 python.exe source\ActivitySim\simulation.py -c source\ActivitySim\configs -d %SE% -d %SCENARIO_DIR%\OMX -o %ASIM_OUT%
 %check_python_errors%
+REM goto veryEndOfFile
 :AfterAsim
 echo Iteration=%ITER%
 :: Output ActivitySim Matrices
@@ -461,11 +468,11 @@ for /L %%I IN (1, 1, 4) DO (
 		SET CAPFAC=4.65
 		)
 	:: Record stats and convert to vehicle trip tables
-	runtpp %SCRIPT_PATH%\HAMAT00A.s
-	%check_cube_errors%
+	REM runtpp %SCRIPT_PATH%\HAMAT00A.s
+	REM %check_cube_errors%
 	:: Highway assignment
-	runtpp %SCRIPT_PATH%\HAHWY00A.s
-	%check_cube_errors%
+	REM runtpp %SCRIPT_PATH%\HAHWY00A.s
+	REM %check_cube_errors%
 
     :: Create highway skims
 	FOR /L %%J IN (1, 1, 3) DO (
@@ -478,8 +485,8 @@ for /L %%I IN (1, 1, 4) DO (
 		IF %%J EQU 3 (
 			SET IC=H
 		)
-		runtpp %SCRIPT_PATH%\HAHWY00L.s
-		%check_cube_errors%
+		REM runtpp %SCRIPT_PATH%\HAHWY00L.s
+		REM %check_cube_errors%
 	)
 )
 
@@ -501,7 +508,6 @@ runtpp %SCRIPT_PATH%\CANET00B.s
 runtpp %SCRIPT_PATH%\CAMAT00A.s
 %check_cube_errors%
 ::endComment
-
 
 :: ----------------------------------------------------------------------------
 ::
@@ -588,7 +594,7 @@ IF %ITER% GEQ 2 (
         SET CONV=1
     )
 )
-
+:tskim2
 IF %CONV% EQU 0 (
 	:: TRANSIT skimming
 	echo Iteration=%ITER%
@@ -658,7 +664,7 @@ IF %CONV% EQU 1 (
     ::Start Cube Cluster
     runtpp %SCRIPT_PATH%\HTPIL00B.S
     %check_cube_errors%
-    FOR /L %%I IN (1,1,11) DO (
+    FOR /L %%I IN (1,1,10) DO (
         IF %%I EQU 1 (
             SET PER=AM1
             SET ASSIGNNAME=AM1 Peak Period
@@ -688,48 +694,41 @@ IF %CONV% EQU 1 (
             SET CAPFAC=1
         )
         IF %%I EQU 5 (
-            SET PER=MD
-            SET ASSIGNNAME=Mid Day Period
-            SET HWY_NET=HWY_NET_4.net
-            SET NETNAME=Mid Day Period 10:00 AM to 3:00 PM
-            SET CAPFAC=4.48
-        )
-        IF %%I EQU 6 (
             SET PER=PM1
             SET ASSIGNNAME=PM1 Peak Period
             SET HWY_NET = HWY_NET_6.net
             SET NETNAME=PM Peak Period 3:00 AM to 4:00 PM
             SET CAPFAC=1
         )
-        IF %%I EQU 7 (
+        IF %%I EQU 6 (
             SET PER=PM2
             SET ASSIGNNAME=PM2 Peak Period
             SET HWY_NET=HWY_NET_6.net
             SET NETNAME=PM Peak Period 4:00 AM to 5:00 PM
             SET CAPFAC=1
         )
-        IF %%I EQU 8 (
+        IF %%I EQU 7 (
             SET PER=PM3
             SET ASSIGNNAME=PM3 Peak Period
             SET HWY_NET=HWY_NET_6.net
             SET NETNAME=PM Peak Period 5:00 AM to 6:00 PM
             SET CAPFAC=1
         )
-        IF %%I EQU 9 (
+        IF %%I EQU 8 (
             SET PER=PM4
             SET ASSIGNNAME=PM4 Peak Period
             SET HWY_NET=HWY_NET_6.net
             SET NETNAME=PM Peak Period 6:00 AM to 7:00 PM
             SET CAPFAC=1
         )
-        IF %%I EQU 10 (
+        IF %%I EQU 9 (
             SET PER=EV
             SET ASSIGNNAME=Evening Period
             SET HWY_NET=HWY_NET_1.net
             SET NETNAME=Evening 7:00 PM to 12:00 AM
             SET CAPFAC=3.32
         )
-        IF %%I EQU 11 (
+        IF %%I EQU 10 (
             SET PER=ON
             SET ASSIGNNAME=Overnight Period
             SET HWY_NET=HWY_NET_1.net
@@ -739,8 +738,7 @@ IF %CONV% EQU 1 (
         
         runtpp %SCRIPT_PATH%\HAMAT00A.s
         %check_cube_errors%
-		REM was HTHWY00B.s - shouldn't these be the same??
-        runtpp %SCRIPT_PATH%\HAHWY00A.s
+        REM runtpp %SCRIPT_PATH%\HAHWY00A.s
         %check_cube_errors% 
     )
      :: End Cube Cluster
@@ -763,12 +761,12 @@ IF %CONV% EQU 1 (
 	runtpp %SCRIPT_PATH%\PAPTR00E_loop.s
     %check_cube_errors%
 
-goto veryEndOfFile
     :: FINAL POSTPROCESSING
     FOR /L %%I IN (1,1,2) DO (
         IF %%I EQU 1 (SET PER=AM)
         IF %%I EQU 2 (SET PER=PM)
         
+		::FIXME: are these necessary? PPNET00A looks like it is 
         :: Combine time period networks
         runtpp %SCRIPT_PATH%\PPNET00A.s
         %check_cube_errors%
@@ -794,7 +792,7 @@ DEL *.prn
 
 :Visualizer
 cd Visualizer
-generateDashboard_metc_vs_asim.bat
+call %VIS_FOLDER%\generateDashboard_metc_vs_asim.bat
 GOTO veryEndOfFile
 
 :endOfFile
