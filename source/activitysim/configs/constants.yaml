@@ -195,8 +195,8 @@ waux_multiplier: 2
 dtim_multiplier: 2
 xwait_multiplier: 2
 dacc_ratio: 0
-xfers_wlk_multiplier: 20
-xfers_drv_multiplier: 40
+xfers_wlk_multiplier: 45
+xfers_drv_multiplier: 45
 drvtrn_distpen_0_multiplier: 270
 drvtrn_distpen_max: 15
 density_index_multiplier: -0.2
