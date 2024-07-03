@@ -12,7 +12,7 @@
 
 :: All environment variables should be set by set_parameters.bat
 
-@ECHO off
+REM @ECHO off
 
 ::IF NOT DEFINED CENSUS_DATA_PATH CALL ..\..\set_parameters.bat
 ECHO Parameters file: %PARAMETERS_FILE%
@@ -43,18 +43,17 @@ ECHO ASSIGNED,1  >> %PARAMETERS_FILE%
 ECHO HTML_OUTPUT_PATH,%MAIN_DIRECTORY%\%SCENARIO_NAME% >> %PARAMETERS_FILE%
 ECHO ASIM_CONFIG_DIR,%MAIN_DIRECTORY%\source\ActivitySim\configs >> %PARAMETERS_FILE%
 
-SET R_SCRIPT="C:\Program Files\R\R-4.0.3\bin\RScript.exe"
 ECHO Summarizing Loaded Highway Network
-@REM python.exe scripts\Summarize_model_HNET.py
+REM python.exe %VIS_FOLDER%\scripts\Summarize_model_HNET.py
 
 ECHO Summarizing ActivitySim Outputs...
-%R_SCRIPT% scripts\Summarize_ActivitySim_metc.R %PARAMETERS_FILE%
+REM %R_SCRIPT% %VIS_FOLDER%\scripts\Summarize_ActivitySim_metc.R %PARAMETERS_FILE%
 
 ECHO Preparing Auto Ownership Comparisons...
-@REM %R_SCRIPT% scripts\AutoOwnership_Census_MetC.R %PARAMETERS_FILE%
+REM %R_SCRIPT% %VIS_FOLDER%\scripts\AutoOwnership_Census_MetC.R %PARAMETERS_FILE%
 
 ECHO Preparing Worker Charts
-@REM %R_SCRIPT% scripts\workersByTAZ.R %PARAMETERS_FILE%
+%R_SCRIPT% %VIS_FOLDER%\scripts\workersByTAZ.R %PARAMETERS_FILE%
 
 :: Call the master R script to generate full visualizer
 :: #####################################################
@@ -62,7 +61,7 @@ ECHO Running R script to generate visualizer...
 :RunViz
 
 SET SWITCH=FULL
-%R_SCRIPT% scripts\Master.R %PARAMETERS_FILE% %SWITCH%
+%R_SCRIPT% %VIS_FOLDER%\scripts\Master.R %PARAMETERS_FILE% %SWITCH%
 IF %ERRORLEVEL% EQU 11 (
    ECHO File missing error. Check error file in outputs.
    EXIT /b %errorlevel%
