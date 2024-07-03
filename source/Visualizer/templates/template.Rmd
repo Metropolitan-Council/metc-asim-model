@@ -931,12 +931,16 @@ co_lm = lm(freq_build ~ freq, df)
 text1 = paste("r2 =", round(co_cor, 4))
 text2 = paste("y = ", round(co_lm$coefficients[['freq']], 4), "x  + ", round(co_lm$coefficients[['(Intercept)']], 2), sep = "")
 
+x_text = 0.55 * max(df$freq)
+y1_text = 0.1 * max(df$freq_build)
+y2_text = 0.05 * max(df$freq_build)
+
 ggplot(df, aes(x = freq, y = freq_build, label = WDISTRICT)) + geom_point() +
   geom_abline(slope = 1, intercept = 0, color = "red") +
   geom_text(vjust = 0, nudge_y = 0.1, check_overlap = TRUE) +
-  scale_x_log10("SEDATA Input", labels = comma, limits = c(10000, max(df$freq, df$build_freq))) +
-  scale_y_log10("ActivitySim", labels = comma, limits = c(10000, max(df$freq, df$build_freq))) +
-  annotate("text", x=20000, y=c(20000, 15000), label= c(text1, text2))
+  scale_x_log10("SEDATA Input", labels = comma, limits = c(10000, max(df$freq, df$freq_build))) +
+  scale_y_log10("ActivitySim", labels = comma, limits = c(10000, max(df$freq, df$freq_build))) +
+  annotate("text", x=x_text, y=c(y1_text, y2_text), label= c(text1, text2))
 ```
 
 ### By TAZ{data-height=575}
@@ -2244,4 +2248,3 @@ Chart Column 2{.tabset}
 
 Something Will Be Here.
 
-(The answer is 42)
