@@ -53,6 +53,7 @@ per                <- read.csv(file.path(ABM_DIR, "final_persons.csv"), header =
 all_tours          <- read.csv(file.path(ABM_DIR, "final_tours.csv"), header = TRUE)
 all_trips          <- read.csv(file.path(ABM_DIR, "final_trips.csv"), header = TRUE)
 jtour_participants <- read.csv(file.path(ABM_DIR, "final_joint_tour_participants.csv"), header = TRUE)
+tazdat             <- read.csv(file.path(ABM_DIR, "final_land_use.csv"), header = TRUE)
 
 setwd(WD)
 
@@ -137,9 +138,6 @@ hh$ADULTS <- hh$num_adults
 
 # HHVEH X Workers CrossTab
 write.csv(xtabs(finalweight~HHVEH+WORKERS, data = hh), file.path(WD, "xtab_HHVEH_WORKERS.csv"), row.names = T)
-
-# Workers vs. employees by zone and county ####
-tazdat = read.csv(file.path(ABM_LAND_USE_DIR, "land_use.csv"), header = TRUE)
 
 tazdat$WDISTRICT = xwalk$COUNTY_NAME[match(tazdat$zone_id, xwalk$TAZ)]
 emp_co = plyr::count(tazdat, c("WDISTRICT"), "TOT_EMP")

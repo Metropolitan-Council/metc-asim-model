@@ -61,7 +61,7 @@ counties[is.na(state), state := 27]
 mn_shp = tracts(state = 27, county = counties[state == 27, str_pad(CO_NUM, width = 3, side = "left", pad = "0")], class = 'sp')
 wi_shp = tracts(state = 55, county = counties[state == 55, str_pad(CO_NUM, width = 3, side = "left", pad = "0")], class = 'sp')
 
-ct_shp = rbind_tigris(mn_shp, wi_shp)
+ct_shp = rbind(mn_shp, wi_shp)
 ct_shp = spTransform(ct_shp, CRS("+proj=longlat +ellps=GRS80"))
 zones_proj = st_transform(zones, CRS("+proj=longlat +ellps=GRS80"))
 
@@ -210,4 +210,4 @@ writeOGR(ct_shp, ABM_SUMMARY_DIR,
 
 end_time = Sys.time()
 end_time - start_time
-cat("\n Script finished, run time: ", end_time - start_time, "sec \n")
+cat("\n Auto Ownership Script finished, run time: ", end_time - start_time, "sec \n")

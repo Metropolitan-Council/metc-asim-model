@@ -43,9 +43,9 @@ distMult = 1.0 # in case the distance needs to be converted to another unit
 
 # Don't change anything under this comment
 if hnetfile[-4:].lower() == ".dbf":
-	hnet = Dbf5(os.path.join(model_path, hnetfile)).to_dataframe()
+	hnet = Dbf5(os.path.join(model_path, 'highway', hnetfile)).to_dataframe()
 elif hnetfile[-4:].lower() == ".csv":
-	hnet = pd.read_csv(os.path.join(model_path, hnetfile))
+	hnet = pd.read_csv(os.path.join(model_path, 'highway', hnetfile))
 else:
 	raise ValueError('HNET File is not supported')
     
