@@ -12,11 +12,6 @@ CALL .\set_parameters.bat
 
 COPY .\set_parameters.bat %SCENARIO_DIR%\set_parameters.txt
 
-::Remove before flight
-SET ITER=4
-SET PREV_ITER=3
-GOTO Final_highway_assign
-REM GOTO tskim
 :: ----------------------------------------------------------------------------
 ::
 :: Step 2:  Networks and initial skims 
@@ -147,9 +142,6 @@ runtpp %SCRIPT_PATH%\TSNET00B.s
 :: Build walk access, transfer access, and drive access connectors for each period
 :: Skim walk transit and drive transit
 
-:: Andrew got mad and impatient. All initial transit net and skimming is in one file
-:: and clusters across 5 cores.
-
 runtpp %SCRIPT_PATH%\TSNET00C_loop.s
     %check_cube_errors%
 
@@ -226,7 +218,7 @@ runtpp %SCRIPT_PATH%\EVMAT00G.s
 python.exe source\activitysim\make_county_omx.py -l %SE%\land_use.csv -f STATEFP -i zone_id -m STATEFP -z 3061 -o %SCENARIO_DIR%\OMX\se_omx.omx
 python.exe source\activitysim\make_county_omx.py -l %SE%\land_use.csv -f DISTRICT -i zone_id -m DISTRICT -z 3061 -o %SCENARIO_DIR%\OMX\districts.omx
 
-REM goto veryEndOfFile
+
 :ASim
 :: Prepare sedata for ActivitySim
 ECHO Prep
@@ -238,10 +230,9 @@ REM python.exe "%SCRIPT_PATH%\EVMAT00H.py" "%SCENARIO_DIR%\set_parameters.txt"
 REM %check_cube_errors%
 
 :: Run ActivitySim
-IF %ITER% LSS 4 GOTO AfterAsim
 python.exe source\ActivitySim\simulation.py -c source\ActivitySim\configs -d %SE% -d %SCENARIO_DIR%\OMX -o %ASIM_OUT%
 %check_python_errors%
-REM goto veryEndOfFile
+
 :AfterAsim
 echo Iteration=%ITER%
 :: Output ActivitySim Matrices
@@ -468,11 +459,11 @@ for /L %%I IN (1, 1, 4) DO (
 		SET CAPFAC=4.65
 		)
 	:: Record stats and convert to vehicle trip tables
-	REM runtpp %SCRIPT_PATH%\HAMAT00A.s
-	REM %check_cube_errors%
+	runtpp %SCRIPT_PATH%\HAMAT00A.s
+	%check_cube_errors%
 	:: Highway assignment
-	REM runtpp %SCRIPT_PATH%\HAHWY00A.s
-	REM %check_cube_errors%
+	runtpp %SCRIPT_PATH%\HAHWY00A.s
+	%check_cube_errors%
 
     :: Create highway skims
 	FOR /L %%J IN (1, 1, 3) DO (
@@ -485,8 +476,8 @@ for /L %%I IN (1, 1, 4) DO (
 		IF %%J EQU 3 (
 			SET IC=H
 		)
-		REM runtpp %SCRIPT_PATH%\HAHWY00L.s
-		REM %check_cube_errors%
+		runtpp %SCRIPT_PATH%\HAHWY00L.s
+		%check_cube_errors%
 	)
 )
 
@@ -738,7 +729,7 @@ IF %CONV% EQU 1 (
         
         runtpp %SCRIPT_PATH%\HAMAT00A.s
         %check_cube_errors%
-        REM runtpp %SCRIPT_PATH%\HAHWY00A.s
+        runtpp %SCRIPT_PATH%\HAHWY00A.s
         %check_cube_errors% 
     )
      :: End Cube Cluster
