@@ -16,13 +16,13 @@ PHASE=LINKREAD
 	ARRAY _PRICE_INCREASE = 500
 
 	; Set input variables ----------------------------------------------------
-	T0 = LI.TIME
-	IF (LI.CAPACITY=0)
-		T0 = 99999
-	ENDIF
-	C = LI.CAPACITY * %CAPFAC%
-	ALPHA = LI.ALPHA
-	BETA = LI.BETA
+	T0 = LI.TIME_1
+	;IF (LI.CAPACITY_%LPER%=0)
+	;	T0 = 99999
+	;ENDIF
+	;C = LI.CAPACITY * %CAPFAC%
+	;ALPHA = LI.ALPHA
+	;BETA = LI.BETA
 	LW.HOV = 0 ;LI.HOV
 	LINKCLASS = LI.RCI
 	DISTANCE = LI.DISTANCE

@@ -1,5 +1,5 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
-RUN PGM=HIGHWAY MSG='Assignment Period: %ASSIGNNAME%'
+RUN PGM=HIGHWAY MSG='Assignment Period: %ASSIGNNAME%' PRNFILE="%SCENARIO_DIR%\highway\hassign_PRN_%PER%.prn" 
 FILEI NETI = "%NETWORK_FOLDER%\%HWY_NET%"
 FILEI MATI[1] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_%PER%.TRP"
 FILEI MATI[2] = "%SCENARIO_DIR%\truck\TRK_TRIP_%ITER%_%PER%.TRP"
@@ -41,11 +41,13 @@ DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
 		ARRAY _PRICE_INCREASE = 500
 
 		; Set input variables ----------------------------------------------------
+		LANES = LI.LANES_%LPER%
+		C = LI.CAPACITY_%LPER% * %CAPFAC%
         T0 = LI.TIME
-        IF (LI.CAPACITY=0)
+        IF (LI.CAPACITY_%LPER%=0)
             T0 = 99999
         ENDIF
-        C = LI.CAPACITY * %CAPFAC%
+		
         ALPHA = LI.ALPHA
         BETA = LI.BETA
 		LW.HOV = 0 ;LI.HOV
@@ -74,8 +76,8 @@ DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
 		ENDIF
 
 		; Create an HOV lane group and a no truck lane group ---------------------
-		IF (LI.HOV_NO_MNPASS > 0) ADDTOGROUP = 1
-		IF (LI.MNPASS_CODE > 0 || LI.HOV_NO_MNPASS > 0) ADDTOGROUP = 2
+		IF (LI.HOV_NO_MNPASS > 0) ADDTOGROUP = 1 ;Group 1 - HOV lanes with no MNPASS lanes, currently we don't have any in our region
+		IF (LI.MANAGED = 1 || LI.HOV_NO_MNPASS > 0) ADDTOGROUP = 2 ;Group 2 - Managed and HOV lanes restricted to SOV with no transponders and trucks
 
 		; Generalized path cost expressions -------------------------------------
 		LW.PC_SOV_L = T0 + (0.6 / VOT_INCOME_01) * ((DISTANCE * AUTO_PER_MILE_COST) + LW.TOLL_SOV)
@@ -159,7 +161,7 @@ DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
 		PATHLOAD PATH = LW.PC_HOV3_H, CONSOLIDATE=T, VOL[9] = MW[9]
 		; SOV no transponder
 		PATHLOAD PATH = LW.PC_SOV_L, CONSOLIDATE=T, VOL[10] = MW[10], EXCLUDEGRP = 2
-		PATHLOAD PATH = LW.PC_SOV_M, CONSOLIDATE=T, VOL[11] = MW[10], EXCLUDEGRP = 2
+		PATHLOAD PATH = LW.PC_SOV_M, CONSOLIDATE=T, VOL[11] = MW[11], EXCLUDEGRP = 2
 		PATHLOAD PATH = LW.PC_SOV_H, CONSOLIDATE=T, VOL[12] = MW[12], EXCLUDEGRP = 2
 		; Ext, Spec Gen (SOV, SR2, SR3)
 		PATHLOAD PATH = LW.PC_SOV_L, CONSOLIDATE=T, VOL[13] = MW[13]
