@@ -44,13 +44,13 @@ ECHO HTML_OUTPUT_PATH,%MAIN_DIRECTORY%\%SCENARIO_NAME% >> %PARAMETERS_FILE%
 ECHO ASIM_CONFIG_DIR,%MAIN_DIRECTORY%\source\ActivitySim\configs >> %PARAMETERS_FILE%
 
 ECHO Summarizing Loaded Highway Network
-REM python.exe %VIS_FOLDER%\scripts\Summarize_model_HNET.py
+python.exe %VIS_FOLDER%\scripts\Summarize_model_HNET.py
 
 ECHO Summarizing ActivitySim Outputs...
-REM %R_SCRIPT% %VIS_FOLDER%\scripts\Summarize_ActivitySim_metc.R %PARAMETERS_FILE%
+%R_SCRIPT% %VIS_FOLDER%\scripts\Summarize_ActivitySim_metc.R %PARAMETERS_FILE%
 
 ECHO Preparing Auto Ownership Comparisons...
-REM %R_SCRIPT% %VIS_FOLDER%\scripts\AutoOwnership_Census_MetC.R %PARAMETERS_FILE%
+%R_SCRIPT% %VIS_FOLDER%\scripts\AutoOwnership_Census_MetC.R %PARAMETERS_FILE%
 
 ECHO Preparing Worker Charts
 %R_SCRIPT% %VIS_FOLDER%\scripts\workersByTAZ.R %PARAMETERS_FILE%
