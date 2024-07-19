@@ -87,7 +87,8 @@ coef_bike_ASC_tnc_shared_shopping,-999.0,F
 coef_bike_ASC_tnc_shared_social,-999.0,F
 coef_bike_ASC_tnc_shared_univ,-999.0,F
 coef_bike_ASC_tnc_shared_work,-999.0,F
-coef_joint_sr2_ASC_walk_maintenance,11.520484431734328,F
+#coef_joint_sr2_ASC_walk_maintenance,11.520484431734328,F
+coef_joint_sr2_ASC_walk_maintenance,0.0,F
 coef_joint_sr3p_ASC_sr2_maintenance,19.051743315118046,F
 coef_joint_sr3p_ASC_walk_maintenance,-14.29764041,F
 coef_joint_walk_transit_ASC_sr2_maintenance,-12.29671825,F
@@ -97,7 +98,7 @@ coef_joint_walk_transit_ASC_bike_maintenance,-14.30311641,F
 coef_joint_walk_transit_ASC_taxi_maintenance,-999.0,F
 coef_joint_walk_transit_ASC_tnc_single_maintenance,-14.0,F
 coef_joint_walk_transit_ASC_tnc_shared_maintenance,-999.0,F
-coef_joint_sr2_ASC_walk_discretionary,-4.212739304209673,F
+coef_joint_sr2_ASC_walk_discretionary,-10.0,F
 coef_joint_sr3p_ASC_sr2_discretionary,-19.487835471622212,F
 coef_joint_sr3p_ASC_walk_discretionary,-6.5745483807758465,F
 coef_joint_walk_transit_ASC_sr2_discretionary,-10.29671825,F
@@ -436,7 +437,7 @@ coef_tnc_shared_ASC_tnc_single_univ,-90.0,F
 coef_joint_drive_transit_ASC_sov_discretionary,0.0,F
 coef_joint_drive_transit_ASC_sr2_discretionary,-38.0,F
 coef_joint_drive_transit_ASC_sr3p_discretionary,-38.0,F
-coef_joint_drive_transit_ASC_walk_discretionary,-22.3631636,F
+coef_joint_drive_transit_ASC_walk_discretionary,-999.0,F
 coef_joint_drive_transit_ASC_bike_discretionary,-36.0,F
 coef_joint_drive_transit_ASC_walk_transit_discretionary,-36.0,F
 coef_joint_drive_transit_ASC_taxi_discretionary,-999.0,F
@@ -768,5 +769,8 @@ coef_joint_walk_transit_ASC_walk_null,0.0,T
 coef_joint_walk_transit_ASC_bike_null,0.0,T
 coef_joint_walk_transit_ASC_taxi_null,0.0,T
 coef_joint_walk_transit_ASC_tnc_shared_null,0.0,T
-asc_crt,-16.0,F
-asc_lrt,9.0,F
+joint_sr2_ASC_rh_maint,-999.0,F
+joint_sr2_ASC_rh_disc,-999.0,F
+joint_sr2_ASC_rh_null,0.0,T
+asc_crt,0.0,F
+asc_lrt,0.0,F

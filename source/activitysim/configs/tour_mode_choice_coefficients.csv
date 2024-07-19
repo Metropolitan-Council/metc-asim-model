@@ -366,6 +366,6 @@ joint_rideshare_ASC_auto_sufficient_joint_maint,-13.402782791827455,F
 joint_rideshare_ASC_auto_sufficient_joint_discr,-13.475243931576712,F
 joint_rideshare_ASC_auto_sufficient_mand,0.0,F
 joint_rideshare_ASC_auto_sufficient_atwork,0.0,F
-asc_crt,-2.5,F
-asc_lrt,5.00,F
-asc_transit,-2.75,F
+asc_crt,0.0,F
+asc_lrt,3.70,F
+asc_transit,-0.75,F

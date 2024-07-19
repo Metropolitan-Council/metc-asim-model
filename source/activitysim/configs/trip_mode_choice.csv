@@ -195,7 +195,7 @@ util_TNC_Shared_tour_mode_ASC_walk_transit,Ride Hail tour mode ASC -- walk-trans
 util_TNC_Shared_tour_mode_ASC_taxi,Ride Hail tour mode ASC -- ride hail,@(df.is_indiv & df.i_tour_mode.isin([I_TNC_SHARED_MODE])),,,,,,,,,tnc_shared_ASC_taxi,,
 util_TNC_Shared_tour_mode_ASC_tnc_single,Ride Hail tour mode ASC -- ride hail,@(df.is_indiv & df.i_tour_mode.isin([I_TNC_SHARED_MODE])),,,,,,,,,,tnc_shared_ASC_tnc_single,
 util_Shared_Ride_2_tour_mode_ASC_walk,joint - sr2 tour mode ASC -- walk,@(df.is_joint & df.i_tour_mode.isin(I_SR2_MODES)),,,,joint_sr2_ASC_walk,,,,,,,
-util_Shared_Ride_3+_tour_mode_ASC_sr2,joint sr3p tour mode ASC -- sr2,@(df.is_joint & df.i_tour_mode.isin(I_SR2_MODES)),,joint_sr3p_ASC_sr2,,,,,,,,,
+util_Shared_Ride_3+_tour_mode_ASC_sr2,joint sr3p tour mode ASC -- sr2,@(df.is_joint & df.i_tour_mode.isin(I_SR3P_MODES)),,joint_sr3p_ASC_sr2,,,,,,,,,
 util_Shared_Ride_3+_tour_mode_ASC_walk,joint - sr3p tour mode ASC,@(df.is_joint & df.i_tour_mode.isin(I_SR3P_MODES)),,,,joint_sr3p_ASC_walk,,,,,,,
 util_joint_Walk-transit_tour_mode_ASC_shared_ride_2,joint - Walk-transit tour mode ASC -- shared ride 2,@(df.is_joint & df.tour_mode_is_walk_transit),,joint_walk_transit_ASC_sr2,,,,,,,,,
 util_joint_Walk-transit_tour_mode_ASC_shared_ride_3+,joint - Walk-transit tour mode ASC -- shared ride 3+,@(df.is_joint & df.tour_mode_is_walk_transit),,,joint_walk_transit_ASC_sr3p,,,,,,,,
@@ -235,6 +235,7 @@ util_joint_bike_ASC_taxi,desc,@(df.is_joint & df.i_tour_mode.isin([I_BIKE_MODE])
 util_joint_bike_ASC_tnc_shared,desc,@(df.is_joint & df.i_tour_mode.isin([I_BIKE_MODE])),,,,,,,,,,,joint_bike_ASC_tnc_shared
 util_joint_sr3p_ASC_taxi,desc,@(df.is_joint & df.i_tour_mode.isin(I_SR3P_MODES)),,,,,,,,,joint_sr3p_ASC_taxi,,
 util_joint_sr3p_ASC_tnc_shared,desc,@(df.is_joint & df.i_tour_mode.isin(I_SR3P_MODES)),,,,,,,,,,,joint_sr3p_ASC_tnc_shared
+util_joint_sr2_ASC_rh,desc,@(df.is_joint & df.i_tour_mode.isin(I_SR2_MODES)),,,,,,,,,joint_sr2_ASC_rh,joint_sr2_ASC_rh,joint_sr2_ASC_rh
 # turned off because in theory, these should not happen due to destination choice,,,,,,,,,,,,
 #util_Walk_not_available_for_long_distances,Walk not available for long distances,@(od_skims['DISTWALK'] > 4),,,,-999,,,,,,,
 #util_Bike_not_available_for_long_distances,Bike not available for long distances,@(od_skims['DISTBIKE'] > 6),,,,,-999,,,,,,
