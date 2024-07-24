@@ -278,13 +278,13 @@ plotly_density_plotter <- function(data_df, index = "one", colors=c("orange", "s
     ylab <- ifelse(ylabel=="", "Percent", ylabel)
 
     p <- switch(index,
-                "one" = plot_ly(data=data_df,x = ~xvar, y = ~prop1, colors=c("steelblue", "orange"), color = ~run, fill=fill) %>%
+                "one" = plot_ly(data=data_df,x = ~xvar, y = ~prop1, colors=c("orange", "steelblue"), color = ~run, fill=fill) %>%
                   add_lines(name=~run,alpha=alpha, line = list(shape = shape)) %>%
                   layout(title = "",xaxis = list(title=xlabel, tickvals = tickvals, ticktext = ticktext, tickangle = tickangle), yaxis = list(title=ylab, tickformat = ".0%"), showlegend = legend),
-                "two" = plot_ly(data=data_df,x = ~xvar, y = ~prop2, colors=c("steelblue", "orange"), color = ~run, fill=fill) %>%
+                "two" = plot_ly(data=data_df,x = ~xvar, y = ~prop2, colors=c("orange", "steelblue"), color = ~run, fill=fill) %>%
                   add_lines(name=~run,alpha=alpha, line = list(shape = shape)) %>%
                   layout(title = "",xaxis = list(title=xlabel, tickvals = tickvals, ticktext = ticktext, tickangle = tickangle), yaxis = list(title=ylab, tickformat = ".0%"), showlegend = legend),
-                "three" = plot_ly(data=data_df,x = ~xvar, y = ~prop3, colors=c("steelblue", "orange"), color = ~run, fill=fill) %>%
+                "three" = plot_ly(data=data_df,x = ~xvar, y = ~prop3, colors=c("orange", "steelblue"), color = ~run, fill=fill) %>%
                   add_lines(name=~run,alpha=alpha, line = list(shape = shape)) %>%
                   layout(title = "",xaxis = list(title=xlabel, tickvals = tickvals, ticktext = ticktext, tickangle = tickangle), yaxis = list(title=ylab, tickformat = ".0%"), showlegend = legend)
                 )
@@ -293,13 +293,13 @@ plotly_density_plotter <- function(data_df, index = "one", colors=c("orange", "s
     ylab <- ifelse(ylabel=="", "Frequency", ylabel)
 
     p <- switch(index,
-                "one" = plot_ly(data=data_df,x = ~xvar, y = ~yvar1, colors=c("steelblue", "orange"), color = ~run, fill=fill) %>%
+                "one" = plot_ly(data=data_df,x = ~xvar, y = ~yvar1, colors=c("orange", "steelblue"), color = ~run, fill=fill) %>%
                   add_lines(name=~run,alpha=alpha, line = list(shape = shape)) %>%
                   layout(title = "",xaxis = list(title=xlabel, tickvals = tickvals, ticktext = ticktext, tickangle = tickangle), yaxis = list(title=ylab), showlegend = legend),
-                "two" = plot_ly(data=data_df,x = ~xvar, y = ~yvar2, colors=c("steelblue", "orange"), color = ~run, fill=fill) %>%
+                "two" = plot_ly(data=data_df,x = ~xvar, y = ~yvar2, colors=c("orange", "steelblue"), color = ~run, fill=fill) %>%
                   add_lines(name=~run,alpha=alpha, line = list(shape = shape)) %>%
                   layout(title = "",xaxis = list(title=xlabel, tickvals = tickvals, ticktext = ticktext, tickangle = tickangle), yaxis = list(title=ylab), showlegend = legend),
-                "three" = plot_ly(data=data_df,x = ~xvar, y = ~yvar3, colors=c("steelblue", "orange"), color = ~run, fill=fill) %>%
+                "three" = plot_ly(data=data_df,x = ~xvar, y = ~yvar3, colors=c("orange", "steelblue"), color = ~run, fill=fill) %>%
                   add_lines(name=~run,alpha=alpha, line = list(shape = shape)) %>%
                   layout(title = "",xaxis = list(title=xlabel, tickvals = tickvals, ticktext = ticktext, tickangle = tickangle), yaxis = list(title=ylab), showlegend = legend)
                 )
@@ -535,6 +535,10 @@ base_df <- base_data[[base_pos]]
 
 census_df = census_data[[which(census_csv_names=="hhSizeCensus")]]
 
+build_scen_name = BUILD_SCENARIO_NAME
+if(IS_BASE_SURVEY=="Yes"){
+  build_scen_name = CENSUS_SCENARIO_NAME
+}
 
 build_pos <- which(build_csv_names=="hhSizeDist")
 build_df <- build_data[[build_pos]]
@@ -542,7 +546,7 @@ build_df <- build_data[[build_pos]]
 colnames(build_df) <- colnames(base_df)
 
 std_DF <- get_standardDF(data_df1 = base_df, data_df2 = build_df, x = "HHSIZE", y = c("freq"))
-p <- plotly_bar_plotter(data = std_DF, xlabel = "HH Size", ylabel = "Percent", ynames = c(BASE_SCENARIO_NAME, BUILD_SCENARIO_NAME), percent = T)
+p <- plotly_bar_plotter(data = std_DF, xlabel = "HH Size", ylabel = "Percent", ynames = c(BASE_SCENARIO_NAME, build_scen_name), percent = T)
 p
 
 ```
@@ -653,22 +657,27 @@ build_df <- build_data[[which(build_csv_names=="autoOwnership")]]
 build_df$X = NULL
 base_df$X = NULL
 
-sd.autoown <- get_standardDF(data_df1 = base_df, data_df2 = build_df, x = "HHVEH", y = c("freq"))
+# sd.autoown <- get_standardDF(data_df1 = base_df, data_df2 = build_df, x = "HHVEH", y = c("freq"))
 #colnames(build_df) <- colnames(census_df)
 #colnames(base_df) <- colnames(census_df)
 
-#sd.autoown <- get_standardDF(data_df1 = base_df, data_df2 = build_df, x = "HHVEH", y = c("freq"), grp = "COUNTY", shared = TRUE)
+sd.autoown <- get_standardDF(data_df1 = base_df, data_df2 = build_df, x = "HHVEH", y = c("freq"), grp = "COUNTY", shared = TRUE)
 
-p <- plotly_bar_plotter(data = sd.autoown, xlabel = "Number of Vehicles", ylabel = "Percent", ynames = c(BASE_SCENARIO_NAME, BUILD_SCENARIO_NAME), percent = T, height = 225)
+build_scen_name = BUILD_SCENARIO_NAME
+if(IS_BASE_SURVEY=="Yes"){
+  build_scen_name = CENSUS_SCENARIO_NAME
+}
+
+p <- plotly_bar_plotter(data = sd.autoown, xlabel = "Number of Vehicles", ylabel = "Percent", ynames = c(BASE_SCENARIO_NAME, build_scen_name), percent = T, height = 225)
 
 
-# bscols(widths=c(3,9),
-  # list(
-    # filter_select("ao_cname", "Select County", sd.autoown, ~grp_var, multiple=F)),
-    # p
-  # )
+bscols(widths=c(3,9),
+  list(
+    filter_select("ao_cname", "Select County", sd.autoown, ~grp_var, multiple=F)),
+    p
+  )
 
-p
+# p
 ```
 
 ### Telecommute Frequency{data-height=250}
@@ -695,11 +704,16 @@ colnames(base_df) = c("District","tot_wrk","wfh","share")
 build_df <- build_data[[which(build_csv_names=="wfh_summary")]]
 build_df$share <- build_df$WFH/build_df$Workers
 
+build_scen_name = BUILD_SCENARIO_NAME
+if(IS_BASE_SURVEY=="Yes"){
+  build_scen_name = CENSUS_SCENARIO_NAME
+}
+
 std_DF <- merge(base_df[1:19,c("District", "share")], build_df[1:19,c("District", "share")], by = "District")
 
 colnames(std_DF) <- c("xvar", "prop1", "prop2")
 
-p <- plotly_bar_plotter(data = std_DF, xlabel = "District", ylabel = "Percent WFH", ynames = c(BASE_SCENARIO_NAME, BUILD_SCENARIO_NAME), percent = T, height = 275, tickangle = -320, bottom_offset = 25)
+p <- plotly_bar_plotter(data = std_DF, xlabel = "District", ylabel = "Percent WFH", ynames = c(BASE_SCENARIO_NAME, build_scen_name), percent = T, height = 275, tickangle = -320, bottom_offset = 25)
 p
 
 ```
@@ -743,8 +757,8 @@ build_df[is.na(build_df)] = 0
 # build_df <- cbind(build_df1, build_df2$value, build_df3$value)
 colnames(build_df) <- c("distbin","variable","value1","value2","value3")
 
-sd.purpose <- get_sharedData(data_df1 = base_df, data_df2 = build_df, run1_name = BUILD_SCENARIO_NAME,
-                             run2_name = BASE_SCENARIO_NAME, x = "distbin", y = c("value1", "value2", "value3"), grp = "variable")
+sd.purpose <- get_sharedData(data_df1 = base_df, data_df2 = build_df, run1_name = BASE_SCENARIO_NAME,
+                             run2_name = BUILD_SCENARIO_NAME, x = "distbin", y = c("value1", "value2", "value3"), grp = "variable")
 
 p1 <- plotly_density_plotter(sd.purpose, index = "one", xlabel = "Miles to Work", percent = T, tickvals = seq(1,50,5), ticktext = seq(0,50,5), height = 240)
 p2 <- plotly_density_plotter(sd.purpose, index = "two", xlabel = "Miles to University", percent = T, tickvals = seq(1,50,5), ticktext = seq(0,50,5), height = 240)
@@ -784,34 +798,27 @@ Chart Column 1
 ### {data-height=600}
 ```{r Table1_CountyFlows, eval  = TRUE}
 
-# if(IS_BASE_SURVEY=="Yes"){
-#   base_df <- base_data[[which(base_csv_names=="countyFlows")]]
-#   # base_df <- base_data[[which(base_csv_names=="countyFlows")]]
-#   name = 'Survey'
-# }else{
-  # base_df <- census_data[[which(census_csv_names=="countyFlowsCensus")]]
-  # name = 'Census'
-# }
-base_df <- base_data[[which(base_csv_names=="countyFlows")]]
-name = 'Survey'
-
-
-base_df[,!colnames(base_df) %in% c("X")] <- base_df[,!colnames(base_df) %in% c("X")]/BASE_SAMPLE_RATE
-if('X' %in% colnames(base_df)) {
-  rownames(base_df) = base_df$X
-  base_df$X = NULL
+build_scen_name = BUILD_SCENARIO_NAME
+if(IS_BASE_SURVEY=="Yes"){
+  base_df <- census_data[[which(census_csv_names=="countyFlowsCensus2021")]]
+  build_scen_name = CENSUS_SCENARIO_NAME
+  rownames(base_df) = base_df$O_County_Name
+  base_df = base_df[1:(nrow(base_df) - 1), 2:(ncol(base_df) - 1)]
+  nworkers = formatC(sum(base_df), format="f", big.mark=",", digits=0)
+  diag = chorddiag(as.matrix(base_df), palette = 'Spectral')
+  }else{
+  base_df <- base_data[[which(base_csv_names=="countyFlows")]]
+  base_df[,!colnames(base_df) %in% c("X")] <- base_df[,!colnames(base_df) %in% c("X")]/BASE_SAMPLE_RATE
+  if('X' %in% colnames(base_df)) {
+    rownames(base_df) = base_df$X
+    base_df$X = NULL
+  }
+  base_df2 = base_df[1:(nrow(base_df) - 1), 1:(ncol(base_df) - 1)]
+  nworkers = formatC(sum(base_df2), format="f", big.mark=",", digits=0)
+  diag = chorddiag(as.matrix(base_df2), palette = 'Spectral')
 }
-# t1 <- kable(base_df, format = 'html', caption = DISTRICT_FLOW_CENSUS, digits = 0, row.names = F, align = 'r', format.args = list(big.mark = ',')) %>%
-#   kable_styling('striped', font_size = 10)
-# t1
 
-base_df2 = base_df[1:(nrow(base_df) - 1), 1:(ncol(base_df) - 1)]
-
-nworkers = formatC(sum(base_df2), format="f", big.mark=",", digits=0)
-cat("County - County Flow of Workers -", name, ':', nworkers, 'workers in region')
-
-
-diag = chorddiag(as.matrix(base_df2), palette = 'Spectral')
+cat("County - County Flow of Workers -", build_scen_name, ':', nworkers, 'workers in region')
 
 diag
 
@@ -857,7 +864,6 @@ build_df2 = build_df[1:(nrow(build_df) - 1), 1:(ncol(build_df) - 1)]
 nworkers = formatC(sum(build_df2), format="f", big.mark=",", digits=0)
 #cat("County - County Flow of Workers - ACS:", nworkers, 'workers in region')
 cat("County - County Flow of Workers - Model:", nworkers, 'workers in region')
-
 
 diag2 = chorddiag(as.matrix(build_df2), palette = 'Spectral')
 
@@ -1440,7 +1446,7 @@ Description {.sidebar data-width=200}
 
 Tour Time-of-day Choice Model results.
 
-Each tour is assigned a time period of departure (time leaving home or work) and arrival (time arriving back at home or work). The entire day is divided into 18 one-hour bins (the first bin includes 3:00 AM to 6:00 AM and the last bin includes 11:00 PM to 3:00 AM).
+Each tour is assigned a time period of departure (time leaving home or work) and arrival (time arriving back at home or work). The entire day is divided into 48 half-hour bins.
 
 Tour duration is calculated as a function of departure and arrival period. It includes travel time and time spent at the primary destination and all intermediate stops.
 
@@ -1795,7 +1801,7 @@ Description {.sidebar data-width=175}
 
 Results of the Stop Departure Time Choice Model. The departure time of each stop on the tour is currently implemented as a Monte Carlo choice of time period from distributions generated from survey data.
 
-The entire day is divided into 18 one-hour bins (The first bin includes 3:00 AM to 6:00 AM and the last bin includes 11:00 PM to 3:00 AM).
+The entire day is divided into 48 half-hour bins.
 
 **Trip Departure**
 
@@ -1902,14 +1908,15 @@ build_df <- build_data[[which(build_csv_names=="tripModeProfile_vis")]]
 
 # build_df <- build_data[[which(build_csv_names=="tripModeProfile_vis_HTS")]]
 
-# colnames(build_df) <- colnames(base_df)
+colnames(build_df) <- colnames(base_df)
 
 # change purpose names to standard format
-base_df$purpose <- as.character(base_df$purpose)
-build_df$purpose <- as.character(build_df$purpose)
+# base_df$tripmode <- as.integer(base_df$tripmode)
+# build_df$tripmode <- as.integer(build_df$tripmode)
+# base_df$purpose <- as.character(base_df$purpose)
+# build_df$purpose <- as.character(build_df$purpose)
 base_df$purpose <- purpose_type_df$name[match(base_df$purpose, purpose_type_df$code)]
 build_df$purpose <- purpose_type_df$name[match(build_df$purpose, purpose_type_df$code)]
-
 
 sd.purpose <- get_standardDF(data_df1=base_df, data_df2=build_df, x="tripmode", y = c("value"), grp = "grp_var", shared = T)
 
