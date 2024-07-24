@@ -161,13 +161,13 @@ write.csv(wrk_co, "workers_per_co.csv")
 
 # Auto ownership
 autoOwnership <- count(hh, c("HHVEH"), "finalweight")
-write.csv(autoOwnership, file.path(WD, "autoOwnership.csv"), row.names = TRUE)
+write.csv(autoOwnership, file.path(WD, "autoOwnership_region.csv"), row.names = TRUE)
 
 hh$COUNTY <- xwalk$COUNTY_NAME[match(hh$home_zone_id, xwalk$TAZ)]
 autoOwnershipCY <- rbind(count(hh, c("COUNTY", "HHVEH"), "finalweight"), 
                          cbind(COUNTY= "Total", count(hh, "HHVEH", "finalweight")))
 #autoOwnershipCY <- cast(autoOwnershipCY, COUNTY~HHVEH, value = "freq", sum)
-write.csv(autoOwnershipCY, file.path(WD, "autoOwnershipCY.csv"), row.names = F)
+write.csv(autoOwnershipCY, file.path(WD, "autoOwnership.csv"), row.names = F)
 
 # Persons by person type
 pertypeDistbn <- count(per, c("PERTYPE"), "finalweight")
@@ -1508,15 +1508,15 @@ write.csv(stopTripDep_vis, file.path(WD, "stopTripDep_vis.csv"), row.names = F)
 
 getIndivTripMode <- function(trips, tourPurp, outFileName){
 	# tourPurp
-	tm1 = wtd.hist(trips$TRIPMODE[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0 & trips$TOURPURP %in% tourPurp & trips$TOURMODE==1], breaks = seq(1,11, by=1), freq = NULL, right=FALSE, weight = trips$finalweight[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0  & trips$TOURPURP %in% tourPurp & trips$TOURMODE==1])
-	tm2 = wtd.hist(trips$TRIPMODE[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0 & trips$TOURPURP %in% tourPurp & trips$TOURMODE==2], breaks = seq(1,11, by=1), freq = NULL, right=FALSE, weight = trips$finalweight[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0  & trips$TOURPURP %in% tourPurp & trips$TOURMODE==2])
-	tm3 = wtd.hist(trips$TRIPMODE[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0 & trips$TOURPURP %in% tourPurp & trips$TOURMODE==3], breaks = seq(1,11, by=1), freq = NULL, right=FALSE, weight = trips$finalweight[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0  & trips$TOURPURP %in% tourPurp & trips$TOURMODE==3])
-	tm4 = wtd.hist(trips$TRIPMODE[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0 & trips$TOURPURP %in% tourPurp & trips$TOURMODE==4], breaks = seq(1,11, by=1), freq = NULL, right=FALSE, weight = trips$finalweight[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0  & trips$TOURPURP %in% tourPurp & trips$TOURMODE==4])
-	tm5 = wtd.hist(trips$TRIPMODE[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0 & trips$TOURPURP %in% tourPurp & trips$TOURMODE==5], breaks = seq(1,11, by=1), freq = NULL, right=FALSE, weight = trips$finalweight[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0  & trips$TOURPURP %in% tourPurp & trips$TOURMODE==5])
-	tm6 = wtd.hist(trips$TRIPMODE[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0 & trips$TOURPURP %in% tourPurp & trips$TOURMODE==6], breaks = seq(1,11, by=1), freq = NULL, right=FALSE, weight = trips$finalweight[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0  & trips$TOURPURP %in% tourPurp & trips$TOURMODE==6])
-	tm7 = wtd.hist(trips$TRIPMODE[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0 & trips$TOURPURP %in% tourPurp & trips$TOURMODE==7], breaks = seq(1,11, by=1), freq = NULL, right=FALSE, weight = trips$finalweight[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0  & trips$TOURPURP %in% tourPurp & trips$TOURMODE==7])
-	tm8 = wtd.hist(trips$TRIPMODE[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0 & trips$TOURPURP %in% tourPurp & trips$TOURMODE==8], breaks = seq(1,11, by=1), freq = NULL, right=FALSE, weight = trips$finalweight[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0  & trips$TOURPURP %in% tourPurp & trips$TOURMODE==8])
-	tm9 = wtd.hist(trips$TRIPMODE[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0 & trips$TOURPURP %in% tourPurp & trips$TOURMODE==9], breaks = seq(1,11, by=1), freq = NULL, right=FALSE, weight = trips$finalweight[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0  & trips$TOURPURP %in% tourPurp & trips$TOURMODE==9])
+	tm1 = wtd.hist(trips$TRIPMODE[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0 & trips$TOURPURP %in% tourPurp & trips$TOURMODE==1], breaks = seq(1,12, by=1), freq = NULL, right=FALSE, weight = trips$finalweight[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0  & trips$TOURPURP %in% tourPurp & trips$TOURMODE==1])
+	tm2 = wtd.hist(trips$TRIPMODE[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0 & trips$TOURPURP %in% tourPurp & trips$TOURMODE==2], breaks = seq(1,12, by=1), freq = NULL, right=FALSE, weight = trips$finalweight[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0  & trips$TOURPURP %in% tourPurp & trips$TOURMODE==2])
+	tm3 = wtd.hist(trips$TRIPMODE[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0 & trips$TOURPURP %in% tourPurp & trips$TOURMODE==3], breaks = seq(1,12, by=1), freq = NULL, right=FALSE, weight = trips$finalweight[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0  & trips$TOURPURP %in% tourPurp & trips$TOURMODE==3])
+	tm4 = wtd.hist(trips$TRIPMODE[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0 & trips$TOURPURP %in% tourPurp & trips$TOURMODE==4], breaks = seq(1,12, by=1), freq = NULL, right=FALSE, weight = trips$finalweight[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0  & trips$TOURPURP %in% tourPurp & trips$TOURMODE==4])
+	tm5 = wtd.hist(trips$TRIPMODE[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0 & trips$TOURPURP %in% tourPurp & trips$TOURMODE==5], breaks = seq(1,12, by=1), freq = NULL, right=FALSE, weight = trips$finalweight[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0  & trips$TOURPURP %in% tourPurp & trips$TOURMODE==5])
+	tm6 = wtd.hist(trips$TRIPMODE[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0 & trips$TOURPURP %in% tourPurp & trips$TOURMODE==6], breaks = seq(1,12, by=1), freq = NULL, right=FALSE, weight = trips$finalweight[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0  & trips$TOURPURP %in% tourPurp & trips$TOURMODE==6])
+	tm7 = wtd.hist(trips$TRIPMODE[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0 & trips$TOURPURP %in% tourPurp & trips$TOURMODE==7], breaks = seq(1,12, by=1), freq = NULL, right=FALSE, weight = trips$finalweight[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0  & trips$TOURPURP %in% tourPurp & trips$TOURMODE==7])
+	tm8 = wtd.hist(trips$TRIPMODE[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0 & trips$TOURPURP %in% tourPurp & trips$TOURMODE==8], breaks = seq(1,12, by=1), freq = NULL, right=FALSE, weight = trips$finalweight[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0  & trips$TOURPURP %in% tourPurp & trips$TOURMODE==8])
+	tm9 = wtd.hist(trips$TRIPMODE[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0 & trips$TOURPURP %in% tourPurp & trips$TOURMODE==9], breaks = seq(1,12, by=1), freq = NULL, right=FALSE, weight = trips$finalweight[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0  & trips$TOURPURP %in% tourPurp & trips$TOURMODE==9])
 	#tm10 = wtd.hist(trips$TRIPMODE[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0 & trips$TOURPURP %in% tourPurp & trips$TOURMODE==10], breaks = seq(1,12, by=1), freq = NULL, right=FALSE, weight = trips$finalweight[!is.na(trips$TRIPMODE) & trips$TRIPMODE>0  & trips$TOURPURP %in% tourPurp & trips$TOURMODE==10])
 	tmp = data.frame(tm1$counts, tm2$counts, tm3$counts, tm4$counts,
                               tm5$counts, tm6$counts, tm7$counts, tm8$counts, tm9$counts) 

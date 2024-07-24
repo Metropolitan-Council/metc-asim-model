@@ -31,6 +31,7 @@ ABM_SUMMARY_DIR     <- trimws(paste(parameters$Value[parameters$Key=="VIS_ABM_SU
 #CALIBRATION_DIR     <- trimws(paste(parameters$Value[parameters$Key=="CALIBRATION_DIR"]))
 BASE_SCENARIO_NAME  <- trimws(paste(parameters$Value[parameters$Key=="BASE_SCENARIO_NAME"]))
 BUILD_SCENARIO_NAME <- trimws(paste(parameters$Value[parameters$Key=="BUILD_SCENARIO_NAME"]))
+CENSUS_SCENARIO_NAME <- trimws(paste(parameters$Value[parameters$Key=="CENSUS_SCENARIO_NAME"]))
 BASE_SAMPLE_RATE    <- as.numeric(trimws(paste(parameters$Value[parameters$Key=="BASE_SAMPLE_RATE"])))
 BUILD_SAMPLE_RATE   <- as.numeric(trimws(paste(parameters$Value[parameters$Key=="BUILD_SAMPLE_RATE"])))
 R_LIBRARY           <- trimws(paste(parameters$Value[parameters$Key=="R_LIBRARY"]))

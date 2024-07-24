@@ -90,7 +90,10 @@ auto_ownership = rbind(auto_ownership,
 setnames(auto_ownership, c('county','variable', '.'), 
          c('COUNTY', 'HHVEH', 'freq'))
 
+# acs_veh2 <- acs_veh
+# acs_veh2$
 
+print(acs_veh)
 
 auto_ownership[, HHVEH := as.numeric(gsub('B08201_00', '', HHVEH)) - 2]
 #auto_ownership = auto_ownership[HHVEH <= 4]

@@ -203,7 +203,7 @@ for (i in seq(length(employment_categories))){
   emp_cat <- employment_categories[i]
   workersbyOccInc[emp_cat] <- round(workersbyOccInc[emp_cat] * workersbyOccInc$tot_workers)
 }
-print("DBG3")
+
 workersbyOcc <- workersbyOccInc %>%
   group_by(workplace_zone_id) %>%
   select(workplace_zone_id, employment_categories)

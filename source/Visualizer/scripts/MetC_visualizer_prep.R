@@ -135,8 +135,8 @@ jutrips = data.table()
 jtours = data.table()
 place = data.table()
 
-#for(dow in c(1:7)){
-for(dow in c(1:4)){
+for(dow in c(1:7)){
+# for(dow in c(1:4)){
   cat(dow)
   
   per_data = fread(file.path(Survey_Processed_Dir, paste0('day', as.character(dow)), "persons.csv"))
@@ -179,6 +179,8 @@ for(dow in c(1:4)){
 
 zones = st_read(file.path(zone_dir, "TAZ2010.shp"))
 zones_dt = setDT(zones)
+xwalk <- zones
+xwalk$COUNTY_NAME <- as.character(xwalk$CO_NAME)
 
 # read updated weights #### 
 # wt_dir = settings$updated_weights_dir
@@ -202,7 +204,7 @@ print(paste("Saving files to", WD))
 library(omxr)
 skim_file = file.path(settings$skims_dir, settings$skims_filename)
 print(paste('Processing Distance Skim Matrix...', skim_file))
-skimMat <- read_omx(skim_file, "DIST")
+skimMat <- read_omx(skim_file, settings$skim_name)
 DST_SKM <- reshape2::melt(skimMat)
 colnames(DST_SKM) <- c("o", "d", "dist")
 
@@ -300,7 +302,13 @@ print("Computing summary statistics...")
 
 # Auto ownership
 autoOwnership = plyr::count(hh[!is.na(hh$HHVEH),], c("HHVEH"), "finalweight")
-write.csv(autoOwnership, "autoOwnership.csv", row.names = TRUE)
+write.csv(autoOwnership, "autoOwnership_region.csv", row.names = TRUE)
+
+hh$COUNTY <- xwalk$COUNTY_NAME[match(hh$home_zone_id, xwalk$TAZ)]
+autoOwnershipCY <- rbind(count(hh, c("COUNTY", "HHVEH"), "finalweight"), 
+                         cbind(COUNTY= "Total", count(hh, "HHVEH", "finalweight")))
+#autoOwnershipCY <- cast(autoOwnershipCY, COUNTY~HHVEH, value = "freq", sum)
+write.csv(autoOwnershipCY, file.path(WD, "autoOwnership.csv"), row.names = F)
 
 # Persons by person type
 pertypeDistbn = plyr::count(per[!is.na(per$PERTYPE),], c("PERTYPE"), "finalweight")
