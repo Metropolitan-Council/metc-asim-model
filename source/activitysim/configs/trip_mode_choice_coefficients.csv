@@ -437,7 +437,7 @@ coef_tnc_shared_ASC_tnc_single_univ,-90.0,F
 coef_joint_drive_transit_ASC_sov_discretionary,0.0,F
 coef_joint_drive_transit_ASC_sr2_discretionary,-38.0,F
 coef_joint_drive_transit_ASC_sr3p_discretionary,-38.0,F
-coef_joint_drive_transit_ASC_walk_discretionary,-999.0,F
+coef_joint_drive_transit_ASC_walk_discretionary,-38.0,F
 coef_joint_drive_transit_ASC_bike_discretionary,-36.0,F
 coef_joint_drive_transit_ASC_walk_transit_discretionary,-36.0,F
 coef_joint_drive_transit_ASC_taxi_discretionary,-999.0,F

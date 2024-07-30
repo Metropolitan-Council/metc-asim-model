@@ -76,7 +76,7 @@ coef_telecommute4p_13,,-0.473
 coef_telecommute4p_14,,-1.47
 coef_telecommute4p_15,,-1.47
 coef_telecommute4p_16,,-1.47
-asc_0out_0in,ASC,0.0
+asc_0out_0in,ASC,-0.23
 asc_0out_1in,ASC,-2.3930487668698355
 asc_0out_2in,ASC,-4.063791410207224
 asc_0out_3in,ASC,-5.724151896712551
@@ -92,7 +92,7 @@ asc_3out_0in,ASC,-5.9892244075333565
 asc_3out_1in,ASC,-7.291836140847257
 asc_3out_2in,ASC,-9.591855470534734
 asc_3out_3in,ASC,-10.076088466501478
-asc_joint_0out_0in,ASC,-0.07930199463734705
+asc_joint_0out_0in,ASC,-0.1793
 asc_joint_0out_1in,ASC,-1.6796637901855322
 asc_joint_0out_2in,ASC,-2.32114836604628
 asc_joint_0out_3in,ASC,-5.835729060282346
