@@ -1,24 +1,27 @@
 :: Set user parameters for Met Council Model
-@ECHO OFF
-:: Section 1: Set up new scenario - do not use a space in the file path!
-SET MAIN_DIRECTORY=C:\projects\metc-asim-model
-SET MODEL_YEAR=2018
-SET SCENARIO_NAME=Base_2018
-
+REM @ECHO OFF
+:: Section 1: Set up new scenario
+SET MAIN_DIRECTORY=E:\Met_Council\metc-asim-model
+SET MODEL_YEAR=2022
+SET SCENARIO_NAME=Base_2022
+SET INPUT_SUBFOLDER=INPUT_2022
 
 :: Section 2: Set up socioeconomic and land use data
-SET POP_NAME=population2018_Dec20.dbf
-SET HH_NAME=households2018_Dec20.dbf
+SET POP_NAME=synthetic_persons.csv
+SET HH_NAME=synthetic_households.csv
 SET ZONE_NAME=zones_2018_Dec20.dbf
 SET SCHOOL_TAZ=schoolTAZs.csv
 SET TAZ_COUNTY=TAZ_County.dbf
 
 :: Section 3: Set up highway network
-SET HIGHWAY_NAME=HighwayNetwork15.net
+SET HIGHWAY_NAME=HighwayNetwork22.net
 
 :: Section 4: Set up transit network
-SET TRANSIT_NAME=PT_2015.lin
+SET TRANSIT_NAME=PT_2022.lin
 
+:: Turns on (1) or off (0) detailed assignment
+:: AM1..4, PM1..4, EV, and ON
+SET RUN_DET_ASSIGN=0
 
 :: Section 5: Initial skims set up
 :: Determine whether model uses creates intital uncongested skims ("cold start") or uses previous congested skims ("warm start")
@@ -26,15 +29,38 @@ SET TRANSIT_NAME=PT_2015.lin
 SET FREE_FLOW=0
 
 :: If "warm start", location of congested skims
-SET hwy_AMskims_name=HWY_SKIM_4_AM.skm
-SET hwy_PMskims_name=HWY_SKIM_4_PM.skm
-SET hwy_NTskims_name=HWY_SKIM_4_NT.skm
-SET hwy_MDskims_name=HWY_SKIM_4_MD.skm
+SET hwy_AMskims_L_name=HWY_SKIM_4_AM_L.skm
+SET hwy_PMskims_L_name=HWY_SKIM_4_PM_L.skm
+SET hwy_NTskims_L_name=HWY_SKIM_4_NT_L.skm
+SET hwy_MDskims_L_name=HWY_SKIM_4_MD_L.skm
 
-SET xit_WK_PKskims_name=XIT_WK_SKIM_0_PK.skm
-SET xit_WK_OPskims_name=XIT_WK_SKIM_0_OP.skm
-SET xit_DR_PKskims_name=XIT_DR_SKIM_0_PK.skm
-SET xit_DR_OPskims_name=XIT_DR_SKIM_0_OP.skm
+SET hwy_AMskims_M_name=HWY_SKIM_4_AM_M.skm
+SET hwy_PMskims_M_name=HWY_SKIM_4_PM_M.skm
+SET hwy_NTskims_M_name=HWY_SKIM_4_NT_M.skm
+SET hwy_MDskims_M_name=HWY_SKIM_4_MD_M.skm
+
+SET hwy_AMskims_H_name=HWY_SKIM_4_AM_H.skm
+SET hwy_PMskims_H_name=HWY_SKIM_4_PM_H.skm
+SET hwy_NTskims_H_name=HWY_SKIM_4_NT_H.skm
+SET hwy_MDskims_H_name=HWY_SKIM_4_MD_H.skm
+
+SET xit_WK_EAskims_name=XIT_WK_SKIM_3_EA.skm
+SET xit_WK_AMskims_name=XIT_WK_SKIM_3_AM.skm
+SET xit_WK_MDskims_name=XIT_WK_SKIM_3_MD.skm
+SET xit_WK_PMskims_name=XIT_WK_SKIM_3_PM.skm
+SET xit_WK_NTskims_name=XIT_WK_SKIM_3_NT.skm
+
+SET xit_DR_EAskims_name=XIT_DR_SKIM_3_EA.skm
+SET xit_DR_AMskims_name=XIT_DR_SKIM_3_AM.skm
+SET xit_DR_MDskims_name=XIT_DR_SKIM_3_MD.skm
+SET xit_DR_PMskims_name=XIT_DR_SKIM_3_PM.skm
+SET xit_DR_NTskims_name=XIT_DR_SKIM_3_NT.skm
+
+SET xit_DRE_EAskims_name=XIT_DRE_SKIM_3_EA.skm
+SET xit_DRE_AMskims_name=XIT_DRE_SKIM_3_AM.skm
+SET xit_DRE_MDskims_name=XIT_DRE_SKIM_3_MD.skm
+SET xit_DRE_PMskims_name=XIT_DRE_SKIM_3_PM.skm
+SET xit_DRE_NTskims_name=XIT_DRE_SKIM_3_NT.skm
 
 :: Section 7: Catalog Run Parameters
 :: Initialize the model run to an unconverged state
@@ -46,10 +72,10 @@ SET conv_LinkPerc=1
 SET ITER=1
 SET PREV_ITER=0
 :: Set cube cluster threads
-SET max_threads=16
+SET max_threads=20
 :: Set max feedback loops
 SET max_feedback=4
-:: Set max iterations of highway assignment
+:: Set max iterations of highway assignment - should be 100 or more
 SET hwy_assignIters=100
 
 ::Section 8: Other Highway Parameters: Set number of zones (total, internal, external)
@@ -68,6 +94,7 @@ SET WILL_TO_PAY=Will2Pay_oneCurve.txt
 SET ALPHA_BETA=AlphaBetaLookup.txt
 SET CAPACITY=CapacityLookup.txt
 SET SPEED_LOOKUP=SpeedLookup85.txt
+SET Assignment_Parameters=AssignmentParameters.txt
 
 :: Section 9: Set nonmotorized parameters
 :: Set default bike and walk speeds
@@ -78,9 +105,9 @@ SET bikeFact1=0.8
 SET walkSpeed=2.5
 
 :: Section 10: Set other transit parameters
-SET SYSTEM_NAME=PT_SYSTEM_2010.PTS
-SET FARE_MATRIX=FAREMAT_2010.txt
-SET FARE_FILE=PT_FARE_2010.FAR
+SET SYSTEM_NAME=PT_SYSTEM_2022.PTS
+SET FARE_MATRIX=FAREMAT_2022.txt
+SET FARE_FILE=PT_FARE_2022.FAR
 SET PARKRIDE_FILE=GENERATE_PNR_ACCESS.s
 ::Set model transit year
 SET xit_fac_year=2010
@@ -122,38 +149,49 @@ SET C_TR=-0.677
 
 :: Section 15: Set file paths
 ::Socioeconomic file path (population, households, zonal data)
-SET SE=%MAIN_DIRECTORY%\Input\socioeconomic
+SET SE=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\socioeconomic
 :: Set highway network file path
-SET NETWORK_FOLDER=%MAIN_DIRECTORY%\Input\network
+SET NETWORK_FOLDER=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\network
 :: Set transit network file path
-SET TRANSIT_FOLDER=%MAIN_DIRECTORY%\Input\transit
+SET TRANSIT_FOLDER=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\transit
 :: Set script path
 SET SCRIPT_PATH=%MAIN_DIRECTORY%\source\cube_scripts
 :: Set freight path
-SET FREIGHT_DATA=%MAIN_DIRECTORY%\Input\freight
+SET FREIGHT_DATA=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\freight
 ::SET EXTERNAL DATA PATH
-SET EXTERNAL_DATA=%MAIN_DIRECTORY%\Input\external
+SET EXTERNAL_DATA=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\external
 ::Set airport model data
-SET AIRPORT=%MAIN_DIRECTORY%\Input\airport
+SET AIRPORT=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\airport
 
 SET CATALOG_DIR=%MAIN_DIRECTORY%
 MKDIR = .\%SCENARIO_NAME%
-MKDIR = .\%SCENARIO_NAME%\abm_logs
 SET SCENARIO_DIR=%MAIN_DIRECTORY%\%SCENARIO_NAME%
 
 :: Original cube scripts contained a separate trip directory. This could be revisited.
 SET TRIP_DIR=%SCENARIO_DIR%
-SET LOOKUP_DIR=%MAIN_DIRECTORY%\Input
-SET INPUT_DIR=%MAIN_DIRECTORY%\Input
+SET LOOKUP_DIR=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%
+SET INPUT_DIR=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%
 ::SET TOURCAST_DIR=%MAIN_DIRECTORY%\TourCast
 
-::SET ASIM_DATA=%MAIN_DIRECTORY%\Input\activitysim\data
+::SET ASIM_DATA=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\activitysim\data
 SET ASIM_OUT=%MAIN_DIRECTORY%\%SCENARIO_NAME%\activitysim\output
+REM _new_pop
 MKDIR %SCENARIO_NAME%\activitysim\output
 MKDIR %SCENARIO_NAME%\activitysim\output\log
 MKDIR %SCENARIO_NAME%\activitysim\output\cache
 MKDIR %SCENARIO_NAME%\OMX
-COPY %MAIN_DIRECTORY%\source\activitysim\cache\chunk_cache.csv %SCENARIO_NAME%\activitysim\output\cache
+
+::Added ASR because organization is nice
+MKDIR %SCENARIO_NAME%\airport
+MKDIR %SCENARIO_NAME%\external
+MKDIR %SCENARIO_NAME%\truck
+MKDIR %SCENARIO_NAME%\highway
+MKDIR %SCENARIO_NAME%\transit
+MKDIR %SCENARIO_NAME%\landuse
+MKDIR %SCENARIO_NAME%\nonmotorized
+MKDIR %SCENARIO_NAME%\specialgen
+
+COPY %MAIN_DIRECTORY%\source\activitysim\cache\chunk_cache.csv %MAIN_DIRECTORY%\%SCENARIO_NAME%\activitysim\output\cache
 
 :: Section 16: set INPUT FILE paths
 :: Set zones
@@ -190,14 +228,34 @@ SET ee_trk_dist=%FREIGHT_DATA%\%EE_TRUCK_DIST_FILE%
 :: Set household and person files
 SET households=%SE%\%HH_NAME%
 SET persons=%SE%\%POP_NAME%
-SET hwy_AMskims=%MAIN_DIRECTORY%\Input\skims\%hwy_AMskims_name%
-SET hwy_PMskims=%MAIN_DIRECTORY%\Input\skims\%hwy_PMskims_name%
-SET hwy_NTskims=%MAIN_DIRECTORY%\Input\skims\%hwy_NTskims_name%
-SET hwy_MDskims=%MAIN_DIRECTORY%\Input\skims\%hwy_MDskims_name%
-SET xit_WK_PKskims=%MAIN_DIRECTORY%\Input\skims\%xit_WK_PKskims_name%
-SET xit_WK_OPskims=%MAIN_DIRECTORY%\Input\skims\%xit_WK_OPskims_name%
-SET xit_DR_PKskims=%MAIN_DIRECTORY%\Input\skims\%xit_DR_PKskims_name%
-SET xit_DR_OPskims=%MAIN_DIRECTORY%\Input\skims\%xit_DR_OPskims_name%
+SET hwy_AM_L_skims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%hwy_AMskims_L_name%
+SET hwy_PM_L_skims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%hwy_PMskims_L_name%
+SET hwy_NT_L_skims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%hwy_NTskims_L_name%
+SET hwy_MD_L_skims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%hwy_MDskims_L_name%
+SET hwy_AM_M_skims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%hwy_AMskims_M_name%
+SET hwy_PM_M_skims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%hwy_PMskims_M_name%
+SET hwy_NT_M_skims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%hwy_NTskims_M_name%
+SET hwy_MD_M_skims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%hwy_MDskims_M_name%
+SET hwy_AM_H_skims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%hwy_AMskims_H_name%
+SET hwy_PM_H_skims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%hwy_PMskims_H_name%
+SET hwy_NT_H_skims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%hwy_NTskims_H_name%
+SET hwy_MD_H_skims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%hwy_MDskims_H_name%
+
+SET xit_WK_EAskims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%xit_WK_EAskims_name%
+SET xit_WK_AMskims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%xit_WK_AMskims_name%
+SET xit_WK_MDskims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%xit_WK_MDskims_name%
+SET xit_WK_PMskims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%xit_WK_PMskims_name%
+SET xit_WK_NTskims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%xit_WK_NTskims_name%
+SET xit_DR_EAskims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%xit_DR_EAskims_name%
+SET xit_DR_AMskims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%xit_DR_AMskims_name%
+SET xit_DR_MDskims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%xit_DR_MDskims_name%
+SET xit_DR_PMskims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%xit_DR_PMskims_name%
+SET xit_DR_NTskims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%xit_DR_NTskims_name%
+SET xit_DRE_EAskims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%xit_DRE_EAskims_name%
+SET xit_DRE_AMskims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%xit_DRE_AMskims_name%
+SET xit_DRE_MDskims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%xit_DRE_MDskims_name%
+SET xit_DRE_PMskims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%xit_DRE_PMskims_name%
+SET xit_DRE_NTskims=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\skims\%xit_DRE_NTskims_name%
 
 :: Section 17: PATH variables
 :: !!WARNING!!
@@ -231,13 +289,14 @@ SET "check_python_errors=IF ERRORLEVEL 1 %exitRun%"
 SET VIS_FOLDER=%MAIN_DIRECTORY%\source\Visualizer
 ::
 :: This is the base condition, either a survey or a different run. This data is only read
-SET VIS_BASE_DATA_FOLDER=%MAIN_DIRECTORY%\Input\Visualizer\base
+:: SET VIS_BASE_DATA_FOLDER=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\Visualizer\base2018
+SET VIS_BASE_DATA_FOLDER=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\Visualizer\base
 SET VIS_SKIMS=%MAIN_DIRECTORY%\%SCENARIO_NAME%\OMX
-SET BASE_SCENARIO_NAME=Survey
+SET BASE_SCENARIO_NAME=TBI_21
 SET BASE_SAMPLE_RATE=1.0
 :: for survey base legend names are different [Yes/No]
 SET IS_BASE_SURVEY=Yes
-
+SET CENSUS_SCENARIO_NAME=Census ACS (17-21)
 ::
 :: This is the build condition
 :: NOTE: ACTIVITYSIM SUMMARIZED OUTPUT WILL GO HERE
@@ -247,12 +306,12 @@ SET BUILD_SCENARIO_NAME=Model
 SET BUILD_SAMPLE_RATE=1.0
 
 :: Common data
-SET VIS_ZONE_DIR=%MAIN_DIRECTORY%\Input\Visualizer\SHP
+SET VIS_ZONE_DIR=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\Visualizer\SHP
 SET VIS_ZONE_FILE=TAZ2010.shp
 SET CT_ZERO_AUTO_FILE_NAME=ct_zero_auto.shp
-SET CENSUS_DATA_PATH=%MAIN_DIRECTORY%\Input\Visualizer\census
+SET CENSUS_DATA_PATH=%MAIN_DIRECTORY%\%INPUT_SUBFOLDER%\Visualizer\census
 :: Executable and library paths
-SET R_SCRIPT="C:\projects\mwcog\Gen3_Model\source\visualizer\dependencies\R-4.1.2\bin\RScript"
+SET R_SCRIPT="C:\Program Files\R\R-4.0.3\bin\x64\RScript"
 SET R_LIBRARY=%VIS_FOLDER%\contrib\RPKG
 :: Set PANDOC path
 SET RSTUDIO_PANDOC=%VIS_FOLDER%\contrib\pandoc-2.14.2
@@ -264,3 +323,4 @@ SET FULL_HTML_NAME=MetCouncil_visualizer
 SET MAX_ITER=1
 SET PROJ_LIB=%R_LIBRARY%\rgdal\proj
 
+SET VALIDATION=YES
