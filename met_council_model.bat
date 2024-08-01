@@ -1,6 +1,9 @@
 ::~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 @ECHO OFF
 SetLocal EnableDelayedExpansion
+
+:: This just dumps the start time into a file to see how long the model takes
+echo %date% %time% > start.txt
 :: ----------------------------------------------------------------------------
 ::
 :: Step 1:  Set the necessary path variables 
@@ -11,6 +14,11 @@ SetLocal EnableDelayedExpansion
 CALL .\set_parameters.bat
 
 COPY .\set_parameters.bat %SCENARIO_DIR%\set_parameters.txt
+
+:: For restarting...
+REM SET ITER=4
+REM SET PREV_ITER=3
+REM GOTO Final_highway_assign
 
 :: ----------------------------------------------------------------------------
 ::
@@ -72,7 +80,7 @@ runtpp %SCRIPT_PATH%\HAPIL00B.s
 %check_cube_errors%
 ::endComment
 
-IF %FREE_FLOW%==1 (goto initialSkim) else (goto copySkims)
+IF %FREE_FLOW%==1 (goto initialSkim) else (goto tskim)
 
 :initialSkim
 ECHO Initial Skims
@@ -120,8 +128,19 @@ FOR /L %%I IN (1, 1, 4) DO (
 		SET PER=PM
 		SET TOD=6
 	)
-	runtpp %SCRIPT_PATH%\FFHWY00A.s
-	%check_cube_errors%
+	FOR /L %%J IN (1, 1, 3) DO (
+		IF %%J EQU 1 (
+			SET IC=L
+		)
+		IF %%J EQU 2 (
+			SET IC=M
+		)
+		IF %%J EQU 3 (
+			SET IC=H
+		)
+		runtpp %SCRIPT_PATH%\FFHWY00A.s
+		%check_cube_errors%
+	)
 )
 
 :: Close Cluster
@@ -145,7 +164,8 @@ runtpp %SCRIPT_PATH%\TSNET00B.s
 runtpp %SCRIPT_PATH%\TSNET00C_loop.s
     %check_cube_errors%
 
-goto ancillary
+IF %FREE_FLOW%==1 goto ancillary
+
 
 :copySkims
 runtpp %SCRIPT_PATH%\CSPIL00A.s
@@ -432,6 +452,7 @@ for /L %%I IN (1, 1, 4) DO (
 	SET TOD=%%I
 	IF %%I EQU 1 (
 		SET PER=AM
+		SET LPER=AM
 		SET ASSIGNNAME=AM Peak Period
 		SET HWY_NET=HWY_NET_3.net
 		SET NETNAME=AM Peak Period 6:00 AM to 10:00 AM
@@ -439,6 +460,7 @@ for /L %%I IN (1, 1, 4) DO (
 		)
 	IF %%I EQU 2 (
 		SET PER=MD
+		SET LPER=MD
 		SET ASSIGNNAME=Mid Day Peak Period
 		SET HWY_NET=HWY_NET_4.net
 		SET NETNAME=Mid Day Period 10:00 AM to 3:00 PM
@@ -446,6 +468,7 @@ for /L %%I IN (1, 1, 4) DO (
 		)
 	IF %%I EQU 3 (
 		SET PER=PM
+		SET LPER=PM
 		SET ASSIGNNAME=PM Peak Period
 		SET HWY_NET=HWY_NET_6.net
 		SET NETNAME=PM Peak Period 3:00 PM to 7:00 PM
@@ -453,6 +476,7 @@ for /L %%I IN (1, 1, 4) DO (
 		)
 	IF %%I EQU 4 (
 		SET PER=NT
+		SET LPER=NT
 		SET ASSIGNNAME=Night
 		SET HWY_NET=HWY_NET_1.net
 		SET NETNAME=AM Peak Period 7:00 PM to 6:00 AM
@@ -542,6 +566,8 @@ IF %ITER% GEQ 2 (
         
         runtpp %SCRIPT_PATH%\CCNET00D.s
         %check_cube_errors%
+		runtpp %SCRIPT_PATH%\CCNET00H.S
+		%check_cube_errors%
         runtpp %SCRIPT_PATH%\CCMAT00A.s
         %check_cube_errors%
         
@@ -647,9 +673,21 @@ IF %CONV% EQU 0 (
 	runtpp %SCRIPT_PATH%\TSPTR00X_loop.s
 	%check_cube_errors%
 )
+
+
+
+:: Return to beginning of model loop if model is no converged
+IF %ITER% LEQ %max_feedback% (IF %CONV% EQU 0 (
+	SET /a ITER=ITER+1
+	SET /a PREV_ITER=PREV_ITER+1
+	%returnToHead%)
+	)
+
+
 :Final_highway_assign
 ::%beginComment%
 :: If the model is converged, run assignment one last time
+IF %RUN_DET_ASSIGN% EQU 0 GOTO final_trn_assign
 IF %CONV% EQU 1 (
     :: FINAL HIGHWAY 
     ::Start Cube Cluster
@@ -658,6 +696,7 @@ IF %CONV% EQU 1 (
     FOR /L %%I IN (1,1,10) DO (
         IF %%I EQU 1 (
             SET PER=AM1
+			SET LPER=AM
             SET ASSIGNNAME=AM1 Peak Period
             SET HWY_NET=HWY_NET_3.net
             SET NETNAME=AM Peak Period 6:00 AM to 7:00 AM
@@ -665,6 +704,7 @@ IF %CONV% EQU 1 (
         )
         IF %%I EQU 2 (
             SET PER=AM2
+			SET LPER=AM
             SET ASSIGNNAME=AM2 Peak Period
             SET HWY_NET=HWY_NET_3.net
             SET NETNAME=AM Peak Period 7:00 AM to 8:00 AM
@@ -672,6 +712,7 @@ IF %CONV% EQU 1 (
         )
         IF %%I EQU 3 (
             SET PER=AM3
+			SET LPER=AM
             SET ASSIGNNAME=AM3 Peak Period
             SET HWY_NET=HWY_NET_3.net
             SET NETNAME=AM Peak Period 8:00 AM to 9:00 AM
@@ -679,6 +720,7 @@ IF %CONV% EQU 1 (
         )
         IF %%I EQU 4 (
             SET PER=AM4
+			SET LPER=AM
             SET ASSIGNNAME=AM4 Peak Period
             SET HWY_NET = HWY_NET_3.net
             SET NETNAME=AM Peak Period 9:00 AM to 10:00 AM
@@ -686,6 +728,7 @@ IF %CONV% EQU 1 (
         )
         IF %%I EQU 5 (
             SET PER=PM1
+			SET LPER=PM
             SET ASSIGNNAME=PM1 Peak Period
             SET HWY_NET = HWY_NET_6.net
             SET NETNAME=PM Peak Period 3:00 AM to 4:00 PM
@@ -693,6 +736,7 @@ IF %CONV% EQU 1 (
         )
         IF %%I EQU 6 (
             SET PER=PM2
+			SET LPER=PM
             SET ASSIGNNAME=PM2 Peak Period
             SET HWY_NET=HWY_NET_6.net
             SET NETNAME=PM Peak Period 4:00 AM to 5:00 PM
@@ -700,6 +744,7 @@ IF %CONV% EQU 1 (
         )
         IF %%I EQU 7 (
             SET PER=PM3
+			SET LPER=PM
             SET ASSIGNNAME=PM3 Peak Period
             SET HWY_NET=HWY_NET_6.net
             SET NETNAME=PM Peak Period 5:00 AM to 6:00 PM
@@ -707,6 +752,7 @@ IF %CONV% EQU 1 (
         )
         IF %%I EQU 8 (
             SET PER=PM4
+			SET LPER=PM
             SET ASSIGNNAME=PM4 Peak Period
             SET HWY_NET=HWY_NET_6.net
             SET NETNAME=PM Peak Period 6:00 AM to 7:00 PM
@@ -714,6 +760,7 @@ IF %CONV% EQU 1 (
         )
         IF %%I EQU 9 (
             SET PER=EV
+			SET LPER=NT
             SET ASSIGNNAME=Evening Period
             SET HWY_NET=HWY_NET_1.net
             SET NETNAME=Evening 7:00 PM to 12:00 AM
@@ -721,6 +768,7 @@ IF %CONV% EQU 1 (
         )
         IF %%I EQU 10 (
             SET PER=ON
+			SET LPER=NT
             SET ASSIGNNAME=Overnight Period
             SET HWY_NET=HWY_NET_1.net
             SET NETNAME=Overnight 12:00 AM to 6:00 AM
@@ -757,10 +805,8 @@ IF %CONV% EQU 1 (
         IF %%I EQU 1 (SET PER=AM)
         IF %%I EQU 2 (SET PER=PM)
         
-		::FIXME: are these necessary? PPNET00A looks like it is 
-        :: Combine time period networks
-        runtpp %SCRIPT_PATH%\PPNET00A.s
-        %check_cube_errors%
+		runtpp %SCRIPT_PATH%\PPNET00A.s
+		%check_cube_errors%
         runtpp %SCRIPT_PATH%\PPNET00B.s
         %check_cube_errors%
         :: Export to csv
@@ -769,17 +815,17 @@ IF %CONV% EQU 1 (
     )
 )
 
-SET /a ITER=ITER+1
-SET /a PREV_ITER=PREV_ITER+1
-
-:: Return to beginning of model loop if model is no converged
-IF %ITER% LEQ %max_feedback% (IF %CONV% EQU 0 (%returnToHead%))
 ::endComment
 
 COPY *.prn %SCENARIO_DIR%\abm_logs\*.prn
 
 :: Delete all the temporary TP+ printouts and cluster files
 DEL *.prn
+
+IF %VALIDATION% EQU YES (
+	runtpp %SCRIPT_PATH%\VANET00A.S
+	runtpp %SCRIPT_PATH%\VAPIL00A.S
+)
 
 :Visualizer
 cd Visualizer
@@ -808,5 +854,5 @@ IF ERRORLEVEL 2 (
 )
 
 :veryEndOfFile
-
+echo %date% %time% > end.txt
 ::cd ..\..\..
