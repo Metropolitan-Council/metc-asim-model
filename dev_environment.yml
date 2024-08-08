@@ -1,6 +1,7 @@
 name: asim_asr_dev
 channels:
   - defaults
+  - conda-forge
 dependencies:
   - nbconvert
   - psutil=5.9
