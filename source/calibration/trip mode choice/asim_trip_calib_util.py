@@ -265,14 +265,13 @@ calib_trip_mode_to_vis_dict = {  # tour mode choice vis
     'SHARED3': 3,
     'WALK': 4,
     'BIKE': 5,
-    'WALK-TRANSIT': 6,
-    'PNR-TRANSIT': 7,
-    'KNR-TRANSIT': 8,
+    'TRNWALKACCESS': 6,
+    'TRNDRIVEACCESS': 7,
     'SCHOOL_BUS': 9,
-    'TNC-SINGLE': 10,
-    'TNC-SHARED': 10,
-    'TAXI': 10,
-    'RIDEHAIL': 10,
+    'TNC-SINGLE': 8,
+    'TNC-SHARED': 8,
+    'TAXI': 8,
+    'RIDEHAIL': 8,
     # 'TNC-SINGLE': 10,
     # 'TNC-SHARED': 11,
     # 'TAXI': 12,
@@ -284,9 +283,8 @@ calib_tour_mode_to_vis_dict = {  # trip mode choice vis
     'SHARED3': 'Auto 3+ Person',
     'WALK': 'Walk',
     'BIKE': 'Bike/Moped',
-    'WALK-TRANSIT': 'Walk-Transit',
-    'PNR-TRANSIT': 'PNR-Transit',
-    'KNR-TRANSIT': 'KNR-Transit',
+    'TRNWALKACCESS': 'Walk-Transit',
+    'TRNDRIVEACCESS': 'Drive-Transit',
     'SCHOOL_BUS': 'School Bus',
     'RIDEHAIL': 'Ride Hail',
     total_keyword: 'Total'
@@ -294,13 +292,13 @@ calib_tour_mode_to_vis_dict = {  # trip mode choice vis
 purpose_vis_dict = {  # same purposes used for both trip and tour
     # calibration purpose: visualizer purpose
     'univ': 'univ',
-    'school': 'sch',
-    'work': 'Work',
+    'school': 'schl',
+    'work': 'work',
     'atwork': 'atwork',
     'ind_discr': 'idisc',
     'ind_maint': 'imain',
-    'jmain': 'jmain',
-    'jdisc': 'jdisc',  # joint is copied to produce jdisc purpose in the code
+    'joint_maint': 'jmain',
+    'joint_discr': 'jdisc',  # joint is copied to produce jdisc purpose in the code
     total_keyword: 'total'
 }
 
@@ -814,9 +812,10 @@ def write_visualizer_calibration_target_table(full_trip_mc_calib_target_tables, 
                                                row['purpose'] + 'tourmode' + str(row['tourmode_num'])
                                                if row['tourmode'] != 'Total' \
                                                else  row['purpose'] + str(row['tourmode_num']), axis=1)
+    trip_mc_vis = trip_mc_vis.groupby(['tripmode', 'tourmode', 'purpose', 'grp_var']).agg(value = ('value', sum)).reset_index()
     trip_mc_vis_cols = ['tripmode', 'tourmode', 'purpose', 'value', 'grp_var']
     trip_mc_vis[trip_mc_vis_cols].to_csv(
-        os.path.join(output_dir, 'tripModeProfile_vis_calib.csv'), index=False)
+        os.path.join(output_dir, 'tripModeProfile_vis_calib.csv'), index=False, quoting = 2)
 
 
 def match_model_and_calib_targets_to_coefficients(original_trip_mc_constants_df,
@@ -1243,7 +1242,7 @@ def perform_trip_mode_choice_model_calibration(asim_output_dir,
     display_largest_coefficients(coef_update_df)
 
     # write scaled calibration targets for HTML visualizer
-    #write_visualizer_calibration_target_table(full_trip_mc_calib_target_tables, asim_trips_df, output_dir)
+    write_visualizer_calibration_target_table(full_trip_mc_calib_target_tables, asim_trips_df, output_dir)
 
     return coef_update_df
 
