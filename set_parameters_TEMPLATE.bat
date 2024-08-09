@@ -9,7 +9,7 @@ SET INPUT_SUBFOLDER=INPUT_2022
 :: Section 2: Set up socioeconomic and land use data
 SET POP_NAME=synthetic_persons.csv
 SET HH_NAME=synthetic_households.csv
-SET ZONE_NAME=zones_2018_Dec20.dbf
+SET ZONE_NAME=zones_2022.dbf
 SET SCHOOL_TAZ=schoolTAZs.csv
 SET TAZ_COUNTY=TAZ_County.dbf
 
