@@ -290,12 +290,6 @@ tourDays = as.data.frame(table(tours$HH_ID*1000+tours$PER_ID*10+tours$dow_num), 
 per$tourDays = tourDays$Freq[match(per$SAMPN*100+per$PERNO, as.integer(as.numeric(tourDays$Var1)/10))]
 per[is.na(per$tourDays),]$tourDays = 0
 
-# Write out the HH, per, and tours files
-# write.csv(hh, paste(debug_output, "hh.csv", sep = "\\"))
-# write.csv(per, paste(debug_output, "per.csv", sep = "\\"))
-# #write.csv(tour, paste(debug_output, "tour.csv", sep = "\\"))
-# write.csv(trips, paste(debug_output, "trips.csv", sep = "\\"))
-
 ##-------Compute Summary Statistics-------#### 
 
 print("Computing summary statistics...")
@@ -590,9 +584,10 @@ tours$TOURPURP_RECODE[tours$IS_SUBTOUR==0 & tours$FULLY_JOINT==1 & tours$TOURPUR
 tours$TOURPURP_RECODE[tours$IS_SUBTOUR==1] = "At-Work"
 
 
+#ASR: PII Warning, if this is needed, do not write it to the visualizer inputs.
 # Export data for mode choice targets spreadsheet
-write.csv(tours[,c("HH_ID", "PER_ID", "TOUR_ID","TOURMODE_RECODE", "TOURPURP_RECODE", "AUTOSUFF", "finalweight")], 
-          "tourModeChoice.csv", row.names = F)
+# write.csv(tours[,c("HH_ID", "PER_ID", "TOUR_ID","TOURMODE_RECODE", "TOURPURP_RECODE", "AUTOSUFF", "finalweight")], 
+#           "tourModeChoice.csv", row.names = F)
 
 # Recode workrelated tours which are not at work subtour as work tour
 # tours$TOURPURP[tours$TOURPURP == 10] = 1
@@ -777,9 +772,10 @@ trips$ANCHOR_DEPART_MIN = tours$ANCHOR_DEPART_MIN[match(trips$HH_ID*1000+trips$P
 trips$od_dist = DST_SKM$dist[match(paste(trips$ORIG_TAZ, trips$DEST_TAZ, sep = "-"), paste(DST_SKM$o, DST_SKM$d, sep = "-"))]
 trips$od_dist[is.na(trips$od_dist)] = 0
 
+#ASR PII WARNING. If this is needed, save it somewhere else, not in the visualizer inputs folder.
 # export trip file for tour mode choice targets spreadsheet
-write.csv(trips[, c("HH_ID", "PER_ID", "TOUR_ID", "TRIP_ID", "TRIPMODE_RECODE","TOURMODE_RECODE", "TOURPURP_RECODE", "AUTOSUFF", "finalweight")], 
-          "tripModeChoice.csv", row.names = F)
+# write.csv(trips[, c("HH_ID", "PER_ID", "TOUR_ID", "TRIP_ID", "TRIPMODE_RECODE","TOURMODE_RECODE", "TOURPURP_RECODE", "AUTOSUFF", "finalweight")], 
+#           "tripModeChoice.csv", row.names = F)
 
 #create stops table
 stops = trips[trips$stops==1,]
@@ -1221,9 +1217,6 @@ perDays$NDays = perN$N[match(perDays$HH_ID*1000+perDays$PER_ID, perN$HH_ID)]
 
 perDays$adjFinalWeight = perDays$finalweight / perDays$NDays
 
-# debugging - this is used by the CDAP by AS script
-# write.csv(perDays, "E:\\Met_Council\\survey_data\\Phase1\\SPA_Processed\\per_days.csv")
-
 dapSummary = plyr::count(perDays, c("PERTYPE", "DAP"), "adjFinalWeight")
 print(paste("dap weight", sum(dapSummary$adjFinalWeight)))
 print(paste("perDays weight", sum(perDays$finalweight)))
@@ -1271,8 +1264,9 @@ perDays$mtf[perDays$workTours >= 1 & perDays$schlTours >= 1] = 5
 
 mtfSummary = plyr::count(perDays[perDays$mtf > 0,], c("PERTYPE", "mtf"), "adjFinalWeight")
 write.csv(mtfSummary, "mtfSummary.csv")
-write.csv(tours, "tours_test.csv")
-print("marker 9")
+#ASR: PII WARNING. DO NOT WRITE THIS.
+# write.csv(tours, "tours_test.csv")
+
 # Prepare MTF summary for visualizer
 mtfSummary_vis = xtabs(freq~PERTYPE+mtf, mtfSummary)
 mtfSummary_vis = addmargins(as.table(mtfSummary_vis))
@@ -1401,7 +1395,8 @@ jointCompPartySizeProp = jointCompPartySizeProp[jointCompPartySizeProp$partysize
 
 
 
-write.csv(jtf, "jtf.csv", row.names = F)
+#ASR: PII WARNING. DO NOT WRITE THIS.
+# write.csv(jtf, "jtf.csv", row.names = F)
 write.csv(jointComp, "jointComp.csv", row.names = F)
 write.csv(jointPartySize, "jointPartySize.csv", row.names = F)
 write.csv(jointCompPartySizeProp, "jointCompPartySize.csv", row.names = F)
@@ -2516,9 +2511,10 @@ detach("package:dplyr", unload=TRUE)
 
 #finish
 
+### ASR: DO NOT UNCOMMENT THIS. This writes PII to the output folder.
 ### write out trip files for creating trip departure/arrival lookups
-write.csv(trips, "trips.csv", row.names = F)
-write.csv(jtrips, "jtrips.csv", row.names = F)
+# write.csv(trips, "trips.csv", row.names = F)
+# write.csv(jtrips, "jtrips.csv", row.names = F)
 
 end_time = Sys.time()
 end_time - start_time
