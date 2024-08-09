@@ -4,13 +4,11 @@ channels:
   - conda-forge
 dependencies:
   - nbconvert
-  - psutil=5.9
+  - psutil=6.0
   - pytest=7.2
   - numpy=1.23
   - pandas=1.4
   - ipykernel
-  - scikit-learn=1.2
-  - numba=0.56
   - geopandas
   - bump2version
   - numexpr
@@ -55,8 +53,6 @@ dependencies:
   - isort
   - matplotlib
   - orca=1.8
-  - sharrow[version='>=2.5.2']
-  - black[version='>=22.0,<23']
   - pyinstrument=4.4
   - ruby
   - nbformat
