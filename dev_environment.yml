@@ -4,7 +4,7 @@ channels:
   - conda-forge
 dependencies:
   - nbconvert
-  - psutil=5.9
+  - psutil=6.0
   - pytest=7.2
   - numpy=1.23
   - pandas=1.4
