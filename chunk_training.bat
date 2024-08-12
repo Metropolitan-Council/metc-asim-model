@@ -251,7 +251,7 @@ REM "%PYTHON_PATH%\python.exe" "%SCRIPT_PATH%\EVMAT00H.py" "%SCENARIO_DIR%\set_p
 REM %check_cube_errors%
 
 :: Run ActivitySim
-python.exe ActivitySim\simulation.py -c ActivitySim\configs_chunktraining -c ActivitySim\configs -d ActivitySim\data -o ActivitySim\output
+python.exe source\ActivitySim\simulation.py -c ActivitySim\configs_chunktraining -c ActivitySim\configs -d ActivitySim\data -o ActivitySim\output
 %check_python_errors%
 
 ECHO Assuming there are no errors on the screen above, chunk training was completed successfully and the chunk setup file

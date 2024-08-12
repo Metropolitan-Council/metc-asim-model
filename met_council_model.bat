@@ -246,12 +246,15 @@ ECHO Python Path: %PYTHON_PATH%
 ECHO Script Path: %SCRIPT_PATH%
 ECHO Scenario Dir: %SCENARIO_DIR%
 
-REM python.exe "%SCRIPT_PATH%\EVMAT00H.py" "%SCENARIO_DIR%\set_parameters.txt"
-REM %check_cube_errors%
-
+IF %CHUNK_TRAINING% EQU 1 (
+	python.exe source\ActivitySim\simulation.py -c ActivitySim\configs_chunktraining -c source\ActivitySim\configs -d %SE% -d %SCENARIO_DIR%\OMX -o %ASIM_OUT%
+	%check_python_errors% 
+	GOTO veryEndOfFile
+	)
 :: Run ActivitySim
 python.exe source\ActivitySim\simulation.py -c source\ActivitySim\configs -d %SE% -d %SCENARIO_DIR%\OMX -o %ASIM_OUT%
 %check_python_errors%
+
 
 :AfterAsim
 echo Iteration=%ITER%

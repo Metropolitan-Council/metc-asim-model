@@ -5,7 +5,7 @@ SET MAIN_DIRECTORY=E:\Met_Council\metc-asim-model
 SET MODEL_YEAR=2022
 SET SCENARIO_NAME=Base_2022
 SET INPUT_SUBFOLDER=INPUT_2022
-
+SET CHUNK_TRAINING=0
 :: Section 2: Set up socioeconomic and land use data
 SET POP_NAME=synthetic_persons.csv
 SET HH_NAME=synthetic_households.csv
