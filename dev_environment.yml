@@ -58,4 +58,7 @@ dependencies:
   - nbformat
   - ipywidgets
   - pandana
+  - pip:
+    - pygeos==0.14
+    - simpledbf==0.2.6
 prefix: C:\Users\andrew.rohne\.conda\envs\asim_asr_dev
