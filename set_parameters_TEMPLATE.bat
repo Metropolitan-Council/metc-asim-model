@@ -191,7 +191,7 @@ MKDIR %SCENARIO_NAME%\landuse
 MKDIR %SCENARIO_NAME%\nonmotorized
 MKDIR %SCENARIO_NAME%\specialgen
 
-COPY %MAIN_DIRECTORY%\source\activitysim\cache\chunk_cache.csv %MAIN_DIRECTORY%\%SCENARIO_NAME%\activitysim\output\cache
+IF NOT EXIST %MAIN_DIRECTORY%\%SCENARIO_NAME%\activitysim\output\cache\chunk_cache.csv COPY %MAIN_DIRECTORY%\source\activitysim\cache\chunk_cache.csv %MAIN_DIRECTORY%\%SCENARIO_NAME%\activitysim\output\cache
 
 :: Section 16: set INPUT FILE paths
 :: Set zones
