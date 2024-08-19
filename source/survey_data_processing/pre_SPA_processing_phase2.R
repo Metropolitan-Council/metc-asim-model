@@ -480,9 +480,9 @@ place_raw[, MODE := fcase( MODE_survey %in% c(8, 9) & (TRAVELERS_TOTAL == 1 | TR
                            MODE_survey %in% c(8, 9) & license %in% c(0, 995) & TRAVELERS_TOTAL == 1, HOV2, # hov2 if one-party passenger not licensed
                            MODE_survey == 12, WALK, 
                            MODE_survey == 10, BIKE, # and micromobility
-                           mode_type_detailed == 36, TAXI,
-                           mode_type_detailed %in% c(49, 59), TNC_SINGLE,
-                           mode_type_detailed == 76, TNC_POOL,
+                           mode_type_detailed == 20, TAXI,
+                           mode_type_detailed %in% c(19, 21), TNC_SINGLE,
+                           mode_type_detailed == 36, TNC_POOL,
                            MODE_survey == 2, SCHOOLBUS,
                            MODE_survey %in% c(1, 3, 4), TRANSIT, 
                            #MODE_survey == 1, TRANSIT_PREMIUM, # no premim transit designation in model

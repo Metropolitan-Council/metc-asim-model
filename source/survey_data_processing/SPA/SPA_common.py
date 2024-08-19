@@ -1706,7 +1706,7 @@ class Tour:
         for _trip in self.trips:
             _modes_used.add(_trip.fields['TRIPMODE'])
         #determine the tour mode
-        # DH [02/04/20] For SEMCOG data, trip modes = tour modes, but with the following heirarchy
+        
         if NewTripMode['SCHOOLBUS'] in _modes_used:
             _mode = NewTourMode['SCHOOLBUS']
         elif NewTripMode['PNR-MIXED'] in _modes_used:
@@ -1727,20 +1727,20 @@ class Tour:
             _mode = NewTourMode['WALK-PREMIUM']
         elif NewTripMode['WALK-LOCAL'] in _modes_used:
             _mode = NewTourMode['WALK-LOCAL']
+        elif NewTripMode['BIKE'] in _modes_used:
+            _mode = NewTourMode['BIKE'] 
+        elif NewTripMode['TNC-SHARED'] in _modes_used:
+            _mode = NewTourMode['TNC-SHARED']
+        elif NewTripMode['TNC-SINGLE'] in _modes_used:
+            _mode = NewTourMode['TNC-SINGLE']
+        elif NewTripMode['TAXI'] in _modes_used:
+            _mode = NewTourMode['TAXI']    
         elif NewTripMode['HOV3'] in _modes_used:
             _mode = NewTourMode['HOV3']
         elif NewTripMode['HOV2'] in _modes_used:
             _mode = NewTourMode['HOV2']
         elif NewTripMode['SOV'] in _modes_used:
             _mode = NewTourMode['SOV']
-        elif NewTripMode['TNC-SHARED'] in _modes_used:
-            _mode = NewTourMode['TNC-SHARED']
-        elif NewTripMode['TNC-SINGLE'] in _modes_used:
-            _mode = NewTourMode['TNC-SINGLE']
-        elif NewTripMode['TAXI'] in _modes_used:
-            _mode = NewTourMode['TAXI']
-        elif NewTripMode['BIKE'] in _modes_used:
-            _mode = NewTourMode['BIKE']
         elif NewTripMode['WALK'] in _modes_used:
             _mode = NewTourMode['WALK']
         else:

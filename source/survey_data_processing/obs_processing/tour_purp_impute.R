@@ -1,5 +1,7 @@
 # Estimate models for imputing tour purpose
 
+if (!"DescTools" %in% installed.packages()) install.packages("DescTools", repos = "https://cloud.r-project.org")
+
 library(data.table)
 library(dplyr)
 library(stringr)
@@ -8,7 +10,7 @@ library(readxl)
 library(nnet)
 # load settings
 # settings = yaml.load_file('N:/Projects/CMAP_Activitysim/cmap_abm/survey_data_prep/cmap_inputs.yml')
-settings = yaml.load_file('E:/Projects/Clients/MetCouncilASIM/tasks/survey_data_processing/metc_inputs.yml')
+settings = yaml.load_file('E:\\Met_Council\\metc-asim-model\\source\\survey_data_processing\\metc_inputs_phase2.yml')
 # working directory
 # Paths and other constants
 project_dir = settings$proj_dir
@@ -17,7 +19,7 @@ data_dir = file.path(project_dir, 'SPA_Processed')
 trips = data.table()
 tours = data.table()
 
-for(dow in c(1:4)){
+for(dow in c(2:4)){
   cat(dow)
   
   trip_data = fread(file.path(data_dir,  paste0('day', as.character(dow)), "trips.csv"))

@@ -1,7 +1,7 @@
 ---
-title: "CMAP OBS data review"
-author: "Leah Flake"
-date: "June 4, 2021"
+title: "Met Council OBS data review"
+author: "Leah Flake (2021) Andrew Rohne (2023)"
+date: "September 7, 2023"
 output: html_document
 ---
 
@@ -14,7 +14,7 @@ library(kableExtra)
 
 options(scipen = 99)
 
-obs_dir = 'E:/Projects/Clients/MetCouncilASIM/tasks/survey_data_processing/obs_processing'
+obs_dir = 'E:\\Met_Council\\survey_data\\Phase2\\obs_processing'
 
 obs_data = fread(file.path(obs_dir, 'output', 'processed_obs.csv'))
 
@@ -30,32 +30,28 @@ by_provider[, `Transfer rate` := Unlinked/Linked]
 Linked rides & unlinked boardings
 
 Unlinked:
-`r obs_data[, sum(unlinked_weight_scaled, na.rm = TRUE)]`
+`r format(round(obs_data[, sum(unlinked_weight_scaled, na.rm = TRUE)], 0), big.mark = ",")`
 
 Linked:
-`r obs_data[, sum(linked_weight_scaled, na.rm = TRUE)]`
+`r format(round(obs_data[, sum(linked_weight_scaled, na.rm = TRUE)], 0), big.mark = ",")`
 
 
 By service provider:
 
 ```{r echo = FALSE}
-kable(by_provider, "simple")
+kable(by_provider, "simple", format.args = list(decimal.mark = '.', big.mark = ",", digits = 0))
 ```
 
 ## Boardings by route
 
 ```{r echo = FALSE, warning = FALSE}
 # Boardings by route
-boardings = obs_data[, .(boardings =  sum(unlinked_weight_scaled, na.rm = TRUE)), .(provider, route =  ROUTE)]
+boardings = obs_data[, .(boardings =  sum(unlinked_weight_scaled, na.rm = TRUE)), .(provider, route =  ROUTE_LABEL)]
 
-boardings = dcast(boardings, route ~ provider)
+boardings = dcast(boardings, route ~ provider, value.var = 'boardings')
 boardings[is.na(boardings)] = 0
-cols = c('Metra', 'CTA Rail', 'CTA Bus', 'PACE') 
-# boardings = boardings[order(-Metra, -`CTA Rail`, -`CTA Bus`, -PACE)]
-# 
-# boardings[, (cols) := lapply(.SD, function(col) paste0(round(col/sum(col, na.rm = TRUE), 3) * 100,'%')), .SDcols=cols]
-# 
-# kable(boardings, 'simple')
+
+kable(boardings, 'simple', format.args = list(decimal.mark = '.', big.mark = ",", digits = 0))
 ```
 
 ## Auto sufficiency
@@ -116,8 +112,8 @@ purp[, weighted_pct := linked_weight_scaled/sum(linked_weight_scaled), by = .(pr
 cat("\n")
 cat("\n")
 cat('\n \n By transit provider \n')
-cat("\n")
-ggplot(purp, aes(x = TOUR_PURPOSE, y = weighted_pct))+ geom_bar(stat = 'identity', positin = 'fill') + theme_bw() + facet_grid('provider', scales = 'free') + coord_flip() + ylab('Proportion') + xlab('Tour Purpose')
+cat("\n")  #, position = 'fill'
+ggplot(purp, aes(x = TOUR_PURPOSE, y = weighted_pct))+ geom_bar(stat = 'identity') + theme_bw() + facet_grid('provider', scales = 'free') + coord_flip() + ylab('Proportion') + xlab('Tour Purpose')
 cat("\n")
 cat("\n")
 cat(' \n \nTotal \n')
