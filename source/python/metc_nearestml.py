@@ -34,10 +34,10 @@ def run_nearest_managed_lane(link_file_name, node_file_name, zones, output_file_
     nodes = get_nodes(node_shape)
     links = get_links(link_shape)
     nodes.set_index('N', inplace = True)
-    hov_node_list = pd.DataFrame({'N': pd.concat([links[(links['A'] > zones) & (links['B'] > zones) & (links['HOV'] != 0)]['A'], links[(links['A'] > zones) & (links['B'] > zones) & (links['HOV'] != 0)]['B']])}).merge(nodes[['x', 'y']], how = 'left', left_on = 'N', right_index = True)
+    hov_node_list = pd.DataFrame({'N': pd.concat([links[(links['A'] > zones) & (links['B'] > zones) & (links['MNPASS_PAY'] != 0)]['A'], links[(links['A'] > zones) & (links['B'] > zones) & (links['MNPASS_PAY'] != 0)]['B']])}).merge(nodes[['x', 'y']], how = 'left', left_on = 'N', right_index = True)
 
     mcnet = pdna.Network(nodes.x, nodes.y, links["A"], links["B"], links[["DISTANCE"]])
-    mcnet.precompute(50)
+    mcnet.precompute(100)
     mcnet.set_pois("hov", 200, 10, hov_node_list['x'], hov_node_list['y'])
 
     centroids = mcnet.get_node_ids(nodes.loc[1:zones]['x'], nodes.loc[1:zones]['y'])
