@@ -1,5 +1,5 @@
 ; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
-RUN PGM=HIGHWAY MSG='Assignment Period: %ASSIGNNAME%' PRNFILE="%SCENARIO_DIR%\highway\hassign_PRN_%PER%.prn" 
+RUN PGM=HIGHWAY MSG='Assignment Period: %ASSIGNNAME%' PRNFILE="%SCENARIO_DIR%\highway\hassign_%ITER%_PRN_%PER%.prn" 
 FILEI NETI = "%NETWORK_FOLDER%\%HWY_NET%"
 FILEI MATI[1] = "%SCENARIO_DIR%\highway\HWY_ASIM_TRIP_%ITER%_%PER%.TRP"
 FILEI MATI[2] = "%SCENARIO_DIR%\truck\TRK_TRIP_%ITER%_%PER%.TRP"
@@ -17,7 +17,7 @@ DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
     ; Define Assignment Parameters--------------------------------------------------
 
     ;PARAMETERS RAAD = 0.0001 GAP = 0.0001 RELATIVEGAP = 0.00001 AAD = 0.01 MAXITERS = %hwy_assignIters%
-	PARAMETERS  COMBINE = EQUI, ENHANCE = 2, MULTITHREAD = %max_threads%, MAXITERS = %hwy_assignIters%
+	PARAMETERS CONSOLIDATE=2 COMBINE = EQUI, ENHANCE = 2, MULTITHREAD = %max_threads%, MAXITERS = %hwy_assignIters%
 
 
 	; Define toll price scheme (reported by MnDOT) ----------------------------------
@@ -173,6 +173,11 @@ DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
     ENDPHASE    ; ILOOP
 
     PHASE=ADJUST
+		FUNCTION V = VOL[1] + VOL[2] + VOL[3] + VOL[4] + VOL[5] +
+					 VOL[6] + VOL[7] + VOL[8] + VOL[9] + VOL[10] +
+					 VOL[11] + VOL[12] + VOL[13] + VOL[14] + VOL[15] +
+					 VOL[16] * HWY_TRKFAC
+					 
 		FUNCTION TC[1] = T0 * (1 + ALPHA*(V/C)^(BETA))
 		FUNCTION TC[2] = T0 * (1 + ALPHA*(V/C)^(BETA))
 		FUNCTION TC[3] = T0 * (1 + ALPHA*(V/C)^(BETA))
@@ -190,19 +195,13 @@ DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
 		FUNCTION TC[15] = T0 * (1 + ALPHA*(V/C)^(BETA))
 		FUNCTION TC[99] = T0 ;* (1 + ALPHA*(V/C)^(BETA))
 
-		FUNCTION V = VOL[1] + VOL[2] + VOL[3] + VOL[4] + VOL[5] +
-					 VOL[6] + VOL[7] + VOL[8] + VOL[9] + VOL[10] +
-					 VOL[11] + VOL[12] + VOL[13] + VOL[14] + VOL[15] +
-					 VOL[16] * HWY_TRKFAC
+		
 	    ; Header for CSV ----------------------------------------------------------
 		; IF (LINKNO == 1 && ITERATION == 1)
 		    ; PRINT CSV=T LIST='Iteration,ANode,BNode,MNPASS_CODE,MNPASS_PAY,HOV,Volume,VC,TIME,DISTANCE,VHT,VMT,PRICE' PRINTO=1
 		; ENDIF
 		
-
-		
-
-		; Reset the price increase indicator --------------------------------------
+; Reset the price increase indicator --------------------------------------
 		IF (LINKNO == 1)
 		    LOOP K = 1,500,1
 			    _PRICE_INCREASE[K] = 0
@@ -262,6 +261,8 @@ DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
 		LW.PC_HOV3_H = TIME + (0.6 / VOT_INCOME_03) * (DISTANCE * AUTO_PER_MILE_COST + LW.TOLL_HOV3 / HWY_HOV3OCC) + LW.HOV_TIME_PNLTY
 
 		LW.PC_TRK = TIME + (0.6 / VOT_TRK) * DISTANCE * TRUCK_PER_MILE_COST
+
+		;FUNCTION COST= ((TIME + DIST_COST_LOV * LI.DISTANCE) * V1 + (TIME + DIST_COST_HOV * LI.DISTANCE) * V2) / CmpNumRetNum(V,'=',0,1,V)
 
 		; Debug print -------------------------------------------------------------
 		; IF (LW.HOV > 0 || LW.MNPASS_PAY > 0)
