@@ -18,7 +18,7 @@ COPY .\set_parameters.bat %SCENARIO_DIR%\set_parameters.txt
 :: For restarting...
 REM SET ITER=4
 REM SET PREV_ITER=3
-REM GOTO Final_highway_assign
+REM GOTO Visualizer
 
 :: ----------------------------------------------------------------------------
 ::
@@ -247,8 +247,9 @@ ECHO Script Path: %SCRIPT_PATH%
 ECHO Scenario Dir: %SCENARIO_DIR%
 
 IF %CHUNK_TRAINING% EQU 1 (
-	python.exe source\ActivitySim\simulation.py -c ActivitySim\configs_chunktraining -c source\ActivitySim\configs -d %SE% -d %SCENARIO_DIR%\OMX -o %ASIM_OUT%
+	python.exe source\ActivitySim\simulation.py -c source\ActivitySim\configs_chunktraining -c source\ActivitySim\configs -d %SE% -d %SCENARIO_DIR%\OMX -o %ASIM_OUT%
 	%check_python_errors% 
+	ECHO Chunk Training Completed Successfully!
 	GOTO veryEndOfFile
 	)
 :: Run ActivitySim
@@ -820,15 +821,15 @@ IF %CONV% EQU 1 (
 
 ::endComment
 
-COPY *.prn %SCENARIO_DIR%\abm_logs\*.prn
-
-:: Delete all the temporary TP+ printouts and cluster files
-DEL *.prn
-
 IF %VALIDATION% EQU YES (
 	runtpp %SCRIPT_PATH%\VANET00A.S
 	runtpp %SCRIPT_PATH%\VAPIL00A.S
 )
+
+COPY *.prn %SCENARIO_DIR%\cube_logs\*.prn
+
+:: Delete all the temporary TP+ printouts and cluster files
+DEL *.prn
 
 :Visualizer
 cd Visualizer

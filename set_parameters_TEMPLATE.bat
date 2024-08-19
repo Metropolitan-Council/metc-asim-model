@@ -183,6 +183,7 @@ MKDIR %SCENARIO_NAME%\OMX
 
 ::Added ASR because organization is nice
 MKDIR %SCENARIO_NAME%\airport
+MKDIR %SCENARIO_NAME%\cube_logs
 MKDIR %SCENARIO_NAME%\external
 MKDIR %SCENARIO_NAME%\truck
 MKDIR %SCENARIO_NAME%\highway
