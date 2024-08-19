@@ -74,7 +74,8 @@ if (!"yaml" %in% installed.packages()) install.packages("yaml", repos='http://cr
 library(yaml)
 if (!"sf" %in% installed.packages()) install.packages("sf", repos='http://cran.us.r-project.org')
 library(sf)
-
+if (!"tidycensus" %in% installed.packages()) install.packages("sf", repos='http://cran.us.r-project.org')
+library(tidycensus)
 
 
 #if (!"Hmisc" %in% installed.packages()) install.packages("Hmisc", repos='http://cran.us.r-project.org')
@@ -204,7 +205,7 @@ print(paste("Saving files to", WD))
 library(omxr)
 skim_file = file.path(settings$skims_dir, settings$skims_filename)
 print(paste('Processing Distance Skim Matrix...', skim_file))
-skimMat <- read_omx(skim_file, settings$skim_name)
+skimMat <- read_omx(skim_file, settings$skims_name)
 DST_SKM <- reshape2::melt(skimMat)
 colnames(DST_SKM) <- c("o", "d", "dist")
 
@@ -335,6 +336,7 @@ per_raw[per_raw$telework_freq < 0,]$telecommute_frequency = "No_Telecommute"
 
 workers$WDIST = DST_SKM$dist[match(paste(workers$hhtaz, workers$PER_WK_ZONE_ID, sep = "-"), paste(DST_SKM$o, DST_SKM$d, sep = "-"))]
 workers = na.omit(workers)
+print(workers)
 
 
 students = per[per$pstaz>0, c("SAMPN", "PERNO", "hhtaz", "pstaz", "PERTYPE", "HDISTRICT", "finalweight")]

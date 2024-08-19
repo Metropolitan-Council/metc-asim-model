@@ -270,7 +270,7 @@ wfh_summary <- rbind(wfh_summary, totalwfh)
 write.csv(wfh_summary, file.path(WD, "wfh_summary.csv"), row.names = F)
 
 # Telecommute Frequency
-telecommuteFrequency <- count(per[!is.na(per$telecommute_frequency),], c("telecommute_frequency"), "finalweight")
+telecommuteFrequency <- count(per[!is.na(per$telecommute_frequency) & per$telecommute_frequency != "",], c("telecommute_frequency"), "finalweight")
 #drop the empty rows count
 #telecommuteFrequency <- telecommuteFrequency[-c(1), ]
 write.csv(telecommuteFrequency, file.path(WD, "telecommuteFrequency.csv"), row.names = TRUE)
@@ -581,7 +581,7 @@ freq_nmtours_mand <- count(persons_mand, c("PERTYPE","freq_nm"), "finalweight")
 freq_nmtours_nomand <- count(persons_nomand, c("PERTYPE","freq_nm"), "finalweight")
 test <- count(temp2, c("PERTYPE","freq_inm","freq_m","freq_nm","freq_atwork"), "finalweight")
 write.csv(test, file.path(WD, "tour_rate_debug.csv"), row.names = F)
-write.csv(temp2, file.path(WD, "temp2.csv"), row.names = F)
+# write.csv(temp2, file.path(WD, "temp2.csv"), row.names = F)
 
 # write.table("Non-Mandatory Tours for Persons with at-least 1 Mandatory Tour", file.path(WD, "indivNMTourFreq.csv"), sep = ",", row.names = F, append = F)
 # write.table(freq_nmtours_mand, file.path(WD, "indivNMTourFreq.csv"), sep = ",", row.names = F, append = T)
@@ -1545,8 +1545,6 @@ getIndivTripMode <- function(trips, tourPurp, outFileName){
 	tmp_vis$purpose[tmp_vis$purpose=="Sum"] = "Total"
 	return(tmp_vis)
 }
-
-saveRDS(trips, "trips.rds") #For great debugging
 
 #Work
 tripModeProfile1_vis = getIndivTripMode(trips, c(1), "tripModeProfile_Work.csv")
