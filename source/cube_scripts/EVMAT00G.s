@@ -306,6 +306,8 @@ NAME=
 	HOV2_P_TIME_L__NT, HOV2_P_TOLL_L__NT, HOV2_N_TIME_L__NT, HOV2_N_TOLL_L__NT, HOV2_DIST_L__NT, 
 	HOV3_P_TIME_L__NT, HOV3_P_TOLL_L__NT, HOV3_N_TIME_L__NT, HOV3_N_TOLL_L__NT, HOV3_DIST_L__NT
 	
+DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
+
 ; EA skims - use NT
 MW[1] = MI.4.daptime
 MW[2] = MI.4.daptoll
@@ -400,6 +402,8 @@ NAME=
 	HOV3_P_TIME_M__NT, HOV3_P_TOLL_M__NT, HOV3_N_TIME_M__NT, HOV3_N_TOLL_M__NT, HOV3_DIST_M__NT,
 	DIST
 	
+DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
+
 ; EA skims - use NT
 MW[1] = MI.4.daptime
 MW[2] = MI.4.daptoll
@@ -493,6 +497,8 @@ NAME=
 	HOV2_P_TIME_H__NT, HOV2_P_TOLL_H__NT, HOV2_N_TIME_H__NT, HOV2_N_TOLL_H__NT, HOV2_DIST_H__NT, 
 	HOV3_P_TIME_H__NT, HOV3_P_TOLL_H__NT, HOV3_N_TIME_H__NT, HOV3_N_TOLL_H__NT, HOV3_DIST_H__NT
 	
+DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
+
 ; EA skims - use NT
 MW[1] = MI.4.daptime
 MW[2] = MI.4.daptoll
