@@ -12,7 +12,7 @@ LOOP TOD=1,5,1
   DISTRIBUTEMULTISTEP PROCESSID='transit' PROCESSNUM=@TOD@
 
 
-RUN PGM=NETWORK MSG='Calculate Transit Speeds for @TPER@'
+RUN PGM=NETWORK MSG='Calculate Transit Speeds for @TPER@' PRNFILE="%SCENARIO_DIR%\transit\XIT_TSPEEDS_%ITER%_@TPER@.prn"
 FILEI NODEI[1] = "%SCENARIO_DIR%\transit\TransitBase.NET"
 FILEI LINKI[1] = "%SCENARIO_DIR%\transit\TransitBase.NET"
 FILEO NETO = "%SCENARIO_DIR%\transit\XIT_NET_%ITER%_@TPER@.NET"
@@ -75,7 +75,12 @@ FILEI LINKI[2] = "%SCENARIO_DIR%\highway\HWY_LDNET_%ITER%_@PER@.net";, RENAME=TT
       
     ;ENDPHASE       
 
-	LRTTIME = (DISTANCE * 60) / SPEED
+	;LRTTIME = (DISTANCE * 60) / SPEED
+    LW.LRT_SPEED = 15
+    ;IF(LI.1.RAIL_ONLY=1)
+    ;    LW.LRT_SPEED = 45
+    ;ENDIF
+    LRTTIME = (DISTANCE * 60) / LW.LRT_SPEED
 	CRTTIME = (DISTANCE * 60) / 45 ; Per Northstar timetables - 45 MPH effective speed
                             
 ;;--------------------------------------------------------------------------
@@ -91,6 +96,9 @@ FILEI LINKI[2] = "%SCENARIO_DIR%\highway\HWY_LDNET_%ITER%_@PER@.net";, RENAME=TT
 
     ; Code free flow speed for all links
     LOCTIME = (DISTANCE * 60 / SPEED)
+	IF(LI.1.RCI > 3)
+	  LOCTIME = LOCTIME * 1.5
+	ENDIF
     EXPTIME = (DISTANCE * 60 / SPEED)
     
 ;;--------------------------------------------------------------------------    

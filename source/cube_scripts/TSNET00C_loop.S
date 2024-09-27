@@ -26,7 +26,7 @@ LOOP TOD=1,5,1
 ;
 ; Former TSNET00C.S
 
-RUN PGM=NETWORK MSG='Calculate Transit Speeds for @TPER@'
+RUN PGM=NETWORK MSG='Calculate Transit Speeds for @TPER@' PRNFILE="%SCENARIO_DIR%\transit\XIT_TSPEEDS_%PREV_ITER%_@TPER@.prn"
 FILEO NETO = "%SCENARIO_DIR%\transit\XIT_NET_%PREV_ITER%_@TPER@.net"
 FILEI LOOKUPI[2] = "%TRANSIT_FOLDER%\@TPER2@ExpressDelays.txt"
 FILEI LOOKUPI[1] = "%TRANSIT_FOLDER%\@TPER2@LocalDelays.txt"
@@ -80,10 +80,15 @@ FILEI LINKI[1] = "%SCENARIO_DIR%\transit\TransitBase.NET"
 	; they should be, so for any roadway that isn't a freeway, I'm 
 	; slowing them down by half
 	IF(LI.1.RCI > 3)
-	  LOCTIME = LOCTIME * 0.5
+	  LOCTIME = LOCTIME * 1.5
 	ENDIF
     EXPTIME = (DISTANCE * 60) / SPEED
-	LRTTIME = (DISTANCE * 60) / SPEED
+	;LRTTIME = (DISTANCE * 60) / SPEED
+    LW.LRT_SPEED = 15
+    ;IF(LI.1.RAIL_ONLY=1)
+    ;    LW.LRT_SPEED = 45
+    ;ENDIF
+    LRTTIME = (DISTANCE * 60) / LW.LRT_SPEED
 	CRTTIME = (DISTANCE * 60) / 45 ; Per Northstar timetables - 45 MPH effective speed
     
 ;;--------------------------------------------------------------------------    
@@ -139,7 +144,7 @@ FILEI LINKI[1] = "%SCENARIO_DIR%\transit\TransitBase.NET"
 ENDRUN
 
 ; Former TSPTR00D.S
-RUN PGM=PUBLIC TRANSPORT MSG='Build @TPER@ Walk Access Connectors'
+RUN PGM=PUBLIC TRANSPORT MSG='Build @TPER@ Walk Access Connectors' PRNFILE="%SCENARIO_DIR%\transit\XIT_WKCON_%PREV_ITER%_@TPER@.prn"
 FILEO NTLEGO = "%SCENARIO_DIR%\transit\XIT_WKACC_NTL_@TPER@.tmp"
 FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_WKACC_RPT_@TPER@.rpt"
 FILEO NETO = "%SCENARIO_DIR%\transit\XIT_WKACC_NET_@TPER@.NET"
@@ -183,7 +188,7 @@ FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_%PREV_ITER%_@TPER@.net"
 ENDRUN
 
 ; Former TSPTR00F.s
-RUN PGM=PUBLIC TRANSPORT MSG='Build @TPER@ Transfer Access Connectors'
+RUN PGM=PUBLIC TRANSPORT MSG='Build @TPER@ Transfer Access Connectors' PRNFILE="%SCENARIO_DIR%\transit\XIT_WKAUX_%PREV_ITER%_@TPER@.prn"
 FILEO NTLEGO = "%SCENARIO_DIR%\transit\XIT_XFER_NTL_@TPER@.TMP"
 FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_XFER_RPT_@TPER@.RPT"
 FILEO NETO = "%SCENARIO_DIR%\transit\XIT_XFER_NET_@TPER@.NET"
@@ -233,7 +238,7 @@ FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_%PREV_ITER%_@TPER@.net"
 ENDRUN
 
 ; Former TSPTR00H.s
-RUN PGM=PUBLIC TRANSPORT MSG='Build @TPER@ Drive Access Connectors'
+RUN PGM=PUBLIC TRANSPORT MSG='Build @TPER@ Drive Access Connectors' PRNFILE="%SCENARIO_DIR%\transit\XIT_DRACC_%PREV_ITER%_@TPER@.prn"
 FILEO NTLEGO = "%SCENARIO_DIR%\transit\XIT_DRACC_NTL_%PREV_ITER%_@TPER@.tmp"
 FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_DRACC_RPT_%PREV_ITER%_@TPER@.RPT"
 FILEO NETO = "%SCENARIO_DIR%\transit\XIT_DRACC_NET_%PREV_ITER%_@TPER@.NET"
@@ -271,14 +276,14 @@ ENDRUN
 *copy /Y "%SCENARIO_DIR%\transit\XIT_XFER_NTL_@TPER@.tmp"+"%TRANSIT_FOLDER%\TransferOverrides.txt" "%SCENARIO_DIR%\transit\XIT_XFER_NTL_@TPER@.ntl"
 *copy /Y "%SCENARIO_DIR%\transit\XIT_DRACC_NTL_%PREV_ITER%_@TPER@.tmp"+"%TRANSIT_FOLDER%\DriveOverrides.txt" "%SCENARIO_DIR%\transit\XIT_DRACC_NTL_%PREV_ITER%_@TPER@.ntl"
 
-
 ; Former TSPTR00A.S
-RUN PGM=PUBLIC TRANSPORT PRNFILE="%SCENARIO_DIR%\transit\XIT_WK_PRN_%PREV_ITER%_@TPER@.prn" MSG='@TPER@ Walk Transit Skim'
+RUN PGM=PUBLIC TRANSPORT PRNFILE="%SCENARIO_DIR%\transit\XIT_WKSKIM_PRN_%PREV_ITER%_@TPER@.prn" MSG='@TPER@ Walk Transit Skim'
 FILEI FAREI = "%xit_fare%"
 FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_WK_RPT_%PREV_ITER%_@TPER@.RPT"
-FILEO ROUTEO[1] = "%SCENARIO_DIR%\transit\XIT_WK_RTE_%PREV_ITER%_@TPER@.RTE"
+FILEO ROUTEO[1] = "%SCENARIO_DIR%\transit\XIT_WK_RTE_%PREV_ITER%_@TPER@.RTE" REPORTI=966 REPORTJ=1323
 FILEO MATO[1] = "%SCENARIO_DIR%\transit\XIT_WK_SKIM_%PREV_ITER%_@TPER@.skm",
- MO=1-13 NAME=IVT_Bus,IVT_LB,IVT_Exp,IVT_LRT,IVT_CRT,WAIT1,WAIT2,XFERS,AWALKT,XWALKT,FARE,XBFARE,CRTFare
+ MO=1-15,21-30 NAME=IVT_Bus,IVT_LB,IVT_Exp,IVT_LRT,IVT_CRT,WAIT1,WAIT2,XFERS,AWALKT,XWALKT,FARE,XBFARE,CRTFare,AWALKD,COMPCST,
+ IVT_BusP,IVT_LBP,IVT_ExpP,IVT_LRTP,IVT_CRTP,WAIT1P,WAIT2P,XFERSP,AWALKTP,XWALKTP
 FILEO NETO = "%SCENARIO_DIR%\transit\XIT_WK_NET_%PREV_ITER%_@TPER@.NET"
 FILEI FACTORI[1] = "%TRANSIT_FOLDER%\@TPER2@_WK_2010.FAC"
 FILEI NTLEGI[3] = "%SCENARIO_DIR%\transit\XIT_XFER_NTL_@TPER@.ntl"
@@ -317,12 +322,27 @@ FILEI FAREMATI[1] = "%xit_faremat%"
         MW[11]=FAREA(0,5,6,8)       ; local, limited and LRT Fares
         MW[12]=FAREA(0,7)           ; Express Fare        
         MW[13]=FAREA(0,9)           ; CRT Fare
+		MW[14]=DIST(0,1)
+		MW[15]=COMPCOST(0)
+		; DEBUGGING
+		MW[21]=TIMEP(0,5)            ; IVTT for local bus (mode=5) 
+        MW[22]=TIMEP(0,6)            ; IVTT local limited stop bus (mode=6)
+        MW[23]=TIMEP(0,7)            ; IVTT for Express Bus (mode=7)
+        MW[24]=TIMEP(0,8)            ; IVTT for LRT (mode=8)
+        MW[25]=TIMEP(0,9)            ; IVTT for CRT (mode=9)
+        MW[26]=IWAITP(0)             ; initial wait time
+        MW[27]=XWAITP(0)             ; transfer wait time
+        MW[28]=BRDINGS(0,5,6,7,8,9)  ; number of boardings
+        MW[29]=TIMEP(0,1)            ; OVTT for walk access & egress
+		MW[30]=TIMEP(0,4)           ; OVTT for transfer
+
+
     ENDPROCESS
 
 ENDRUN
 
 ; Former TSPTR00C.S
-RUN PGM=PUBLIC TRANSPORT PRNFILE="%SCENARIO_DIR%\transit\XIT_DR_PRN_%PREV_ITER%_@TPER@.prn" MSG='@TPER@ Drive Transit Access Skim'
+RUN PGM=PUBLIC TRANSPORT PRNFILE="%SCENARIO_DIR%\transit\XIT_DRSKIM_PRN_%PREV_ITER%_@TPER@.prn" MSG='@TPER@ Drive Transit Access Skim'
 FILEI FAREI = "%XIT_FARE%"
 FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_DR_RPT_%PREV_ITER%_@TPER@.RPT"
 FILEO ROUTEO[1] = "%SCENARIO_DIR%\transit\XIT_DR_RTE_%PREV_ITER%_@TPER@.RTE"
@@ -375,7 +395,7 @@ FILEI FAREMATI[1] = "%XIT_FAREMAT%"
 ENDRUN
 
 ; Former TSPTR00Z.S
-RUN PGM=PUBLIC TRANSPORT PRNFILE="%SCENARIO_DIR%\transit\XIT_DRE_PRN_%PREV_ITER%_@TPER@.prn" MSG='@TPER@ Drive Transit Egress Skim'
+RUN PGM=PUBLIC TRANSPORT PRNFILE="%SCENARIO_DIR%\transit\XIT_DRESKIM_PRN_%PREV_ITER%_@TPER@.prn" MSG='@TPER@ Drive Transit Egress Skim'
 FILEI FAREI = "%XIT_FARE%"
 FILEO REPORTO = "%SCENARIO_DIR%\transit\XIT_DRE_RPT_%PREV_ITER%_@TPER@.RPT"
 FILEO ROUTEO[1] = "%SCENARIO_DIR%\transit\XIT_DRE_RTE_%PREV_ITER%_@TPER@.RTE" 

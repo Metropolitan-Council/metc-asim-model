@@ -59,6 +59,7 @@ FILEI FAREMATI[1] = "%XIT_FAREMAT%"
         MW[14]=TIMEA(0,2)           ; Drive access time
         MW[15]=DIST(0,2)            ; Drive access dist
     ENDPROCESS
+	REPORT LINES=T
 ENDRUN
 
 

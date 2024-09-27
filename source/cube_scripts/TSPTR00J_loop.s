@@ -58,6 +58,7 @@ FILEI FAREMATI[1] = "%XIT_FAREMAT%"
         MW[13]=FAREA(0,9)           ; CRT Fare
     ENDPROCESS
 
+	REPORT LINES=T
 ENDRUN
 
 
