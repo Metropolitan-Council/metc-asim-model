@@ -8,6 +8,7 @@ FILEI MATI[4] = "%SCENARIO_DIR%\specialgen\HWY_SPC_AUTO_TRIP_%ITER%_%PER%.trp"
 FILEO NETO = "%SCENARIO_DIR%\highway\HWY_LDNET_%ITER%_%PER%.NET", INCLUDE = LW.TOLL_SOV, LW.TOLL_HOV2, LW.TOLL_HOV3, 
 	LW.PC_SOV_L, LW.PC_SOV_M, LW.PC_SOV_H, LW.PC_HOV2_L, LW.PC_HOV2_M, LW.PC_HOV2_H, LW.PC_HOV3_L, LW.PC_HOV3_M, 
 	LW.PC_HOV3_H, LW.PC_TRK
+FILEO PRINTO[1]="%SCENARIO_DIR%\highway\HWY_TOLLDBG_%ITER%_%PER%.prn"
 
 DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
 
@@ -17,7 +18,7 @@ DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
     ; Define Assignment Parameters--------------------------------------------------
 
     ;PARAMETERS RAAD = 0.0001 GAP = 0.0001 RELATIVEGAP = 0.00001 AAD = 0.01 MAXITERS = %hwy_assignIters%
-	PARAMETERS CONSOLIDATE=2 COMBINE = EQUI, ENHANCE = 2, MULTITHREAD = %max_threads%, MAXITERS = %hwy_assignIters%
+	PARAMETERS CONSOLIDATE=2 COMBINE = EQUI, ENHANCE = 2, MULTITHREAD = %max_threads%, MEMORY = T, MAXITERS = %hwy_assignIters%
 
 
 	; Define toll price scheme (reported by MnDOT) ----------------------------------
@@ -197,9 +198,10 @@ DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
 
 		
 	    ; Header for CSV ----------------------------------------------------------
-		; IF (LINKNO == 1 && ITERATION == 1)
-		    ; PRINT CSV=T LIST='Iteration,ANode,BNode,MNPASS_CODE,MNPASS_PAY,HOV,Volume,VC,TIME,DISTANCE,VHT,VMT,PRICE' PRINTO=1
-		; ENDIF
+		IF (LINKNO == 1 && ITERATION == 1)
+		    ;PRINT CSV=T LIST='Iteration,ANode,BNode,MNPASS_CODE,MNPASS_PAY,HOV,Volume,VC,TIME,DISTANCE,VHT,VMT,PRICE' PRINTO=1
+			PRINT CSV=T LIST='Iteration,K,Toll'
+		ENDIF
 		
 ; Reset the price increase indicator --------------------------------------
 		IF (LINKNO == 1)
@@ -210,17 +212,17 @@ DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
 
 		; Update toll price -------------------------------------------------------
 		IF (LW.MNPASS_CODE > 0 && C > 0)
-		    _PRICE = TOLL(1,(V/C))
-
+			_PRICE = TOLL(1,(V/C))
+			
 			IF (_PRICE > _PRICE_ARRAY[LW.MNPASS_CODE])
 
-			    IF (_PRICE_INCREASE[LW.MNPASS_CODE] == 0)
+				IF (_PRICE_INCREASE[LW.MNPASS_CODE] == 0)
 
-				    _PRICE_INCREASE[LW.MNPASS_CODE] = 1
+					_PRICE_INCREASE[LW.MNPASS_CODE] = 1
 					_PRICE_ARRAY[LW.MNPASS_CODE] = _PRICE_ARRAY[LW.MNPASS_CODE] + 25
 
 					IF ((_PRICE - _PRICE_INCREASE[LW.MNPASS_CODE]) > 200)
-					    _PRICE_ARRAY[LW.MNPASS_CODE] = _PRICE_ARRAY[LW.MNPASS_CODE] + 25
+						_PRICE_ARRAY[LW.MNPASS_CODE] = _PRICE_ARRAY[LW.MNPASS_CODE] + 25
 					ENDIF
 
 					IF (_PRICE_ARRAY[LW.MNPASS_CODE] > MAX_TOLL_PRICE)
@@ -230,42 +232,47 @@ DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
 				ENDIF
 
 			ENDIF
-
-			IF (LW.MNPASS_PAY > 0)
-			    LW.TOLL_SOV = _PRICE_ARRAY[LW.MNPASS_PAY]
-			ENDIF
-
-			LW.TOLL_HOV2 = LW.TOLL_SOV
-			LW.TOLL_HOV3 = LW.TOLL_SOV
-			IF (HWY_TOLLSETTING == 2)
-			    LW.TOLL_HOV2 = 0
-				LW.TOLL_HOV3 = 0
-			ENDIF
-			IF (HWY_TOLLSETTING == 3)
-			    LW.TOLL_HOV3 = 0
-			ENDIF
-
 		ENDIF
+
+		IF (LW.MNPASS_PAY > 0)
+			LW.TOLL_SOV = _PRICE_ARRAY[LW.MNPASS_PAY]
+		ENDIF
+
+		LW.TOLL_HOV2 = LW.TOLL_SOV
+		LW.TOLL_HOV3 = LW.TOLL_SOV
+		IF (HWY_TOLLSETTING == 2)
+			LW.TOLL_HOV2 = 0
+			LW.TOLL_HOV3 = 0
+		ENDIF
+		IF (HWY_TOLLSETTING == 3)
+			LW.TOLL_HOV3 = 0
+		ENDIF
+
+
 		
 		; Update generalized cost functions ---------------------------------------
 		LW.PC_SOV_L = TIME + (0.6 / VOT_INCOME_01) * (DISTANCE * AUTO_PER_MILE_COST + LW.TOLL_SOV)
 		LW.PC_SOV_M = TIME + (0.6 / VOT_INCOME_02) * (DISTANCE * AUTO_PER_MILE_COST + LW.TOLL_SOV)
 		LW.PC_SOV_H = TIME + (0.6 / VOT_INCOME_03) * (DISTANCE * AUTO_PER_MILE_COST + LW.TOLL_SOV)
-
+		
 		LW.PC_HOV2_L = TIME + (0.6 / VOT_INCOME_01) * (DISTANCE * AUTO_PER_MILE_COST + LW.TOLL_HOV2 / HWY_HOV2OCC) + LW.HOV_TIME_PNLTY
 		LW.PC_HOV2_M = TIME + (0.6 / VOT_INCOME_02) * (DISTANCE * AUTO_PER_MILE_COST + LW.TOLL_HOV2 / HWY_HOV2OCC) + LW.HOV_TIME_PNLTY
 		LW.PC_HOV2_H = TIME + (0.6 / VOT_INCOME_03) * (DISTANCE * AUTO_PER_MILE_COST + LW.TOLL_HOV2 / HWY_HOV2OCC) + LW.HOV_TIME_PNLTY
-
+		
 		LW.PC_HOV3_L = TIME + (0.6 / VOT_INCOME_01) * (DISTANCE * AUTO_PER_MILE_COST + LW.TOLL_HOV3 / HWY_HOV3OCC) + LW.HOV_TIME_PNLTY
 		LW.PC_HOV3_M = TIME + (0.6 / VOT_INCOME_02) * (DISTANCE * AUTO_PER_MILE_COST + LW.TOLL_HOV3 / HWY_HOV3OCC) + LW.HOV_TIME_PNLTY
 		LW.PC_HOV3_H = TIME + (0.6 / VOT_INCOME_03) * (DISTANCE * AUTO_PER_MILE_COST + LW.TOLL_HOV3 / HWY_HOV3OCC) + LW.HOV_TIME_PNLTY
-
+		
 		LW.PC_TRK = TIME + (0.6 / VOT_TRK) * DISTANCE * TRUCK_PER_MILE_COST
 
 		;FUNCTION COST= ((TIME + DIST_COST_LOV * LI.DISTANCE) * V1 + (TIME + DIST_COST_HOV * LI.DISTANCE) * V2) / CmpNumRetNum(V,'=',0,1,V)
 
 		; Debug print -------------------------------------------------------------
-		; IF (LW.HOV > 0 || LW.MNPASS_PAY > 0)
+		;IF (LW.HOV > 0 || LW.MNPASS_PAY > 0)
+		IF (LINKNO == NUMLINKS)
+			LOOP K = 1,10,1
+				PRINT CSV=T LIST=iteration,K,_PRICE_ARRAY[K], PRINTO=1
+		    ENDLOOP
 		    ; PRINT CSV = T LIST = iteration(2.0),
 			                     ; A(6.0),
 								 ; B(6.0),
@@ -278,15 +285,10 @@ DISTRIBUTEINTRASTEP ProcessID='Intrastep', ProcessList=1-%max_threads%
 								 ; DISTANCE(5.2),
 								 ; V*TIME(15.2),
 								 ; V*DISTANCE(15.2),
-								 ; LW.TOLL_PRICE_SOV(8.2) PRINTO = 1
-		; ENDIF
-
-		; ASR Debugging
-		; PRINT PRINTO=1 CSV=T LIST=ITERATION,A,B,LINKCLASS,V,C,TIME,VOL[1],VOL[2],VOL[3],VOL[4],VOL[5],VOL[6],VOL[7],VOL[8],VOL[9],VOL[10],
-			; VOL[11],VOL[12],VOL[13],VOL[14],VOL[15],VOL[16],LW.PATHCOST_SOV_L,LW.PATHCOST_SOV_M,LW.PATHCOST_SOV_H,LW.PATHCOST_HOV2_L,
-			; LW.PATHCOST_HOV2_M,LW.PATHCOST_HOV2_H,LW.PATHCOST_HOV3_L,LW.PATHCOST_HOV3_M,LW.PATHCOST_HOV3_H,LW.PATHCOST_TRK
-
-
+								 ; LW.TOLL_SOV(8.2),LW.TOLL_HOV2(8.2),LW.TOLL_HOV3(8.2),
+								 ; PRINTO = 1
+			
+		ENDIF
     ENDPHASE
 	
 	PHASE=CONVERGE
