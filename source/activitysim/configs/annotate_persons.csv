@@ -86,3 +86,4 @@ is_parttime_worker,is_parttime_worker,"ptype == PTYPE_PART"
 #,,"Below expression was previously done using np.clip, but was producing a NotImplemented error for mixed DataFrame and Series Inputs.  Reimplemented using min & max"
 travel time sensitivity factor for work travel,time_factor_work,"np.minimum(_max_time_factor, np.maximum(rng.lognormal_for_df(persons, mu=_mean_work, sigma=_stddev_work, scale=True), _min_time_factor))"
 travel time sensitivity factor for non-work travel,time_factor_nonwork,"np.minimum(_max_time_factor, np.maximum(rng.lognormal_for_df(persons, mu=_mean_nonwork, sigma=_stddev_nonwork, scale=True), _min_time_factor))"
+,is_out_of_home_worker,True

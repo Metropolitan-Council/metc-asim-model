@@ -64,7 +64,7 @@ CREATE_TABLES:
             grade: 0                    # Not attending
             timeFactorWork: 1           # mean
             timeFactorNonWork: 1        # mean
-            is_out_of_home_worker: True
+            # is_out_of_home_worker: True
             #emp_type: [1, 3]
             #stud_stat: [0, 1]
         mapped_fields:
