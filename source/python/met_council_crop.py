@@ -26,7 +26,7 @@ MAZ_LIST = [402, 409, 410, 411, 412, 413, 414, 415, 471, 472, 473, 474, 475, 476
     2581, 2580]
 
 
-segments = {"crop": {"ZONEID": np.array(MAZ_LIST)}}
+segments = {"crop": {"zone_id": np.array(MAZ_LIST)}}
 
 parser = argparse.ArgumentParser(description="crop raw_data")
 parser.add_argument(
@@ -53,8 +53,8 @@ check_geography = args.check_geography
 
 assert segment_name in segments.keys(), f"Unknown seg: {segment_name}"
 
-input_dir = r"E:\Met_Council\metc-asim-model\Input\socioeconomic"
-skims_dir = r'E:\Met_Council\metc-asim-model\Base_2018\OMX'
+input_dir = r"E:\Met_Council\metc-asim-model\Input_2022\socioeconomic"
+skims_dir = r'E:\Met_Council\metc-asim-model\Base_2022\OMX'
 output_dir = f"./data_{segment_name}"
 
 
@@ -226,8 +226,8 @@ to_csv(land_use, "land_use.csv")
 
 
 # TAZ
-taz = pd.DataFrame({"ZONEID": sorted(ur_land_use.ZONEID.unique())})
-taz = taz[taz.ZONEID.isin(land_use["ZONEID"])]
+taz = pd.DataFrame({"zone_id": sorted(ur_land_use.zone_id.unique())})
+taz = taz[taz.zone_id.isin(land_use["zone_id"])]
 to_csv(taz, TAZ)
 
 # maz_taz
@@ -284,7 +284,7 @@ if os.path.exists("tapLines.csv"):
 
 # households
 households = read_csv(HOUSEHOLDS)
-households = households[households["TAZ"].isin(land_use["ZONEID"])]
+households = households[households["TAZ"].isin(land_use["zone_id"])]
 to_csv(households, "households.csv")
 
 # persons
@@ -299,7 +299,11 @@ if os.path.exists(SUBZONE):
     to_csv(subzone, "subzone.csv")
 
 # skims
-crop_omx("allskims_L", taz.ZONEID, num_outfiles=(4 if segment_name == "full" else 1))
-crop_omx("allskims_M", taz.ZONEID, num_outfiles=(4 if segment_name == "full" else 1))
-crop_omx("allskims_H", taz.ZONEID, num_outfiles=(4 if segment_name == "full" else 1))
-crop_omx("se_omx", taz.ZONEID, num_outfiles=(4 if segment_name == "full" else 1))
+crop_omx("allskims_L", taz.zone_id, num_outfiles=(4 if segment_name == "full" else 1))
+crop_omx("allskims_M", taz.zone_id, num_outfiles=(4 if segment_name == "full" else 1))
+crop_omx("allskims_H", taz.zone_id, num_outfiles=(4 if segment_name == "full" else 1))
+crop_omx("se_omx", taz.zone_id, num_outfiles=(4 if segment_name == "full" else 1))
+crop_omx("districts", taz.zone_id, num_outfiles=(4 if segment_name == "full" else 1))
+crop_omx("nmskims", taz.zone_id, num_outfiles=(4 if segment_name == "full" else 1))
+crop_omx("trnskims", taz.zone_id, num_outfiles=(4 if segment_name == "full" else 1))
+
