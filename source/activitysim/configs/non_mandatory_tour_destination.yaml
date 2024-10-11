@@ -56,8 +56,8 @@ CONSTANTS:
   WORK_VERYHIGH_SEGMENT_ID: 4
   
 
-preprocessor:
-  SPEC: non_mandatory_tour_destination_annotate_tours_preprocessor
-  DF: tours
-  TABLES:
-    - persons
+# preprocessor:
+  # SPEC: non_mandatory_tour_destination_annotate_tours_preprocessor
+  # DF: tours
+  # TABLES:
+    # - persons
