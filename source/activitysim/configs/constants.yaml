@@ -179,7 +179,7 @@ ivt_bus_multiplier: 1.0
 ivt_llb_multiplier: 0.9
 ivt_exb_multiplier: 0.8
 ivt_brt_multiplier: 0.8
-ivt_urb_multiplier: 0.7
+ivt_urb_multiplier: 0.6
 ivt_com_multiplier: 0.7
 
 walktimeshort_multiplier: 2
@@ -195,8 +195,8 @@ waux_multiplier: 2
 dtim_multiplier: 2
 xwait_multiplier: 2
 dacc_ratio: 0
-xfers_wlk_multiplier: 45
-xfers_drv_multiplier: 45
+xfers_wlk_multiplier: 20
+xfers_drv_multiplier: 40
 drvtrn_distpen_0_multiplier: 270
 drvtrn_distpen_max: 15
 density_index_multiplier: -0.2

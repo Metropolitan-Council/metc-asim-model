@@ -28,6 +28,9 @@ local,_DF_IS_TOUR,'tour_type' in df.columns
 # ivt coef,,,
 ,time_factor,"np.where(is_work, df.time_factor_work, df.time_factor_nonwork)"
 ,c_ivt,coef_ivt * time_factor
+# Set fare to 0 for students and retired
+#,_ptype,"reindex(persons.ptype,df.person_id)"
+,fare_mult,1.0
 #Auto operating costs,,
 ,sov_auto_op_cost,costPerMile
 ,sr2_auto_op_cost,costPerMile
@@ -119,8 +122,8 @@ local,_DF_IS_TOUR,'tour_type' in df.columns
 ,_walk_crt_ivt_ob,odt_skims['IVT_CRT_WK']
 ,_walk_crt_ivt_ib,dot_skims['IVT_CRT_WK']
 ,walk_crt_ivt,_walk_crt_ivt_ob + _walk_crt_ivt_ib
-,_walk_trn_ivt_ob,_walk_bus_ivt_ob + _walk_ltd_ivt_ob + _walk_exp_ivt_ob + _walk_crt_ivt_ob
-,_walk_trn_ivt_ib,_walk_bus_ivt_ib + _walk_ltd_ivt_ib + _walk_exp_ivt_ib + _walk_crt_ivt_ib
+,_walk_trn_ivt_ob,_walk_bus_ivt_ob + _walk_ltd_ivt_ob + _walk_exp_ivt_ob + _walk_crt_ivt_ob + _walk_lrt_ivt_ob
+,_walk_trn_ivt_ib,_walk_bus_ivt_ib + _walk_ltd_ivt_ib + _walk_exp_ivt_ib + _walk_crt_ivt_ib + _walk_lrt_ivt_ib
 ,walk_trn_ivt,_walk_trn_ivt_ob + _walk_trn_ivt_ib
 ,walk_transit_available,(_walk_trn_ivt_ob > 0) & (_walk_trn_ivt_ib >0)
 ,walk_trn_wait_ob,odt_skims['WAIT1_WK']
@@ -140,9 +143,9 @@ local,_DF_IS_TOUR,'tour_type' in df.columns
 ,_walk_xfr_walk_time_ob,odt_skims['XWALKT_WK']
 ,_walk_xfr_walk_time_ib,dot_skims['XWALKT_WK']
 ,walk_xfr_walk_time,_walk_xfr_walk_time_ob+_walk_xfr_walk_time_ib
-,_walk_fare_ob,odt_skims['FARE_WK'] + odt_skims['XBFARE_WK'] + odt_skims['CRTFare_WK'] 
-,_walk_fare_ib,dot_skims['FARE_WK'] + odt_skims['XBFARE_WK'] + odt_skims['CRTFare_WK']
-,walk_fare,_walk_fare_ob+_walk_fare_ib
+,_walk_fare_ob,(odt_skims['FARE_WK'] + odt_skims['XBFARE_WK'] + odt_skims['CRTFare_WK']) * 100.0 
+,_walk_fare_ib,(dot_skims['FARE_WK'] + odt_skims['XBFARE_WK'] + odt_skims['CRTFare_WK']) * 100.0
+,walk_fare,(_walk_fare_ob + _walk_fare_ib) * fare_mult
 ,_drive_bus_ivt_ob,odt_skims['IVT_Bus_DR']
 ,_drive_bus_ivt_ib,dot_skims['IVT_Bus_DE']
 ,drive_bus_ivt,_drive_bus_ivt_ob + _drive_bus_ivt_ib
@@ -179,9 +182,9 @@ local,_DF_IS_TOUR,'tour_type' in df.columns
 ,_drive_xfr_walk_time_ob,odt_skims['XWALKT_DR']
 ,_drive_xfr_walk_time_ib,dot_skims['XWALKT_DE']
 ,drive_xfr_walk_time,_drive_xfr_walk_time_ob+_drive_xfr_walk_time_ib
-,_drive_fare_ob,odt_skims['FARE_DR'] + odt_skims['XBFARE_DR'] + odt_skims['CRTFare_DR'] 
-,_drive_fare_ib,dot_skims['FARE_DE'] + dot_skims['XBFARE_DE'] + dot_skims['CRTFare_DE']
-,drive_fare,_drive_fare_ob+_drive_fare_ib
+,_drive_fare_ob,(odt_skims['FARE_DR'] + odt_skims['XBFARE_DR'] + odt_skims['CRTFare_DR']) * 100.0 
+,_drive_fare_ib,(dot_skims['FARE_DE'] + dot_skims['XBFARE_DE'] + dot_skims['CRTFare_DE']) * 100.0
+,drive_fare,(_drive_fare_ob+_drive_fare_ib) * fare_mult
 ,drive_access_dist,odt_skims['DR_ACCD_DR'] + dot_skims['DR_ACCD_DE']
 ,transit_pass_mult,1.0
 #,walk_premium_available,"walk_transit_available & (odt_skims['WLK_TRN_IVT']>0) & (dot_skims['WLK_TRN_IVT']>0)"

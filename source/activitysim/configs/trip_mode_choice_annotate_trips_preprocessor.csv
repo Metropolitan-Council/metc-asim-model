@@ -10,6 +10,9 @@ Description,Target,Expression
 ,cost_sensitivity,"np.maximum(df.income,1000).pow(_income_exponent)" 
 ,c_cost,coef_income / cost_sensitivity
 ,ivot,1.0/ df.value_of_time
+# Set fare to 0 for students and retired
+,_ptype,"reindex(persons.ptype,df.person_id)"
+,fare_mult,"np.where(_ptype.isin([3,5,6,7]),0.0,1.0)"
 #,,
 #Auto operating costs,,
 ,parent_tour_veh,"reindex(tours['selected_vehicle'], df['parent_tour_id']) if 'selected_vehicle' in df.columns else np.nan"
@@ -115,7 +118,7 @@ dest terminal time not counted at home,_dest_terminal_time,"np.where(inbound & l
 ,walk_access_time,odt_skims['AWALKT_WK'] 
 ,walk_egress_time,0 
 ,walk_xfr_walk_time,odt_skims['XWALKT_WK'] 
-,walk_fare,odt_skims['FARE_WK'] + odt_skims['XBFARE_WK'] + odt_skims['CRTFare_WK']  
+,walk_fare,(odt_skims['FARE_WK'] + odt_skims['XBFARE_WK'] + odt_skims['CRTFare_WK']) * 100.0 * fare_mult * transit_pass_mult
 ,walk_local_available,walk_transit_available & (odt_skims['IVT_Bus_WK'] + odt_skims['IVT_LB_WK'] + odt_skims['IVT_Exp_WK'] >0)
 ,walk_premium_available,walk_transit_available & (odt_skims['IVT_LRT_WK'] + odt_skims['IVT_CRT_WK'] >0)
 ,drive_bus_ivt_ob,odt_skims['IVT_Bus_DR']
@@ -131,7 +134,7 @@ dest terminal time not counted at home,_dest_terminal_time,"np.where(inbound & l
 ,drive_access_time_out,odt_skims['DR_ACCR_DR'] 
 ,drive_egress_time_out,odt_skims['AWALKT_DR'] 
 ,drive_xfr_walk_time_out,odt_skims['XWALKT_DR'] 
-,drive_fare_out,odt_skims['FARE_DR'] + odt_skims['XBFARE_DR'] + odt_skims['CRTFare_DR']
+,drive_fare_out,(odt_skims['FARE_DR'] + odt_skims['XBFARE_DR'] + odt_skims['CRTFare_DR']) * 100.0 * fare_mult * transit_pass_mult
 ,drive_access_dist_out,odt_skims['DR_ACCD_DR'] 
 ,drive_bus_ivt_ib,odt_skims['IVT_Bus_DE']
 ,drive_ltd_ivt_ib,odt_skims['IVT_LB_DE']
@@ -146,5 +149,5 @@ dest terminal time not counted at home,_dest_terminal_time,"np.where(inbound & l
 ,drive_access_time_in,odt_skims['AWALKT_DE'] 
 ,drive_egress_time_in,odt_skims['DR_ACCR_DR'] 
 ,drive_xfr_walk_time_in,odt_skims['XWALKT_DE'] 
-,drive_fare_in,odt_skims['FARE_DE'] + odt_skims['XBFARE_DE'] + odt_skims['CRTFare_DE'] 
+,drive_fare_in,(odt_skims['FARE_DE'] + odt_skims['XBFARE_DE'] + odt_skims['CRTFare_DE']) * 100.0 * fare_mult * transit_pass_mult
 ,drive_access_dist_in,odt_skims['DR_ACCD_DE'] 

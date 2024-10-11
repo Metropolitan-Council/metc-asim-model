@@ -772,5 +772,6 @@ coef_joint_walk_transit_ASC_tnc_shared_null,0.0,T
 joint_sr2_ASC_rh_maint,-999.0,F
 joint_sr2_ASC_rh_disc,-999.0,F
 joint_sr2_ASC_rh_null,0.0,T
+asc_transit,-0.25
 asc_crt,0.0,F
-asc_lrt,0.0,F
+asc_lrt,0.42,F

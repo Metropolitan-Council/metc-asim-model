@@ -4,18 +4,18 @@ coef_one,1.0,T
 coef_mode_choice_logsum,1.821,F
 # coef_distance_joint,-0.1238,F
 coef_distance_joint,-0.2476,F
-coef_util_distance_work_outbound,-0.08774870060651029,F
+coef_util_distance_work_outbound,-0.1315482640585181,F
 # coef_util_distance_work_outbound,-0.049725916,F
 # coef_util_distance_work_inbound,0.147813279,F
-coef_util_distance_univ,-0.20501070501863639,F
-coef_util_distance_school,-0.36756299069021864,F
-coef_util_distance_escort,-0.22529227216439512,F
-coef_util_distance_shopping,-0.2814063257862767,F
-coef_util_distance_eatout,-0.28529974669789526,F
-coef_util_distance_othmaint,-0.2584063257862767,F
-coef_util_distance_social,-0.3152997466978953,F
-coef_util_distance_othdiscr,-0.30857197069789527,F
-coef_util_distance_atwork,-0.2533096382495278,F
+coef_util_distance_univ,-0.32502660546519774,F
+coef_util_distance_school,-0.5050737454011847,F
+coef_util_distance_escort,-0.259566160567723,F
+coef_util_distance_shopping,-0.33006868322973276,F
+coef_util_distance_eatout,-0.3451036714818129,F
+coef_util_distance_othmaint,-0.30706868322973274,F
+coef_util_distance_social,-0.375103671481813,F
+coef_util_distance_othdiscr,-0.36837589548181293,F
+coef_util_distance_atwork,-0.3176663796308323,F
 coef_prox_home_outbound_work,-0.38,F
 coef_prox_home_inbound_work,-0.15,F
 coef_prox_dest_outbound_work,-0.26,F
