@@ -3,7 +3,7 @@
 SetLocal EnableDelayedExpansion
 
 :: This just dumps the start time into a file to see how long the model takes
-echo %date% %time% > start.txt
+echo Start: %date% %time% > model_timing.txt
 :: ----------------------------------------------------------------------------
 ::
 :: Step 1:  Set the necessary path variables 
@@ -18,7 +18,7 @@ COPY .\set_parameters.bat %SCENARIO_DIR%\set_parameters.txt
 :: For restarting...
 REM SET ITER=4
 REM SET PREV_ITER=3
-REM GOTO Visualizer
+REM GOTO asim
 
 :: ----------------------------------------------------------------------------
 ::
@@ -59,6 +59,7 @@ python "%MAIN_DIRECTORY%\source\python\metc_nearestml.py" -l "%SCENARIO_DIR%\hig
 
 :NM_SKIMS
 ECHO INITIAL NETWORKS AND INITIAL SKIMS
+echo Started Non-motorized Skimming %ITER%: %date% %time% >> model_timing.txt
 :: NON-MOTORIZED
 :: Skim bike and walk networks
 ::%beginComment%
@@ -108,7 +109,7 @@ REM )
 runtpp %SCRIPT_PATH%\HAPIL00D.s
 %check_cube_errors%
 ::: Skim free flow network
-
+echo Started Initial Highway Skimming %ITER%: %date% %time% >> model_timing.txt
 ::FIXME: ASR set to use the period nets provided by Dennis/Charles 
 
 FOR /L %%I IN (1, 1, 4) DO (
@@ -149,6 +150,7 @@ runtpp %SCRIPT_PATH%\HAPIL00B.s
 
 :tskim
 ECHO TRANSIT
+echo Started Initial Transit Skimming: %date% %time% >> model_timing.txt
 :: No current option to copy skims as a warm start, could be added.
 ::%beginComment%
 :: extract link and node dbfs, set rail zone nodes
@@ -163,15 +165,17 @@ runtpp %SCRIPT_PATH%\TSNET00B.s
 
 runtpp %SCRIPT_PATH%\TSNET00C_loop.s
     %check_cube_errors%
-
 IF %FREE_FLOW%==1 goto ancillary
 
 
 :copySkims
 runtpp %SCRIPT_PATH%\CSPIL00A.s
 %check_cube_errors%
-runtpp %SCRIPT_PATH%\TCPIL00E.s
-%check_cube_errors%   
+REM The below... Not sure if this is good or the best practice considering I'm skimming transit
+REM on hwy FF speeds and then overwriting them with warm skims. If no transit changes, that's fine. 
+REM If there are transit changes...
+REM runtpp %SCRIPT_PATH%\TCPIL00E.s
+REM %check_cube_errors%
 
 
 :ancillary
@@ -183,6 +187,7 @@ runtpp %SCRIPT_PATH%\TCPIL00E.s
 :: ----------------------------------------------------------------------------
 
 ECHO INITIALIZE TRUCK AND SPECIAL GENERATOR
+echo Started Truck and SG Initialization: %date% %time% >> model_timing.txt
 ::%beginComment%
 :: Quick response freight manual routine
 runtpp %SCRIPT_PATH%\TSGEN00A.s
@@ -228,19 +233,26 @@ runtpp %SCRIPT_PATH%\TSMAT00M.s
 :: ----------------------------------------------------------------------------
 
 ECHO CREATE EXOGENOUS VARIABLES
+echo Started ActivitySim Prep %ITER%: %date% %time% >> model_timing.txt
 ::%beginComment%
 IF %ITER% EQU 1 (COPY %SCENARIO_DIR%\landuse\zones.dbf %SCENARIO_DIR%\landuse\zones_%PREV_ITER%.dbf)
 
+::Start Cube Cluster
+runtpp %SCRIPT_PATH%\HTPIL00B.S
+%check_cube_errors%
 runtpp %SCRIPT_PATH%\EVMAT00G.s
+%check_cube_errors%
+:: End Cube Cluster
+runtpp %SCRIPT_PATH%\HTPIL00E.S
 %check_cube_errors%
 
 :: Prepare skims for ActivitySim
 python.exe source\activitysim\make_county_omx.py -l %SE%\land_use.csv -f STATEFP -i zone_id -m STATEFP -z 3061 -o %SCENARIO_DIR%\OMX\se_omx.omx
 python.exe source\activitysim\make_county_omx.py -l %SE%\land_use.csv -f DISTRICT -i zone_id -m DISTRICT -z 3061 -o %SCENARIO_DIR%\OMX\districts.omx
 
-
 :ASim
 :: Prepare sedata for ActivitySim
+echo Started ActivitySim %ITER%: %date% %time% >> model_timing.txt
 ECHO Prep
 ECHO Python Path: %PYTHON_PATH%
 ECHO Script Path: %SCRIPT_PATH%
@@ -255,7 +267,6 @@ IF %CHUNK_TRAINING% EQU 1 (
 :: Run ActivitySim
 python.exe source\ActivitySim\simulation.py -c source\ActivitySim\configs -d %SE% -d %SCENARIO_DIR%\OMX -o %ASIM_OUT%
 %check_python_errors%
-
 
 :AfterAsim
 echo Iteration=%ITER%
@@ -303,6 +314,7 @@ echo Iteration=%ITER%
 ::%beginComment%
 :freight
 ECHO FREIGHT
+echo Started Freight Distribution %ITER%: %date% %time% >> model_timing.txt
 :: Create weighted skim times
 runtpp %SCRIPT_PATH%\FTMAT00A.s
 %check_cube_errors%
@@ -316,6 +328,7 @@ runtpp %SCRIPT_PATH%\FTMAT00B.s
 
 :external_assign
 ECHO EXTERNAL AUTOS
+echo Started External Auto Prep %ITER%: %date% %time% >> model_timing.txt
 ::%beginComment%
 :: Auto EI/IE destination choice
 runtpp %SCRIPT_PATH%\EEMAT00A.s
@@ -354,7 +367,8 @@ runtpp %SCRIPT_PATH%\EEMAT00E.s
 :specgen_assign
 ::%beginComment%
 :: SPECIAL GENERATORS
-:: Data from AirportModECHOiceParams.txt
+:: Data from AirportModeChoiceParams.txt
+echo Started Special Generators Assignment Prep %ITER%: %date% %time% >> model_timing.txt
 for /L %%I IN (1, 1, 11) DO (
     SET TOD=%%I
     
@@ -434,6 +448,7 @@ echo Iteration=%ITER%
 :: ----------------------------------------------------------------------------
 :: HIGHWAY skims
 :hassign
+echo Started Highway Assignment %ITER%: %date% %time% >> model_timing.txt
 :: Start cube cluster
 runtpp %SCRIPT_PATH%\HAPIL00D.s
 %check_cube_errors%
@@ -555,6 +570,7 @@ IF %ITER% EQU 1 (
 ::%beginComment%
 :: After first iteration, check convergence criteria
 IF %ITER% GEQ 2 (
+	echo Started Convergence Check %ITER%: %date% %time% >> model_timing.txt
     @ECHO. >> %SCENARIO_DIR%\highway\converge.txt
     @ECHO. >> %SCENARIO_DIR%\highway\converge.txt
     @ECHO Checking convergence for iteration %ITER% >> %SCENARIO_DIR%\highway\converge.txt
@@ -616,6 +632,7 @@ IF %ITER% GEQ 2 (
     )
 )
 :tskim2
+echo Started Transit Skimming %ITER%: %date% %time% >> model_timing.txt
 IF %CONV% EQU 0 (
 	:: TRANSIT skimming
 	echo Iteration=%ITER%
@@ -689,6 +706,7 @@ IF %ITER% LEQ %max_feedback% (IF %CONV% EQU 0 (
 
 
 :Final_highway_assign
+echo Started Final Highway Assignment: %date% %time% >> model_timing.txt
 ::%beginComment%
 :: If the model is converged, run assignment one last time
 IF %RUN_DET_ASSIGN% EQU 0 GOTO final_trn_assign
@@ -788,6 +806,7 @@ IF %CONV% EQU 1 (
      runtpp %SCRIPT_PATH%\HTPIL00E.S
  
 :final_trn_assign
+	echo Started Final Transit Assignment: %date% %time% >> model_timing.txt
     :: FINAL TRANSIT
     runtpp %SCRIPT_PATH%\PAMAT00C.s
     %check_cube_errors%
@@ -832,6 +851,7 @@ COPY *.prn %SCENARIO_DIR%\cube_logs\*.prn
 DEL *.prn
 
 :Visualizer
+echo Started Visualizer: %date% %time% >> model_timing.txt
 cd Visualizer
 call %VIS_FOLDER%\generateDashboard_metc_vs_asim.bat
 GOTO veryEndOfFile
@@ -858,5 +878,5 @@ IF ERRORLEVEL 2 (
 )
 
 :veryEndOfFile
-echo %date% %time% > end.txt
+echo End: %date% %time% >> model_timing.txt
 ::cd ..\..\..
