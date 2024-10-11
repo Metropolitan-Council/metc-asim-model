@@ -158,7 +158,7 @@ FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_%PREV_ITER%_@TPER@.net"
     HDWAYPERIOD=@TOD@
 
     PHASE=LINKREAD
-        _wlkspd = 2.5   ;mph
+        _wlkspd = 3.0 ;2.5   ;mph
     ENDPHASE
 
     PHASE=DATAPREP
@@ -204,7 +204,7 @@ FILEI NETI = "%SCENARIO_DIR%\transit\XIT_NET_%PREV_ITER%_@TPER@.net"
 
  
     PHASE=LINKREAD
-        _wlkspd = 2.5   ;mph
+        _wlkspd = 3.0 ;2.5   ;mph
     ENDPHASE
 
     PHASE=DATAPREP
