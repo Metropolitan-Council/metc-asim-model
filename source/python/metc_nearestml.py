@@ -1,8 +1,4 @@
 import pandana as pdna
-from IPython.display import display
-import matplotlib
-import matplotlib.pyplot as plt
-import seaborn as sns
 import pandas as pd
 import numpy as np
 import geopandas as gpd
