@@ -75,6 +75,8 @@ dependencies:
   - importlib-metadata=8.5.0
   - importlib_metadata=8.5.0
   - intel-openmp=2024.2.1
+  - ipykernel=6.29.5
+  - ipython=8.27.0
   - jinja2=3.1.4
   - joblib=1.4.2
   - kealib=1.5.3
@@ -148,6 +150,7 @@ dependencies:
   - numpy=1.23.5
   - openjpeg=2.5.2
   - openmatrix=0.3.5.0
+  - openpyxl=3.1.5
   - openssl=3.3.2
   - orc=2.0.1
   - orca=1.8
@@ -192,6 +195,8 @@ dependencies:
   - ruamel.yaml.clib=0.2.8
   - scikit-learn=1.5.2
   - scipy=1.14.1
+  - seaborn=0.13.2
+  - seaborn-base=0.13.2
   - setuptools=75.1.0
   - shapely=2.0.4
   - sharrow=2.10.1
