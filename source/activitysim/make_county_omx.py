@@ -10,7 +10,7 @@ def read_land_use(land_use_file, index_field_name, field_name, matrix_name, outp
     if land_use_file[-4:].lower() != ".csv":
         raise RuntimeError("Land use file needs to be a CSV")
     land_use = pd.read_csv(land_use_file)
-    if not field_name in land_use.columns and field_name != '_INTRAZONAL':
+    if not field_name in land_use.columns and field_name != '_INTRAZONAL' and field_name != '_MCDIST':
         raise RuntimeError("Field name is not in file")
     if not index_field_name in land_use.columns:
         raise RuntimeError("Index field name is not in file")
@@ -18,6 +18,13 @@ def read_land_use(land_use_file, index_field_name, field_name, matrix_name, outp
         co_output = np.zeros([zone_override, zone_override])
         if field_name == '_INTRAZONAL':
             np.fill_diagonal(co_output, 1)
+        elif field_name == '_MCDIST':
+            dmap = {1: 2, 2: 2, 3: 2, 4: 2, 5: 2,6: 1, 7: 1, 8: 3, 9: 3, 10: 3, 11: 1, 12: 1, 13: 1, 
+                14: 1, 15: 2,16: 3,17: 1, 18: 1, 19: 1, 20: 2, 21: 2, 22: 2, 23: 3, 24: 3, 25: 3,
+                26: 4, 27: 4, 28: 4}
+            dist = land_use['DISTRICT'].map(dmap)
+            f = np.tile(dist, reps = (land_use.shape[0], 1))
+            co_output[:f.shape[0], :f.shape[1]] = f
         else:
             f = np.tile(land_use[field_name], reps = (land_use.shape[0], 1))
             co_output[:f.shape[0], :f.shape[1]] = f
@@ -26,6 +33,13 @@ def read_land_use(land_use_file, index_field_name, field_name, matrix_name, outp
         co_output = np.zeros([land_use.shape[0], land_use.shape[0]])
         if field_name == '_INTRAZONAL':
             np.fill_diagonal(co_output, 1)
+        elif field_name == '_MCDIST':
+            dmap = {1: 2, 2: 2, 3: 2, 4: 2, 5: 2,6: 1, 7: 1, 8: 3, 9: 3, 10: 3, 11: 1, 12: 1, 13: 1, 
+                14: 1, 15: 2,16: 3,17: 1, 18: 1, 19: 1, 20: 2, 21: 2, 22: 2, 23: 3, 24: 3, 25: 3,
+                26: 4, 27: 4, 28: 4}
+            dist = land_use['DISTRICT'].map(dmap)
+            f = np.tile(dist, reps = (land_use.shape[0], 1))
+            co_output[:f.shape[0], :f.shape[1]] = f
         else:
             co_output = np.tile(land_use[field_name], reps = (land_use.shape[0], 1))
         mapping = np.array(land_use[index_field_name])
