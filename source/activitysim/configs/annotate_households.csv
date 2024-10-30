@@ -49,4 +49,6 @@ Retired Adults Only Households,retired_adults_only_hh,(households.hhsize > 0) & 
 ,num_old_retirees,"_PERSON_COUNT('80 <= age', persons, households)"
 Home County,home_county,"reindex(land_use.COUNTY, households.home_zone_id).astype(str)"
 Home State FIPS,home_state,"reindex(land_use.STATEFP, households.home_zone_id)"
-Home district numbe,home_dist,"reindex(land_use.DISTRICT, households.home_zone_id)"
+Home district number,home_dist,"reindex(land_use.DISTRICT, households.home_zone_id)"
+#WLC districts - 
+Home WLC district,home_wlc_dist,"np.where(home_dist.isin([6, 7, 11, 12, 13, 14, 17, 18, 19]), 1, np.where(home_dist.isin([1, 2, 3, 4, 5, 15, 20, 21, 22]), 2, np.where(home_dist.isin([8, 9, 10, 16, 23, 24, 25]),3, 4)))"

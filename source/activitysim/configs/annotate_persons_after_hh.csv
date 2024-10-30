@@ -29,6 +29,7 @@ Home district,home_dist,"reindex(households.home_dist, persons.household_id)"
 ,is_out_of_home_worker,True
 home_zone_id,home_zone_id,"reindex(households.home_zone_id, persons.household_id)"
 home_state,home_state,"reindex(households.home_state, persons.household_id)"
+home wlc dist,home_wlc_dist,"reindex(households.home_wlc_dist, persons.household_id)"
 # School segment fixes
 ,school_segment,persons.school_segment
 ,school_segment,"np.where(persons.is_gradeschool & (home_state == 27),1,school_segment)"

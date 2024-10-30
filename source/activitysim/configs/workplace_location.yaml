@@ -7,7 +7,7 @@ SIMULATE_CHOOSER_COLUMNS:
   - is_student
   - pemploy
   - auto_ownership
-  - home_dist
+  - home_wlc_dist
 
 
 SAMPLE_SPEC: workplace_location_sample.csv
