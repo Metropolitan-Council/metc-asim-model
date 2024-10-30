@@ -248,7 +248,7 @@ runtpp %SCRIPT_PATH%\HTPIL00E.S
 
 :: Prepare skims for ActivitySim
 python.exe source\activitysim\make_county_omx.py -l %SE%\land_use.csv -f STATEFP -i zone_id -m STATEFP -z 3061 -o %SCENARIO_DIR%\OMX\se_omx.omx
-python.exe source\activitysim\make_county_omx.py -l %SE%\land_use.csv -f DISTRICT -i zone_id -m DISTRICT -z 3061 -o %SCENARIO_DIR%\OMX\districts.omx
+python.exe source\activitysim\make_county_omx.py -l %SE%\land_use.csv -f _MCDIST -i zone_id -m DISTRICT -z 3061 -o %SCENARIO_DIR%\OMX\districts.omx
 
 :ASim
 :: Prepare sedata for ActivitySim

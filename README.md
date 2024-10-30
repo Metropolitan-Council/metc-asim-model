@@ -22,13 +22,15 @@ Anaconda 3 64 bit is required to create the environment and run Activitysim. Thi
 
 4. Navigate to the metc-asim-model folder, download the inputs from the project Sharepoint site, they should be placed in Input_2022 in the metc-asim-model folder. Inside the Input_2022 folder, there should be nine subfolders.
 
-5. Create the Anaconda environment: `conda env create --name asim131 --file https://raw.githubusercontent.com/Metropolitan-Council/metc-asim-model/refs/heads/develop/source/environment.yml`
+5. Copy contributed executables to source\Visualizer\Contrib
 
-6. Copy the set_parameters_template.bat file to set_parameters.bat. Edit the paths in the file as appropriate (R, python, model paths)
+6. Create the Anaconda environment: `conda env create --name asim131 --file https://raw.githubusercontent.com/Metropolitan-Council/metc-asim-model/refs/heads/develop/source/environment.yml`
 
-7. Switch to the Anaconda environment: `conda activate asim131`
+7. Copy the set_parameters_template.bat file to set_parameters.bat. Edit the paths in the file as appropriate (R, python, model paths)
 
-8. Run the model with the batch file `met_council_model.bat`
+8. Switch to the Anaconda environment: `conda activate asim131`
+
+9. Run the model with the batch file `met_council_model.bat`
 
 ## More Information
 
