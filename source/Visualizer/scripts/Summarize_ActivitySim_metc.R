@@ -175,8 +175,8 @@ write.csv(pertypeDistbn, file.path(WD, "pertypeDistbn.csv"), row.names = TRUE)
 
 
 # Mandatory DC
-workers <- per[per$workplace_zone_id > 0 & per$is_worker == "True",]
-students <- per[per$school_zone_id > 0 & per$is_student == "True",]
+workers <- per[per$workplace_zone_id > 0 & per$is_worker == "true",]
+students <- per[per$school_zone_id > 0 & per$is_student == "true",]
 
 # code distance bins
 workers$distbin <- cut(workers$distance_to_work, breaks = c(seq(0,50, by=1), 9999), labels = F, right = F)
@@ -254,17 +254,17 @@ mandTourLengths <- rbind(mandTourLengths[!(mandTourLengths$District == "Total"),
 write.csv(mandTourLengths, file.path(WD, "mandTourLengths.csv"), row.names = F)
 
 # Work from home [for each district and total]
-districtWorkers <- ddply(per[per$is_worker=="True",c("HDISTRICT", "finalweight")], c("HDISTRICT"), summarise, workers = sum(finalweight))
+districtWorkers <- ddply(per[per$is_worker=="true",c("HDISTRICT", "finalweight")], c("HDISTRICT"), summarise, workers = sum(finalweight))
 districtWorkers_df <- merge(x = data.frame(HDISTRICT = districtList), y = districtWorkers, by = "HDISTRICT", all.x = TRUE)
 districtWorkers_df[is.na(districtWorkers_df)] <- 0
 
-districtWfh     <- ddply(per[per$is_worker=="True" & per$work_from_home=="True",c("HDISTRICT", "finalweight")], c("HDISTRICT"), summarise, wfh = sum(finalweight))
+districtWfh     <- ddply(per[per$is_worker=="true" & per$work_from_home=="true",c("HDISTRICT", "finalweight")], c("HDISTRICT"), summarise, wfh = sum(finalweight))
 districtWfh_df <- merge(x = data.frame(HDISTRICT = districtList), y = districtWfh, by = "HDISTRICT", all.x = TRUE)
 districtWfh_df[is.na(districtWfh_df)] <- 0
 
 wfh_summary     <- cbind(districtWorkers_df, districtWfh_df$wfh)
 colnames(wfh_summary) <- c("District", "Workers", "WFH")
-totalwfh        <- data.frame("Total", sum((per$is_worker=="True")*per$finalweight), sum((per$is_worker=="True" & per$work_from_home=="True")*per$finalweight))
+totalwfh        <- data.frame("Total", sum((per$is_worker=="true")*per$finalweight), sum((per$is_worker=="true" & per$work_from_home=="true")*per$finalweight))
 colnames(totalwfh) <- colnames(wfh_summary)
 wfh_summary <- rbind(wfh_summary, totalwfh)
 write.csv(wfh_summary, file.path(WD, "wfh_summary.csv"), row.names = F)
