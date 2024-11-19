@@ -378,11 +378,10 @@ all_trips$OPURP <- all_trips$TRIPPURP[match(all_trips$prev_trip_id, all_trips$tr
 
 #Mark stops
 all_trips$inb_next <- 0
-all_trips$inbound <- ifelse(all_trips$outbound == "False", 1, 0)
+all_trips$inbound <- ifelse(all_trips$outbound == "false", 1, 0)
 all_trips$inb_next[1:nr-1] <- all_trips$inbound[2:nr]
 all_trips$stops[all_trips$DPURP>0 & ((all_trips$inbound==0 & all_trips$inb_next==0) | (all_trips$inbound==1 & all_trips$inb_next==1))] <- 1
 all_trips$stops[is.na(all_trips$stops)] <- 0
-
 
 all_trips$finalweight[is.na(all_trips$finalweight)] <- 0
 
@@ -1639,7 +1638,7 @@ write.csv(temp, file.path(WD, "tripModeProfile_vis.csv"), row.names = F)
 jtrips$numpart_wgt <- jtrips$finalweight*jtrips$num_participants
 
 # Total number of stops, trips & tours
-cat("\n Total number of stops : ", sum(stops$finalweight) + sum(jstops$nump_wgt))
+cat("\n Total number of stops : ", sum(stops$finalweight) + sum(jstops$nump_wgt), " ind stops : ", sum(stops$finalweight), " joint stops: ", sum(jstops$nump_wgt))
 cat("\n Total number of trips : ", sum(trips$finalweight) + sum(jtrips$numpart_wgt))
 cat("\n Total number of tours : ", sum(tours$finalweight) + sum(unique_joint_tours$numberhh_wgt))
 cat("\n")
