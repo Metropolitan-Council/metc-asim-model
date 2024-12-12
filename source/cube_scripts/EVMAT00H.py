@@ -70,26 +70,26 @@ def runZones():
 	landUseDf.set_index("zone_id", inplace = True)
 	landUseDf.sort_index(inplace = True)
 	landUseDf['area_type'] = np.array(landUseDf[['CBD', 'SUBURB3', 'SUBURB2', 'RURAL']]).nonzero()[1]+1
-	try:
-		schoolLocs = pd.read_csv(INPUT_FOLDER + SCHOOL_LOCATIONS).rename(columns = {'TAZ': 'zone_id'}) 
-		schoolLocs.set_index('zone_id', inplace = True)
-	except FileNotFoundError:
-		print(f"The input school location file is not found, expected to be at {INPUT_FOLDER + SCHOOL_LOCATIONS}. Check files and paths in set_parameters.txt.")
-		return(2)
+	# try:
+		# schoolLocs = pd.read_csv(INPUT_FOLDER + SCHOOL_LOCATIONS).rename(columns = {'TAZ': 'zone_id'}) 
+		# schoolLocs.set_index('zone_id', inplace = True)
+	# except FileNotFoundError:
+		# print(f"The input school location file is not found, expected to be at {INPUT_FOLDER + SCHOOL_LOCATIONS}. Check files and paths in set_parameters.txt.")
+		# return(2)
 	
-	landUseDf = landUseDf.join(schoolLocs, how = 'left')
-	landUseDf['K_8'] = landUseDf['K_8'].fillna(0)
-	landUseDf['G9_12'] = landUseDf['G9_12'].fillna(0)
-	try:
-		dbfFile = Dbf5(INPUT_FOLDER + TAZ_TO_COUNTY)
-	except FileNotFoundError:
-		print(f"The input TAZ-County Name correspondence file is not found, expected to be at {INPUT_FOLDER + TAZ_TO_COUNTY}. Check files and paths in set_parameters.txt.")
-		return(2)
-	coTaz = dbfFile.to_dataframe()
-	coTaz.rename(columns = {"N": "zone_id", "NAME": "COUNTY"}, inplace = True)
-	coTaz.set_index("zone_id", inplace = True)
-	coTaz.sort_index(inplace = True)
-	landUseDf = landUseDf.join(coTaz[['COUNTY', 'STATEFP']])
+	# landUseDf = landUseDf.join(schoolLocs, how = 'left')
+	# landUseDf['K_8'] = landUseDf['K_8'].fillna(0)
+	# landUseDf['G9_12'] = landUseDf['G9_12'].fillna(0)
+	# try:
+		# dbfFile = Dbf5(INPUT_FOLDER + TAZ_TO_COUNTY)
+	# except FileNotFoundError:
+		# print(f"The input TAZ-County Name correspondence file is not found, expected to be at {INPUT_FOLDER + TAZ_TO_COUNTY}. Check files and paths in set_parameters.txt.")
+		# return(2)
+	# coTaz = dbfFile.to_dataframe()
+	# coTaz.rename(columns = {"N": "zone_id", "NAME": "COUNTY"}, inplace = True)
+	# coTaz.set_index("zone_id", inplace = True)
+	# coTaz.sort_index(inplace = True)
+	# landUseDf = landUseDf.join(coTaz[['COUNTY', 'STATEFP']])
 	try:
 		mldist = pd.read_csv(os.path.join(cfg['MAIN_DIRECTORY'], cfg['SCENARIO_NAME'], 'nearestml.csv')).set_index('zone_id')
 	except FileNotFoundError:
