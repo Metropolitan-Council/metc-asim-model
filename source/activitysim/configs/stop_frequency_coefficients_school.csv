@@ -1,0 +1,37 @@
+coefficient_name,Description,value
+coef_number_of_hh_persons,Number of HH Persons,-0.506
+coef_presence_of_kids_between_5_and_15_including_years_old,Presence of kids between 5 and 15 (including) years old,0.3299
+coef_number_of_cars_number_of_workers,Number of Cars > Number of Workers,0.5331
+coef_dummy_for_female,Dummy for female,0.4099
+coef_dummy_for_all_stops_made_by_transit,Dummy for all stops made by transit,-0.7
+coef_dummy_for_walking_to_all_stops,Dummy for walking to all stops,-1.8163
+coef_number_of_escort_tours_tours_undertaken_by_the_person,Number of escort tours tours undertaken by the person,1.2365
+coef_arrival_later_than_17_00_,Arrival later than 17:00.,1.8377
+coef_dummy_for_the_duration_of_the_tour_being_equal_or_greater_than_or_equal_to_9_hours_,Dummy for the duration of the tour being equal or greater than or equal to 9 hours ,0.9549
+coef_dummy_for_distance_in_miles,dummy for distance in miles,0.0438
+coef_no_stops_if_tour_mode_is_drivetransit,No stops if tour mode is driveTransit,-10.0
+# coef_alternative_specific_constant_for_return_stops_0out_1in,Alternative specific constant for return  stops,-1.206
+# coef_alternative_specific_constant_for_return_stops_0out_2in,Alternative specific constant for return  stops,-2.672
+# coef_alternative_specific_constant_for_the_total_number_of_stops_0out_2in,Alternative specific constant for the total number of stops,0.0
+# coef_alternative_specific_constant_for_return_stops_0out_3in,Alternative specific constant for return  stops,-3.364
+# coef_alternative_specific_constant_for_outbound_stops_1out_0in,Alternative specific constant for outbound stops,-2.123
+# coef_alternative_specific_constant_for_the_total_number_of_stops_1out_3in,Alternative specific constant for the total number of stops,0.701
+# coef_alternative_specific_constant_for_outbound_stops_2out_0in,Alternative specific constant for outbound stops,-3.798
+# coef_alternative_specific_constant_for_the_total_number_of_stops_2out_3in,Alternative specific constant for the total number of stops,1.135
+# coef_alternative_specific_constant_for_outbound_stops_3out_0in,Alternative specific constant for outbound stops,-5.85
+asc_0out_0in,ASC,0.0
+asc_0out_1in,ASC,-3.591074509027208
+asc_0out_2in,ASC,-4.871207568963223
+asc_0out_3in,ASC,-6.778126097677408
+asc_1out_0in,ASC,-3.8776314475091924
+asc_1out_1in,ASC,-7.251573057444307
+asc_1out_2in,ASC,-6.531872937694548
+asc_1out_3in,ASC,-4.720257124
+asc_2out_0in,ASC,-6.499871174792318
+asc_2out_1in,ASC,-5.848194184
+asc_2out_2in,ASC,-6.7350799009459354
+asc_2out_3in,ASC,-6.322391166
+asc_3out_0in,ASC,-10.158845519168716
+asc_3out_1in,ASC,-7.611414914
+asc_3out_2in,ASC,-4.680687462
+asc_3out_3in,ASC,-7.416932422

@@ -1,0 +1,1083 @@
+# read trips table post preprocessor and run expressions to code
+# additional data fields, with one data fields for each matrix specified below
+
+preprocessor:
+  SPEC: write_trip_matrices_annotate_trips_preprocessor
+  DF: trips
+  TABLES:
+    - tours
+    - persons
+    - households
+
+# divide trip counts by household expansion factor
+HH_EXPANSION_WEIGHT_COL: sample_rate  # added when households read in
+
+# save preprocessed trips table to pipeline if desired
+SAVE_TRIPS_TABLE: True
+
+
+MATRICES:
+  - file_name: trips_on.omx
+    tables:
+      - name: DA_Wrk_XP_VOT1_ON
+        data_field: DA_Wrk_XP_VOT1_ON
+      - name: DA_Wrk_XP_VOT2_ON
+        data_field: DA_Wrk_XP_VOT2_ON
+      - name: DA_Wrk_XP_VOT3_ON
+        data_field: DA_Wrk_XP_VOT3_ON
+      - name: DA_Wrk_NXP_VOT1_ON
+        data_field: DA_Wrk_NXP_VOT1_ON
+      - name: DA_Wrk_NXP_VOT2_ON
+        data_field: DA_Wrk_NXP_VOT2_ON
+      - name: DA_Wrk_NXP_VOT3_ON
+        data_field: DA_Wrk_NXP_VOT3_ON
+      - name: S2_Wrk_XP_VOT1_ON
+        data_field: S2_Wrk_XP_VOT1_ON
+      - name: S2_Wrk_XP_VOT2_ON
+        data_field: S2_Wrk_XP_VOT2_ON
+      - name: S2_Wrk_XP_VOT3_ON
+        data_field: S2_Wrk_XP_VOT3_ON
+      - name: S2_Wrk_NXP_VOT1_ON
+        data_field: S2_Wrk_NXP_VOT1_ON
+      - name: S2_Wrk_NXP_VOT2_ON
+        data_field: S2_Wrk_NXP_VOT2_ON
+      - name: S2_Wrk_NXP_VOT3_ON
+        data_field: S2_Wrk_NXP_VOT3_ON
+      - name: S3_Wrk_XP_VOT1_ON
+        data_field: S3_Wrk_XP_VOT1_ON
+      - name: S3_Wrk_XP_VOT2_ON
+        data_field: S3_Wrk_XP_VOT2_ON
+      - name: S3_Wrk_XP_VOT3_ON
+        data_field: S3_Wrk_XP_VOT3_ON
+      - name: S3_Wrk_NXP_VOT1_ON
+        data_field: S3_Wrk_NXP_VOT1_ON
+      - name: S3_Wrk_NXP_VOT2_ON
+        data_field: S3_Wrk_NXP_VOT2_ON
+      - name: S3_Wrk_NXP_VOT3_ON
+        data_field: S3_Wrk_NXP_VOT3_ON
+      - name: DA_NWrk_XP_VOT1_ON
+        data_field: DA_NWrk_XP_VOT1_ON
+      - name: DA_NWrk_XP_VOT2_ON
+        data_field: DA_NWrk_XP_VOT2_ON
+      - name: DA_NWrk_XP_VOT3_ON
+        data_field: DA_NWrk_XP_VOT3_ON
+      - name: DA_NWrk_NXP_VOT1_ON
+        data_field: DA_NWrk_NXP_VOT1_ON
+      - name: DA_NWrk_NXP_VOT2_ON
+        data_field: DA_NWrk_NXP_VOT2_ON
+      - name: DA_NWrk_NXP_VOT3_ON
+        data_field: DA_NWrk_NXP_VOT3_ON
+      - name: S2_NWrk_XP_VOT1_ON
+        data_field: S2_NWrk_XP_VOT1_ON
+      - name: S2_NWrk_XP_VOT2_ON
+        data_field: S2_NWrk_XP_VOT2_ON
+      - name: S2_NWrk_XP_VOT3_ON
+        data_field: S2_NWrk_XP_VOT3_ON
+      - name: S2_NWrk_NXP_VOT1_ON
+        data_field: S2_NWrk_NXP_VOT1_ON
+      - name: S2_NWrk_NXP_VOT2_ON
+        data_field: S2_NWrk_NXP_VOT2_ON
+      - name: S2_NWrk_NXP_VOT3_ON
+        data_field: S2_NWrk_NXP_VOT3_ON
+      - name: S3_NWrk_XP_VOT1_ON
+        data_field: S3_NWrk_XP_VOT1_ON
+      - name: S3_NWrk_XP_VOT2_ON
+        data_field: S3_NWrk_XP_VOT2_ON
+      - name: S3_NWrk_XP_VOT3_ON
+        data_field: S3_NWrk_XP_VOT3_ON
+      - name: S3_NWrk_NXP_VOT1_ON
+        data_field: S3_NWrk_NXP_VOT1_ON
+      - name: S3_NWrk_NXP_VOT2_ON
+        data_field: S3_NWrk_NXP_VOT2_ON
+      - name: S3_NWrk_NXP_VOT3_ON
+        data_field: S3_NWrk_NXP_VOT3_ON
+        
+  - file_name: trips_am1.omx
+    tables:
+      - name: DA_Wrk_XP_VOT1_AM1
+        data_field: DA_Wrk_XP_VOT1_AM1
+      - name: DA_Wrk_XP_VOT2_AM1
+        data_field: DA_Wrk_XP_VOT2_AM1
+      - name: DA_Wrk_XP_VOT3_AM1
+        data_field: DA_Wrk_XP_VOT3_AM1
+      - name: DA_Wrk_NXP_VOT1_AM1
+        data_field: DA_Wrk_NXP_VOT1_AM1
+      - name: DA_Wrk_NXP_VOT2_AM1
+        data_field: DA_Wrk_NXP_VOT2_AM1
+      - name: DA_Wrk_NXP_VOT3_AM1
+        data_field: DA_Wrk_NXP_VOT3_AM1
+      - name: S2_Wrk_XP_VOT1_AM1
+        data_field: S2_Wrk_XP_VOT1_AM1
+      - name: S2_Wrk_XP_VOT2_AM1
+        data_field: S2_Wrk_XP_VOT2_AM1
+      - name: S2_Wrk_XP_VOT3_AM1
+        data_field: S2_Wrk_XP_VOT3_AM1
+      - name: S2_Wrk_NXP_VOT1_AM1
+        data_field: S2_Wrk_NXP_VOT1_AM1
+      - name: S2_Wrk_NXP_VOT2_AM1
+        data_field: S2_Wrk_NXP_VOT2_AM1
+      - name: S2_Wrk_NXP_VOT3_AM1
+        data_field: S2_Wrk_NXP_VOT3_AM1
+      - name: S3_Wrk_XP_VOT1_AM1
+        data_field: S3_Wrk_XP_VOT1_AM1
+      - name: S3_Wrk_XP_VOT2_AM1
+        data_field: S3_Wrk_XP_VOT2_AM1
+      - name: S3_Wrk_XP_VOT3_AM1
+        data_field: S3_Wrk_XP_VOT3_AM1
+      - name: S3_Wrk_NXP_VOT1_AM1
+        data_field: S3_Wrk_NXP_VOT1_AM1
+      - name: S3_Wrk_NXP_VOT2_AM1
+        data_field: S3_Wrk_NXP_VOT2_AM1
+      - name: S3_Wrk_NXP_VOT3_AM1
+        data_field: S3_Wrk_NXP_VOT3_AM1
+      - name: DA_NWrk_XP_VOT1_AM1
+        data_field: DA_NWrk_XP_VOT1_AM1
+      - name: DA_NWrk_XP_VOT2_AM1
+        data_field: DA_NWrk_XP_VOT2_AM1
+      - name: DA_NWrk_XP_VOT3_AM1
+        data_field: DA_NWrk_XP_VOT3_AM1
+      - name: DA_NWrk_NXP_VOT1_AM1
+        data_field: DA_NWrk_NXP_VOT1_AM1
+      - name: DA_NWrk_NXP_VOT2_AM1
+        data_field: DA_NWrk_NXP_VOT2_AM1
+      - name: DA_NWrk_NXP_VOT3_AM1
+        data_field: DA_NWrk_NXP_VOT3_AM1
+      - name: S2_NWrk_XP_VOT1_AM1
+        data_field: S2_NWrk_XP_VOT1_AM1
+      - name: S2_NWrk_XP_VOT2_AM1
+        data_field: S2_NWrk_XP_VOT2_AM1
+      - name: S2_NWrk_XP_VOT3_AM1
+        data_field: S2_NWrk_XP_VOT3_AM1
+      - name: S2_NWrk_NXP_VOT1_AM1
+        data_field: S2_NWrk_NXP_VOT1_AM1
+      - name: S2_NWrk_NXP_VOT2_AM1
+        data_field: S2_NWrk_NXP_VOT2_AM1
+      - name: S2_NWrk_NXP_VOT3_AM1
+        data_field: S2_NWrk_NXP_VOT3_AM1
+      - name: S3_NWrk_XP_VOT1_AM1
+        data_field: S3_NWrk_XP_VOT1_AM1
+      - name: S3_NWrk_XP_VOT2_AM1
+        data_field: S3_NWrk_XP_VOT2_AM1
+      - name: S3_NWrk_XP_VOT3_AM1
+        data_field: S3_NWrk_XP_VOT3_AM1
+      - name: S3_NWrk_NXP_VOT1_AM1
+        data_field: S3_NWrk_NXP_VOT1_AM1
+      - name: S3_NWrk_NXP_VOT2_AM1
+        data_field: S3_NWrk_NXP_VOT2_AM1
+      - name: S3_NWrk_NXP_VOT3_AM1
+        data_field: S3_NWrk_NXP_VOT3_AM1
+        
+  - file_name: trips_am2.omx
+    tables:
+      - name: DA_Wrk_XP_VOT1_AM2
+        data_field: DA_Wrk_XP_VOT1_AM2
+      - name: DA_Wrk_XP_VOT2_AM2
+        data_field: DA_Wrk_XP_VOT2_AM2
+      - name: DA_Wrk_XP_VOT3_AM2
+        data_field: DA_Wrk_XP_VOT3_AM2
+      - name: DA_Wrk_NXP_VOT1_AM2
+        data_field: DA_Wrk_NXP_VOT1_AM2
+      - name: DA_Wrk_NXP_VOT2_AM2
+        data_field: DA_Wrk_NXP_VOT2_AM2
+      - name: DA_Wrk_NXP_VOT3_AM2
+        data_field: DA_Wrk_NXP_VOT3_AM2
+      - name: S2_Wrk_XP_VOT1_AM2
+        data_field: S2_Wrk_XP_VOT1_AM2
+      - name: S2_Wrk_XP_VOT2_AM2
+        data_field: S2_Wrk_XP_VOT2_AM2
+      - name: S2_Wrk_XP_VOT3_AM2
+        data_field: S2_Wrk_XP_VOT3_AM2
+      - name: S2_Wrk_NXP_VOT1_AM2
+        data_field: S2_Wrk_NXP_VOT1_AM2
+      - name: S2_Wrk_NXP_VOT2_AM2
+        data_field: S2_Wrk_NXP_VOT2_AM2
+      - name: S2_Wrk_NXP_VOT3_AM2
+        data_field: S2_Wrk_NXP_VOT3_AM2
+      - name: S3_Wrk_XP_VOT1_AM2
+        data_field: S3_Wrk_XP_VOT1_AM2
+      - name: S3_Wrk_XP_VOT2_AM2
+        data_field: S3_Wrk_XP_VOT2_AM2
+      - name: S3_Wrk_XP_VOT3_AM2
+        data_field: S3_Wrk_XP_VOT3_AM2
+      - name: S3_Wrk_NXP_VOT1_AM2
+        data_field: S3_Wrk_NXP_VOT1_AM2
+      - name: S3_Wrk_NXP_VOT2_AM2
+        data_field: S3_Wrk_NXP_VOT2_AM2
+      - name: S3_Wrk_NXP_VOT3_AM2
+        data_field: S3_Wrk_NXP_VOT3_AM2
+      - name: DA_NWrk_XP_VOT1_AM2
+        data_field: DA_NWrk_XP_VOT1_AM2
+      - name: DA_NWrk_XP_VOT2_AM2
+        data_field: DA_NWrk_XP_VOT2_AM2
+      - name: DA_NWrk_XP_VOT3_AM2
+        data_field: DA_NWrk_XP_VOT3_AM2
+      - name: DA_NWrk_NXP_VOT1_AM2
+        data_field: DA_NWrk_NXP_VOT1_AM2
+      - name: DA_NWrk_NXP_VOT2_AM2
+        data_field: DA_NWrk_NXP_VOT2_AM2
+      - name: DA_NWrk_NXP_VOT3_AM2
+        data_field: DA_NWrk_NXP_VOT3_AM2
+      - name: S2_NWrk_XP_VOT1_AM2
+        data_field: S2_NWrk_XP_VOT1_AM2
+      - name: S2_NWrk_XP_VOT2_AM2
+        data_field: S2_NWrk_XP_VOT2_AM2
+      - name: S2_NWrk_XP_VOT3_AM2
+        data_field: S2_NWrk_XP_VOT3_AM2
+      - name: S2_NWrk_NXP_VOT1_AM2
+        data_field: S2_NWrk_NXP_VOT1_AM2
+      - name: S2_NWrk_NXP_VOT2_AM2
+        data_field: S2_NWrk_NXP_VOT2_AM2
+      - name: S2_NWrk_NXP_VOT3_AM2
+        data_field: S2_NWrk_NXP_VOT3_AM2
+      - name: S3_NWrk_XP_VOT1_AM2
+        data_field: S3_NWrk_XP_VOT1_AM2
+      - name: S3_NWrk_XP_VOT2_AM2
+        data_field: S3_NWrk_XP_VOT2_AM2
+      - name: S3_NWrk_XP_VOT3_AM2
+        data_field: S3_NWrk_XP_VOT3_AM2
+      - name: S3_NWrk_NXP_VOT1_AM2
+        data_field: S3_NWrk_NXP_VOT1_AM2
+      - name: S3_NWrk_NXP_VOT2_AM2
+        data_field: S3_NWrk_NXP_VOT2_AM2
+      - name: S3_NWrk_NXP_VOT3_AM2
+        data_field: S3_NWrk_NXP_VOT3_AM2
+        
+  - file_name: trips_am3.omx
+    tables:        
+      - name: DA_Wrk_XP_VOT1_AM3
+        data_field: DA_Wrk_XP_VOT1_AM3
+      - name: DA_Wrk_XP_VOT2_AM3
+        data_field: DA_Wrk_XP_VOT2_AM3
+      - name: DA_Wrk_XP_VOT3_AM3
+        data_field: DA_Wrk_XP_VOT3_AM3
+      - name: DA_Wrk_NXP_VOT1_AM3
+        data_field: DA_Wrk_NXP_VOT1_AM3
+      - name: DA_Wrk_NXP_VOT2_AM3
+        data_field: DA_Wrk_NXP_VOT2_AM3
+      - name: DA_Wrk_NXP_VOT3_AM3
+        data_field: DA_Wrk_NXP_VOT3_AM3
+      - name: S2_Wrk_XP_VOT1_AM3
+        data_field: S2_Wrk_XP_VOT1_AM3
+      - name: S2_Wrk_XP_VOT2_AM3
+        data_field: S2_Wrk_XP_VOT2_AM3
+      - name: S2_Wrk_XP_VOT3_AM3
+        data_field: S2_Wrk_XP_VOT3_AM3
+      - name: S2_Wrk_NXP_VOT1_AM3
+        data_field: S2_Wrk_NXP_VOT1_AM3
+      - name: S2_Wrk_NXP_VOT2_AM3
+        data_field: S2_Wrk_NXP_VOT2_AM3
+      - name: S2_Wrk_NXP_VOT3_AM3
+        data_field: S2_Wrk_NXP_VOT3_AM3
+      - name: S3_Wrk_XP_VOT1_AM3
+        data_field: S3_Wrk_XP_VOT1_AM3
+      - name: S3_Wrk_XP_VOT2_AM3
+        data_field: S3_Wrk_XP_VOT2_AM3
+      - name: S3_Wrk_XP_VOT3_AM3
+        data_field: S3_Wrk_XP_VOT3_AM3
+      - name: S3_Wrk_NXP_VOT1_AM3
+        data_field: S3_Wrk_NXP_VOT1_AM3
+      - name: S3_Wrk_NXP_VOT2_AM3
+        data_field: S3_Wrk_NXP_VOT2_AM3
+      - name: S3_Wrk_NXP_VOT3_AM3
+        data_field: S3_Wrk_NXP_VOT3_AM3
+      - name: DA_NWrk_XP_VOT1_AM3
+        data_field: DA_NWrk_XP_VOT1_AM3
+      - name: DA_NWrk_XP_VOT2_AM3
+        data_field: DA_NWrk_XP_VOT2_AM3
+      - name: DA_NWrk_XP_VOT3_AM3
+        data_field: DA_NWrk_XP_VOT3_AM3
+      - name: DA_NWrk_NXP_VOT1_AM3
+        data_field: DA_NWrk_NXP_VOT1_AM3
+      - name: DA_NWrk_NXP_VOT2_AM3
+        data_field: DA_NWrk_NXP_VOT2_AM3
+      - name: DA_NWrk_NXP_VOT3_AM3
+        data_field: DA_NWrk_NXP_VOT3_AM3
+      - name: S2_NWrk_XP_VOT1_AM3
+        data_field: S2_NWrk_XP_VOT1_AM3
+      - name: S2_NWrk_XP_VOT2_AM3
+        data_field: S2_NWrk_XP_VOT2_AM3
+      - name: S2_NWrk_XP_VOT3_AM3
+        data_field: S2_NWrk_XP_VOT3_AM3
+      - name: S2_NWrk_NXP_VOT1_AM3
+        data_field: S2_NWrk_NXP_VOT1_AM3
+      - name: S2_NWrk_NXP_VOT2_AM3
+        data_field: S2_NWrk_NXP_VOT2_AM3
+      - name: S2_NWrk_NXP_VOT3_AM3
+        data_field: S2_NWrk_NXP_VOT3_AM3
+      - name: S3_NWrk_XP_VOT1_AM3
+        data_field: S3_NWrk_XP_VOT1_AM3
+      - name: S3_NWrk_XP_VOT2_AM3
+        data_field: S3_NWrk_XP_VOT2_AM3
+      - name: S3_NWrk_XP_VOT3_AM3
+        data_field: S3_NWrk_XP_VOT3_AM3
+      - name: S3_NWrk_NXP_VOT1_AM3
+        data_field: S3_NWrk_NXP_VOT1_AM3
+      - name: S3_NWrk_NXP_VOT2_AM3
+        data_field: S3_NWrk_NXP_VOT2_AM3
+      - name: S3_NWrk_NXP_VOT3_AM3
+        data_field: S3_NWrk_NXP_VOT3_AM3
+        
+  - file_name: trips_am4.omx
+    tables:        
+      - name: DA_Wrk_XP_VOT1_AM4
+        data_field: DA_Wrk_XP_VOT1_AM4
+      - name: DA_Wrk_XP_VOT2_AM4
+        data_field: DA_Wrk_XP_VOT2_AM4
+      - name: DA_Wrk_XP_VOT3_AM4
+        data_field: DA_Wrk_XP_VOT3_AM4
+      - name: DA_Wrk_NXP_VOT1_AM4
+        data_field: DA_Wrk_NXP_VOT1_AM4
+      - name: DA_Wrk_NXP_VOT2_AM4
+        data_field: DA_Wrk_NXP_VOT2_AM4
+      - name: DA_Wrk_NXP_VOT3_AM4
+        data_field: DA_Wrk_NXP_VOT3_AM4
+      - name: S2_Wrk_XP_VOT1_AM4
+        data_field: S2_Wrk_XP_VOT1_AM4
+      - name: S2_Wrk_XP_VOT2_AM4
+        data_field: S2_Wrk_XP_VOT2_AM4
+      - name: S2_Wrk_XP_VOT3_AM4
+        data_field: S2_Wrk_XP_VOT3_AM4
+      - name: S2_Wrk_NXP_VOT1_AM4
+        data_field: S2_Wrk_NXP_VOT1_AM4
+      - name: S2_Wrk_NXP_VOT2_AM4
+        data_field: S2_Wrk_NXP_VOT2_AM4
+      - name: S2_Wrk_NXP_VOT3_AM4
+        data_field: S2_Wrk_NXP_VOT3_AM4
+      - name: S3_Wrk_XP_VOT1_AM4
+        data_field: S3_Wrk_XP_VOT1_AM4
+      - name: S3_Wrk_XP_VOT2_AM4
+        data_field: S3_Wrk_XP_VOT2_AM4
+      - name: S3_Wrk_XP_VOT3_AM4
+        data_field: S3_Wrk_XP_VOT3_AM4
+      - name: S3_Wrk_NXP_VOT1_AM4
+        data_field: S3_Wrk_NXP_VOT1_AM4
+      - name: S3_Wrk_NXP_VOT2_AM4
+        data_field: S3_Wrk_NXP_VOT2_AM4
+      - name: S3_Wrk_NXP_VOT3_AM4
+        data_field: S3_Wrk_NXP_VOT3_AM4
+      - name: DA_NWrk_XP_VOT1_AM4
+        data_field: DA_NWrk_XP_VOT1_AM4
+      - name: DA_NWrk_XP_VOT2_AM4
+        data_field: DA_NWrk_XP_VOT2_AM4
+      - name: DA_NWrk_XP_VOT3_AM4
+        data_field: DA_NWrk_XP_VOT3_AM4
+      - name: DA_NWrk_NXP_VOT1_AM4
+        data_field: DA_NWrk_NXP_VOT1_AM4
+      - name: DA_NWrk_NXP_VOT2_AM4
+        data_field: DA_NWrk_NXP_VOT2_AM4
+      - name: DA_NWrk_NXP_VOT3_AM4
+        data_field: DA_NWrk_NXP_VOT3_AM4
+      - name: S2_NWrk_XP_VOT1_AM4
+        data_field: S2_NWrk_XP_VOT1_AM4
+      - name: S2_NWrk_XP_VOT2_AM4
+        data_field: S2_NWrk_XP_VOT2_AM4
+      - name: S2_NWrk_XP_VOT3_AM4
+        data_field: S2_NWrk_XP_VOT3_AM4
+      - name: S2_NWrk_NXP_VOT1_AM4
+        data_field: S2_NWrk_NXP_VOT1_AM4
+      - name: S2_NWrk_NXP_VOT2_AM4
+        data_field: S2_NWrk_NXP_VOT2_AM4
+      - name: S2_NWrk_NXP_VOT3_AM4
+        data_field: S2_NWrk_NXP_VOT3_AM4
+      - name: S3_NWrk_XP_VOT1_AM4
+        data_field: S3_NWrk_XP_VOT1_AM4
+      - name: S3_NWrk_XP_VOT2_AM4
+        data_field: S3_NWrk_XP_VOT2_AM4
+      - name: S3_NWrk_XP_VOT3_AM4
+        data_field: S3_NWrk_XP_VOT3_AM4
+      - name: S3_NWrk_NXP_VOT1_AM4
+        data_field: S3_NWrk_NXP_VOT1_AM4
+      - name: S3_NWrk_NXP_VOT2_AM4
+        data_field: S3_NWrk_NXP_VOT2_AM4
+      - name: S3_NWrk_NXP_VOT3_AM4
+        data_field: S3_NWrk_NXP_VOT3_AM4
+        
+  - file_name: trips_am.omx
+    tables:        
+      - name: DA_Wrk_XP_VOT1_AM
+        data_field: DA_Wrk_XP_VOT1_AM
+      - name: DA_Wrk_XP_VOT2_AM
+        data_field: DA_Wrk_XP_VOT2_AM
+      - name: DA_Wrk_XP_VOT3_AM
+        data_field: DA_Wrk_XP_VOT3_AM
+      - name: DA_Wrk_NXP_VOT1_AM
+        data_field: DA_Wrk_NXP_VOT1_AM
+      - name: DA_Wrk_NXP_VOT2_AM
+        data_field: DA_Wrk_NXP_VOT2_AM
+      - name: DA_Wrk_NXP_VOT3_AM
+        data_field: DA_Wrk_NXP_VOT3_AM
+      - name: S2_Wrk_XP_VOT1_AM
+        data_field: S2_Wrk_XP_VOT1_AM
+      - name: S2_Wrk_XP_VOT2_AM
+        data_field: S2_Wrk_XP_VOT2_AM
+      - name: S2_Wrk_XP_VOT3_AM
+        data_field: S2_Wrk_XP_VOT3_AM
+      - name: S2_Wrk_NXP_VOT1_AM
+        data_field: S2_Wrk_NXP_VOT1_AM
+      - name: S2_Wrk_NXP_VOT2_AM
+        data_field: S2_Wrk_NXP_VOT2_AM
+      - name: S2_Wrk_NXP_VOT3_AM
+        data_field: S2_Wrk_NXP_VOT3_AM
+      - name: S3_Wrk_XP_VOT1_AM
+        data_field: S3_Wrk_XP_VOT1_AM
+      - name: S3_Wrk_XP_VOT2_AM
+        data_field: S3_Wrk_XP_VOT2_AM
+      - name: S3_Wrk_XP_VOT3_AM
+        data_field: S3_Wrk_XP_VOT3_AM
+      - name: S3_Wrk_NXP_VOT1_AM
+        data_field: S3_Wrk_NXP_VOT1_AM
+      - name: S3_Wrk_NXP_VOT2_AM
+        data_field: S3_Wrk_NXP_VOT2_AM
+      - name: S3_Wrk_NXP_VOT3_AM
+        data_field: S3_Wrk_NXP_VOT3_AM
+      - name: DA_NWrk_XP_VOT1_AM
+        data_field: DA_NWrk_XP_VOT1_AM
+      - name: DA_NWrk_XP_VOT2_AM
+        data_field: DA_NWrk_XP_VOT2_AM
+      - name: DA_NWrk_XP_VOT3_AM
+        data_field: DA_NWrk_XP_VOT3_AM
+      - name: DA_NWrk_NXP_VOT1_AM
+        data_field: DA_NWrk_NXP_VOT1_AM
+      - name: DA_NWrk_NXP_VOT2_AM
+        data_field: DA_NWrk_NXP_VOT2_AM
+      - name: DA_NWrk_NXP_VOT3_AM
+        data_field: DA_NWrk_NXP_VOT3_AM
+      - name: S2_NWrk_XP_VOT1_AM
+        data_field: S2_NWrk_XP_VOT1_AM
+      - name: S2_NWrk_XP_VOT2_AM
+        data_field: S2_NWrk_XP_VOT2_AM
+      - name: S2_NWrk_XP_VOT3_AM
+        data_field: S2_NWrk_XP_VOT3_AM
+      - name: S2_NWrk_NXP_VOT1_AM
+        data_field: S2_NWrk_NXP_VOT1_AM
+      - name: S2_NWrk_NXP_VOT2_AM
+        data_field: S2_NWrk_NXP_VOT2_AM
+      - name: S2_NWrk_NXP_VOT3_AM
+        data_field: S2_NWrk_NXP_VOT3_AM
+      - name: S3_NWrk_XP_VOT1_AM
+        data_field: S3_NWrk_XP_VOT1_AM
+      - name: S3_NWrk_XP_VOT2_AM
+        data_field: S3_NWrk_XP_VOT2_AM
+      - name: S3_NWrk_XP_VOT3_AM
+        data_field: S3_NWrk_XP_VOT3_AM
+      - name: S3_NWrk_NXP_VOT1_AM
+        data_field: S3_NWrk_NXP_VOT1_AM
+      - name: S3_NWrk_NXP_VOT2_AM
+        data_field: S3_NWrk_NXP_VOT2_AM
+      - name: S3_NWrk_NXP_VOT3_AM
+        data_field: S3_NWrk_NXP_VOT3_AM
+        
+  - file_name: trips_md.omx
+    tables:        
+      - name: DA_Wrk_XP_VOT1_MD
+        data_field: DA_Wrk_XP_VOT1_MD
+      - name: DA_Wrk_XP_VOT2_MD
+        data_field: DA_Wrk_XP_VOT2_MD
+      - name: DA_Wrk_XP_VOT3_MD
+        data_field: DA_Wrk_XP_VOT3_MD
+      - name: DA_Wrk_NXP_VOT1_MD
+        data_field: DA_Wrk_NXP_VOT1_MD
+      - name: DA_Wrk_NXP_VOT2_MD
+        data_field: DA_Wrk_NXP_VOT2_MD
+      - name: DA_Wrk_NXP_VOT3_MD
+        data_field: DA_Wrk_NXP_VOT3_MD
+      - name: S2_Wrk_XP_VOT1_MD
+        data_field: S2_Wrk_XP_VOT1_MD
+      - name: S2_Wrk_XP_VOT2_MD
+        data_field: S2_Wrk_XP_VOT2_MD
+      - name: S2_Wrk_XP_VOT3_MD
+        data_field: S2_Wrk_XP_VOT3_MD
+      - name: S2_Wrk_NXP_VOT1_MD
+        data_field: S2_Wrk_NXP_VOT1_MD
+      - name: S2_Wrk_NXP_VOT2_MD
+        data_field: S2_Wrk_NXP_VOT2_MD
+      - name: S2_Wrk_NXP_VOT3_MD
+        data_field: S2_Wrk_NXP_VOT3_MD
+      - name: S3_Wrk_XP_VOT1_MD
+        data_field: S3_Wrk_XP_VOT1_MD
+      - name: S3_Wrk_XP_VOT2_MD
+        data_field: S3_Wrk_XP_VOT2_MD
+      - name: S3_Wrk_XP_VOT3_MD
+        data_field: S3_Wrk_XP_VOT3_MD
+      - name: S3_Wrk_NXP_VOT1_MD
+        data_field: S3_Wrk_NXP_VOT1_MD
+      - name: S3_Wrk_NXP_VOT2_MD
+        data_field: S3_Wrk_NXP_VOT2_MD
+      - name: S3_Wrk_NXP_VOT3_MD
+        data_field: S3_Wrk_NXP_VOT3_MD
+      - name: DA_NWrk_XP_VOT1_MD
+        data_field: DA_NWrk_XP_VOT1_MD
+      - name: DA_NWrk_XP_VOT2_MD
+        data_field: DA_NWrk_XP_VOT2_MD
+      - name: DA_NWrk_XP_VOT3_MD
+        data_field: DA_NWrk_XP_VOT3_MD
+      - name: DA_NWrk_NXP_VOT1_MD
+        data_field: DA_NWrk_NXP_VOT1_MD
+      - name: DA_NWrk_NXP_VOT2_MD
+        data_field: DA_NWrk_NXP_VOT2_MD
+      - name: DA_NWrk_NXP_VOT3_MD
+        data_field: DA_NWrk_NXP_VOT3_MD
+      - name: S2_NWrk_XP_VOT1_MD
+        data_field: S2_NWrk_XP_VOT1_MD
+      - name: S2_NWrk_XP_VOT2_MD
+        data_field: S2_NWrk_XP_VOT2_MD
+      - name: S2_NWrk_XP_VOT3_MD
+        data_field: S2_NWrk_XP_VOT3_MD
+      - name: S2_NWrk_NXP_VOT1_MD
+        data_field: S2_NWrk_NXP_VOT1_MD
+      - name: S2_NWrk_NXP_VOT2_MD
+        data_field: S2_NWrk_NXP_VOT2_MD
+      - name: S2_NWrk_NXP_VOT3_MD
+        data_field: S2_NWrk_NXP_VOT3_MD
+      - name: S3_NWrk_XP_VOT1_MD
+        data_field: S3_NWrk_XP_VOT1_MD
+      - name: S3_NWrk_XP_VOT2_MD
+        data_field: S3_NWrk_XP_VOT2_MD
+      - name: S3_NWrk_XP_VOT3_MD
+        data_field: S3_NWrk_XP_VOT3_MD
+      - name: S3_NWrk_NXP_VOT1_MD
+        data_field: S3_NWrk_NXP_VOT1_MD
+      - name: S3_NWrk_NXP_VOT2_MD
+        data_field: S3_NWrk_NXP_VOT2_MD
+      - name: S3_NWrk_NXP_VOT3_MD
+        data_field: S3_NWrk_NXP_VOT3_MD
+        
+  - file_name: trips_pm1.omx
+    tables:        
+      - name: DA_Wrk_XP_VOT1_PM1
+        data_field: DA_Wrk_XP_VOT1_PM1
+      - name: DA_Wrk_XP_VOT2_PM1
+        data_field: DA_Wrk_XP_VOT2_PM1
+      - name: DA_Wrk_XP_VOT3_PM1
+        data_field: DA_Wrk_XP_VOT3_PM1
+      - name: DA_Wrk_NXP_VOT1_PM1
+        data_field: DA_Wrk_NXP_VOT1_PM1
+      - name: DA_Wrk_NXP_VOT2_PM1
+        data_field: DA_Wrk_NXP_VOT2_PM1
+      - name: DA_Wrk_NXP_VOT3_PM1
+        data_field: DA_Wrk_NXP_VOT3_PM1
+      - name: S2_Wrk_XP_VOT1_PM1
+        data_field: S2_Wrk_XP_VOT1_PM1
+      - name: S2_Wrk_XP_VOT2_PM1
+        data_field: S2_Wrk_XP_VOT2_PM1
+      - name: S2_Wrk_XP_VOT3_PM1
+        data_field: S2_Wrk_XP_VOT3_PM1
+      - name: S2_Wrk_NXP_VOT1_PM1
+        data_field: S2_Wrk_NXP_VOT1_PM1
+      - name: S2_Wrk_NXP_VOT2_PM1
+        data_field: S2_Wrk_NXP_VOT2_PM1
+      - name: S2_Wrk_NXP_VOT3_PM1
+        data_field: S2_Wrk_NXP_VOT3_PM1
+      - name: S3_Wrk_XP_VOT1_PM1
+        data_field: S3_Wrk_XP_VOT1_PM1
+      - name: S3_Wrk_XP_VOT2_PM1
+        data_field: S3_Wrk_XP_VOT2_PM1
+      - name: S3_Wrk_XP_VOT3_PM1
+        data_field: S3_Wrk_XP_VOT3_PM1
+      - name: S3_Wrk_NXP_VOT1_PM1
+        data_field: S3_Wrk_NXP_VOT1_PM1
+      - name: S3_Wrk_NXP_VOT2_PM1
+        data_field: S3_Wrk_NXP_VOT2_PM1
+      - name: S3_Wrk_NXP_VOT3_PM1
+        data_field: S3_Wrk_NXP_VOT3_PM1
+      - name: DA_NWrk_XP_VOT1_PM1
+        data_field: DA_NWrk_XP_VOT1_PM1
+      - name: DA_NWrk_XP_VOT2_PM1
+        data_field: DA_NWrk_XP_VOT2_PM1
+      - name: DA_NWrk_XP_VOT3_PM1
+        data_field: DA_NWrk_XP_VOT3_PM1
+      - name: DA_NWrk_NXP_VOT1_PM1
+        data_field: DA_NWrk_NXP_VOT1_PM1
+      - name: DA_NWrk_NXP_VOT2_PM1
+        data_field: DA_NWrk_NXP_VOT2_PM1
+      - name: DA_NWrk_NXP_VOT3_PM1
+        data_field: DA_NWrk_NXP_VOT3_PM1
+      - name: S2_NWrk_XP_VOT1_PM1
+        data_field: S2_NWrk_XP_VOT1_PM1
+      - name: S2_NWrk_XP_VOT2_PM1
+        data_field: S2_NWrk_XP_VOT2_PM1
+      - name: S2_NWrk_XP_VOT3_PM1
+        data_field: S2_NWrk_XP_VOT3_PM1
+      - name: S2_NWrk_NXP_VOT1_PM1
+        data_field: S2_NWrk_NXP_VOT1_PM1
+      - name: S2_NWrk_NXP_VOT2_PM1
+        data_field: S2_NWrk_NXP_VOT2_PM1
+      - name: S2_NWrk_NXP_VOT3_PM1
+        data_field: S2_NWrk_NXP_VOT3_PM1
+      - name: S3_NWrk_XP_VOT1_PM1
+        data_field: S3_NWrk_XP_VOT1_PM1
+      - name: S3_NWrk_XP_VOT2_PM1
+        data_field: S3_NWrk_XP_VOT2_PM1
+      - name: S3_NWrk_XP_VOT3_PM1
+        data_field: S3_NWrk_XP_VOT3_PM1
+      - name: S3_NWrk_NXP_VOT1_PM1
+        data_field: S3_NWrk_NXP_VOT1_PM1
+      - name: S3_NWrk_NXP_VOT2_PM1
+        data_field: S3_NWrk_NXP_VOT2_PM1
+      - name: S3_NWrk_NXP_VOT3_PM1
+        data_field: S3_NWrk_NXP_VOT3_PM1
+        
+  - file_name: trips_pm2.omx
+    tables:        
+      - name: DA_Wrk_XP_VOT1_PM2
+        data_field: DA_Wrk_XP_VOT1_PM2
+      - name: DA_Wrk_XP_VOT2_PM2
+        data_field: DA_Wrk_XP_VOT2_PM2
+      - name: DA_Wrk_XP_VOT3_PM2
+        data_field: DA_Wrk_XP_VOT3_PM2
+      - name: DA_Wrk_NXP_VOT1_PM2
+        data_field: DA_Wrk_NXP_VOT1_PM2
+      - name: DA_Wrk_NXP_VOT2_PM2
+        data_field: DA_Wrk_NXP_VOT2_PM2
+      - name: DA_Wrk_NXP_VOT3_PM2
+        data_field: DA_Wrk_NXP_VOT3_PM2
+      - name: S2_Wrk_XP_VOT1_PM2
+        data_field: S2_Wrk_XP_VOT1_PM2
+      - name: S2_Wrk_XP_VOT2_PM2
+        data_field: S2_Wrk_XP_VOT2_PM2
+      - name: S2_Wrk_XP_VOT3_PM2
+        data_field: S2_Wrk_XP_VOT3_PM2
+      - name: S2_Wrk_NXP_VOT1_PM2
+        data_field: S2_Wrk_NXP_VOT1_PM2
+      - name: S2_Wrk_NXP_VOT2_PM2
+        data_field: S2_Wrk_NXP_VOT2_PM2
+      - name: S2_Wrk_NXP_VOT3_PM2
+        data_field: S2_Wrk_NXP_VOT3_PM2
+      - name: S3_Wrk_XP_VOT1_PM2
+        data_field: S3_Wrk_XP_VOT1_PM2
+      - name: S3_Wrk_XP_VOT2_PM2
+        data_field: S3_Wrk_XP_VOT2_PM2
+      - name: S3_Wrk_XP_VOT3_PM2
+        data_field: S3_Wrk_XP_VOT3_PM2
+      - name: S3_Wrk_NXP_VOT1_PM2
+        data_field: S3_Wrk_NXP_VOT1_PM2
+      - name: S3_Wrk_NXP_VOT2_PM2
+        data_field: S3_Wrk_NXP_VOT2_PM2
+      - name: S3_Wrk_NXP_VOT3_PM2
+        data_field: S3_Wrk_NXP_VOT3_PM2
+      - name: DA_NWrk_XP_VOT1_PM2
+        data_field: DA_NWrk_XP_VOT1_PM2
+      - name: DA_NWrk_XP_VOT2_PM2
+        data_field: DA_NWrk_XP_VOT2_PM2
+      - name: DA_NWrk_XP_VOT3_PM2
+        data_field: DA_NWrk_XP_VOT3_PM2
+      - name: DA_NWrk_NXP_VOT1_PM2
+        data_field: DA_NWrk_NXP_VOT1_PM2
+      - name: DA_NWrk_NXP_VOT2_PM2
+        data_field: DA_NWrk_NXP_VOT2_PM2
+      - name: DA_NWrk_NXP_VOT3_PM2
+        data_field: DA_NWrk_NXP_VOT3_PM2
+      - name: S2_NWrk_XP_VOT1_PM2
+        data_field: S2_NWrk_XP_VOT1_PM2
+      - name: S2_NWrk_XP_VOT2_PM2
+        data_field: S2_NWrk_XP_VOT2_PM2
+      - name: S2_NWrk_XP_VOT3_PM2
+        data_field: S2_NWrk_XP_VOT3_PM2
+      - name: S2_NWrk_NXP_VOT1_PM2
+        data_field: S2_NWrk_NXP_VOT1_PM2
+      - name: S2_NWrk_NXP_VOT2_PM2
+        data_field: S2_NWrk_NXP_VOT2_PM2
+      - name: S2_NWrk_NXP_VOT3_PM2
+        data_field: S2_NWrk_NXP_VOT3_PM2
+      - name: S3_NWrk_XP_VOT1_PM2
+        data_field: S3_NWrk_XP_VOT1_PM2
+      - name: S3_NWrk_XP_VOT2_PM2
+        data_field: S3_NWrk_XP_VOT2_PM2
+      - name: S3_NWrk_XP_VOT3_PM2
+        data_field: S3_NWrk_XP_VOT3_PM2
+      - name: S3_NWrk_NXP_VOT1_PM2
+        data_field: S3_NWrk_NXP_VOT1_PM2
+      - name: S3_NWrk_NXP_VOT2_PM2
+        data_field: S3_NWrk_NXP_VOT2_PM2
+      - name: S3_NWrk_NXP_VOT3_PM2
+        data_field: S3_NWrk_NXP_VOT3_PM2
+        
+  - file_name: trips_pm3.omx
+    tables:        
+      - name: DA_Wrk_XP_VOT1_PM3
+        data_field: DA_Wrk_XP_VOT1_PM3
+      - name: DA_Wrk_XP_VOT2_PM3
+        data_field: DA_Wrk_XP_VOT2_PM3
+      - name: DA_Wrk_XP_VOT3_PM3
+        data_field: DA_Wrk_XP_VOT3_PM3
+      - name: DA_Wrk_NXP_VOT1_PM3
+        data_field: DA_Wrk_NXP_VOT1_PM3
+      - name: DA_Wrk_NXP_VOT2_PM3
+        data_field: DA_Wrk_NXP_VOT2_PM3
+      - name: DA_Wrk_NXP_VOT3_PM3
+        data_field: DA_Wrk_NXP_VOT3_PM3
+      - name: S2_Wrk_XP_VOT1_PM3
+        data_field: S2_Wrk_XP_VOT1_PM3
+      - name: S2_Wrk_XP_VOT2_PM3
+        data_field: S2_Wrk_XP_VOT2_PM3
+      - name: S2_Wrk_XP_VOT3_PM3
+        data_field: S2_Wrk_XP_VOT3_PM3
+      - name: S2_Wrk_NXP_VOT1_PM3
+        data_field: S2_Wrk_NXP_VOT1_PM3
+      - name: S2_Wrk_NXP_VOT2_PM3
+        data_field: S2_Wrk_NXP_VOT2_PM3
+      - name: S2_Wrk_NXP_VOT3_PM3
+        data_field: S2_Wrk_NXP_VOT3_PM3
+      - name: S3_Wrk_XP_VOT1_PM3
+        data_field: S3_Wrk_XP_VOT1_PM3
+      - name: S3_Wrk_XP_VOT2_PM3
+        data_field: S3_Wrk_XP_VOT2_PM3
+      - name: S3_Wrk_XP_VOT3_PM3
+        data_field: S3_Wrk_XP_VOT3_PM3
+      - name: S3_Wrk_NXP_VOT1_PM3
+        data_field: S3_Wrk_NXP_VOT1_PM3
+      - name: S3_Wrk_NXP_VOT2_PM3
+        data_field: S3_Wrk_NXP_VOT2_PM3
+      - name: S3_Wrk_NXP_VOT3_PM3
+        data_field: S3_Wrk_NXP_VOT3_PM3
+      - name: DA_NWrk_XP_VOT1_PM3
+        data_field: DA_NWrk_XP_VOT1_PM3
+      - name: DA_NWrk_XP_VOT2_PM3
+        data_field: DA_NWrk_XP_VOT2_PM3
+      - name: DA_NWrk_XP_VOT3_PM3
+        data_field: DA_NWrk_XP_VOT3_PM3
+      - name: DA_NWrk_NXP_VOT1_PM3
+        data_field: DA_NWrk_NXP_VOT1_PM3
+      - name: DA_NWrk_NXP_VOT2_PM3
+        data_field: DA_NWrk_NXP_VOT2_PM3
+      - name: DA_NWrk_NXP_VOT3_PM3
+        data_field: DA_NWrk_NXP_VOT3_PM3
+      - name: S2_NWrk_XP_VOT1_PM3
+        data_field: S2_NWrk_XP_VOT1_PM3
+      - name: S2_NWrk_XP_VOT2_PM3
+        data_field: S2_NWrk_XP_VOT2_PM3
+      - name: S2_NWrk_XP_VOT3_PM3
+        data_field: S2_NWrk_XP_VOT3_PM3
+      - name: S2_NWrk_NXP_VOT1_PM3
+        data_field: S2_NWrk_NXP_VOT1_PM3
+      - name: S2_NWrk_NXP_VOT2_PM3
+        data_field: S2_NWrk_NXP_VOT2_PM3
+      - name: S2_NWrk_NXP_VOT3_PM3
+        data_field: S2_NWrk_NXP_VOT3_PM3
+      - name: S3_NWrk_XP_VOT1_PM3
+        data_field: S3_NWrk_XP_VOT1_PM3
+      - name: S3_NWrk_XP_VOT2_PM3
+        data_field: S3_NWrk_XP_VOT2_PM3
+      - name: S3_NWrk_XP_VOT3_PM3
+        data_field: S3_NWrk_XP_VOT3_PM3
+      - name: S3_NWrk_NXP_VOT1_PM3
+        data_field: S3_NWrk_NXP_VOT1_PM3
+      - name: S3_NWrk_NXP_VOT2_PM3
+        data_field: S3_NWrk_NXP_VOT2_PM3
+      - name: S3_NWrk_NXP_VOT3_PM3
+        data_field: S3_NWrk_NXP_VOT3_PM3
+        
+  - file_name: trips_pm4.omx
+    tables:        
+      - name: DA_Wrk_XP_VOT1_PM4
+        data_field: DA_Wrk_XP_VOT1_PM4
+      - name: DA_Wrk_XP_VOT2_PM4
+        data_field: DA_Wrk_XP_VOT2_PM4
+      - name: DA_Wrk_XP_VOT3_PM4
+        data_field: DA_Wrk_XP_VOT3_PM4
+      - name: DA_Wrk_NXP_VOT1_PM4
+        data_field: DA_Wrk_NXP_VOT1_PM4
+      - name: DA_Wrk_NXP_VOT2_PM4
+        data_field: DA_Wrk_NXP_VOT2_PM4
+      - name: DA_Wrk_NXP_VOT3_PM4
+        data_field: DA_Wrk_NXP_VOT3_PM4
+      - name: S2_Wrk_XP_VOT1_PM4
+        data_field: S2_Wrk_XP_VOT1_PM4
+      - name: S2_Wrk_XP_VOT2_PM4
+        data_field: S2_Wrk_XP_VOT2_PM4
+      - name: S2_Wrk_XP_VOT3_PM4
+        data_field: S2_Wrk_XP_VOT3_PM4
+      - name: S2_Wrk_NXP_VOT1_PM4
+        data_field: S2_Wrk_NXP_VOT1_PM4
+      - name: S2_Wrk_NXP_VOT2_PM4
+        data_field: S2_Wrk_NXP_VOT2_PM4
+      - name: S2_Wrk_NXP_VOT3_PM4
+        data_field: S2_Wrk_NXP_VOT3_PM4
+      - name: S3_Wrk_XP_VOT1_PM4
+        data_field: S3_Wrk_XP_VOT1_PM4
+      - name: S3_Wrk_XP_VOT2_PM4
+        data_field: S3_Wrk_XP_VOT2_PM4
+      - name: S3_Wrk_XP_VOT3_PM4
+        data_field: S3_Wrk_XP_VOT3_PM4
+      - name: S3_Wrk_NXP_VOT1_PM4
+        data_field: S3_Wrk_NXP_VOT1_PM4
+      - name: S3_Wrk_NXP_VOT2_PM4
+        data_field: S3_Wrk_NXP_VOT2_PM4
+      - name: S3_Wrk_NXP_VOT3_PM4
+        data_field: S3_Wrk_NXP_VOT3_PM4
+      - name: DA_NWrk_XP_VOT1_PM4
+        data_field: DA_NWrk_XP_VOT1_PM4
+      - name: DA_NWrk_XP_VOT2_PM4
+        data_field: DA_NWrk_XP_VOT2_PM4
+      - name: DA_NWrk_XP_VOT3_PM4
+        data_field: DA_NWrk_XP_VOT3_PM4
+      - name: DA_NWrk_NXP_VOT1_PM4
+        data_field: DA_NWrk_NXP_VOT1_PM4
+      - name: DA_NWrk_NXP_VOT2_PM4
+        data_field: DA_NWrk_NXP_VOT2_PM4
+      - name: DA_NWrk_NXP_VOT3_PM4
+        data_field: DA_NWrk_NXP_VOT3_PM4
+      - name: S2_NWrk_XP_VOT1_PM4
+        data_field: S2_NWrk_XP_VOT1_PM4
+      - name: S2_NWrk_XP_VOT2_PM4
+        data_field: S2_NWrk_XP_VOT2_PM4
+      - name: S2_NWrk_XP_VOT3_PM4
+        data_field: S2_NWrk_XP_VOT3_PM4
+      - name: S2_NWrk_NXP_VOT1_PM4
+        data_field: S2_NWrk_NXP_VOT1_PM4
+      - name: S2_NWrk_NXP_VOT2_PM4
+        data_field: S2_NWrk_NXP_VOT2_PM4
+      - name: S2_NWrk_NXP_VOT3_PM4
+        data_field: S2_NWrk_NXP_VOT3_PM4
+      - name: S3_NWrk_XP_VOT1_PM4
+        data_field: S3_NWrk_XP_VOT1_PM4
+      - name: S3_NWrk_XP_VOT2_PM4
+        data_field: S3_NWrk_XP_VOT2_PM4
+      - name: S3_NWrk_XP_VOT3_PM4
+        data_field: S3_NWrk_XP_VOT3_PM4
+      - name: S3_NWrk_NXP_VOT1_PM4
+        data_field: S3_NWrk_NXP_VOT1_PM4
+      - name: S3_NWrk_NXP_VOT2_PM4
+        data_field: S3_NWrk_NXP_VOT2_PM4
+      - name: S3_NWrk_NXP_VOT3_PM4
+        data_field: S3_NWrk_NXP_VOT3_PM4
+        
+  - file_name: trips_pm.omx
+    tables:        
+      - name: DA_Wrk_XP_VOT1_PM
+        data_field: DA_Wrk_XP_VOT1_PM
+      - name: DA_Wrk_XP_VOT2_PM
+        data_field: DA_Wrk_XP_VOT2_PM
+      - name: DA_Wrk_XP_VOT3_PM
+        data_field: DA_Wrk_XP_VOT3_PM
+      - name: DA_Wrk_NXP_VOT1_PM
+        data_field: DA_Wrk_NXP_VOT1_PM
+      - name: DA_Wrk_NXP_VOT2_PM
+        data_field: DA_Wrk_NXP_VOT2_PM
+      - name: DA_Wrk_NXP_VOT3_PM
+        data_field: DA_Wrk_NXP_VOT3_PM
+      - name: S2_Wrk_XP_VOT1_PM
+        data_field: S2_Wrk_XP_VOT1_PM
+      - name: S2_Wrk_XP_VOT2_PM
+        data_field: S2_Wrk_XP_VOT2_PM
+      - name: S2_Wrk_XP_VOT3_PM
+        data_field: S2_Wrk_XP_VOT3_PM
+      - name: S2_Wrk_NXP_VOT1_PM
+        data_field: S2_Wrk_NXP_VOT1_PM
+      - name: S2_Wrk_NXP_VOT2_PM
+        data_field: S2_Wrk_NXP_VOT2_PM
+      - name: S2_Wrk_NXP_VOT3_PM
+        data_field: S2_Wrk_NXP_VOT3_PM
+      - name: S3_Wrk_XP_VOT1_PM
+        data_field: S3_Wrk_XP_VOT1_PM
+      - name: S3_Wrk_XP_VOT2_PM
+        data_field: S3_Wrk_XP_VOT2_PM
+      - name: S3_Wrk_XP_VOT3_PM
+        data_field: S3_Wrk_XP_VOT3_PM
+      - name: S3_Wrk_NXP_VOT1_PM
+        data_field: S3_Wrk_NXP_VOT1_PM
+      - name: S3_Wrk_NXP_VOT2_PM
+        data_field: S3_Wrk_NXP_VOT2_PM
+      - name: S3_Wrk_NXP_VOT3_PM
+        data_field: S3_Wrk_NXP_VOT3_PM
+      - name: DA_NWrk_XP_VOT1_PM
+        data_field: DA_NWrk_XP_VOT1_PM
+      - name: DA_NWrk_XP_VOT2_PM
+        data_field: DA_NWrk_XP_VOT2_PM
+      - name: DA_NWrk_XP_VOT3_PM
+        data_field: DA_NWrk_XP_VOT3_PM
+      - name: DA_NWrk_NXP_VOT1_PM
+        data_field: DA_NWrk_NXP_VOT1_PM
+      - name: DA_NWrk_NXP_VOT2_PM
+        data_field: DA_NWrk_NXP_VOT2_PM
+      - name: DA_NWrk_NXP_VOT3_PM
+        data_field: DA_NWrk_NXP_VOT3_PM
+      - name: S2_NWrk_XP_VOT1_PM
+        data_field: S2_NWrk_XP_VOT1_PM
+      - name: S2_NWrk_XP_VOT2_PM
+        data_field: S2_NWrk_XP_VOT2_PM
+      - name: S2_NWrk_XP_VOT3_PM
+        data_field: S2_NWrk_XP_VOT3_PM
+      - name: S2_NWrk_NXP_VOT1_PM
+        data_field: S2_NWrk_NXP_VOT1_PM
+      - name: S2_NWrk_NXP_VOT2_PM
+        data_field: S2_NWrk_NXP_VOT2_PM
+      - name: S2_NWrk_NXP_VOT3_PM
+        data_field: S2_NWrk_NXP_VOT3_PM
+      - name: S3_NWrk_XP_VOT1_PM
+        data_field: S3_NWrk_XP_VOT1_PM
+      - name: S3_NWrk_XP_VOT2_PM
+        data_field: S3_NWrk_XP_VOT2_PM
+      - name: S3_NWrk_XP_VOT3_PM
+        data_field: S3_NWrk_XP_VOT3_PM
+      - name: S3_NWrk_NXP_VOT1_PM
+        data_field: S3_NWrk_NXP_VOT1_PM
+      - name: S3_NWrk_NXP_VOT2_PM
+        data_field: S3_NWrk_NXP_VOT2_PM
+      - name: S3_NWrk_NXP_VOT3_PM
+        data_field: S3_NWrk_NXP_VOT3_PM
+        
+  - file_name: trips_ev.omx
+    tables:        
+      - name: DA_Wrk_XP_VOT1_EV
+        data_field: DA_Wrk_XP_VOT1_EV
+      - name: DA_Wrk_XP_VOT2_EV
+        data_field: DA_Wrk_XP_VOT2_EV
+      - name: DA_Wrk_XP_VOT3_EV
+        data_field: DA_Wrk_XP_VOT3_EV
+      - name: DA_Wrk_NXP_VOT1_EV
+        data_field: DA_Wrk_NXP_VOT1_EV
+      - name: DA_Wrk_NXP_VOT2_EV
+        data_field: DA_Wrk_NXP_VOT2_EV
+      - name: DA_Wrk_NXP_VOT3_EV
+        data_field: DA_Wrk_NXP_VOT3_EV
+      - name: S2_Wrk_XP_VOT1_EV
+        data_field: S2_Wrk_XP_VOT1_EV
+      - name: S2_Wrk_XP_VOT2_EV
+        data_field: S2_Wrk_XP_VOT2_EV
+      - name: S2_Wrk_XP_VOT3_EV
+        data_field: S2_Wrk_XP_VOT3_EV
+      - name: S2_Wrk_NXP_VOT1_EV
+        data_field: S2_Wrk_NXP_VOT1_EV
+      - name: S2_Wrk_NXP_VOT2_EV
+        data_field: S2_Wrk_NXP_VOT2_EV
+      - name: S2_Wrk_NXP_VOT3_EV
+        data_field: S2_Wrk_NXP_VOT3_EV
+      - name: S3_Wrk_XP_VOT1_EV
+        data_field: S3_Wrk_XP_VOT1_EV
+      - name: S3_Wrk_XP_VOT2_EV
+        data_field: S3_Wrk_XP_VOT2_EV
+      - name: S3_Wrk_XP_VOT3_EV
+        data_field: S3_Wrk_XP_VOT3_EV
+      - name: S3_Wrk_NXP_VOT1_EV
+        data_field: S3_Wrk_NXP_VOT1_EV
+      - name: S3_Wrk_NXP_VOT2_EV
+        data_field: S3_Wrk_NXP_VOT2_EV
+      - name: S3_Wrk_NXP_VOT3_EV
+        data_field: S3_Wrk_NXP_VOT3_EV
+      - name: DA_NWrk_XP_VOT1_EV
+        data_field: DA_NWrk_XP_VOT1_EV
+      - name: DA_NWrk_XP_VOT2_EV
+        data_field: DA_NWrk_XP_VOT2_EV
+      - name: DA_NWrk_XP_VOT3_EV
+        data_field: DA_NWrk_XP_VOT3_EV
+      - name: DA_NWrk_NXP_VOT1_EV
+        data_field: DA_NWrk_NXP_VOT1_EV
+      - name: DA_NWrk_NXP_VOT2_EV
+        data_field: DA_NWrk_NXP_VOT2_EV
+      - name: DA_NWrk_NXP_VOT3_EV
+        data_field: DA_NWrk_NXP_VOT3_EV
+      - name: S2_NWrk_XP_VOT1_EV
+        data_field: S2_NWrk_XP_VOT1_EV
+      - name: S2_NWrk_XP_VOT2_EV
+        data_field: S2_NWrk_XP_VOT2_EV
+      - name: S2_NWrk_XP_VOT3_EV
+        data_field: S2_NWrk_XP_VOT3_EV
+      - name: S2_NWrk_NXP_VOT1_EV
+        data_field: S2_NWrk_NXP_VOT1_EV
+      - name: S2_NWrk_NXP_VOT2_EV
+        data_field: S2_NWrk_NXP_VOT2_EV
+      - name: S2_NWrk_NXP_VOT3_EV
+        data_field: S2_NWrk_NXP_VOT3_EV
+      - name: S3_NWrk_XP_VOT1_EV
+        data_field: S3_NWrk_XP_VOT1_EV
+      - name: S3_NWrk_XP_VOT2_EV
+        data_field: S3_NWrk_XP_VOT2_EV
+      - name: S3_NWrk_XP_VOT3_EV
+        data_field: S3_NWrk_XP_VOT3_EV
+      - name: S3_NWrk_NXP_VOT1_EV
+        data_field: S3_NWrk_NXP_VOT1_EV
+      - name: S3_NWrk_NXP_VOT2_EV
+        data_field: S3_NWrk_NXP_VOT2_EV
+      - name: S3_NWrk_NXP_VOT3_EV
+        data_field: S3_NWrk_NXP_VOT3_EV
+
+  - file_name: transit_ea.omx
+    tables:
+      - name: WalkToTransit
+        data_field: TrnW_EA
+      - name: DriveToTransit
+        data_field: TrnD_EA
+      - name: TrnDriveEgress
+        data_field: TrnDE_EA
+
+  - file_name: transit_am.omx
+    tables:
+      - name: WalkToTransit
+        data_field: TrnW_AM
+      - name: DriveToTransit
+        data_field: TrnD_AM
+      - name: TrnDriveEgress
+        data_field: TrnDE_AM
+        
+  - file_name: transit_md.omx
+    tables:
+      - name: WalkToTransit
+        data_field: TrnW_MD
+      - name: DriveToTransit
+        data_field: TrnD_MD
+      - name: TrnDriveEgress
+        data_field: TrnDE_MD
+        
+  - file_name: transit_pm.omx
+    tables:
+      - name: WalkToTransit
+        data_field: TrnW_PM
+      - name: DriveToTransit
+        data_field: TrnD_PM
+      - name: TrnDriveEgress
+        data_field: TrnDE_PM
+        
+  - file_name: transit_nt.omx
+    tables:
+      - name: WalkToTransit
+        data_field: TrnW_NT
+      - name: DriveToTransit
+        data_field: TrnD_NT
+      - name: TrnDriveEgress
+        data_field: TrnDE_NT
+
+
+CONSTANTS:
+  time_periods:
+    EA:
+      first_hour: 1
+      last_hour: 5
+    AM1:
+      first_hour: 6
+      last_hour: 7
+    AM2:
+      first_hour: 8
+      last_hour: 9
+    AM3:
+      first_hour: 10
+      last_hour: 11
+    AM4:
+      first_hour: 12
+      last_hour: 13
+    MD:
+      first_hour: 14
+      last_hour: 23
+    PM1:
+      first_hour: 24
+      last_hour: 25
+    PM2:
+      first_hour: 26
+      last_hour: 24
+    PM3:
+      first_hour: 28
+      last_hour: 29
+    PM4:
+      first_hour: 30
+      last_hour: 31      
+    EV:
+      first_hour: 32
+      last_hour: 41
+    NT:
+      first_hour: 42
+      last_hour: 48
+      
+
+  # SHARED2 and SHARED2 Occupancies
+  OCC_SHARED2: 2.0
+  OCC_SHARED3: 3.2

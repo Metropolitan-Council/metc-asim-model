@@ -1,0 +1,28 @@
+Label,Description,Expression,coefficient
+local_dist,,_DIST@skims['DIST'],1
+local_state,,_STATE@skims['STATEFP'],1
+local_dist,,_DISTRICT@skims['DISTRICT'],1
+util_dist,Distance,@(_DIST),coef_dist
+util_dist_squared,"Distance squared, capped at 60 miles","@(_DIST).clip(0,65)**2",coef_dist_squared
+util_dist_cubed,"Distance cubed, capped at 60 miles","@(_DIST).clip(0,65)**3",coef_dist_cubed
+util_dist_logged,"Distance logged, capped at 60 miles","@(_DIST).clip(0,65).apply(np.log1p)",coef_dist_logged
+util_dist_low,"Distance, low income",@(df['income_segment']==WORK_LOW_SEGMENT_ID) * _DIST,coef_dist_low_inc
+util_dist_med,"Distance, med income",@(df['income_segment']==WORK_MED_SEGMENT_ID) * _DIST,coef_dist_med_inc
+util_dist_vhigh,"Distance, very high income",@(df['income_segment']==WORK_VERYHIGH_SEGMENT_ID) * _DIST,coef_dist_vhigh_inc
+util_dist_part_time,"Distance,part_time",@(df['pemploy']==2) * _DIST,coef_dist_part_time
+util_dist_student,"Distance,student",@(df['is_student']==True) * _DIST,coef_dist_student
+util_zero_auto,"Zero auto HH",@df.auto_ownership == 0,coef_dist_zero_auto
+util_size_variable,Size variable,@(df['size_term'] * df['shadow_price_size_term_adjustment']).apply(np.log1p),1
+util_utility_adjustment,utility adjustment,@df['shadow_price_utility_adjustment'],1
+util_no_attractions,No attractions,@df['size_term'] <= 0,-999
+# Mississippi River Crossing: 1-2, 1-3, 2-1, 3-1
+util_ms_xing_12,"Crosses Mississippi River","@(df.home_wlc_dist == 1) & (_DISTRICT==2)",coef_ms_xing
+util_ms_xing_13,"Crosses Mississippi River","@(df.home_wlc_dist == 1) & (_DISTRICT==3)",coef_ms_xing
+util_ms_xing_21,"Crosses Mississippi River","@(df.home_wlc_dist == 2) & (_DISTRICT==1)",coef_ms_xing
+util_ms_xing_31,"Crosses Mississippi River","@(df.home_wlc_dist == 3) & (_DISTRICT==1)",coef_ms_xing
+# Minnesota River Crossing: 2-3 and 3-2
+util_mn_xing_1,"Crosses Minnesota River","@(df.home_wlc_dist == 2) & (_DISTRICT==3)",coef_mn_xing
+util_mn_xing_2,"Crosses Minnesota River","@(df.home_wlc_dist == 3) & (_DISTRICT==2)",coef_mn_xing
+# Crossed St. Croix River
+util_sc_xing_1,"Crosses Mississippi River","@(df.home_wlc_dist == 4) & (_DISTRICT < 4)",coef_sc_xing
+util_sc_xing_2,"Crosses Mississippi River","@(~df.home_wlc_dist < 4) & (_DISTRICT == 4)",coef_sc_xing

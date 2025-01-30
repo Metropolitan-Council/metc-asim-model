@@ -4,7 +4,7 @@
 
 This is a model that simulates choices made by people throughout their day - if and when they go to work, school, out to eat, shopping, etc. This is used to forecast the mobility effects of transportation investments.
 
-This model is built in a mixture of Python 3 (ActivitySim) and Cube Voyager (Auxiliary Models, Skimming and Assignment). The main model batch file was built by WSP, and modified by RSG to remove TourCast and implement ActivitySim.
+This model is built in a mixture of Python 3 (ActivitySim) and Cube Voyager (Auxiliary Models, Skimming and Assignment).
 
 **Currently in Development**
 
@@ -14,11 +14,23 @@ Anaconda 3 64 bit is required to create the environment and run Activitysim. Thi
 
 ## Getting Started
 
-1. Create an Anaconda environment: `conda env create -f environment.yml`
+1. Create a folder for all of this to keep organized
 
-2. Create a data subfolder and copy the input data to it. For various reasons, this data is not 
+2. Navigate to that folder and clone this repository in it
 
-3. Run the model with the batch file `runAsim.bat`
+3. Checkout the develop branch
+
+4. Navigate to the metc-asim-model folder, download the inputs from the project Sharepoint site, they should be placed in Input_2022 in the metc-asim-model folder. Inside the Input_2022 folder, there should be nine subfolders.
+
+5. Copy contributed executables to source\Visualizer\Contrib
+
+6. Create the Anaconda environment: `conda env create --name asim131 --file https://raw.githubusercontent.com/Metropolitan-Council/metc-asim-model/refs/heads/develop/source/environment.yml`
+
+7. Copy the set_parameters_template.bat file to set_parameters.bat. Edit the paths in the file as appropriate (R, python, model paths)
+
+8. Switch to the Anaconda environment: `conda activate asim131`
+
+9. Run the model with the batch file `met_council_model.bat`
 
 ## More Information
 

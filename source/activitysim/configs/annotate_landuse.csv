@@ -1,0 +1,17 @@
+Description,Target,Expression
+#,, annotate landuse table after import
+household_density,household_density,land_use.HOUSEHOLDS / (land_use.AREA * 640) #NOTE: MetC's area is in Sq Mi
+employment_density,employment_density,land_use.TOT_EMP / (land_use.AREA * 640)
+density_index,density_index,(household_density * employment_density) / (household_density + employment_density).clip(lower=1)
+#Population and Employment Density,popEmpDenPerMi,(land_use.TOT_EMP+land_use.POPULATION)/land_use.AREA
+Employment adjustment for WFH and in-commuters,emp_adjust,land_use.COUNTY.map(county_work_loc_adj)
+Adjusted Industrial Employment,ADJ_MAN_EMP,emp_adjust * land_use.MAN_EMP
+Adjusted Retail Employment,ADJ_RET_EMP,emp_adjust * land_use.RET_EMP
+Adjusted Non-Retail Employment,ADJ_NRET_EMP,emp_adjust * land_use.NRET_EMP
+Adjusted Other Employment,ADJ_AMC_EMP,emp_adjust * land_use.AMC_EMP
+Adjusted Office Employment,ADJ_OFF_EMP,emp_adjust * land_use.OFF_EMP
+Adjusted Total Employment,ADJ_TOT_EMP,emp_adjust * land_use.TOT_EMP
+,mn_gradesch,(land_use.STATEFP == 27) * land_use.K_8
+,mn_hisch,(land_use.STATEFP == 27) * land_use.G9_12
+,wi_gradesch,(land_use.STATEFP == 55) * land_use.K_8
+,wi_hisch,(land_use.STATEFP == 55) * land_use.G9_12

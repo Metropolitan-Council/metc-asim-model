@@ -1,0 +1,10 @@
+; Do not change filenames or add or remove FILEI/FILEO statements using an editor. Use Cube/Application Manager.
+RUN PGM=NETWORK MSG='TEMP: extract link and node dbfs'
+FILEO NODEO = "%SCENARIO_DIR%\transit\node.dbf"
+FILEO LINKO = "%SCENARIO_DIR%\transit\link.dbf"
+FILEI LINKI[1] = "%SCENARIO_DIR%\highway\ALL_NET.tmp" RENAME=TRN_PRIORITY_AM-TPRI_AM,TRN_PRIORITY_MD-TPRI_MD,
+	TRN_PRIORITY_PM-TPRI_PM,TRN_PRIORITY_NT-TPRI_NT,TTIME_ASSERT_AM-TTA_AM,TTIME_ASSERT_MD-TTA_MD,
+	TTIME_ASSERT_PM-TTA_PM,TTIME_ASSERT_NT-TTA_NT
+
+
+ENDRUN

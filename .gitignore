@@ -4,9 +4,12 @@
 *.xlsx
 *.xls
 Input
-
+Base_*
+estimation
+Original_nets
 ## Ignore R history
 .Rhistory
+*.pyc
 
 ## Outputs
 output

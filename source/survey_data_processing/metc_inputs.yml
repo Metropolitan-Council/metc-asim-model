@@ -1,0 +1,26 @@
+# CMAP data processing/qc inputs
+
+R_LIBRARY: "E:/Projects/Clients/MetCouncilASIM/tasks/metc-asim-model/Visualizer/contrib/RPKG"
+
+proj_dir: 'E:/Met_Council/survey_data/Phase1'
+data_dir: 'E:/Met_Council/survey_data/Phase1/TBI_survey_unlabeled_raw'
+labeled_data_dir: 'E:/Met_Council/survey_data/Phase1/TBI_survey_labeled'
+obs_dir: 'E:/Met_Council/survey_data/Phase1/obs'
+
+updated_weights_dir: 'E:/Met_Council/survey_data/Phase1/weight_updates_oct2023'
+
+SPA_code_dir: "E:/Met_Council/survey_data/Phase1/SPA"
+
+debug_output: "E:/Met_Council/survey_data/Phase1/debug_out"
+
+zone_dir: 'E:/Met_Council/metc-asim-model/Input/Visualizer/SHP'
+zone_shp_file: 'TAZ2010.shp'
+
+county_flows_csv: 'E:/Met_Council/metc-asim-model/Input/Visualizer/census/acs_commute_flows_wi_mn.csv'
+
+
+visualizer_dir: 'E:/Met_Council/metc-asim-model/source/Visualizer'
+visualizer_summaries: 'E:/Met_Council/metc-asim-model/Input/Visualizer/base2018'
+
+skims_dir: 'E:/Met_Council/metc-asim-model/Base_2018/OMX'
+skims_filename: 'allskims.omx'

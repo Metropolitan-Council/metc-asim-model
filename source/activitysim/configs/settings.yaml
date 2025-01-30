@@ -1,0 +1,170 @@
+# Configs File with Sample Rate set by Model Runner
+inherit_settings: True
+# raise error if any sub-process fails without waiting for others to complete
+fail_fast: True
+# - ------------------------- dev config
+multiprocess: True
+strict: False
+mem_tick: 30
+use_shadow_pricing: True
+## - example sample
+households_sample_size: 0 # Set for development debugging, if this isn't 0 or commented CHANGE IT!
+chunk_training_mode: production
+#chunk_training_mode: disabled
+chunk_size: 180_000_000_000
+num_processes: 20
+default_initial_rows_per_chunk: 1000
+
+# input tables
+input_table_list:
+  #
+  # persons (table index 'person_id')
+  # PUMA	TAZ	household_id	per_num	stud_stat	SEX	emp_type	AGEP
+  #
+  - tablename: persons
+    filename: synthetic_persons.csv
+    index_col: person_id
+    rename_columns:
+      #GENDER: sex
+      #EmpStatus: ESR
+      AGEP: age
+      per_num: pnum
+      
+  #
+  # households (table index 'household_id')
+  # household_id	PUMA	TAZ	NP	HHINCADJ
+  #
+  - tablename: households
+    filename: synthetic_households.csv
+    index_col: household_id
+    rename_columns:
+      #HHZON: home_zone_id
+      #HCHILDREN: children
+      #HHSIZE: hhsize
+      NP: hhsize
+      TAZ: home_zone_id
+      HHINCADJ: income
+ 
+  #
+  # land_use (table index 'zone_id')
+  #
+  - tablename: land_use
+    filename: land_use.csv
+    index_col: zone_id
+
+# set false to disable variability check in simple_simulate and interaction_simulate
+check_for_variability: False
+
+# area_types less than this are considered urban
+urban_threshold: 4
+cbd_threshold: 2
+rural_threshold: 5
+
+# value_of_time = lognormal(np.log(median_value_of_time * mu), sigma).clip(min_vot, max_vot)
+
+min_value_of_time: 1
+max_value_of_time: 50
+distributed_vot_mu: 0.684
+distributed_vot_sigma: 0.85
+
+household_median_value_of_time:
+  1: 6.01
+  2: 8.81
+  3: 10.44
+  4: 12.86
+
+
+trace_hh_id: 
+#trace_od: [5, 11]
+resume_after: 
+
+models:
+  ### mp_init_proto_pop (single process)
+  - initialize_landuse
+  - initialize_proto_population # Separate step so proto tables can be split for multiprocess.
+  ### mp_disaggregate_accessibility
+  - compute_disaggregate_accessibility
+  ### mp_initialize step
+  - compute_accessibility
+  - initialize_households
+  ### mp_households step
+  - av_ownership
+  - auto_ownership_simulate
+  - work_from_home
+  - workplace_location
+  - school_location
+  - vehicle_type_choice
+  - transit_pass_ownership
+  - transponder_ownership
+  - free_parking
+  - telecommute_frequency
+  - cdap_simulate
+  - mandatory_tour_frequency
+  - mandatory_tour_scheduling
+  - joint_tour_frequency
+  - joint_tour_composition
+  - joint_tour_participation
+  - joint_tour_destination
+  - joint_tour_scheduling
+  - non_mandatory_tour_frequency
+  - non_mandatory_tour_destination
+  - non_mandatory_tour_scheduling
+  - vehicle_allocation
+  - tour_mode_choice_simulate
+  - atwork_subtour_frequency
+  - atwork_subtour_destination
+  - atwork_subtour_scheduling
+  - atwork_subtour_mode_choice
+  - stop_frequency
+  - trip_purpose
+  - trip_destination
+  - trip_purpose_and_destination
+  - trip_scheduling
+  - trip_mode_choice
+  ### mp_summarize step
+  - write_data_dictionary
+  - write_tables
+  - write_trip_matrices
+  # - track_skim_usage
+
+multiprocess_steps:
+  - name: mp_init_proto_pop
+    begin: initialize_landuse
+  - name: mp_disaggregate_accessibility
+    begin: compute_disaggregate_accessibility
+    slice:
+      tables:
+        - proto_households
+        - proto_persons
+        - proto_tours
+  - name: mp_initialize
+    begin: compute_accessibility
+  - name: mp_households
+    begin: av_ownership
+    slice:
+      tables:
+        - households
+        - persons
+  - name: mp_summarize
+    begin: write_data_dictionary
+output_tables:
+  action: include
+  prefix: final_
+  tables:
+    - checkpoints
+    - accessibility
+    - land_use
+    - households
+    - persons
+    - tours
+    - trips
+    - joint_tour_participants
+    - vehicles
+    - shadow_prices
+    # - disaggregate_accessibility
+    # - proto_disaggregate_accessibility
+    # - proto_persons
+    # - proto_households
+    
+
+

@@ -1,0 +1,28 @@
+model_selector,segment,HOUSEHOLDS,NRET_EMP,ADJ_RET_EMP,ADJ_NRET_EMP,ADJ_AMC_EMP,ADJ_MAN_EMP,ADJ_OFF_EMP,K_8,G9_12,ENROLLED,mn_gradesch,mn_hisch,wi_gradesch,wi_hisch
+school,university,0,0,0,0,0,0,0,0,0,1,0,0,0,0
+# school,gradeschool,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+# school,highschool,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+school,mn_gradesch,0,0,0,0,0,0,0,0,0,0,1,0,0,0
+school,mn_hisch,0,0,0,0,0,0,0,0,0,0,0,1,0,0
+school,wi_gradesch,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+school,wi_hisch,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+non_mandatory,escort,0.192,1.033,0.188,0,0,0,0,1,0.768,0,0,0,0,0
+non_mandatory,shopping,0,0,1,0,0,0,0,0,0,0,0,0,0,0
+non_mandatory,eatout,0.004,1,0.283,0,0,0,0,0,0,0,0,0,0,0
+non_mandatory,othmaint,0.029,0.3425,0.587,0,0,0,1.75,0,0,0,0,0,0,0
+non_mandatory,social,0.487,1,0,0,0,0,0,0,0,0,0,0,0,0
+non_mandatory,othdiscr,0.184,1.081,0.185,0,0,0,0.7,0,0,0,0,0,0,0
+atwork,atwork,0.03,0.01225,1,0,0,0,0.1,0,0,0,0,0,0,0
+trip,work,0,4,1,0,1,1,1,0,0,0,0,0,0,0
+trip,escort,0.192,1.033,0.188,0,0,0,0,1,0.768,0,0,0,0,0
+trip,shopping,0,0.005,1,0,0,0,0,0,0,0,0,0,0,0
+trip,eatout,0.004,1,0.283,0,0,0,0,0,0,0,0,0,0,0
+trip,othmaint,0.029,1.8985,0.587,0,0,0,0.242,0,0,0,0,0,0,0
+trip,social,0.487,1.177,0,0,0,0,0,0,0,0,0,0,0,0
+trip,othdiscr,0.184,1.596,0.185,0,0,0,0.143,0,0,0,0,0,0,0
+trip,univ,0,0,0,0,0,0,0,0,0,1,0,0,0,0
+workplace,work_low,0,0,1,0.855,0,0,0,0,0,0,0,0,0,0
+workplace,work_med,0,0,1,2.026,0,0,0,0,0,0,0,0,0,0
+workplace,work_high,0,0,1,3.651,0,0,0,0,0,0,0,0,0,0
+workplace,work_veryhigh,0,0,1,5.671,0,0,0,0,0,0,0,0,0,0
+
